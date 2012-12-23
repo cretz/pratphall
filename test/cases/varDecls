@@ -1,0 +1,19 @@
+﻿VarDecl test
+-----
+var a = 5;
+var b = 2.0;
+var c = "my\ntext";
+var d = 'my\ntext';
+var e = function (param: string) { return param + '-'; };
+var f = { a: 1, b: "2", c: false, "d": [1, 3, 7] }
+var g: any[] = [5, 7, { hey: "ho" }]
+var h = false;
+-----
+$a = 5;
+$b = 2.0;
+$c = "my\ntext";
+$d = "my\ntext";
+$e = function ($param) { return $param . '-'; };
+$f = (object)['a' => 1, 'b' => '2', 'c' => false, 'd' => [1, 3, 7]];
+$g = [5, 7, (object)['hey' => 'ho']];
+$h = false;

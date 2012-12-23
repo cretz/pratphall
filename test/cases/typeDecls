@@ -1,0 +1,25 @@
+﻿Full test
+-----
+module TestMod {
+    class FooBase {
+    }
+
+    interface IFoo {
+    }
+
+    class Foo extends FooBase implements IFoo {
+    }
+}
+-----
+namespace TestMod {
+
+    class FooBase {
+    }
+
+    interface IFoo {
+    }
+
+    class Foo extends FooBase implements IFoo {
+    }
+
+}

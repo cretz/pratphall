@@ -1,11 +1,6 @@
-///<reference path='pratphall.ts' />
-///<reference path='node.d.ts' />
+///<reference path='../src/pratphall.ts' />
 
 module Pratphall {
-    import fs = module('fs');
-    import assert = module('assert');
-    import util = module('util');
-    import TS = TypeScript;
 
     class StringWriter implements ITextWriter {
         contents: string = '';
@@ -16,31 +11,33 @@ module Pratphall {
 
     export class TestHarness {
 
+        constructor(public io: Io = loadIo(), public assert: Assert = loadAssert()) { }
+
         run() {
-            fs.readdirSync('test').forEach(this.runTest);
+            this.io.readDir('cases').forEach(this.runTest, this);
         }
 
-        runTest = (name: string) => {
-            var contents = fs.readFileSync('test/' + name);
+        runTest(name: string) {
+            var contents = this.io.readFile('cases/' + name);
             var pieces = contents.toString().replace(/\r/g, '').split('-----');
-            assert.equal(pieces.length, 3);
+            this.assert.equal(pieces.length, 3);
             var description = pieces[0].trim();
             var typescript = pieces[1].trim();
             var php = pieces[2].trim();
             //compile TS
-            var settings = new TS.CompilationSettings();
+            var settings = new TypeScript.CompilationSettings();
             var err = new StringWriter();
-            var compiler = new TS.TypeScriptCompiler(err, new TS.NullLogger(), settings);
+            var compiler = new TypeScript.TypeScriptCompiler(err, new TypeScript.NullLogger(), settings);
             compiler.addUnit(typescript, name);
             compiler.typeCheck();
-            assert.equal(compiler.scripts.members.length, 1);
-            assert.equal(err.contents, '');
+            this.assert.equal(compiler.scripts.members.length, 1);
+            this.assert.equal(err.contents, '');
             //emit PHP
             var str = new StringWriter();
             var emitter = new PhpEmitter(compiler.typeChecker, str);
             emitter.emit(compiler.scripts.members[0]);
             if (str.contents.trim() != php) {
-                console.log('*****\n' + name + ' failed\n**EXPECTED**\n' + php + 
+                this.io.writeLine('*****\n' + name + ' failed\n**EXPECTED**\n' + php + 
                     '\n**ACTUAL**\n' + str.contents.trim() + '\n*****');
             }
         }

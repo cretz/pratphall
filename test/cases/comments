@@ -1,0 +1,21 @@
+﻿Comment
+-----
+/**
+ * Test JSDoc
+ *
+ * @param whocares
+ */
+function test(whocares: string) {
+    /* blah */
+    var test = 5; //meh
+}
+-----
+/**
+ * Test JSDoc
+ *
+ * @param whocares
+ */
+function test($whocares) {
+    /* blah */
+    $test = 5; //meh
+}

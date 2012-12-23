@@ -1,0 +1,15 @@
+﻿Binary expression test
+-----
+var a = 1 + '1';
+var b = '1' + 2;
+//var c = false + true;
+//var d = '5' - '3';
+var e = {a: 5};
+var f = e.a;
+-----
+$a = 1 . '1';
+$b = '1' . 2;
+//var c = false + true;
+//var d = '5' - '3';
+$e = (object)['a' => 5];
+$f = $e->a;

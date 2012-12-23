@@ -4,3 +4,5 @@
 /pratphall.v11.suo
 /bin
 /obj
+*.js
+*.js.map

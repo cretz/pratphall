@@ -1,74 +1,781 @@
 <!DOCTYPE html>
 <html>
-
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Pratphall : " />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
+  <head lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pratphall</title>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="pratphall.css" rel="stylesheet">
   </head>
+  <body data-spy="scroll" data-target=".top-level-nav" data-offset="100">
+    <div class="container">
+      <div data-spy="affix" style="background-color: white; height: 80px; left: 10px; right: 10px">
+        <div style="text-align: right; position: relative; float: right; margin-top: 0px;">
+          <p class="muted">*Actually, it's just <a href="http://typescriptlang.org">TypeScript</a> cross-compiled.</p>
+          <a href="https://github.com/cretz/pratphall">GitHub</a> |
+          <a href="https://groups.google.com/d/forum/pratphall">Mailing List</a>
+        </div>
+        <h1 style="border-bottom: 1px solid #D3D3D3; margin-bottom: 0px">
+          <a class="title" href="#Top">Pratphall</a>
+          <small> - A typed language targeting <a href="http://php.net">PHP</a>*</small>
+        </h1>
+        <div class="top-level-nav">
+          <ul class="nav nav-pills">
+            <li style="display: none"><a href="#Top"></a></li>
+            <li class="top-nav-title">Getting Started </li>
+            <li><a href="#GettingStarted-Installation">Installation</a></li>
+            <li class="divider">|</li>
+            <li><a href="#GettingStarted-Compiling">Compiling</a></li>
+            <li class="top-nav-title" style="margin-left: 5px">Manual </li>
+            <li><a href="#Manual-Introduction">Introduction</a></li>
+            <li class="divider">|</li>
+            <li><a href="#Manual-Usage">Usage</a></li>
+            <li class="divider">|</li>
+            <li><a href="#Manual-Types">Types</a></li>
+            <li class="divider">|</li>
+            <li><a href="#Manual-Syntax">Syntax</a></li>
+            <li class="divider">|</li>
+            <li><a href="#Manual-Structure">Structure</a></li>
+          </ul>
+        </div>
+      </div>
+      <span class="bookmark" id="Top"></span>
+      <div class="row" style="margin-top: 80px">
+        <div class="span1"></div>
+        <div class="span4">
+          <h3>Features</h3>
+          <ul>
+            <li>Optional typing</li>
+            <li>Readable PHP output</li>
+            <li>IDE support</li>
+            <li>Metaprogramming facilities</li>
+            <li>PHP interoperability</li>
+            <li>Apache 2 licensed</li>
+          </ul>
+        </div>
+        <div class="span7">
+          <h3>
+            Anti-Features
+          </h3>
+          <ul>
+            <li>Not fixing PHP standard library</li>
+            <li>Not emitting obtuse/complicated PHP code</li>
+            <li>Not auto-generating Pratphall from PHP code</li>
+            <li>Not adding any code in TypeScript core</li>
+            <li>Not supporting every PHP feature</li>
+            <li>Not supporting every JS/TypeScript feature</li>
+          </ul>
+        </div>
+      </div>
+      <h3>Overview</h3>
+      <p>
+        Pratphall is an optionally-typed language that compiles to readable PHP. PHP has a powerful engine and is very scalable since state is primarily per-request for PHP scripts. Unfortunately, due to the dynamic nature of PHP, it can be difficult to build large projects and retain the ability to refactor and manage the code. It can also be difficult to foresee errors with typing and properties and variables that are unavailable. Almost all of these issues cause many problems that don't surface until runtime. Pratphall aims to solve this.
+      </p>
+      <p>
+        Pratphall started as kind of a joke (hence the name) and proof of concept to see if <a href="http://typescriptlang.org">TypeScript</a> could be reliably translated. It turns out it can. So Pratphall is for all practical purposes just TypeScript (which is a typed superset of JavaScript) cross-compiled. And although not every single JS idiom directly translates, remembering that <strong>Pratphall is just TypeScript which is just typed JavaScript</strong> will help development greatly.
+      </p>
+      <h3>Example</h3>
+      Here is an example of Pratphall compiling to PHP
+      <div class="code">
+        <pre><code class="pratphall">//normal array
+var arr = [1, 2, 3, 4, 5];
 
-  <body>
+//loop and print
+arr.forEach((value: number) => {
+    echo('My value: ' + value + '\n');
+});
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/cretz/pratphall">View on GitHub</a>
+//compile-time-only class
+declare class SampleCompileTimeClass {
+    requiredProperty: string;
+    optionalProperty?: bool;
+}
 
-          <h1 id="project_title">Pratphall</h1>
-          <h2 id="project_tagline"></h2>
+//function using compile-time interface
+printInfo(info: SampleCompileTimeClass) => {
+    echo('Required: ' + info.requiredProperty + '\n');
+    if (typeof info.optionalProperty !== 'undefined') {
+        echo('Optional: ' + info.optionalProperty + '\n');
+    }
+}
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/cretz/pratphall/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/cretz/pratphall/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
+//type inferred matching
+printInfo({ requiredProperty: 'required val' });</code></pre>
+        <pre><code class="php">//normal array
+$arr = [1, 2, 3, 4, 5];
+
+//loop and print
+foreach ($arr as $value) {
+    echo('My value: ' . $value . "\n");
+}
+
+
+
+/*Spacing added in example for clarity*/
+
+
+
+//function using compile-time interface
+function printInfo($info) {
+    echo('Required: ' . $info->requiredProperty . "\n");
+    if (array_key_exists('optionalProperty', $info)) {
+        echo('Optional: ' . $info->optionalProperty . "\n");
+    }
+}
+
+//type-inferred matching
+printInfo((object)[ 'requiredProperty' => 'required val' ]);</code></pre>
+      </div>
+
+      <h2>Getting Started</h2>
+
+      <span class="bookmark" id="GettingStarted-Installation"></span>
+      <h5>Installation</h5>
+      <p>To use Pratphall from the command line, simply install via NPM:</p>
+      <pre>npm install -g pratphall</pre>
+      <p>
+        You may also want to install <a href="http://www.microsoft.com/en-us/download/details.aspx?id=34790">TypeScript for Visual Studio 2012</a> if you want to use Visual Studio as your editor. For more information about Visual Studio support, see <a href="#Appendix-VisualStudioSupport">below</a>.
+      </p>
+      <p>If you want to build Pratphall from source, see the <a href="#Appendix-BuildingFromSource">Building From Source</a> appendix.</p>
+
+      <span class="bookmark" id="GettingStarted-Compiling"></span>
+      <h5>Compiling</h5>
+      <p>Write the following simple script and save it as sayHello.ts:</p>
+      <pre><code class="pratphall">function sayHello(subject: string) {
+    return 'Hello, ' + subject;
+}
+
+var theSubject = 'World';
+
+echo(sayHello(theSubject) + '\n');</code></pre>
+      <p>Now, to compile to PHP, run ppc like so:</p>
+      <pre>ppc sayHello.ts</pre>
+      <p>This will create a sayHello.php file that looks like this:</p>
+      <pre><code class="php">function sayHello($subject) {
+    return 'Hello, ' . $subject;
+}
+
+$theSubject = 'World';
+
+echo(sayHello(theSubject) . "\n");</code></pre>
+      <p>Running this with PHP will output what you expect. However, if you tried to compile this:</p>
+      <pre><code class="pratphall">function sayHello(subject: string) {
+    return 'Hello, ' + subject;
+}
+
+var theSubject = 123;
+
+echo(sayHello(theSubject) + '\n');</code></pre>
+      <p>
+        You would get: <code>sayHello.ts(7,5): Supplied parameters do not match any signature of call target</code>. This is because you are attempting to pass a number to a function that only accepts strings.
+      </p>
+
+      <h2>Manual</h2>
+
+      <span class="bookmark" id="Manual-Introduction"></span>
+      <h3 id="Manual-Introduction">Introduction</h3>
+
+      <h4>Who?</h4>
+      <p>
+        Nobody really. It's a project that was started in <a href="http://github.com/cretz">my</a> spare time and only maintained in my <em>spare</em> time. There is no commercial support, no guarantee that anything will get fixed, and no guarantee that the project will be properly maintained. I am not aware of any use in a production environment, so use at your own risk. If it becomes popular, it is possible it could become a more professional language. Feel free to discuss the language or ask questions on the <a href="https://groups.google.com/d/forum/pratphall">mailing list</a>.
+      </p>
+
+      <h4>What?</h4>
+      <p>
+        Pratphall is <a href="http://typescriptlang.org">TypeScript</a> compiled to PHP. It includes several helpers to make this easier. Pratphall is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2</a> license.
+      </p>
+
+      <h4>Where?</h4>
+      <p>
+        The source is on <a href="https://github.com/cretz/pratphall">GitHub</a> and the site is on <a href="https://github.com/cretz/pratphall/tree/gh-pages">GitHub</a>. Follow development, fork, send pull requests, and submit issues there.
+      </p>
+
+      <h4>When?</h4>
+      <p>
+        I don't know. It's in an almost alpha state until it gets more traction.
+      </p>
+
+      <h4>Why?</h4>
+      <p>
+        This is basically for static typing enthusiasts that use PHP either because they are forced to or like the PHP engine and scalability. Using PHPDoc annotations is rarely a good enough solution and editor support for them is limited. After noticing extreme parity between TypeScript and PHP, a simple tool was built to do the cross-compiling. This is the result.
+      </p>
+      <p>
+        Pratphall can be used to make a really scalable codebase in PHP. It can also reduce the verbosity (e.g. several classes/modules in one file) and increase productivity through editor support (e.g. Visual Studio with IntelliSense). Refactoring and determining use throughout the your codebase will now be really easy. And, if the abstraction is written properly, code can even be shared between JS/PHP. At the very least this really helps when defining typed model classes.
+      </p>
+
+      <h4>How?</h4>
+      <p>
+        Pratphall simply leverages the TypeScript compiler and type checker. Because TypeScript is written so well, it is very easy to change the language it emits to. In this case, a new emitter was written to just write PHP instead of JavaScript.
+      </p>
+
+      <span class="bookmark" id="Manual-Usage"></span>
+      <h3>Usage</h3>
+      <pre>ppc [options] file...</pre>
+      <p>Options:</p>
+      <dl class="dl-horizontal">
+        <dt><code>--all-caps-consts</code></dt>
+        <dd>When set and an externally declared variable is all capital letters, it will assume it's a constant and not prefix it with a dollar sign in PHP</dd>
+        <dt><code>--no-comments</code></dt>
+        <dd>Do not emit comments</dd>
+        <dt><code>--no-js-lib</code></dt>
+        <dd>Do not automatically include the lib.d.ts JS definitions</dd>
+        <dt><code>--no-organize</code></dt>
+        <dd>When set, this will not organize source files into the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0</a> autoloader-acceptable filesystem structure</dd>
+        <dt><code>--no-php-lib</code></dt>
+        <dd>Do not automatically include the runtime/all.ts PHP definitions</dd>
+        <dt><code>--no-type-hint</code></dt>
+        <dd>Do not type hint emitted functions in any way</dd>
+        <dt><code>-o, --out PATH</code></dt>
+        <dd>The directory to output all the PHP files to. If <code>--single</code> is present, this is the single PHP file to output to.</dd>
+        <dt><code>--prefer-single-quotes</code></dt>
+        <dd>When set, this will try to use single quotes for all strings that don't have escape characters</dd>
+        <dt><code>--require-references</code></dt>
+        <dd>When set, all <code>///&lt;reference /></code> will become <code>require_once</code></dd>
+        <dt><code>--single</code></dt>
+        <dd>Compile all files to a single PHP file</dd>
+        <dt><code>--target VER</code></dt>
+        <dd>Which PHP version to target. Only 5.3, 5.4, and 5.5 is supported. 5.4 is the default if not present.</dd>
+        <dt><code>--use-elseif</code></dt>
+        <dd>When an "else if" is encountered in Pratphall, translate to "elseif" instead of the default "else if"</dd>
+      </dl>
+
+      <span class="bookmark" id="Manual-Types"></span>
+      <h3>Types</h3>
+
+      <h4>Booleans</h4>
+      <p>Booleans and conversions happen the same way in Pratphall as they do in PHP.</p>
+
+      <h4>Strings</h4>
+      <p>
+        Strings in Pratphall and PHP are very similar. There are no multiline strings. There is no string interpolation (attempts are escaped). Usually, the preference of single quote or double quote in the Pratphall script is translated verbatim to PHP. However, if there is an escape character in a single-quoted string, it will become double quoted. To request that all strings without escape characters to become single quoted in PHP, use the <code>--prefer-single-quotes</code> compiler option.
+      </p>
+      <p>
+        In Pratphall strings are concatenated with a plus sign. In PHP the dot operator is used. Type inference is used to determine when this translation should occur. In Pratphall, if either side of the plus operator is a string, concatenation is assumed. If either side of a plus operator is an unknown/any type a normal arithmetic plus will be used and a compiler warning will be issued.
+      </p>
+      <p>Normal JavaScript string functions are translated to common PHP idioms.</p>
+      <div class="code">
+        <pre><code class="pratphall">//will be converted to double quotes
+var a = 'My\nNewline\nString$escaped{$interpolation}';
+
+//concatenation
+var b = 99 + ' bottles of beer on the wall';
+
+//compiler warning because type is any
+var c: any = 'test string';
+var d = 12 + c;
+
+//common JS functions
+var_dump(b.length);
+var_dump(b.charAt(0));
+var_dump(b.split(' '));</code></pre>
+        <pre><code class="php">//will be converted to double quotes
+$a = "My\nNewline\nString\$escaped{\$interpolation}";
+
+//concatenation
+$b = 99 . ' bottles of beer on the wall';
+
+//compiler warning because type is any
+$c = 'test string';
+$d = 12 + $c;
+
+//common JS functions
+var_dump(strlen($b));
+var_dump($b[0]);
+var_dump(explode(' ', $b));</code></pre>
+      </div>
+
+      <h4>Integers/Floats</h4>
+      <p>
+        In JS there is no difference between an integer and a float for the most part, and the same is true in Pratphall. Conversion and testing can still occur at runtime with intval, floatval, and other methods. At compile time however, they are simply numbers. There is no normal way to contrain a variable on one or the other. Hexadecimal and octal literals are translated to normal decimal integers during translation.
+      </p>
+
+      <h4>Arrays</h4>
+      <p>
+        Unlike PHP, Pratphall differentiates between associative arrays and normal indexed arrays. The former is of type <code>Pct.PhpAssocArray</code> whereas the latter is a normal JS array. This can be confusing at first, but in practice it helps the developer make more accurate assumptions about the typing of variables. You can convert between these types at compile time using Pct.toAssocArray or Pct.toArray. Note when using the latter, (until TypeScript has generics) the result is `any[]` so it is recommended to cast it to the exact form of array expected.
+      </p>
+      <p>
+        Pct.PhpAssocArray's can be created with <code>Pct.newAssocArray</code>. Only object literals can be passed to the PhpAssocArray's constructor. Indexed arrays are handled almost exactly like they are in JS. They are created with the normal bracketed syntax.
+      </p>
+      <p>Normal JavaScript array functions are translated to common PHP idioms.</p>
+      <div class="code">
+        <pre><code class="pratphall">//regular array
+var a = [1, 2, 3];
+
+//some calls
+a.forEach((value: number) {
+    var_dump(value);
+});
+a.push(4);
+
+//associative array
+var b = Pct.newAssocArray({
+    prop: 'propValue',
+    prop2: ['a', 'b', 'c'],
+    closure: function () { echo('Hey!\n'); }
+});
+
+//some calls
+var c = b.map((value: any) => {
+    return gettype(value);
+});
+c['prop3'] = 15;
+var_dump(c.length);</code></pre>
+        <pre><code class="php">//regular array
+$a = [1, 2, 3];
+
+//some calls
+foreach ($a as $value) {
+    var_dump($value);
+}
+$a[] = 4;
+
+//associative array
+$b = [
+    'prop' => 'propValue',
+    'prop2' => ['a', 'b', 'c'],
+    'closure' => function () { echo("Hey!\n"); }
+];
+
+//some calls
+$c = array_map(function ($value) {
+    return gettype($value);
+}, $b);
+$c['prop3'] = 15;
+var_dump(count($c));</code></pre>
+      </div>
+
+      <h4>Objects</h4>
+      <p>
+        Objects in Pratphall and PHP work very similarly. Anonymous object literals become an stdClass via cast. Note, if you have a closure as an object property, it cannot necessarily be invoked like a method in PHP, so Pratphall has to do special handling (see <a href="#Appendix-Gotchas-001">GOTCHA-001</a>). TypeScript property accessors are not currently supported.
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">var obj = {
+    num: 12,
+    arr: ['a', 'b', 'c'],
+    obj: { innerNum: 12 },
+    func: (value: string) => { echo('Value: ' + value); }
+};</code></pre>
+        <pre><code class="php">$obj = (object)[
+    'num' => 12,
+    'arr' => ['a', 'b', 'c'],
+    'obj' => (object)[ 'innerNum' => 12 ],
+    'func' => function ($value) { echo('Value: ' . $value); }
+];</code></pre>
+      </div>
+
+      <h4>Resources</h4>
+      <p>PHP resources are represented by the <code>Pct.PhpResource</code> type in Pratphall.</p>
+
+      <h4>Null and Undefined</h4>
+      <p>Null is handled the same way in Pratphall and PHP.</p>
+      <p>
+        Undefined is different. In Pratphall, <code>delete</code> translates directly to <code>unset</code>. Conditions that check <code>undefined</code> (be it via a typeof or a triple-equals) are translated to safe PHP that avoids false positives with NULL values unlike isset.
+      </p>
+      <p>
+        Functions isset and empty are used like any other PHP function in Pratphall. Since these are language constructs, the values don't necessarily have to exist like they do in JS.
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">//normal null
+var a = { prop1: null };
+echo('a.prop1 null? ' + (a.prop1 == null));
+
+//undefined
+delete a.prop1;
+echo('a.prop1 set? ' + (typeof a.prop1 == 'undefined'));</code></pre>
+        <pre><code class="php">//normal null
+$a = (object)[ 'prop1' => null ];
+echo('a.prop1 null? ' . ($a->prop1 == null));
+
+//undefined
+unset($a->prop1);
+echo('a.prop1 set? ' . (!array_key_exists('prop1', $a)));</code></pre>
+      </div>
+
+      <h4>Callbacks</h4>
+      <p>
+        Pratphall supports full typed closure type definitions instead of just the callable type hint in PHP. Even methods of objects can be passed around like normal.
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">class Foo {
+    bar(value: string) { echo('Value: ' + value); }
+}
+
+var foo = new Foo();
+var f = foo.bar;
+//call
+f('test');</code></pre>
+        <pre><code class="php">class Foo {
+    public function bar($value) { echo('Value: ' . $value); }
+}
+
+$foo = new Foo();
+$f = (new ReflectionMethod('Foo', 'bar'))->getClosure($foo);
+//call
+$f('test');</code></pre>
+      </div>
+      <p>
+        This is safe since unlike PHP, Pratphall does not support naming properties/variables and methods/functions the same name. See <a href="#Appendix-Gotchas-002">GOTCHA-002</a> about interoperating with existing PHP that does
+      </p>
+
+      <h4>Pseudo-types</h4>
+      <p>
+        Void can be used for return types of functions. There is no such thing as <code>mixed</code>, but there is <code>any</code> which loosely translates. The use of the <code>any</code> type should be avoided when possible. If using <code>any</code>, you are encouraged to cast to a known type as soon as you can.
+      </p>
+
+      <h4>Casting</h4>
+      <p>
+        To cast to a value at compile time, use the TypeScript method. For example: <code>&lt;bool>&lt;any>stringValue</code> casts a string to a bool but will not be casted in the emitted PHP code. This is helpful for functions that return a value or FALSE. In fact, this is such a common pattern that there is a compile-time helper for it: <code>Pct.isFalse</code>.
+      </p>
+      <p>
+        To cast a value at runtime, it is always preferred to use the built-in PHP methods such as `strval`, `intval`, etc. If you must have a literal cast, you can use the `Pct.to*` functions.
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">function printNumber(value: number) {
+    echo('Number: ' + value + '\n');
+}
+
+//compile-time cast only
+printNumber(&lt;number>&lt;any>'10');
+
+//runtime PHP function cast
+printNumber(intval('10'));
+
+//runtime PHP explicit cast
+printNumber(Pct.toInt('10'));
+
+//two ways to check a FALSE return
+if (&lt;boolean>&lt;any>strpos('team', 'I') === false) {
+    echo('There is no "I" in "team"\n');
+}
+if (Pct.isFalse(strpos('team', 'I'))) {
+    echo('There is no "I" in "team"\n');
+}</code></pre>
+        <pre><code class="php">function printNumber($value) {
+    echo('Number: ' . $value . '\n');
+}
+
+//compile-time cast only
+printNumber('10');
+
+//runtime PHP function cast
+printNumber(intval('10'));
+
+//runtime PHP explicit cast
+printNumber(((int) '10'));
+
+//two ways to check a FALSE return
+if (strpos('team', 'I') === false) {
+    echo("There is no \"I\" in \"team\"\n");
+}
+if (strpos('team', 'I') === false) {
+    echo("There is no \"I\" in \"team\"\n");
+}</code></pre>
+      </div>
+
+      <span class="bookmark" id="Manual-Syntax"></span>
+      <h3>Syntax</h3>
+
+      <h4>Variables</h4>
+      <p>Variables names are case sensitive and are NOT prefixed with dollar signs (except for references, see later).</p>
+      <p>
+        All variables in Pratphall are defined somewhere. If they are declared globally and are used in a function, the <code>global</code> keyword is applied in the translated PHP. There is no Pratphall equivalent to the static variable in PHP (not to be confused with the static property/function of a class).
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">var a = 'myGlobalString';
+
+function printGlobalString() {
+    /*blank space here for clarity*/
+    echo('Global string: ' + a);
+}</code></pre>
+        <pre><code class="php">$a = 'myGlobalString';
+
+function printGlobalString() {
+    global $a;
+    echo('Global string: ' + $a);
+}</code></pre>
+      </div>
+      <p>
+        "Variable variables" are not supported in Pratphall in any way. The best you can do is access an object's property by its string-based name using the bracket syntax.
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">var obj = { child: { grandchild: 5 }};
+echo('Grandchild val: ' + obj.child['grand' + 'child']);</code></pre>
+        <pre><code class="php">$obj = (object)[ 'child' => (object)[ 'grandchild' => 5 ]];
+echo('Grandchild val: ' . $obj->child->{'grand' . 'child'});</code></pre>
+      </div>
+
+      <h4>Constants</h4>
+      <p>
+        Constants cannot be defined in Pratphall in any way. The closest you can get is creating a top-level var. Some existing libraries have constants though that need to be accessed when interoperating. You can avoid the dollar sign that is normally prefixed to PHP variables by using <code>Pct.const</code> to reference the constant. If the <code>--all-caps-consts</code> compiler option is set, externally defined variables that are in all capital letters will be assumed to be constant.
+      </p>
+      <p>
+        All magic constants are supported in the Pratphall compile-time library. <code>Pct.__LINE__</code> is a number, and all other magic constants are strings.
+      </p>
+
+      <h4>Operators</h4>
+      <p>
+        All operators work the same in Pratphall and PHP with the following exceptions:
+        <dl>
+          <dt><code>clone</code></dt>
+          <dd>
+            The Pratphall language has no keyword for clone. You can get the same effect by using <code>Pct.clone</code>
+            <div class="code-nested">
+              <pre><code class="pratphall">var obj = { foo: 'bar' };
+var copy = Pct.clone(obj);</code></pre>
+              <pre><code class="php">$obj = (object)[ 'foo' => 'bar' ];
+$copy = clone $obj;</code></pre>
+            </div>
+          </dd>
+          <dt><code>.</code></dt>
+          <dd>
+            String concatenation is done via <code>+</code> and translated based on type inference. Same goes for <code>.=</code> in PHP which is <code>+=</code> in Pratphall.
+          </dd>
+          <dt><code>and</code>, <code>xor</code>, <code>or</code></dt>
+          <dd>Completely unsupported in Pratphall (not to be confused with support for <code>&amp;&amp;</code> and <code>||</code>).</dd>
+          <dt><code>&gt;&gt;&gt;</code></dt>
+          <dd>PHP does not have a zero-fill right shift, so the presence of this operator in Pratphall will cause a compiler error</dd>
+          <dt><code>?:</code></dt>
+          <dd>Pratphall supports the normal PHP ternary, but does not support the shorthand form which uses the conditional as the first result.</dd>
+          <dt><code>&amp;</code></dt>
+          <dd>References types and reference assignment are handled differently in Pratphall. See the References section.</dd>
+          <dt><code>&lt;&gt;</code></dt>
+          <dd>This is considered "not equal" in PHP. Pratphall does not support it.</dd>
+          <dt><code>@</code></dt>
+          <dd>
+            The <code>@</code> symbol may not be used to swallow errors in Pratphall. If you must swallow errors, use <code>Pct.swallowErrors</code> (unwieldy name on purpose) which will use the <code>@</code> sign.
+            <div class="code-nested">
+              <pre><code class="pratphall">var f = Pct.swallowErrors(file('not-here.txt'));</code></pre>
+              <pre><code class="php">$f = @file('not-here.txt');</code></pre>
+            </div>
+          </dd>
+          <dt><code>`</code></dt>
+          <dd>Backticks are unsupported in Pratphall. Use shell_exec if you must.</dd>
+          <dt><code>+</code></dt>
+          <dd>
+            Addition with numbers works normally. Unioning arrays, if you must, is done with <code>Pct.unionArray</code>. Note, this comes back with <code>any[]</code> if you are using an indexed array, so please cast immediately back to what you expect it to be.
+            <div class="code-nested">
+              <pre><code class="pratphall">var a = &lt;number[]>Pct.unionArray([1, 2, 3], [4, 5, 6, 7]);</code></pre>
+              <pre><code class="php">$a = [1, 2, 3] + [4, 5, 6, 7];</code></pre>
+            </div>
+          </dd>
+          <dt><code>==</code>, <code>!=</code>, <code>===</code></dt>
+          <dd>
+            These translate directly, but it's important to understand that TypeScript/JS and PHP don't treat array or object equality the same, so be careful when writing shareable code comparing arrays or objects.
+          </dd>
+          <dt><code>instanceof</code></dt>
+          <dd>
+            This check will work just fine in Pratphall when the right hand side is the literal name of a class. If the right hand side is a string, interface, or some other expression you must use <code>Pct.isInstance</code>. Of course, <code>is_a</code> may be also be used as part of the PHP standard library.
+            <div class="code-nested">
+              <pre><code class="pratphall">class Foo { }
+var a = new Foo();
+var b = Pct.isInstance(a, 'Foo');</code></pre>
+              <pre><code class="php">class Foo { }
+$a = new Foo();
+$b = a instanceof 'Foo';</code></pre>
+            </div>
+          </dd>
+          <dt><code>typeof</code></dt>
+          <dd>
+            This has no operator/construct equivalent in PHP, but it is automatically translated to gettype (except for as used for checks with undefined). Note, the results can differ between JS and PHP, so make sure you code to the PHP environment or abstract when writing shareable code.
+          </dd>
+        </dl>
+      </p>
+
+      <h4>Control Structures</h4>
+      <p>
+        All control structures work the same in Pratphall and PHP with the following exceptions:
+        <dl>
+          <dt><code>elseif</code></dt>
+          <dd>
+            Use <code>else if</code> in Pratphall which will translate to <code>else if</code> in PHP also. The <code>--use-elseif</code> compiler option can be used to emit <code>elseif</code> instead when <code>else if</code> is found.
+          </dd>
+          <dt>
+            <code>if():</code>, <code>elseif:</code>, <code>else:</code>, <code>endif;</code>, <code>while:</code>, <code>endwhile;</code>, <code>for:</code>, <code>endfor;</code>, <code>foreach:</code>, <code>endforeach;</code>, <code>switch:</code>, <code>endswitch;</code>
+          </dt>
+          <dd>Unsupported in Pratphall</dd>
+          <dt><code>for...in</code></dt>
+          <dd>
+            This JS concept isn't present in any way in PHP and isn't worth the significant runtime code to support accurately. If this is seen, a compiler warning is issued and it's translated to a foreach of <code>array_keys</code> of an array cast which is not the exact same thing. These loops are discouraged.
+            <div class="code-nested">
+              <pre><code class="pratphall">var a = { b: 1, c: 2 };
+for (b in a) {
+    echo('a[' + b + ']: ' + a[b] + '\n');
+}</code></pre>
+              <pre><code class="php">$a = (object)[ 'b' => 1, 'c' => 2 ];
+foreach (array_keys($a) as $b) {
+    echo('a[' . $b . ']: ' . $a[$b] . "\n");
+}</code></pre>
+            </div>
+          </dd>
+          <dt><code>foreach</code></dt>
+          <dd>
+            This is represented in Pratphall by the <code>forEach</code> function that can be called on an iterable object or an array. If the function passed to <code>forEach</code> is an inline closure, it will be translated directly. Otherwise, it will be translated to an <code>array_walk</code> call.
+            <div class="code-nested">
+              <pre><code class="pratphall">var a = { b: 1, c: 2 };
+
+//regular
+a.forEach((value: number, index: string) => {
+    echo('a[' + index + ']: ' + value + '\n');
+});
+
+//callback
+var d = (value: number, index: string) => {
+    echo('a[' + index + ']: ' + value + '\n');
+};
+a.forEach(d);</code></pre>
+              <pre><code class="php">$a = (object)[ 'b' => 1, 'c' => 2 ];
+
+//regular
+foreach ($a as $index => $value) {
+    echo('a[' + $index + ']: ' + $value + "\n");
+}
+
+//callback
+$d = function ($value, $index) {
+    echo('a[' + $index + ']: ' + $value + "\n");
+};
+array_walk($a, $d);</code></pre>
+            </div>
+          </dd>
+          <dt><code>break #</code>, <code>continue #</code></dt>
+          <dd>
+            In Pratphall, break and continue statements are optionally associated with labels instead of a number. Normal breaks and continues in Pratphall work as normal. When a label is defined though, the construct becomes a goto. There is no equivalent for PHP's numbered break and continue statements. For example, `outside: while (a) { while (b) { break outside; } }` translates to `outside: while ($a) { while ($b) { goto outside; } }`.
+            <div class="code-nested">
+              <pre><code class="pratphall">var counter = 0;
+again:
+var lines = file('file' + (++counter) + '.txt');
+for (var i = 0; i &lt; lines.length; i++) {
+  var words = lines[i].split(' ');
+  for (var j = 0; j &lt; words.length; j++) {
+      var word = words[j];
+      if (word == 'end') break done;
+      else if (word == 'nextfile') break again;
+      else echo('Word: ' + word + '\n');
+  }
+}
+done:
+echo('Done!\n');</code></pre>
+              <pre><code class="php">$counter = 0;
+again:
+$lines = file('file' + (++$counter) + '.txt');
+for ($i = 0; $i &lt; count($lines); $i++) {
+  $words = explode(' ', lines[$i]);
+  for ($j = 0; $j &lt; count($words); $j++) {
+      $word = $words[$j];
+      if ($word == 'end') goto done;
+      else if ($word == 'nextfile') goto again;
+      else echo('Word: ' . $word . "\n");
+  }
+}
+done:
+echo("Done!\n");</code></pre>
+            </div>
+          </dd>
+          <dt><code>declare</code></dt>
+          <dd>
+            Not a construct in Pratphall, but can be called using <code>Pct.declare</code>. If a function is the last parameter of the call, it considers code within to be in a declare block.
+          </dd>
+          <dt><code>return</code></dt>
+          <dd>Return from methods/functions works normally. Global return statements are unsupported</dd>
+          <dt><code>include</code>, <code>include_once</code>, <code>require</code>, <code>require_once</code></dt>
+          <dd>
+            These are normal functions, but do not affect type checking. In order to affect type-checking, you must use <code>///&lt;reference /></code> elements at the top of your file. If the <code>--require-references</code> compiler option is set, reference elements will become <code>require_once</code> calls.
+          </dd>
+          <dt><code>goto</code></dt>
+          <dd>Unsupported in Pratphall</dd>
+        </dl>
+      </p>
+
+      <span class="bookmark" id="Manual-Structure"></span>
+      <h3>Structure</h3>
+
+      <h4>Basics</h4>
+      <p>
+        Functions in Pratphall behave very similarly to PHP.
+      </p>
+      <p>
+        Overloads declarations are allowed in Pratphall like they are in TypeScript, but only one "catch all" function with an implementation is allowed. The overloaded signatures will be discarded.
+      </p>
+      <p>
+        Type hinting is done by default for arrays, callables, and actual type declarations. Parameters who are typed with ambient types (see ambient declarations below) will not be type hinted. If the compiler option <code>--no-type-hint</code> is set, type hinting will not be present on any function.
+      </p>
+
+      <h4>Variadic Functions</h4>
+      <p>
+        Pratphall directly supports typed variadic function arguments (known as "RestParameters" in the TypeScript specification) whereas PHP does not. The use of variadic functions is not encouraged, but supported.
+      </p>
+      <p>
+        When the <code>arguments</code> array is referenced in a function, it is translated to PHP by using <code>func_get_args</code>. When a rest parameter is used as a parameter in a function, it is derived from <code>func_get_args</code>
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">function myprint(one: string, ...args: any[]) {
+    /* left blank to make comparison easier */
+
+    echo('First: ' + arguments[0] + '\n');
+    echo('Last: ' + arguments[arguments.length - 1] + '\n');
+    if (args.length > 0) {
+        echo('First args: ' + args[0] + '\n');
+        echo('Last args: ' + args[args.length - 1] + '\n');
+    }
+}
+
+myprint('foo', true, 13.5, 'bar');</code></pre>
+        <pre><code class="php">function myprint($one) {
+    $arguments = func_get_args();
+    $args = array_slice(func_get_args(), 1);
+    echo('First: ' . $arguments[0] + "\n");
+    echo('Last: ' . $arguments[count($arguments) - 1] . "\n");
+    if (count($args) > 0) {
+        echo('First args: ' . $args[0] . '\n');
+        echo('Last args: ' . $args[count($args) - 1] . "\n");
+    }
+}
+
+myprint('foo', true, 13.5, 'bar');</code></pre>
+      </div>
+
+      <h4>Optional Function Parameters</h4>
+      <p>
+        Both PHP and Pratphall support optional function parameters. PHP supports only default parameters with only scalars/arrays and they can be anywhere within the parameter list. Pratphall supports both optional and default parameters which can be initialized to any type and must be at the end of the parameter list.
+      </p>
+      <p>
+        Optional parameters in Pratphall without a default value are assumed to be whatever the parameter types' versions of null are. If the default parameter is specified and it is not a constant, scalar value, it will be set at the beginning of the function (this practice is usually discouraged).
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">function words(prefix?: bool, file = file('default.txt')) {
+    /* left blank to make comparison easier */
+    file.forEach((line: string) => {
+        line.split(' ').forEach((word: string) => {
+            if (prefix) echo('Word: ');
+            echo(word + '\n');
+        });
+    });
+}
+
+//reads default.txt and prints w/out prefix
+printWords();
+//reads myfile.txt and prints w/ prefix
+printWords(true, ['foo bar', 'fu bar']);</code></pre>
+        <pre><code class="php">function words($prefix = false, $file = null) {
+    if ($file === null) $file = file('default.txt');
+    foreach ($file as $line) {
+        foreach (explode(' ', $line) as $word) {
+            if ($prefix) echo('Word: ');
+            echo($word . "\n");
+        }
+    }
+}
+
+//reads default.txt and prints w/out prefix
+printWords();
+//uses array and prints w/ prefix
+printWords(true, ['foo bar', 'fu bar']);</code></pre>
+      </div>
+
+      <!-- TODO: more work -->
     </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Pratphall maintained by <a href="https://github.com/cretz">cretz</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js "></script>
+    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

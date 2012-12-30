@@ -1,0 +1,37 @@
+﻿String functions
+-----
+var a = 'hey';
+var b = a.charAt(1);
+var c = a.charCodeAt(1);
+var d = a.indexOf('e');
+var d1 = a.indexOf('e', 1);
+var e = a.lastIndexOf('e');
+var e1 = a.lastIndexOf('e', 1);
+var f = a.length;
+//var h = a.localCompare('ho');
+var i = a.replace('e', 'f');
+var j = a.split(' ');
+var k = a.split(' ', 2);
+var l = a.substr(2);
+var m = a.substr(2, 1);
+var n = a.toLowerCase();
+var o = a.toUpperCase();
+var p = a.trim();
+-----
+$a = 'hey';
+$b = $a[1];
+$c = ord($a[1]);
+$d = (($_tmp1 = strpos($a, 'e')) === false ? -1 : $_tmp1);
+$d1 = (($_tmp2 = strpos($a, 'e', 1)) === false ? -1 : $_tmp2);
+$e = (($_tmp3 = strrpos($a, 'e')) === false ? -1 : $_tmp3);
+$e1 = (($_tmp4 = strrpos($a, 'e', 1)) === false ? -1 : $_tmp4);
+$f = strlen($a);
+//var h = a.localCompare('ho');
+$i = str_replace('e', 'f', $a);
+$j = explode(' ', $a);
+$k = explode(' ', $a, 2);
+$l = substr($a, 2);
+$m = substr($a, 2, 1);
+$n = strtolower($a);
+$o = strtoupper($a);
+$p = trim($a);

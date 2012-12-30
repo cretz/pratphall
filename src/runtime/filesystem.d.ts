@@ -1,5 +1,4 @@
-///<reference path="array.d.ts" />
-///<reference path="pct.d.ts" />
+///<reference path='all.ts' />
 
 declare var FILE_APPEND: number;
 declare var FILE_BINARY: number;
@@ -71,7 +70,7 @@ declare function fputcsv(handle: Pct.PhpResource, fields: any[], delimiter?: str
 declare function fread(handle: Pct.PhpResource, length: number): string;
 declare function fscanf(handle: Pct.PhpResource, format: string): any[]; //NOTE: auto-assignment not available
 declare function fseek(handle: Pct.PhpResource, offset: number, whence?: number): number;
-declare function fstat(handle: Pct.PhpResource): PhpAssocArray;
+declare function fstat(handle: Pct.PhpResource): Pct.PhpAssocArray;
 declare function ftell(handle: Pct.PhpResource): number;
 declare function ftruncate(handle: Pct.PhpResource, size: number): bool;
 declare function fwrite(handle: Pct.PhpResource, string_: string, length?: number): number;
@@ -89,24 +88,24 @@ declare function lchown(filename: string, user: string): bool;
 declare function lchown(filename: string, user: number): bool;
 declare function link(target: string, link: string): bool;
 declare function linkinfo(path: string): number;
-declare function lstat(filename: string): PhpAssocArray;
+declare function lstat(filename: string): Pct.PhpAssocArray;
 declare function mkdir(pathname: string, mode?: number, recursive?: bool, context?: Pct.PhpResource): bool;
 declare function move_uploaded_file(filename: string, destination: string): bool;
-declare function parse_ini_file(filename: string, process_sections?: bool, scanner_mode?: number): PhpAssocArray;
-declare function parse_ini_string(ini: string, process_sections?: bool, scanner_mode?: number): PhpAssocArray;
-declare function pathinfo(path: string): PhpAssocArray;
+declare function parse_ini_file(filename: string, process_sections?: bool, scanner_mode?: number): Pct.PhpAssocArray;
+declare function parse_ini_string(ini: string, process_sections?: bool, scanner_mode?: number): Pct.PhpAssocArray;
+declare function pathinfo(path: string): Pct.PhpAssocArray;
 declare function pathinfo(path: string, options: number): any;
 declare function pclose(handle: Pct.PhpResource): number;
 declare function popen(command: string, mode: string): Pct.PhpResource;
 declare function readfile(filename: string, use_include_path?: bool, context?: Pct.PhpResource): number;
 declare function readlink(path: string): string;
 declare function realpath(path: string): string;
-declare function realpath_cache_get(): PhpAssocArray;
+declare function realpath_cache_get(): Pct.PhpAssocArray;
 declare function realpath_cache_size(): number;
 declare function rename(oldname: string, newname: string, context?: Pct.PhpResource): bool;
 declare function rewind(handle: Pct.PhpResource): bool;
 declare function rmdir(dirname: string, context?: Pct.PhpResource): bool;
-declare function stat(filename: string): PhpAssocArray;
+declare function stat(filename: string): Pct.PhpAssocArray;
 declare function symlink(target: string, link: string): bool;
 declare function tempnam(dir: string, prefix: string): string;
 declare function tmpfile(): Pct.PhpResource;

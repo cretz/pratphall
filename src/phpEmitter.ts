@@ -15,7 +15,7 @@ module Pratphall {
     }
 
     export interface AstMatcher {
-        nodeType: TypeScript.NodeType;
+        nodeType: TypeScript.NodeType[];
         priority: number;
         typePropertyMatches?: {};
         propertyMatches?: {};
@@ -28,36 +28,48 @@ module Pratphall {
         emit(ast: TypeScript.AST, emitter: PhpEmitter): bool;
     }
 
+    export class EmitterError {
+        constructor(public message: string, public line: number, public col: number) { }
+    }
+
     export class PhpEmitter {
 
         static extensionsByNodeType: EmitterExtension[][] = [];
         
         static registerExtension(extension: EmitterExtension) {
             var arr: EmitterExtension[];
-            if (typeof extensionsByNodeType[extension.matcher.nodeType] === 'undefined') {
-                arr = extensionsByNodeType[extension.matcher.nodeType] = [];
-            } else {
-                arr = extensionsByNodeType[extension.matcher.nodeType];
-            }
-            arr.push(extension);
-            //re-sort
-            arr.sort((a: EmitterExtension, b: EmitterExtension) => {
-                if (a.matcher.priority < b.matcher.priority) return -1;
-                else if (a.matcher.priority == b.matcher.priority) return 0;
-                else return 1;
+            extension.matcher.nodeType.forEach((value: TypeScript.NodeType) => {
+                if (typeof extensionsByNodeType[value] === 'undefined') {
+                    arr = extensionsByNodeType[value] = [];
+                } else {
+                    arr = extensionsByNodeType[value];
+                }
+                arr.push(extension);
+                //re-sort
+                arr.sort((a: EmitterExtension, b: EmitterExtension) => {
+                    if (a.matcher.priority < b.matcher.priority) return -1;
+                    else if (a.matcher.priority == b.matcher.priority) return 0;
+                    else return 1;
+                });
             });
         }
 
         private indent = 0;
         private currStr = '';
         private stack: TypeScript.AST[] = [];
+        skipNextSemicolon = false;
+        errors: EmitterError[] = [];
+        warnings: EmitterError[] = [];
+        private tempVarCounter = 0;
 
-        constructor(private checker: TypeScript.TypeChecker, public out: ITextWriter, 
+        constructor(private checker: TypeScript.TypeChecker, 
             public options?: PhpEmitOptions = new PhpEmitOptions()) {
         }
 
+        getContents() { return this.currStr; }
+
         write(val: string) {
-            this.out.Write(val);
+            //this.out.Write(val);
             this.currStr += val;
             return this;
         }
@@ -72,8 +84,9 @@ module Pratphall {
             return this;
         }
 
-        newline() {
-            this.write('\n').write(Array(this.indent + 1).join(this.options.indent));
+        newline(indent = true) {
+            this.write('\n');
+            if (indent) this.write(Array(this.indent + 1).join(this.options.indent));
             return this;
         }
 
@@ -151,7 +164,7 @@ module Pratphall {
         }
 
         matches(ast: TypeScript.AST, matcher: AstMatcher): bool {
-            if (matcher.nodeType != ast.nodeType) return false;
+            if (matcher.nodeType.indexOf(ast.nodeType) == -1) return false;
             if (typeof matcher.propertyMatches !== 'undefined') {
                 for (var prop in matcher.propertyMatches) {
                     if (!(prop in ast)) return false;
@@ -182,18 +195,28 @@ module Pratphall {
         emitBinaryExpression(ast: TypeScript.BinaryExpression) {
             //"in" becomes array_key_exists
             if (ast.nodeType == TypeScript.NodeType.In) {
-                this.emit(new TypeScript.CallExpression(TypeScript.NodeType.Call, new TypeScript.Identifier('array_key_exists'),
+                this.emit(new TypeScript.CallExpression(TypeScript.NodeType.Call, 
+                    new TypeScript.Identifier('array_key_exists'),
                     (new TypeScript.ASTList()).append(ast.operand1).append(ast.operand2)));
             } else {
                 var tokenInfo = this.getTokenInfo(ast);
                 if (tokenInfo != null) {
                     this.emit(ast.operand1);
                     //string concat is different in PHP
-                    var isStringConcat = tokenInfo.binopNodeType == TypeScript.NodeType.Add && (
+                    var isAdd = tokenInfo.binopNodeType == TypeScript.NodeType.Add;
+                    var isStringConcat = isAdd && (
                         (ast.operand1.type != null && ast.operand1.type.isString()) ||
                         (ast.operand2.type != null && ast.operand2.type.isString()));
                     if (isStringConcat) this.write(' . ');
-                    else this.write(' ' + tokenInfo.text + ' ');
+                    else {
+                        //warning, unknown type means we might have missed a string concat
+                        if (isAdd && (ast.operand1.type == null || ast.operand1.type.getTypeName() == 'any')) {
+                            this.addWarning(ast.operand1, 'Unknown type for addition, assuming arithmetic');
+                        } else if (isAdd && (ast.operand2.type == null || ast.operand2.type.getTypeName() == 'any')) {
+                            this.addWarning(ast.operand2, 'Unknown type for addition, assuming arithmetic');
+                        }
+                        this.write(' ' + tokenInfo.text + ' ');
+                    }
                     this.emit(ast.operand2);
                 } else switch (ast.nodeType) {
                     case TypeScript.NodeType.Dot:
@@ -207,6 +230,18 @@ module Pratphall {
                             this.emit(ast.operand1);
                         }
                         this.write(' => ').emit(ast.operand2);
+                        break;
+                    case TypeScript.NodeType.Index:
+                        var isIndex = ast.operand1.type.isArray() ||
+                            this.typeHasNonObjectIndexFuncDecl(ast.operand1.type);
+                        if (isIndex) {
+                            this.emit(ast.operand1).write('[').emit(ast.operand2).write(']');
+                        } else {
+                            this.emit(ast.operand1).write('->{').emit(ast.operand2).write('}');
+                        }
+                        break;
+                    default:
+                        throw new Error('Unrecognized binary expression - ' + ast.printLabel());
                 }
             }
         }
@@ -223,6 +258,7 @@ module Pratphall {
 
         emitBlockStatements(statements: TypeScript.ASTList, newlines: bool) {
             statements.members.forEach((statement: TypeScript.AST, index: number) => {
+                var prevLength = this.currStr.length;
                 //pre comments
                 if (this.options.comments && statement.preComments != null && statement.preComments.length > 0) {
                     statement.preComments.forEach((value: TypeScript.Comment) => {
@@ -235,9 +271,28 @@ module Pratphall {
                     if (newlines) this.newline();
                     else this.write(' ');
                     this.emit(statement);
-                    //no semicolons on functions or type decls of any type
-                    if (!(statement instanceof TypeScript.FuncDecl) && !(statement instanceof TypeScript.NamedDeclaration)) this.write(';');
-                    else if (newlines) this.newline();
+                    //rollback on ambient
+                    var isRollback = statement instanceof TypeScript.TypeDeclaration &&
+                            (<TypeScript.TypeDeclaration>statement).isAmbient();
+                    //also on empty var decl
+                    isRollback = isRollback || (statement instanceof TypeScript.VarDecl &&
+                        (<TypeScript.VarDecl>statement).init == null);
+                    //also on ambient func decl
+                    isRollback = isRollback || (statement instanceof TypeScript.FuncDecl &&
+                        ((<TypeScript.FuncDecl>statement).isOverload || 
+                        (<TypeScript.FuncDecl>statement).isAmbient()));
+                    if (isRollback) {
+                        this.currStr = this.currStr.substr(0, prevLength);
+                        return;
+                    }
+                    //extra newlines for decls
+                    var hasExtraNewline = statement instanceof TypeScript.FuncDecl ||
+                        statement instanceof TypeScript.NamedDeclaration;
+                    //no semicolons for decls or if the statement asked not to
+                    var hasSemicolon = !hasExtraNewline && !this.skipNextSemicolon;
+                    this.skipNextSemicolon = false;
+                    if (hasSemicolon) this.write(';');
+                    if (newlines && hasExtraNewline) this.newline(false);
                 }
                 //post comments
                 if (this.options.comments && statement.postComments != null && statement.postComments.length > 0) {
@@ -328,8 +383,8 @@ module Pratphall {
         }
 
         emitFuncDecl(ast: TypeScript.FuncDecl) {
-            //ignore overloads
-            if (ast.isOverload) return;
+            //ignore overloads and ambients
+            if (ast.isOverload || ast.isAmbient()) return;
             //accessors disallowed
             if (ast.isAccessor()) throw new Error('Accessors not allowed');
             //visibility
@@ -381,6 +436,8 @@ module Pratphall {
         }
 
         emitInterfaceDeclaration(ast: TypeScript.InterfaceDeclaration) {
+            //ignore declared
+            if (ast.isAmbient()) return;
             this.write('interface ').emit(ast.name);
             if (ast.extendsList != null && ast.extendsList.members.length > 0) {
                 this.write(' extends ').emitCommaSeparated(ast.extendsList);
@@ -448,7 +505,7 @@ module Pratphall {
                 this.write("'").write(ast.text.substr(1, ast.text.length - 2)).write("'");
             } else {
                 //must escape $ (which becomes \$ so {\$ is also handled)
-                this.write('"').write(ast.text.substr(1, ast.text.length - 2).replace('$', '\\$')).write('"');
+                this.write('"').write(ast.text.substr(1, ast.text.length - 2).replace(/\$/g, '\\$')).write('"');
             }
         }
 
@@ -472,7 +529,7 @@ module Pratphall {
             this.emit(ast.tryNode).emit(ast.finallyNode);
         }
 
-        emitUnaryExpression(ast: TypeScript.UnaryExpression) {
+        emitUnaryExpression(ast: TypeScript.UnaryExpression, ignorePossibleObjectCast = false) {
             switch (ast.nodeType) {
                 case TypeScript.NodeType.IncPost:
                     this.emit(ast.operand).write('++');
@@ -487,9 +544,9 @@ module Pratphall {
                 case TypeScript.NodeType.ArrayLit:
                     //we newline-style if they did
                     var newlineStyle = !this.isAllOnOneLine(ast);
-                    if (ast.nodeType == TypeScript.NodeType.ObjectLit) this.write('(object)');
+                    if (ast.nodeType == TypeScript.NodeType.ObjectLit && !ignorePossibleObjectCast) this.write('(object)');
                     this.write('[');
-                    if (newlineStyle) this.increaseIndent();
+                    if (newlineStyle) this.increaseIndent().newline();
                     var first = true;
                     (<TypeScript.ASTList>ast.operand).members.forEach((value: TypeScript.AST) => {
                         if (first) first = false;
@@ -527,17 +584,23 @@ module Pratphall {
                 case TypeScript.NodeType.Delete:
                     this.write('unset(').emit(ast.operand).write(')');
                     break;
+                case TypeScript.NodeType.TypeAssertion:
+                    this.emit(ast.operand);
+                    break;
                 case TypeScript.NodeType.Void:
                     throw new Error('Void unsupported');
                 default:
-                    throw new Error('Unrecognized type');
+                    throw new Error('Unrecognized type - ' + ast.printLabel());
             }
         }
 
         emitVarDecl(ast: TypeScript.VarDecl) {
-            this.emit(ast.id);
+            //no init, no emit
             if (ast.init != null) {
-                this.write(' = ').emit(ast.init);
+                this.emit(ast.id);
+                if (ast.init != null) {
+                    this.write(' = ').emit(ast.init);
+                }
             }
         }
 
@@ -572,6 +635,46 @@ module Pratphall {
             return ast.nodeType == TypeScript.NodeType.Empty ||
                 ast.nodeType == TypeScript.NodeType.EmptyExpr ||
                 ast.nodeType == TypeScript.NodeType.EndCode;
+        }
+
+        addError(ast: TypeScript.AST, message: string) {
+            var start = this.getStartLine(ast);
+            this.errors.push(new EmitterError(message, start.line, start.col));
+        }
+
+        addWarning(ast: TypeScript.AST, message: string) {
+            var start = this.getStartLine(ast);
+            this.warnings.push(new EmitterError(message, start.line, start.col));
+        }
+
+        newTempVarName() {
+            return '_tmp' + (++this.tempVarCounter);
+        }
+
+        typeHasNonObjectIndexFuncDecl(type: TypeScript.Type, checkedIds: number[] = []) {
+            if (checkedIds.indexOf(type.typeID) > -1) return false;
+            if (type.getTypeName() == 'Object') return false;
+            checkedIds.push(type.typeID);
+            //check my members
+            if (type.symbol.declAST instanceof TypeScript.TypeDeclaration &&
+                    (<TypeScript.TypeDeclaration>type.symbol.declAST).members != null) {
+                if ((<TypeScript.TypeDeclaration>type.symbol.declAST).members.members.some((value: TypeScript.AST) => {
+                    return value instanceof TypeScript.FuncDecl &&
+                        TypeScript.hasFlag((<TypeScript.FuncDecl>value).fncFlags, TypeScript.FncFlags.IndexerMember);
+                })) return true;
+            }
+            //check extends and implements
+            if (type.implementsList != null) {
+                if (type.implementsList.some((value: TypeScript.Type) => {
+                    return this.typeHasNonObjectIndexFuncDecl(value, checkedIds);
+                })) return true;
+            }
+            if (type.extendsList != null) {
+                if (type.extendsList.some((value: TypeScript.Type) => {
+                    return this.typeHasNonObjectIndexFuncDecl(value, checkedIds);
+                })) return true;
+            }
+            return false;
         }
     }
 }

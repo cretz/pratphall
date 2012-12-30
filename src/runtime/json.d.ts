@@ -1,3 +1,4 @@
+///<reference path='all.ts' />
 
 declare var JSON_ERROR_CTRL_CHAR: number;
 declare var JSON_ERROR_DEPTH: number;

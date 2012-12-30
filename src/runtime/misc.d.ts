@@ -1,3 +1,4 @@
+///<reference path='all.ts' />
 
 declare var __COMPILER_HALT_OFFSET__: number;
 
@@ -15,7 +16,7 @@ declare function defined(name: string): bool;
 //NOTE: I don't like die, so I ain't putting it in...
 declare function exit(status?: string);
 declare function exit(status: number);
-declare function get_browser(user_agent?: string, return_array?: bool): PhpAssocArray;
+declare function get_browser(user_agent?: string, return_array?: bool): Pct.PhpAssocArray;
 declare function __halt_compiler(); //TODO: explain how I am going to handle this when loading files in Pratphall
 declare function highlight_file(filename: string): bool;
 declare function highlight_file(filename: string, return_: bool): any;
@@ -30,5 +31,5 @@ declare function sys_getloadavg(): number[];
 declare function time_nanosleep(seconds: number, nanoseconds: number): any;
 declare function time_sleep_until(timestamp: number): bool;
 declare function uniqid(prefix?: string, more_entropy?: bool): string;
-declare function unpack(format: string, data: string): PhpAssocArray;
+declare function unpack(format: string, data: string): Pct.PhpAssocArray;
 declare function unsleep(micro_seconds: number);

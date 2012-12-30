@@ -7,8 +7,9 @@ module Pratphall {
 
     export function loadIo(): Io {
         return {
+            getExecutingFilePath: () => { return __dirname + '/'; },
             readDir: fs.readdirSync,
-            readFile: (path: string) { return fs.readFileSync(path).toString(); },
+            readFile: (path: string) => { return fs.readFileSync(path).toString(); },
             writeLine: console.log
         };
     }

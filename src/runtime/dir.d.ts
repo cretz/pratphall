@@ -1,4 +1,4 @@
-///<reference path="pct.d.ts" />
+///<reference path='all.ts' />
 
 declare var DIRECTORY_SEPARATOR: string;
 declare var PATH_SEPARATOR: string;

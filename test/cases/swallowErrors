@@ -1,0 +1,12 @@
+﻿Swallow errors
+-----
+var a = { b: { c: 5 } };
+delete a.b.c;
+var d = Pct.swallowErrors(a.b.c);
+declare function meh();
+var e = Pct.swallowErrors(meh());
+-----
+$a = (object)['b' => (object)['c' => 5]];
+unset($a->b->c);
+$d = @$a->b->c;
+$e = @meh();

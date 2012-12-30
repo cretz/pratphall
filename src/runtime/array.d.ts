@@ -1,4 +1,4 @@
-///<reference path="spl.d.ts" />
+///<reference path='all.ts' />
 
 //constants
 
@@ -17,13 +17,10 @@ declare var SORT_FLAG_CASE: number;
 declare var COUNT_NORMAL: number;
 declare var COUNT_RECURSIVE: number;
 
-//Note: I want to keep these concepts separate
-declare interface PhpAssocArray extends Array { }
-
 //TODO: maybe some kind of result/option/either style later?
 
 declare function array(contents: any[]): Array;
-declare function array(contents: PhpAssocArray): Array;
+declare function array(contents: Pct.PhpAssocArray): Array;
 declare function array_change_key_case(input: Array, case_?: number): Array;
 declare function array_chunk(input: Array, size: number, preserve_keys?: bool): Array;
 declare function array_combine(keys: Array, values: Array): Array;

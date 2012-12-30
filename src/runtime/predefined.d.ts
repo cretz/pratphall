@@ -1,3 +1,4 @@
+///<reference path='all.ts' />
 
 declare interface Traversable {
 }
@@ -49,7 +50,7 @@ declare class Exception implements Error {
     getCode(): number;
     getFile(): string;
     getLine(): number;
-    getTrace(): PhpAssocArray[];
+    getTrace(): Pct.PhpAssocArray[];
     getTraceAsString(): string;
 }
 

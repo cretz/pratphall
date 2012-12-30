@@ -1,0 +1,45 @@
+﻿Array functions
+-----
+var a = [1, 2, 3, 4];
+var b = a.concat([5, 6], [7, 8]);
+var c = a.filter((value: number) => { return true; });
+var d = a.join();
+var e = a.join(' ');
+var f = a.length;
+var h = a.map((value: number) => { return value * 2; });
+var i = a.pop();
+var j = a.push(5, 6, 7);
+var j1 = a.push(5);
+a.push(5);
+var k = a.reduce((prev, curr) => { return prev; });
+var l = a.reduce((prev, curr) => { return prev; }, 12);
+var m = a.shift();
+var n = a.slice(2);
+a.sort((one, two) => { return -1; });
+var o = a.splice(2);
+var p = a.splice(2, 3);
+var q = a.splice(2, 3, 4);
+var r = a.splice(2, 3, 4, 5);
+var s = a.unshift(5, 6, 7);
+-----
+$a = [1, 2, 3, 4];
+$b = array_merge($a, [5, 6], [7, 8]);
+$c = array_filter($a, function ($value) { return true; });
+$d = implode(',', $a);
+$e = implode(' ', $a);
+$f = count($a);
+$h = array_map(function ($value) { return $value * 2; }, $a);
+$i = array_pop($a);
+$j = array_push($a, 5, 6, 7);
+$j1 = array_push($a, 5);
+$a[] = 5;
+$k = array_reduce($a, function ($prev, $curr) { return $prev; });
+$l = array_reduce($a, function ($prev, $curr) { return $prev; }, 12);
+$m = array_shift($a);
+$n = array_slice($a, 2);
+usort($a, function ($one, $two) { return -1; });
+$o = array_splice($a, 2);
+$p = array_splice($a, 2, 3);
+$q = array_splice($a, 2, 3, [4]);
+$r = array_splice($a, 2, 3, [4, 5]);
+$s = array_unshift($a, 5, 6, 7);

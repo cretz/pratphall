@@ -1,0 +1,13 @@
+﻿Undefined test
+-----
+var a = { b: { c: 5 } };
+delete a.b.c;
+delete a;
+var d = [1, 2, 3];
+delete d[2];
+-----
+$a = (object)['b' => (object)['c' => 5]];
+unset($a->b->c);
+unset($a);
+$d = [1, 2, 3];
+unset($d[2]);

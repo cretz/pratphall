@@ -1,0 +1,7 @@
+﻿Pct.isFalse
+-----
+var a = Pct.isFalse('hey');
+var b = Pct.isNotFalse('hey');
+-----
+$a = 'hey' === false;
+$b = 'hey' !== false;

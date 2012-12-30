@@ -1,5 +1,4 @@
-///<reference path="pct.d.ts" />
-///<reference path="array.d.ts" />
+///<reference path='all.ts' />
 
 declare var PSFS_ERR_FATAL: number;
 declare var PSFS_FEED_ME: number;
@@ -82,24 +81,24 @@ declare function stream_bucket_append(brigade: Pct.PhpResource, bucket: Pct.PhpR
 declare function stream_bucket_make_writable(brigade: Pct.PhpResource);
 declare function stream_bucket_new(stream: Pct.PhpResource, buffer: string): any;
 declare function stream_bucket_prepend(brigade: Pct.PhpResource, bucket: Pct.PhpResource);
-declare function stream_context_create(options?: PhpAssocArray, params?: PhpAssocArray): Pct.PhpResource;
-declare function stream_context_get_default(options?: PhpAssocArray): Pct.PhpResource;
+declare function stream_context_create(options?: Pct.PhpAssocArray, params?: Pct.PhpAssocArray): Pct.PhpResource;
+declare function stream_context_get_default(options?: Pct.PhpAssocArray): Pct.PhpResource;
 declare function stream_context_get_options(stream_or_context: Pct.PhpResource): PhpAssocArray;
-declare function stream_context_get_params(stream_or_context: Pct.PhpResource): PhpAssocArray;
-declare function stream_context_set_default(options: PhpAssocArray): Pct.PhpResource;
+declare function stream_context_get_params(stream_or_context: Pct.PhpResource): Pct.PhpAssocArray;
+declare function stream_context_set_default(options: Pct.PhpAssocArray): Pct.PhpResource;
 declare function stream_context_set_option(stream_or_context: Pct.PhpResource, wrapper: string, option: string, value: any): bool;
-declare function stream_context_set_option(stream_or_context: Pct.PhpResource, options: PhpAssocArray): bool;
-declare function stream_context_set_params(stream_or_context: Pct.PhpResource, params: PhpAssocArray): bool;
+declare function stream_context_set_option(stream_or_context: Pct.PhpResource, options: Pct.PhpAssocArray): bool;
+declare function stream_context_set_params(stream_or_context: Pct.PhpResource, params: Pct.PhpAssocArray): bool;
 declare function stream_copy_to_stream(source: Pct.PhpResource, dest: Pct.PhpResource, maxlength?: number, offset?: number): number;
 declare function stream_encoding(stream: Pct.PhpResource, encoding?: string): bool;
-declare function stream_filter_append(stream: Pct.PhpResource, filtername: string, read_write?: number, params?: PhpAssocArray): Pct.PhpResource;
-declare function stream_filter_prepend(stream: Pct.PhpResource, filtername: string, read_write?: number, params?: PhpAssocArray): Pct.PhpResource;
+declare function stream_filter_append(stream: Pct.PhpResource, filtername: string, read_write?: number, params?: Pct.PhpAssocArray): Pct.PhpResource;
+declare function stream_filter_prepend(stream: Pct.PhpResource, filtername: string, read_write?: number, params?: Pct.PhpAssocArray): Pct.PhpResource;
 declare function stream_filter_register(filtername: string, classname: string): bool;
 declare function stream_filter_remove(stream_filter: Pct.PhpResource): bool;
 declare function stream_get_contents(handle: Pct.PhpResource, maxlength?: number, offset?: number): string;
 declare function stream_get_filters(): string[];
 declare function stream_get_line(handle: Pct.PhpResource, length: number, ending?: string): string;
-declare function stream_get_meta_data(stream: Pct.PhpResource): PhpAssocArray;
+declare function stream_get_meta_data(stream: Pct.PhpResource): Pct.PhpAssocArray;
 declare function stream_get_transports(): string[];
 declare function stream_get_wrappers(): string[];
 declare function stream_is_local(url: string): bool;

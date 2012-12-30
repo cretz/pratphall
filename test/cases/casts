@@ -1,0 +1,21 @@
+﻿Casting test
+-----
+var a = Pct.castInt(1);
+var b = Pct.castBool(1);
+var c = Pct.castFloat(1);
+var d = Pct.castString(1);
+var e = Pct.castArray(1);
+var f = Pct.castAssocArray(1);
+var g = Pct.castObject(1);
+var h = Pct.castUnset(1);
+var i = Pct.castBinary(1);
+-----
+$a = (int) 1;
+$b = (bool) 1;
+$c = (float) 1;
+$d = (string) 1;
+$e = (array) 1;
+$f = (array) 1;
+$g = (object) 1;
+$h = (unset) 1;
+$i = (binary) 1;

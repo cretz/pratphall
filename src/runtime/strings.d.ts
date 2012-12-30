@@ -1,5 +1,4 @@
-///<reference path="array.d.ts" />
-///<reference path="pct.d.ts" />
+///<reference path='all.ts' />
 
 declare var HTML_ENTITIES: number;
 declare var HTML_SPECIALCHARS: number;
@@ -41,7 +40,7 @@ declare function crypt(str: string, salt: string): string;
 declare function echo(...str: any[]): string;
 declare function explode(delimiter: string, string: string, limit?: number): string[];
 declare function fprintf(handle: Pct.PhpResource, format: string, ...args: any[]): number;
-declare function get_html_translation_table(table?: number, flags?: number, encoding?: string): PhpAssocArray;
+declare function get_html_translation_table(table?: number, flags?: number, encoding?: string): Pct.PhpAssocArray;
 declare function hebrev(hebrew_text: string, max_chars_per_line?: number): string;
 declare function hebrevc(hebrew_text: string, max_chars_per_line?: number): string;
 declare function hex2bin(data: string): string;
@@ -54,7 +53,7 @@ declare function implode(pieces: Array): string;
 declare function lcfirst(str: string): string;
 declare function levenshtein(str1: string, str2: string): number;
 declare function levenshtein(str1: string, str2: string, const_ins: number, cost_rep: number, cost_del: number);
-declare function localconv(): PhpAssocArray;
+declare function localconv(): Pct.PhpAssocArray;
 declare function ltrim(str: string, charlist?: string): string;
 declare function md5(str: string, raw_output?: bool): string;
 declare function md5_file(filename: string, raw_output?: bool): string;
@@ -64,7 +63,7 @@ declare function nl_langinfo(item: number): string; //TODO enum for last param
 declare function nl2br(string: string, is_xhtml?: bool): string;
 declare function number_format(number: number, decimals?: number, dec_point?: string, thousands_sep?: string): string;
 declare function ord(string: string): number;
-declare function parse_str(str: string, $arr: PhpAssocArray); //we require an array because we don't have ability to set var in current scope and don't want it
+declare function parse_str(str: string, $arr: Pct.PhpAssocArray); //we require an array because we don't have ability to set var in current scope and don't want it
 declare function print(arg: any): number;
 declare function printf(format: string, ...args: any[]): number;
 declare function quoted_printable_decode(str: string): string;
@@ -134,7 +133,7 @@ declare function strtok(token: string): string;
 declare function strtolower(str: string): string;
 declare function strtoupper(string: string): string;
 declare function strtr(str: string, from: string, to: string): string;
-declare function strtr(str: string, replace_pairs: PhpAssocArray): string;
+declare function strtr(str: string, replace_pairs: Pct.PhpAssocArray): string;
 declare function substr(string: string, start: number, length?: number): string;
 declare function substr_compare(main_str: string, str: string, offset: number, length?: number, case_sensitivity?: bool): number;
 declare function substr_count(haystack: string, needle: string, offset?: number, length?: number): number;

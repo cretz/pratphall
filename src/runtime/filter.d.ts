@@ -1,4 +1,4 @@
-///<reference path="array.d.ts" />
+///<reference path='all.ts' />
 
 declare var FILTER_CALLBACK: number;
 
@@ -65,4 +65,4 @@ declare function filter_input(type: number, variable_name: string, filter?: numb
 declare function filter_input_array(type: number, definition?: any): any;
 declare function filter_list(): string[];
 declare function filter_var(variable: any, filter?: number, options?: any): any;
-declare function filter_var_array(data: PhpAssocArray, definition?: any): any;
+declare function filter_var_array(data: Pct.PhpAssocArray, definition?: any): any;

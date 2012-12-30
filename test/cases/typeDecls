@@ -9,6 +9,10 @@ module TestMod {
 
     class Foo extends FooBase implements IFoo {
     }
+
+	//ignore declares
+	declare class BlahClass {}
+	interface BlahInterface extends Pct.Ambient {}
 }
 -----
 namespace TestMod {

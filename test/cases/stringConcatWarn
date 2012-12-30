@@ -1,0 +1,15 @@
+﻿String concat warn
+EXPECT-WARN:Unknown type for addition, assuming arithmetic
+EXPECT-WARN:Unknown type for addition, assuming arithmetic
+-----
+var a: any = 'hey';
+var b = 5 + a;
+var c = a + 5;
+var d = 'hey';
+var e = d + 5;
+-----
+$a = 'hey';
+$b = 5 + $a;
+$c = $a + 5;
+$d = 'hey';
+$e = $d . 5;

@@ -1,6 +1,4 @@
-///<reference path="predefined.d.ts" />
-///<reference path="array.d.ts" />
-///<reference path="pct.d.ts" />
+///<reference path='all.ts' />
 
 //my god are the SPL docs bad...wrong return types, param types, etc...
 
@@ -441,7 +439,7 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
     fputcsv(fields: any[], delimiter?: string, enclosure?: string): number;
     fscanf(format?: string): any[]; //NOTE: the assign-variables version does not work currently
     fseek(offset: number, whence?: number): number;
-    fstat(): PhpAssocArray;
+    fstat(): Pct.PhpAssocArray;
     ftell(): number;
     ftruncate(size: number): bool;
     fwrite(str: string, length?: number): number;
@@ -532,9 +530,9 @@ declare class ArrayObject implements IteratorAggregate, ArrayAccess, Serializabl
     count(): number;
 }
 
-declare function class_implements(class_: any, autoload?: bool): PhpAssocArray;
-declare function class_parents(class_: any, autoload?: bool): PhpAssocArray;
-declare function class_uses(class_: any, autoload?: bool): PhpAssocArray;
+declare function class_implements(class_: any, autoload?: bool): Pct.PhpAssocArray;
+declare function class_parents(class_: any, autoload?: bool): Pct.PhpAssocArray;
+declare function class_uses(class_: any, autoload?: bool): Pct.PhpAssocArray;
 declare function iterator_apply(iterator: Traversable, function_: (iterator: Traversable) => any, args?: any[]): number;
 declare function iterator_count(iterator: Traversable): number;
 declare function iterator_to_array(iterator: Traversable): any[];
@@ -545,5 +543,5 @@ declare function spl_autoload_extensions(file_extensions?: string): string;
 declare function spl_autoload_functions(): any[];
 declare function spl_autoload_register(autoload_function?: (class_: string) => void, throw_?: bool, prepend?: bool): bool;
 declare function spl_autoload_unregister(autoload_function: (class_: string) => void): bool;
-declare function spl_classes(): PhpAssocArray;
+declare function spl_classes(): Pct.PhpAssocArray;
 declare function spl_object_hash(obj: any): string;

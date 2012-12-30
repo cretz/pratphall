@@ -1,3 +1,4 @@
+///<reference path='all.ts' />
 
 declare interface SessionHandlerInterface {
     close(): bool;

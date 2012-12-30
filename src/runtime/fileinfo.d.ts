@@ -1,4 +1,4 @@
-///<reference path="pct.d.ts" />
+///<reference path='all.ts' />
 
 declare var FILEINFO_COMPRESS: number;
 declare var FILEINFO_CONTINUE: number;

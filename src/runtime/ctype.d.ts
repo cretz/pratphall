@@ -1,3 +1,4 @@
+///<reference path='all.ts' />
 
 declare function ctype_alnum(text: string): bool;
 declare function ctype_alpha(text: string): bool;

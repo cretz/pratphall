@@ -1,3 +1,4 @@
+///<reference path='all.ts' />
 
 declare var INF: number;
 declare var NAN: number;

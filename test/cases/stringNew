@@ -1,0 +1,11 @@
+﻿New String
+-----
+var a = new String();
+var b = new String(123);
+var c = String(1);
+var d = String(false);
+-----
+$a = '';
+$b = strval(123);
+$c = strval(1);
+$d = strval(false);

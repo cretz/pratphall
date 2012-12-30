@@ -1,0 +1,22 @@
+﻿Variable variables
+-----
+var a = { b : { c: 5 } };
+interface Foo extends Pct.Ambient { [s: string]: any; }
+var d: Foo;
+var e = a['b'];
+var f = d['b'];
+var g: Object;
+var h = g['b'];
+declare class Test implements Foo { }
+var i: Test;
+var j = i['b'];
+declare class Test2 { }
+var k: Test2;
+var l = k['b'];
+-----
+$a = (object)['b' => (object)['c' => 5]];
+$e = $a->{'b'};
+$f = $d['b'];
+$h = $g->{'b'};
+$j = $i['b'];
+$l = $k->{'b'};

@@ -1,0 +1,15 @@
+﻿String escape
+-----
+var a = 'hey';
+var b = 'ho\nho\nho';
+var c = "blah\tmeh";
+var d = 'I should not $be {$escaped}';
+var e = "I should $become {$single} quoted";
+var f = "I should\nhave $proper {$escapes}";
+-----
+$a = 'hey';
+$b = "ho\nho\nho";
+$c = "blah\tmeh";
+$d = 'I should not $be {$escaped}';
+$e = 'I should $become {$single} quoted';
+$f = "I should\nhave \$proper {\$escapes}";

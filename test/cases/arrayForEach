@@ -1,0 +1,26 @@
+﻿Array forEach test
+-----
+declare function echo(...args: any[]);
+var a = [1, 2, 3];
+//same line
+a.forEach((value: number) => { echo(value); });
+//diff lines
+a.forEach((value: number) => {
+    echo(value);
+});
+//with index
+a.forEach((value: number, index: number) => {
+	echo(value + ' ' + index);
+});
+-----
+$a = [1, 2, 3];
+//same line
+foreach ($a as $value) { echo($value); }
+//diff lines
+foreach ($a as $value) {
+    echo($value);
+}
+//with index
+foreach ($a as $index => $value) {
+    echo($value . ' ' . $index);
+}

@@ -1,4 +1,4 @@
-///<reference path="array.d.ts" />
+///<reference path='all.ts' />
 
 declare var ASSERT_ACTIVE: number;
 declare var ASSERT_WARNING: number;
@@ -34,7 +34,7 @@ declare function gc_enable();
 declare function gc_enabled(): bool;
 declare function get_cfg_var(option: string): string;
 declare function get_current_user(): string;
-declare function get_defined_constants(categorize?: bool): PhpAssocArray;
+declare function get_defined_constants(categorize?: bool): Pct.PhpAssocArray;
 declare function get_extension_funcs(module_name: string): string[];
 declare function get_include_path(): string;
 declare function get_included_files(): string[];
@@ -45,10 +45,10 @@ declare function getmygid(): number;
 declare function getmyinode(): number;
 declare function getmypid(): number;
 declare function getmyuid(): number;
-declare function getopt(options: string, longopts?: Array): PhpAssocArray;
-declare function getrusage(who?: number): PhpAssocArray;
+declare function getopt(options: string, longopts?: Array): Pct.PhpAssocArray;
+declare function getrusage(who?: number): Pct.PhpAssocArray;
 declare function ini_get(varname: string): string;
-declare function ini_get_all(extension?: string, details?: bool): PhpAssocArray;
+declare function ini_get_all(extension?: string, details?: bool): Pct.PhpAssocArray;
 declare function ini_restore(varname: string);
 declare function ini_set(varname: string, newvalue: string): string;
 declare function memory_get_peak_usage(real_usage?: bool): number;

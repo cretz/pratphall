@@ -1,4 +1,4 @@
-///<reference path="array.d.ts" />
+///<reference path='all.ts' />
 
 declare var CAL_GREGORIAN: number;
 declare var CAL_JULIAN: number;
@@ -22,8 +22,8 @@ declare var CAL_EASTER_ALWAYS_GREGORIAN: number;
 declare var CAL_EASTER_ALWAYS_JULIAN: number;
 
 declare function cal_days_in_month(calendar: number, month: number, year: number): number;
-declare function cal_from_jd(jd: number, calendar: number): PhpAssocArray;
-declare function cal_info(calendar?: number): PhpAssocArray;
+declare function cal_from_jd(jd: number, calendar: number): Pct.PhpAssocArray;
+declare function cal_info(calendar?: number): Pct.PhpAssocArray;
 declare function cal_to_jd(calendar: number, month: number, day: number, year: number): number;
 declare function easter_date(year?: number): number;
 declare function easter_days(year?: number, method?: number): number;

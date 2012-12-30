@@ -1,0 +1,7 @@
+﻿JSON functions
+-----
+var a = JSON.parse('{ "a": 12 }');
+var b = JSON.stringify(a);
+-----
+$a = json_decode('{ "a": 12 }');
+$b = json_encode($a);

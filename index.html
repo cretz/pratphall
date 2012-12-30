@@ -290,10 +290,10 @@ var_dump(explode(' ', $b));</code></pre>
 
       <h4>Arrays</h4>
       <p>
-        Unlike PHP, Pratphall differentiates between associative arrays and normal indexed arrays. The former is of type <code>Pct.PhpAssocArray</code> whereas the latter is a normal JS array. This can be confusing at first, but in practice it helps the developer make more accurate assumptions about the typing of variables. You can convert between these types at compile time using Pct.toAssocArray or Pct.toArray. Note when using the latter, (until TypeScript has generics) the result is `any[]` so it is recommended to cast it to the exact form of array expected.
+        Unlike PHP, Pratphall differentiates between associative arrays and normal indexed arrays. The former is of type <code>Pct.PhpAssocArray</code> whereas the latter is a normal JS array. This can be confusing at first, but in practice it helps the developer make more accurate assumptions about the typing of variables. You can convert between these types at compile time using <code>Pct.toAssocArray</code> or <code>Pct.toArray</code>. Note when using the latter, (until TypeScript has generics) the result is <code>any[]</code> so it is recommended to cast it to the exact form of array expected.
       </p>
       <p>
-        Pct.PhpAssocArray's can be created with <code>Pct.newAssocArray</code>. Only object literals can be passed to the PhpAssocArray's constructor. Indexed arrays are handled almost exactly like they are in JS. They are created with the normal bracketed syntax.
+        Associative arrays can be created with <code>Pct.newAssocArray</code>. Only object literals can be passed to the function. Indexed arrays are handled almost exactly like they are in JS. They are created with the normal bracketed syntax.
       </p>
       <p>Normal JavaScript array functions are translated to common PHP idioms.</p>
       <div class="code">
@@ -368,7 +368,7 @@ var_dump(count($c));</code></pre>
       <h4>Null and Undefined</h4>
       <p>Null is handled the same way in Pratphall and PHP.</p>
       <p>
-        Undefined is different. In Pratphall, <code>delete</code> translates directly to <code>unset</code>. Conditions that check <code>undefined</code> (be it via a typeof or a triple-equals) are translated to safe PHP that avoids false positives with NULL values unlike isset.
+        Undefined is different. In Pratphall, <code>delete</code> translates directly to <code>unset</code>. Conditions that check typeof <code>undefined</code> are translated to safe PHP that avoids false positives with NULL values unlike isset.
       </p>
       <p>
         Functions isset and empty are used like any other PHP function in Pratphall. Since these are language constructs, the values don't necessarily have to exist like they do in JS.
@@ -423,7 +423,7 @@ $f('test');</code></pre>
 
       <h4>Casting</h4>
       <p>
-        To cast to a value at compile time, use the TypeScript method. For example: <code>&lt;bool>&lt;any>stringValue</code> casts a string to a bool but will not be casted in the emitted PHP code. This is helpful for functions that return a value or FALSE. In fact, this is such a common pattern that there is a compile-time helper for it: <code>Pct.isFalse</code>.
+        To cast to a value at compile time, use the TypeScript method. For example: <code>&lt;bool>&lt;any>stringValue</code> casts a string to a bool but will not be casted in the emitted PHP code. This is helpful for functions that return a value or FALSE. In fact, this is such a common pattern that there are compile-time helpers for it: <code>Pct.isFalse</code> and <code>Pct.isNotFalse</code>.
       </p>
       <p>
         To cast a value at runtime, it is always preferred to use the built-in PHP methods such as `strval`, `intval`, etc. If you must have a literal cast, you can use the `Pct.to*` functions.
@@ -602,7 +602,7 @@ for (b in a) {
 }</code></pre>
               <pre><code class="php">$a = (object)[ 'b' => 1, 'c' => 2 ];
 foreach (array_keys($a) as $b) {
-    echo('a[' . $b . ']: ' . $a[$b] . "\n");
+    echo('a[' . $b . ']: ' . $a->{$b} . "\n");
 }</code></pre>
             </div>
           </dd>
@@ -610,7 +610,7 @@ foreach (array_keys($a) as $b) {
           <dd>
             This is represented in Pratphall by the <code>forEach</code> function that can be called on an iterable object or an array. If the function passed to <code>forEach</code> is an inline closure, it will be translated directly. Otherwise, it will be translated to an <code>array_walk</code> call.
             <div class="code-nested">
-              <pre><code class="pratphall">var a = { b: 1, c: 2 };
+              <pre><code class="pratphall">var a = Pct.newAssocArray({ b: 1, c: 2 });
 
 //regular
 a.forEach((value: number, index: string) => {
@@ -772,6 +772,65 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
       </div>
 
       <!-- TODO: more work -->
+
+      <h3>Appendix</h3>
+
+      <h4>Gotchas</h4>
+      <p>
+        Below are gotchas that might not be expected during development
+      </p>
+      <dl>
+        <dt><code>004: String.charCodeAt only uses ord when emitting</code></dt>
+        <dd>
+          Even though <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/charCodeAt">String.charCodeAt</a> supports unicode in JS, we only use <a href="http://php.net/manual/en/function.ord.php">ord</a>. Please handle unicode needs separately.
+        </dd>
+        <dt><code>005: String.indexOf emits more than just strpos</code></dt>
+        <dd>Due to the fact the JS one returns -1, the emitter emulates that</dd>
+        <dt><code>006: Regular expressions are flat out unsupported</code></dt>
+        <dd>JS and PHP's regular expression syntaxes differ too much to support right now</dd>
+        <dt><code>007: String.replace doesn't support callback</code></dt>
+        <dd>There is no str_replace_callback in PHP, only a regex version</dd>
+        <dt><code>008: String.slice and String.substring are unsupported</code></dt>
+        <dd>
+          Although negatives work the same for end and length in slice and substr, there is not an easy way to determine negative. Same issue with converting from end to length. It would require too much runtime support on the PHP side.
+        </dd>
+        <dt><code>009: String.toLocaleLowerCase and toLocaleUpperCase are unsupported</code></dt>
+        <dd>There is no guarantee that mb_ functions are available</dd>
+        <dt><code>010: Object.valueOfis unsupported</code></dt>
+        <dd>No equivalent in PHP</dd>
+        <dt><code>011: Many Object functions (e.g. freeze) are unsupported</code></dt>
+        <dd>No equivalents in PHP, but no errors emitted because they can be overridden</dd>
+        <dt><code>012: Array.reverse is unsupported</code></dt>
+        <dd>No equivalent in PHP that alters the array instance</dd>
+        <dt><code>013: Array iteration functions don't really support second parameter "this"</code></dt>
+        <dd>
+          The only value allowed as a second parameter in an array iteration function is literal "this".
+        </dd>
+        <dt><code>014: Array.every is unsupported</code></dt>
+        <dd>No PHP equivalent</dd>
+        <dt><code>015: Array.indexOf is unsupported</code></dt>
+        <dd>
+          array_search can't support fromIndex, would have to be strict, and would require too much runtime support to make false return -1.
+        </dd>
+        <dt><code>016: Array.join assumes comma by default</code></dt>
+        <dd>
+          A comma is used as the glue for implode if not specified.
+        </dd>
+        <dt><code>017: Array.lastIndexOf is unsupported</code></dt>
+        <dd>No PHP equivalent</dd>
+        <dt><code>018: Array.reduceRight is unsupported</code></dt>
+        <dd>No PHP equivalent</dd>
+        <dt><code>019: Second parameter of Array.slice is unsupported</code></dt>
+        <dd>No PHP equivalent</dd>
+        <dt><code>020: Array.some is unsupported</code></dt>
+        <dd>No PHP equivalent</dd>
+        <dt><code>021: Second parameter of JSON.parse is unsupported</code></dt>
+        <dd>No PHP equivalent</dd>
+        <dt><code>022: Second and third parameters of JSON.stringify are unsupported</code></dt>
+        <dd>No PHP equivalent</dd>
+      </dl>
+
+
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>

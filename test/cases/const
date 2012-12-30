@@ -1,0 +1,24 @@
+﻿Const test
+-----
+declare var A_CONST;
+var a = A_CONST;
+var b = Pct.const(A_CONST);
+var c = Pct.__LINE__;
+var d = Pct.__FILE__;
+var e = Pct.__DIR__;
+var f = Pct.__FUNCTION__;
+var g = Pct.__CLASS__;
+var h = Pct.__TRAIT__;
+var i = Pct.__METHOD__;
+var j = Pct.__NAMESPACE__;
+-----
+$a = $A_CONST;
+$b = A_CONST;
+$c = __LINE__;
+$d = __FILE__;
+$e = __DIR__;
+$f = __FUNCTION__;
+$g = __CLASS__;
+$h = __TRAIT__;
+$i = __METHOD__;
+$j = __NAMESPACE__;

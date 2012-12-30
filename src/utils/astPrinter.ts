@@ -18,9 +18,8 @@ class ConsoleLogger implements TS.ILogger {
 }
 
 var contents = [
-    'declare interface Blah { [s: string]: any; }',
-    'var a: Object;',
-    'var b = a["b"];'
+    'const a = 12;',
+    'a = 13;'
 ].join('\n');
 //compile TS
 var settings = new TS.CompilationSettings();

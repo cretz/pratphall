@@ -8,6 +8,7 @@
 ///<reference path='fileinfo.d.ts' />
 ///<reference path='filesystem.d.ts' />
 ///<reference path='filter.d.ts' />
+///<reference path='funchand.d.ts' />
 ///<reference path='info.d.ts' />
 ///<reference path='json.d.ts' />
 ///<reference path='mail.d.ts' />
@@ -16,9 +17,11 @@
 ///<reference path='pcre.d.ts' />
 ///<reference path='pct.d.ts' />
 ///<reference path='predefined.d.ts' />
+///<reference path='reflection.d.ts' />
 ///<reference path='session.d.ts' />
 ///<reference path='spl.d.ts' />
 ///<reference path='stream.d.ts' />
 ///<reference path='strings.d.ts' />
 ///<reference path='tokenizer.d.ts' />
 ///<reference path='url.d.ts' />
+///<reference path='var.d.ts' />

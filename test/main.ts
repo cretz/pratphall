@@ -2,4 +2,4 @@
 
 var harness = new Pratphall.TestHarness();
 harness.run();
-//harness.runTest('swallowErrors');
+//harness.runTest('clone');

@@ -1,0 +1,7 @@
+﻿Clone test
+-----
+var a = { b: { c: 5 } };
+var b = Pct.clone(a);
+-----
+$a = (object)['b' => (object)['c' => 5]];
+$b = clone $a;

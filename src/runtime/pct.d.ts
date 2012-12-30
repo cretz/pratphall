@@ -27,4 +27,16 @@ declare module Pct {
     function isNotFalse(value: any): bool;
 
     function swallowErrors(value: any): any;
+
+    function const(value: any): any;
+    var __LINE__: number;
+    var __FILE__: string;
+    var __DIR__: string;
+    var __FUNCTION__: string;
+    var __CLASS__: string;
+    var __TRAIT__: string;
+    var __METHOD__: string;
+    var __NAMESPACE__: string;
+
+    function clone(value: any): any;
 }

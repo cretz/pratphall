@@ -12,6 +12,9 @@ module Pratphall {
 
         //Preserve comments?
         comments = true;
+
+        //When true, any identifier that's all caps is assumed a const
+        allCapsConsts = false;
     }
 
     export interface AstMatcher {
@@ -413,13 +416,12 @@ module Pratphall {
 
         emitIdentifier(ast: TypeScript.Identifier) {
             //must be variable for $
-            if (ast.sym != null && ast.sym.isVariable()) {
-                //can't be on right side of binary expression
-                //var parent = this.getParent();
-                //var isTap = parent instanceof TypeScript.BinaryExpression && this.getTokenInfo(parent) == null && 
-                //    parent.nodeType == TypeScript.NodeType.Dot && (<TypeScript.BinaryExpression>parent).operand2.minChar == ast.minChar;
-                //must have container
-                if (ast.sym.container != null) this.write('$');
+            if (ast.sym != null && ast.sym.isVariable() && ast.sym.container != null &&
+                    !TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Constant)) {
+                //wait, wait...can't be all caps with setting set
+                if (!this.options.allCapsConsts || ast.actualText.toUpperCase() != ast.actualText) {
+                    this.write('$');
+                }
             }
             this.write(ast.actualText);
         }

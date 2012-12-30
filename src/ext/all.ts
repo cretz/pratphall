@@ -19,6 +19,8 @@
 ///<reference path='object-toString.ts' />
 ///<reference path='pct-ambient.ts' />
 ///<reference path='pct-cast.ts' />
+///<reference path='pct-clone.ts' />
+///<reference path='pct-const.ts' />
 ///<reference path='pct-false.ts' />
 ///<reference path='pct-phpAssocArray.ts' />
 ///<reference path='pct-swallowErrors.ts' />

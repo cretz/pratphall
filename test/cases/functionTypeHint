@@ -1,0 +1,27 @@
+﻿Function type hint tests
+-----
+interface AmbientIface extends Pct.Ambient { }
+
+declare class AmbientClass { }
+
+interface RuntimeIface extends AmbientIface { }
+
+class RuntimeClass extends AmbientClass { }
+
+interface CompileTimeIface extends Pct.CompileTimeOnly { }
+
+class CompileTimeClass implements Pct.CompileTimeOnly { }
+
+function a(str: string, num: number, arr: any[], assocArr: Pct.PhpAssocArray, callback: () => void) { }
+
+function b(one: AmbientIface, two: AmbientClass, three: RuntimeIface, four: RuntimeClass, five: CompileTimeIface, six: CompileTimeClass) { }
+-----
+interface RuntimeIface extends AmbientIface {
+}
+
+class RuntimeClass extends AmbientClass {
+}
+
+function a($str, $num, array $arr, array $assocArr, callable $callback) { }
+
+function b(AmbientIface $one, AmbientClass $two, RuntimeIface $three, RuntimeClass $four, $five, $six) { }

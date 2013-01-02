@@ -1,0 +1,7 @@
+﻿Anonymous functions test
+-----
+var a = (value: string) => { return value + '.'; }
+var b = function (value: string) { return value + '.'; }
+-----
+$a = function ($value) { return $value . '.'; };
+$b = function ($value) { return $value . '.'; };

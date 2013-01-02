@@ -1,0 +1,31 @@
+﻿For test
+-----
+for (var a = 0; a < 5; a++) var b = a;
+for (var c = 0; c < 5; c++) { var d = c; }
+for (var e = 0; e < 5; e++) {
+    var f = e;
+}
+for (; ; ) { }
+if (true) for (; true; ) var g = 12;
+var h = { a: 12, b: 12 };
+for (i in h) var j = i;
+for (var i in h) { var j = i; }
+for (i in h) {
+    var j = i;
+}
+if (true) for (i in h) var j = i;
+-----
+for ($a = 0; $a < 5; $a++) $b = $a;
+for ($c = 0; $c < 5; $c++) { $d = $c; }
+for ($e = 0; $e < 5; $e++) {
+    $f = $e;
+}
+for (; ; ) { }
+if (true) for (; true; ) $g = 12;
+$h = (object)['a' => 12, 'b' => 12];
+foreach (array_keys($h) as $i) $j = $i;
+foreach (array_keys($h) as $i) { $j = $i; }
+foreach (array_keys($h) as $i) {
+    $j = $i;
+}
+if (true) foreach (array_keys($h) as $i) $j = $i;

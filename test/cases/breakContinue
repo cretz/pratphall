@@ -1,0 +1,15 @@
+﻿Breack/continue test
+-----
+while (true) { break; }
+while (true) { continue; }
+one:
+while (true) { continue one; }
+two:
+while (true) { break two; }
+-----
+while (true) { break; }
+while (true) { continue; }
+one:
+while (true) { goto one; }
+two:
+while (true) { goto two; }

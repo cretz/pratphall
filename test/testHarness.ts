@@ -27,11 +27,14 @@ module Pratphall {
             var description = pieces[0].trim();
             var descPieces = description.split('\n');
             var expectedWarnings: string[] = [];
+            var emitOptions = new PhpEmitOptions();
             if (descPieces.length > 1) {
                 description = descPieces[0].trim();
                 for (var i = 1; i < descPieces.length; i++) {
                     if (descPieces[i].indexOf('EXPECT-WARN:') == 0) {
                         expectedWarnings.push(descPieces[i].substring(12));
+                    } else if (descPieces[i].indexOf('SET-OPTION-TRUE:') == 0) {
+                        emitOptions[descPieces[i].substring(16)] = true;
                     }
                 }
             }
@@ -44,16 +47,20 @@ module Pratphall {
             var compiler = new TypeScript.TypeScriptCompiler(err, new TypeScript.NullLogger(), settings);
             //add lib.d.ts
             compiler.addUnit(this.io.readFile('../src/typescript/bin/lib.d.ts'), 'lib.d.ts');
-            //add pct.d.ts
-            compiler.addUnit(this.io.readFile('../src/runtime/pct.d.ts'), 'pct.d.ts');
+            //add everything in runtime
+            this.io.readDir('../src/runtime').forEach((value: string) => {
+                if (value.slice(-3) == '.ts') {
+                    compiler.addUnit(this.io.readFile('../src/runtime/' + value), value);
+                }
+            });
             //add text
             compiler.addUnit(typescript, name);
             compiler.typeCheck();
-            this.assert.equal(compiler.scripts.members.length, 3);
+            //this.assert.equal(compiler.scripts.members.length, 3);
             this.assert.ifError(err.contents);
             //emit PHP
-            var emitter = new PhpEmitter(compiler.typeChecker);
-            emitter.emit(compiler.scripts.members[2]);
+            var emitter = new PhpEmitter(compiler.typeChecker, emitOptions);
+            emitter.emit(compiler.scripts.members[compiler.scripts.members.length - 1]);
             var str = emitter.getContents().trim();
             if (str != php) {
                 var reduce = (prev: string, curr: string) {

@@ -1,0 +1,27 @@
+﻿While test
+-----
+do var a = 1; while (false);
+do { var b = 1; } while (false);
+do {
+    var c = 1;
+} while (false);
+while (false) var d = 1;
+while (false) { var e = 1; }
+while (false) {
+    var f = 1;
+}
+if (true) do var g = 1; while (false);
+else while (false) var h = 1;
+-----
+do $a = 1; while (false);
+do { $b = 1; } while (false);
+do {
+    $c = 1;
+} while (false);
+while (false) $d = 1;
+while (false) { $e = 1; }
+while (false) {
+    $f = 1;
+}
+if (true) do $g = 1; while (false);
+else while (false) $h = 1;

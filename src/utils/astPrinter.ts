@@ -18,8 +18,7 @@ class ConsoleLogger implements TS.ILogger {
 }
 
 var contents = [
-    'const a = 12;',
-    'a = 13;'
+    'var a = { a: 5 };'
 ].join('\n');
 //compile TS
 var settings = new TS.CompilationSettings();

@@ -1,0 +1,17 @@
+﻿Nested function test
+-----
+function a() {
+    function b(c: string, d?: number) {
+		return c + d;
+	}
+
+	b('hey ', 20);
+}
+-----
+function a() {
+    $b = function ($c, $d = null) {
+        return $c . $d;
+    };
+
+    $b('hey ', 20);
+}

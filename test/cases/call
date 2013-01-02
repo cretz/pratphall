@@ -1,0 +1,9 @@
+﻿Call
+-----
+declare class Foo { }
+declare function bar();
+var a = new Foo();
+var b = bar();
+-----
+$a = new Foo();
+$b = bar();

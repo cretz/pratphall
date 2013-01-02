@@ -1,0 +1,29 @@
+﻿Compile time only
+-----
+interface AmbientIface extends Pct.Ambient { }
+
+declare class AmbientClass { }
+
+interface RuntimeIface extends AmbientIface { }
+
+class RuntimeClass extends AmbientClass { }
+
+interface CompileTimeIface extends Pct.CompileTimeOnly { }
+
+class CompileTimeClass implements Pct.CompileTimeOnly { }
+
+interface RuntimeIfaceExtendingCompileTime extends CompileTimeIface, RuntimeIface { }
+
+class RuntimeClassExtendingCompileTime extends CompileTimeClass implements CompileTimeIface, RuntimeIface { }
+-----
+interface RuntimeIface extends AmbientIface {
+}
+
+class RuntimeClass extends AmbientClass {
+}
+
+interface RuntimeIfaceExtendingCompileTime extends RuntimeIface {
+}
+
+class RuntimeClassExtendingCompileTime implements RuntimeIface {
+}

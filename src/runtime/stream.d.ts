@@ -83,7 +83,7 @@ declare function stream_bucket_new(stream: Pct.PhpResource, buffer: string): any
 declare function stream_bucket_prepend(brigade: Pct.PhpResource, bucket: Pct.PhpResource);
 declare function stream_context_create(options?: Pct.PhpAssocArray, params?: Pct.PhpAssocArray): Pct.PhpResource;
 declare function stream_context_get_default(options?: Pct.PhpAssocArray): Pct.PhpResource;
-declare function stream_context_get_options(stream_or_context: Pct.PhpResource): PhpAssocArray;
+declare function stream_context_get_options(stream_or_context: Pct.PhpResource): Pct.PhpAssocArray;
 declare function stream_context_get_params(stream_or_context: Pct.PhpResource): Pct.PhpAssocArray;
 declare function stream_context_set_default(options: Pct.PhpAssocArray): Pct.PhpResource;
 declare function stream_context_set_option(stream_or_context: Pct.PhpResource, wrapper: string, option: string, value: any): bool;

@@ -1,0 +1,12 @@
+﻿Function overload tests
+-----
+function a(value: string): bool;
+function a(): string;
+function a(value: number);
+function a(value?: any): any {
+    return 'meh';
+}
+-----
+function a($value = null) {
+    return 'meh';
+}

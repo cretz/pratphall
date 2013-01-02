@@ -1,0 +1,19 @@
+﻿Variadic functions
+-----
+function a(...args: string[]) {
+    var b = args[2];
+}
+
+function c(one: string, ...args: string[]) {
+    var d = args[12];
+}
+-----
+function a() {
+    $args = func_get_args();
+    $b = $args[2];
+}
+
+function c($one) {
+    $args = array_slice(func_get_args(), 1);
+    $d = $args[12];
+}

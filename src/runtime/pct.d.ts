@@ -3,12 +3,15 @@
 declare module Pct {
 
     interface PhpAssocArray {
+        [index: string]: any;
+        [index: number]: any;
         forEach?(callbackfn: (value: any, index: any) => void): void;
     }
     interface PhpResource { }
 
-    interface Ambient { }
-
+    interface CompileTimeOnly { }
+    interface Ambient extends CompileTimeOnly { }
+    
     function newAssocArray(obj: Object): PhpAssocArray;
     function toArray(array: PhpAssocArray): any[];
     function toAssocArray(array: any[]): PhpAssocArray;
@@ -39,4 +42,20 @@ declare module Pct {
     var __NAMESPACE__: string;
 
     function clone(value: any): any;
+
+    interface TryCatch {
+        try: () => any;
+        catch?: { (e: Exception): any; };
+        finally?: () => any;
+    }
+
+    interface TryCatches {
+        try: () => any;
+        catch: { (e: Exception): any; }[];
+        finally?: () => any;
+    }
+    
+    function try(val: TryCatch);
+    function try(val: TryCatches);
+
 }

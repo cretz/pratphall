@@ -1,0 +1,14 @@
+﻿Optional parameters
+-----
+declare function notScalar(): bool;
+var num = 12;
+function a(one: string = 'hey', two = 1 + 2, three = [1, 2], four?: bool, five = false, six = notScalar(), seven = [1, num], ...eight: any[]) {
+}
+-----
+$num = 12;
+function a($one = 'hey', $two = null, array $three = [1, 2], $four = null, $five = false, $six = null, array $seven = null) {
+    if ($two === null) $two = 1 + 2;
+    if ($six === null) $six = notScalar();
+    if ($seven === null) $seven = [1, $num];
+    $eight = array_slice(func_get_args(), 7);
+}

@@ -1,0 +1,34 @@
+﻿Function arguments
+-----
+function a() {
+    var b = arguments[2];
+}
+
+function c() {
+    var arguments = [1, 2, 3];
+    var d = arguments[2];
+}
+
+function e() {
+    //sorry, redefined later means I can't tell
+    var f = arguments[2];
+    var arguments = [1, 2, 3];
+    var g = arguments[2];
+}
+-----
+function a() {
+    $arguments = func_get_args();
+    $b = $arguments[2];
+}
+
+function c() {
+    $arguments = [1, 2, 3];
+    $d = $arguments[2];
+}
+
+function e() {
+    //sorry, redefined later means I can't tell
+    $f = $arguments[2];
+    $arguments = [1, 2, 3];
+    $g = $arguments[2];
+}

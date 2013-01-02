@@ -1,0 +1,7 @@
+﻿Conditional test
+-----
+var a = (2 * (3 - 5) == 7) ? 'hey' : 'ho';
+var b = (true ? 'one' : (false ? 'two' : 'three'));
+-----
+$a = (2 * (3 - 5) == 7) ? 'hey' : 'ho';
+$b = (true ? 'one' : (false ? 'two' : 'three'));

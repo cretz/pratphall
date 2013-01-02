@@ -1,0 +1,85 @@
+﻿Try test
+-----
+try {
+    var a = 1;
+} catch (e) { }
+try {
+    var a = 1;
+} finally { }
+try {
+    var a = 1;
+} catch (e) {
+    var b = 1;
+} finally {
+    var c = 1;
+}
+try {
+    var a = 1;
+} finally {
+    var b = 1;
+}
+Pct.try({
+    try: () => {
+        var a = 1;
+    },
+    catch: (e: Exception) => {
+        var b = 1;
+    },
+    finally: () => {
+        var c = 1;
+    }
+});
+Pct.try({
+    try: () => {
+        var a = 1;
+    },
+    catch: [
+        (e: RuntimeException) => {
+            var b = e.getMessage();
+        },
+        (e: Exception) => {
+            var c = 1;
+        }
+    ]
+});
+Pct.try({
+    try: () => {
+        var a = 1;
+    }
+});
+-----
+try {
+    $a = 1;
+} catch (Exception $e) { }
+try {
+    $a = 1;
+} finally { }
+try {
+    $a = 1;
+} catch (Exception $e) {
+    $b = 1;
+} finally {
+    $c = 1;
+}
+try {
+    $a = 1;
+} finally {
+    $b = 1;
+}
+try {
+    $a = 1;
+} catch (Exception $e) {
+    $b = 1;
+} finally {
+    $c = 1;
+}
+try {
+    $a = 1;
+} catch (RuntimeException $e) {
+    $b = $e->getMessage();
+} catch (Exception $e) {
+    $c = 1;
+}
+try {
+    $a = 1;
+} catch (Exception $_tmp1) { }

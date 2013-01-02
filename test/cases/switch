@@ -1,0 +1,20 @@
+﻿Switch test
+-----
+var a: number;
+switch (a) {
+    case 1: var b = 2;
+    case 2:
+    case 3:
+        var c = 3;
+	    break;
+    default:
+}
+-----
+switch ($a) {
+    case 1: $b = 2;
+    case 2:
+    case 3:
+        $c = 3;
+        break;
+    default:
+}

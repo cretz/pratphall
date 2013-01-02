@@ -15,6 +15,18 @@ module Pratphall {
 
         //When true, any identifier that's all caps is assumed a const
         allCapsConsts = false;
+
+        //When true, type hints are emitted
+        typeHint = true;
+
+        //When true, nested namespaces are allowed
+        nestedNamespaces = true;
+
+        //When true, no top-level functions or vars or code, only type decls
+        typeDeclarationsOnly = true;
+
+        //When true, elseif is used instead of "else if"
+        useElseif = false;
     }
 
     export interface AstMatcher {
@@ -77,6 +89,12 @@ module Pratphall {
             return this;
         }
 
+        semicolon(lastAst: TypeScript.AST) {
+            if (this.skipNextSemicolon) this.skipNextSemicolon = false;
+            else if (lastAst == null || this.hasSemicolonAfterStatement(lastAst)) this.write(';');
+            return this;
+        }
+
         increaseIndent() {
             this.indent++;
             return this;
@@ -97,62 +115,69 @@ module Pratphall {
             this.stack.push(ast);
             //check extension first
             if (this.extensionHandled(ast)) { /*no-op*/ }
-            else if (ast instanceof TypeScript.ArgDecl) this.emitArgDecl(<TypeScript.ArgDecl>ast);
-            else if (ast instanceof TypeScript.BinaryExpression) this.emitBinaryExpression(<TypeScript.BinaryExpression>ast);
-            else if (ast instanceof TypeScript.Block) this.emitBlock(<TypeScript.Block>ast);
-            else if (ast instanceof TypeScript.CallExpression) this.emitCallExpression(<TypeScript.CallExpression>ast);
-            else if (ast instanceof TypeScript.Catch) this.emitCatch(<TypeScript.Catch>ast);
-            else if (ast instanceof TypeScript.ClassDeclaration) this.emitClassDeclaration(<TypeScript.ClassDeclaration>ast);
-            else if (ast instanceof TypeScript.Comment) this.emitComment(<TypeScript.Comment>ast);
-            else if (ast instanceof TypeScript.ConditionalExpression) this.emitConditionalExpression(<TypeScript.ConditionalExpression>ast);
-            else if (ast instanceof TypeScript.DoWhileStatement) this.emitDoWhileStatement(<TypeScript.DoWhileStatement>ast);
-            else if (ast instanceof TypeScript.EndCode) { /*no-op*/ }
-            else if (ast instanceof TypeScript.Finally) this.emitFinally(<TypeScript.Finally>ast);
-            else if (ast instanceof TypeScript.ForInStatement) this.emitForInStatement(<TypeScript.ForInStatement>ast);
-            else if (ast instanceof TypeScript.ForStatement) this.emitForStatement(<TypeScript.ForStatement>ast);
-            else if (ast instanceof TypeScript.Script) this.emitScript(<TypeScript.Script>ast);
-            else if (ast instanceof TypeScript.FuncDecl) this.emitFuncDecl(<TypeScript.FuncDecl>ast);
-            else if (ast instanceof TypeScript.Identifier) this.emitIdentifier(<TypeScript.Identifier>ast);
-            else if (ast instanceof TypeScript.IfStatement) this.emitIfStatement(<TypeScript.IfStatement>ast);
-            else if (ast instanceof TypeScript.ImportDeclaration) this.emitImportDeclaration(<TypeScript.ImportDeclaration>ast);
-            else if (ast instanceof TypeScript.InterfaceDeclaration) this.emitInterfaceDeclaration(<TypeScript.InterfaceDeclaration>ast);
-            else if (ast instanceof TypeScript.Jump) this.emitJump(<TypeScript.Jump>ast);
-            else if (ast instanceof TypeScript.Label) this.emitLabel(<TypeScript.Label>ast);
-            else if (ast instanceof TypeScript.LabeledStatement) this.emitLabeledStatement(<TypeScript.LabeledStatement>ast);
-            else if (ast instanceof TypeScript.ModuleDeclaration) this.emitModuleDeclaration(<TypeScript.ModuleDeclaration>ast);
-            else if (ast instanceof TypeScript.NumberLiteral) this.emitNumberLiteral(<TypeScript.NumberLiteral>ast);
-            else if (ast instanceof TypeScript.RegexLiteral) this.emitRegexLiteral(<TypeScript.RegexLiteral>ast);
-            else if (ast instanceof TypeScript.ReturnStatement) this.emitReturnStatement(<TypeScript.ReturnStatement>ast);
-            else if (ast instanceof TypeScript.StringLiteral) this.emitStringLiteral(<TypeScript.StringLiteral>ast);
-            else if (ast instanceof TypeScript.SwitchStatement) this.emitSwitchStatement(<TypeScript.SwitchStatement>ast);
-            else if (ast instanceof TypeScript.Try) this.emitTry(<TypeScript.Try>ast);
-            else if (ast instanceof TypeScript.TryCatch) this.emitTryCatch(<TypeScript.TryCatch>ast);
-            else if (ast instanceof TypeScript.TryFinally) this.emitTryFinally(<TypeScript.TryFinally>ast);
-            else if (ast instanceof TypeScript.UnaryExpression) this.emitUnaryExpression(<TypeScript.UnaryExpression>ast);
-            else if (ast instanceof TypeScript.VarDecl) this.emitVarDecl(<TypeScript.VarDecl>ast);
-            else switch (ast.nodeType) {
-                case TypeScript.NodeType.Empty: break;
-                case TypeScript.NodeType.EmptyExpr: break;
-                case TypeScript.NodeType.Error: break;
-                case TypeScript.NodeType.False:
-                    this.write('false');
-                    break;
-                case TypeScript.NodeType.Null:
-                    this.write('null');
-                    break;
-                case TypeScript.NodeType.This:
-                    this.write('$this');
-                    break;
-                case TypeScript.NodeType.True:
-                    this.write('true');
-                    break;
-                case TypeScript.NodeType.Super:
-                    this.write('parent');
-                    break;
-                case TypeScript.NodeType.Void:
-                    this.write('null');
-                    break;
-                default: throw new Error('Unrecognized ast - ' + ast.printLabel());
+            else {
+                //parens?
+                if (ast.isParenthesized) this.write('(');
+                if (ast instanceof TypeScript.ArgDecl) this.emitArgDecl(<TypeScript.ArgDecl>ast);
+                else if (ast instanceof TypeScript.BinaryExpression) this.emitBinaryExpression(<TypeScript.BinaryExpression>ast);
+                else if (ast instanceof TypeScript.Block) this.emitBlock(<TypeScript.Block>ast);
+                else if (ast instanceof TypeScript.CallExpression) this.emitCallExpression(<TypeScript.CallExpression>ast);
+                else if (ast instanceof TypeScript.CaseStatement) this.emitCaseStatement(<TypeScript.CaseStatement>ast);
+                else if (ast instanceof TypeScript.Catch) this.emitCatch(<TypeScript.Catch>ast);
+                else if (ast instanceof TypeScript.ClassDeclaration) this.emitClassDeclaration(<TypeScript.ClassDeclaration>ast);
+                else if (ast instanceof TypeScript.Comment) this.emitComment(<TypeScript.Comment>ast);
+                else if (ast instanceof TypeScript.ConditionalExpression) this.emitConditionalExpression(<TypeScript.ConditionalExpression>ast);
+                else if (ast instanceof TypeScript.DoWhileStatement) this.emitDoWhileStatement(<TypeScript.DoWhileStatement>ast);
+                else if (ast instanceof TypeScript.EndCode) { /*no-op*/ }
+                else if (ast instanceof TypeScript.Finally) this.emitFinally(<TypeScript.Finally>ast);
+                else if (ast instanceof TypeScript.ForInStatement) this.emitForInStatement(<TypeScript.ForInStatement>ast);
+                else if (ast instanceof TypeScript.ForStatement) this.emitForStatement(<TypeScript.ForStatement>ast);
+                else if (ast instanceof TypeScript.Script) this.emitScript(<TypeScript.Script>ast);
+                else if (ast instanceof TypeScript.FuncDecl) this.emitFuncDecl(<TypeScript.FuncDecl>ast);
+                else if (ast instanceof TypeScript.Identifier) this.emitIdentifier(<TypeScript.Identifier>ast);
+                else if (ast instanceof TypeScript.IfStatement) this.emitIfStatement(<TypeScript.IfStatement>ast);
+                else if (ast instanceof TypeScript.ImportDeclaration) this.emitImportDeclaration(<TypeScript.ImportDeclaration>ast);
+                else if (ast instanceof TypeScript.InterfaceDeclaration) this.emitInterfaceDeclaration(<TypeScript.InterfaceDeclaration>ast);
+                else if (ast instanceof TypeScript.Jump) this.emitJump(<TypeScript.Jump>ast);
+                else if (ast instanceof TypeScript.Label) this.emitLabel(<TypeScript.Label>ast);
+                else if (ast instanceof TypeScript.LabeledStatement) this.emitLabeledStatement(<TypeScript.LabeledStatement>ast);
+                else if (ast instanceof TypeScript.ModuleDeclaration) this.emitModuleDeclaration(<TypeScript.ModuleDeclaration>ast);
+                else if (ast instanceof TypeScript.NumberLiteral) this.emitNumberLiteral(<TypeScript.NumberLiteral>ast);
+                else if (ast instanceof TypeScript.RegexLiteral) this.emitRegexLiteral(<TypeScript.RegexLiteral>ast);
+                else if (ast instanceof TypeScript.ReturnStatement) this.emitReturnStatement(<TypeScript.ReturnStatement>ast);
+                else if (ast instanceof TypeScript.StringLiteral) this.emitStringLiteral(<TypeScript.StringLiteral>ast);
+                else if (ast instanceof TypeScript.SwitchStatement) this.emitSwitchStatement(<TypeScript.SwitchStatement>ast);
+                else if (ast instanceof TypeScript.Try) this.emitTry(<TypeScript.Try>ast);
+                else if (ast instanceof TypeScript.TryCatch) this.emitTryCatch(<TypeScript.TryCatch>ast);
+                else if (ast instanceof TypeScript.TryFinally) this.emitTryFinally(<TypeScript.TryFinally>ast);
+                else if (ast instanceof TypeScript.UnaryExpression) this.emitUnaryExpression(<TypeScript.UnaryExpression>ast);
+                else if (ast instanceof TypeScript.VarDecl) this.emitVarDecl(<TypeScript.VarDecl>ast);
+                else if (ast instanceof TypeScript.WhileStatement) this.emitWhileStatement(<TypeScript.WhileStatement>ast);
+                else switch (ast.nodeType) {
+                    case TypeScript.NodeType.Empty: break;
+                    case TypeScript.NodeType.EmptyExpr: break;
+                    case TypeScript.NodeType.Error: break;
+                    case TypeScript.NodeType.False:
+                        this.write('false');
+                        break;
+                    case TypeScript.NodeType.Null:
+                        this.write('null');
+                        break;
+                    case TypeScript.NodeType.This:
+                        this.write('$this');
+                        break;
+                    case TypeScript.NodeType.True:
+                        this.write('true');
+                        break;
+                    case TypeScript.NodeType.Super:
+                        this.write('parent');
+                        break;
+                    case TypeScript.NodeType.Void:
+                        this.write('null');
+                        break;
+                    default: throw new Error('Unrecognized ast - ' + ast.printLabel());
+                }
+                if (ast.isParenthesized) this.write(')');
             }
             this.stack.pop();
             return this;
@@ -192,7 +217,27 @@ module Pratphall {
         //specific emitters
 
         emitArgDecl(ast: TypeScript.ArgDecl) {
+            //do we have a type hint?
+            if (this.options.typeHint && ast.type != null) {
+                if (ast.type.isArray()) this.write('array ');
+                else if (ast.type.getTypeName() == 'PhpAssocArray') {
+                    this.write('array ');
+                } else if (ast.type.symbol.declAST != null &&
+                        ast.type.symbol.declAST.nodeType == TypeScript.NodeType.FuncDecl) {
+                    this.write('callable ');
+                } else if (ast.type.symbol.declAST instanceof TypeScript.TypeDeclaration &&
+                        !('compileTimeOnly' in ast.type.symbol.declAST)) {
+                    this.write(ast.type.getTypeName() + ' ');
+                }
+            }
             this.emit(ast.id);
+            //optional?
+            if (ast.isOptionalArg()) {
+                this.write(' = ');
+                //scalar?
+                if (this.isScalar(ast.init)) this.emit(ast.init);
+                else this.write('null');
+            }
         }
 
         emitBinaryExpression(ast: TypeScript.BinaryExpression) {
@@ -250,16 +295,22 @@ module Pratphall {
         }
 
         emitBlock(ast: TypeScript.Block) {
+            var prevLength = this.currStr.length;
             var newlines = !this.isAllOnOneLine(ast);
-            this.write(' {');
+            this.write('{');
             if (newlines) this.increaseIndent();
-            this.emitBlockStatements(ast.statements, newlines);
-            if (newlines) this.decreaseIndent().newline();
-            else this.write(' ');
-            this.write('}');
+            if (!this.emitBlockStatements(ast.statements, newlines)) {
+                //rollback
+                this.currStr = this.currStr.substr(0, prevLength);
+            } else {
+                if (newlines) this.decreaseIndent().newline();
+                else this.write(' ');
+                this.write('}');
+            }
         }
 
-        emitBlockStatements(statements: TypeScript.ASTList, newlines: bool) {
+        emitBlockStatements(statements: TypeScript.ASTList, newlines: bool): bool {
+            var atLeastOneSuccessOrEmpty = statements == null || statements.members.length == 0;
             statements.members.forEach((statement: TypeScript.AST, index: number) => {
                 var prevLength = this.currStr.length;
                 //pre comments
@@ -288,13 +339,11 @@ module Pratphall {
                         this.currStr = this.currStr.substr(0, prevLength);
                         return;
                     }
+                    atLeastOneSuccessOrEmpty = true;
+                    this.semicolon(statement);
                     //extra newlines for decls
                     var hasExtraNewline = statement instanceof TypeScript.FuncDecl ||
                         statement instanceof TypeScript.NamedDeclaration;
-                    //no semicolons for decls or if the statement asked not to
-                    var hasSemicolon = !hasExtraNewline && !this.skipNextSemicolon;
-                    this.skipNextSemicolon = false;
-                    if (hasSemicolon) this.write(';');
                     if (newlines && hasExtraNewline) this.newline(false);
                 }
                 //post comments
@@ -304,6 +353,7 @@ module Pratphall {
                     });
                 }
             });
+            return atLeastOneSuccessOrEmpty;
         }
 
         emitCallExpression(ast: TypeScript.CallExpression) {
@@ -319,19 +369,48 @@ module Pratphall {
         }
 
         emitCatch(ast: TypeScript.Catch) {
-            this.write(' catch (').emit(ast.param).write(') ').emit(ast.body);
+            this.write(' catch (Exception $' + ast.param.id.actualText + ') ').emit(ast.body);
+        }
+
+        emitCaseStatement(ast: TypeScript.CaseStatement) {
+            if (ast.expr == null) this.write('default:');
+            else this.write('case ').emit(ast.expr).write(':');
+            if (ast.body != null && ast.body.members.length > 0) {
+                //newlines?
+                if (this.isAllOnOneLine(ast) && ast.body.members.length == 1) {
+                    this.write(' ').emit(ast.body.members[0]).semicolon(ast.body.members[0]);
+                } else {
+                    this.increaseIndent().emitBlockStatements(ast.body, true);
+                    this.decreaseIndent();
+                }
+            }
         }
 
         emitClassDeclaration(ast: TypeScript.ClassDeclaration) {
-            if (TypeScript.hasFlag(ast.varFlags, TypeScript.VarFlags.Ambient)) return;
+            if (ast.isAmbient()) return;
             this.write('class ').emit(ast.name);
             //can only have one extends
             if (ast.extendsList != null && ast.extendsList.members.length > 1) throw new Error('Multiple extends');
             if (ast.extendsList != null && ast.extendsList.members.length > 0) {
-                this.write(' extends ').emit(ast.extendsList.members[0]);
+                //don't handle compile time only extends
+                if (ast.extendsList.members[0].type == null ||
+                        !('compileTimeOnly' in ast.extendsList.members[0].type.symbol.declAST)) {
+                    this.write(' extends ').emit(ast.extendsList.members[0]);
+                }
             }
             if (ast.implementsList != null && ast.implementsList.members.length > 0) {
-                this.write(' implements ').emitCommaSeparated(ast.implementsList);
+                //don't handle compile time only implements
+                var first = true;
+                ast.implementsList.members.forEach((value: TypeScript.AST) => {
+                    if (value.type == null || !('compileTimeOnly' in value.type.symbol.declAST)) {
+                        if (!first) this.write(', ');
+                        else {
+                            first = false;
+                            this.write(' implements ');
+                        }
+                        this.emit(value);
+                    }
+                });
             }
             this.write(' {').increaseIndent();
             //construct
@@ -370,19 +449,29 @@ module Pratphall {
         }
 
         emitDoWhileStatement(ast: TypeScript.DoWhileStatement) {
-            this.write('do ').emit(ast.body).write(' while(').emit(ast.cond).write(')');
+            this.write('do ').emit(ast.body).semicolon(ast.body).write(' while (').emit(ast.cond).
+                write(')').semicolon(null);
         }
 
         emitFinally(ast: TypeScript.Finally) {
-            this.write('finally ').emit(ast.body);
+            this.write(' finally ').emit(ast.body);
         }
 
         emitForInStatement(ast: TypeScript.ForInStatement) {
-            throw new Error('For..in not supported');
+            this.write('foreach (array_keys(').emit(ast.obj).write(') as ');
+            if (ast.lval instanceof TypeScript.VarDecl) this.emit((<TypeScript.VarDecl>ast.lval).id);
+            else this.emit(ast.lval);
+            this.write(') ').emit(ast.body).semicolon(ast.body);
         }
 
         emitForStatement(ast: TypeScript.ForStatement) {
-            this.write('for (').emit(ast.init).write('; ').emit(ast.cond).write('; ').emit(ast.incr).write(') ').emit(ast.body);
+            this.write('for (');
+            if (ast.init != null) this.emit(ast.init);
+            this.write('; ');
+            if (ast.cond != null) this.emit(ast.cond);
+            this.write('; ');
+            if (ast.incr != null) this.emit(ast.incr);
+            this.write(') ').emit(ast.body).semicolon(ast.body);
         }
 
         emitFuncDecl(ast: TypeScript.FuncDecl) {
@@ -390,6 +479,18 @@ module Pratphall {
             if (ast.isOverload || ast.isAmbient()) return;
             //accessors disallowed
             if (ast.isAccessor()) throw new Error('Accessors not allowed');
+            //actually a closure since it's nested?
+            if (ast.enclosingFnc != null && !ast.isAnonymousFn()) {
+                //it's an error if we have any variable of the same name
+                if (ast.enclosingFnc.vars != null && ast.enclosingFnc.vars.members.some((value: TypeScript.AST) => {
+                    return value instanceof TypeScript.VarDecl &&
+                        (<TypeScript.Identifier>(<TypeScript.VarDecl>value).id).actualText == ast.name.actualText;
+                })) {
+                    this.addError(ast.name, 'Cannot have variable and nested function with the same name in function');
+                    return;
+                }
+                this.write('$' + ast.name.actualText + ' = ');
+            }
             //visibility
             if (ast.isPublic()) this.write('public ');
             else if (ast.isPrivate()) this.write('private ');
@@ -399,14 +500,61 @@ module Pratphall {
             //we don't do newlines if they didn't
             var newlines = !this.isAllOnOneLine(ast);
             //closure?
-            if (ast.isAnonymousFn()) this.write('(');
+            if (ast.isAnonymousFn() || ast.enclosingFnc != null) this.write('(');
             else if (ast.isConstructor) this.write('__construct(');
             else this.emit(ast.name).write('(');
-            this.emitCommaSeparated(ast.arguments).write(')');
+            //must make sure we ignore rest params
+            var first = true;
+            ast.arguments.members.forEach((value: TypeScript.ArgDecl, index: number) => {
+                //write?
+                if (!ast.variableArgList || index != ast.arguments.members.length - 1) {
+                    if (first) first = false;
+                    else this.write(', ');
+                    this.emit(value);
+                }
+            });
+            this.write(')');
+            //sig?
             if (ast.isSignature()) this.write(';');
             else {
                 this.write(' {');
                 if (newlines) this.increaseIndent();
+                //need to assign arguments?
+                ast.freeVariables.some((value: TypeScript.Symbol) => {
+                    if (value.name == 'arguments' && value.declAST == null) {
+                        if (newlines) this.newline();
+                        else this.write(' ');
+                        this.write('$arguments = func_get_args();');
+                        return true;
+                    }
+                    return false;
+                });
+                //optional inits?
+                ast.arguments.members.forEach((value: TypeScript.ArgDecl, index: number) => {
+                    //write?
+                    if (value.isOptionalArg() && (!ast.variableArgList || index != ast.arguments.members.length - 1) && 
+                            value.init != null && !this.isScalar(value.init)) {
+                        if (newlines) this.newline();
+                        else this.write(' ');
+                        this.write('if (').emit(value.id).write(' === null) ').
+                            emit(value.id).write(' = ').emit(value.init).write(';');
+                    }
+                });
+                //variadic?
+                if (ast.variableArgList) {
+                    //grab last arg
+                    var lastArg = ast.arguments.members[ast.arguments.members.length - 1];
+                    if (newlines) this.newline();
+                    else this.write(' ');
+                    //set just to func_get_args if only arg
+                    if (ast.arguments.members.length == 1) {
+                        this.emit((<TypeScript.ArgDecl>lastArg).id).write(' = func_get_args();');
+                    } else {
+                        //slice
+                        this.emit((<TypeScript.ArgDecl>lastArg).id).write(' = array_slice(func_get_args(), ' +
+                            (ast.arguments.members.length - 1) + ');');
+                    }
+                }
                 this.emitBlockStatements(ast.bod, newlines);
                 if (newlines) this.decreaseIndent().newline();
                 else this.write(' ');
@@ -416,20 +564,34 @@ module Pratphall {
 
         emitIdentifier(ast: TypeScript.Identifier) {
             //must be variable for $
-            if (ast.sym != null && ast.sym.isVariable() && ast.sym.container != null &&
-                    !TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Constant)) {
-                //wait, wait...can't be all caps with setting set
-                if (!this.options.allCapsConsts || ast.actualText.toUpperCase() != ast.actualText) {
-                    this.write('$');
-                }
+            var hasDollar = ast.sym != null && ast.sym.isVariable() && (ast.sym.container != null || 
+                    ast.sym.name == 'arguments') && !TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Constant);
+            //can't be all caps with setting set
+            if (hasDollar && this.options.allCapsConsts && ast.actualText.toUpperCase() != ast.actualText) {
+                hasDollar = false;
             }
+            //nested functions which we make anon are ok to have dollar signs
+            if (!hasDollar && ast.type != null && ast.type.symbol.declAST != null &&
+                    ast.type.symbol.declAST instanceof TypeScript.FuncDecl &&
+                    (<TypeScript.FuncDecl>ast.type.symbol.declAST).enclosingFnc != null) {
+                hasDollar = true;
+            }
+            if (hasDollar) this.write('$');
             this.write(ast.actualText);
         }
 
         emitIfStatement(ast: TypeScript.IfStatement) {
-            this.write('if (').emit(ast.cond).write(') ').emit(ast.thenBod);
+            this.write('if (').emit(ast.cond).write(') ').emit(ast.thenBod).semicolon(ast.thenBod);
             if (ast.elseBod != null) {
-                this.write(' else ').emit(ast.elseBod);
+                //do we need a newline?
+                if (this.getEndLine(ast.thenBod).line != this.getStartLine(ast.elseBod).line) {
+                    this.newline();
+                } else this.write(' ');
+                this.write('else');
+                if (!(ast.elseBod instanceof TypeScript.IfStatement) || !this.options.useElseif) {
+                    this.write(' ');
+                }
+                this.emit(ast.elseBod).semicolon(ast.elseBod);
             }
         }
 
@@ -438,11 +600,22 @@ module Pratphall {
         }
 
         emitInterfaceDeclaration(ast: TypeScript.InterfaceDeclaration) {
-            //ignore declared
+            //ignore ambient
             if (ast.isAmbient()) return;
             this.write('interface ').emit(ast.name);
             if (ast.extendsList != null && ast.extendsList.members.length > 0) {
-                this.write(' extends ').emitCommaSeparated(ast.extendsList);
+                //don't handle compile time only extends
+                var first = true;
+                ast.extendsList.members.forEach((value: TypeScript.AST) => {
+                    if (value.type == null || !('compileTimeOnly' in value.type.symbol.declAST)) {
+                        if (!first) this.write(', ');
+                        else {
+                            first = false;
+                            this.write(' extends ');
+                        }
+                        this.emit(value);
+                    }
+                });
             }
             this.write(' {').increaseIndent();
             //members
@@ -487,7 +660,7 @@ module Pratphall {
         }
 
         emitRegexLiteral(ast: TypeScript.RegexLiteral) {
-            this.write(ast.regex.toString());
+            this.addError(ast, 'Regex is unsupported');
         }
 
         emitReturnStatement(ast: TypeScript.ReturnStatement) {
@@ -514,7 +687,7 @@ module Pratphall {
         emitSwitchStatement(ast: TypeScript.SwitchStatement) {
             this.write('switch (').emit(ast.val).write(') {').increaseIndent();
             ast.caseList.members.forEach((member: TypeScript.AST) => {
-                this.emit(member).newline();
+                this.newline().emit(member);
             });
             this.decreaseIndent().newline().write('}');
         }
@@ -606,37 +779,51 @@ module Pratphall {
             }
         }
 
-        private isAllOnOneLine(ast: TypeScript.AST) {
+        emitWhileStatement(ast: TypeScript.WhileStatement) {
+            this.write('while (').emit(ast.cond).write(') ').emit(ast.body).semicolon(ast.body);
+        }
+
+        isAllOnOneLine(ast: TypeScript.AST) {
             return this.getStartLine(ast).line == this.getEndLine(ast).line;
         }
 
-        private getStartLine(ast: TypeScript.AST) {
+        getStartLine(ast: TypeScript.AST) {
             var lineCol = { line: -1, col: -1 };
             TypeScript.getSourceLineColFromMap(lineCol, ast.minChar, this.checker.locationInfo.lineMap);
             return lineCol;
         }
 
-        private getEndLine(ast: TypeScript.AST) {
+        getEndLine(ast: TypeScript.AST) {
             var lineCol = { line: -1, col: -1 };
             TypeScript.getSourceLineColFromMap(lineCol, ast.limChar, this.checker.locationInfo.lineMap);
             return lineCol;
         }
 
-        private getTokenInfo(ast: TypeScript.AST) {
+        getTokenInfo(ast: TypeScript.AST) {
             var num = TypeScript.nodeTypeToTokTable[ast.nodeType];
             if (num == undefined) return null;
             return TypeScript.tokenTable[num];
         }
 
-        private getParent() {
+        getParent() {
             if (this.stack.length <= 2) return null;
             return this.stack[this.stack.length - 2];
         }
 
-        private isEmpty(ast: TypeScript.AST) {
+        isEmpty(ast: TypeScript.AST) {
             return ast.nodeType == TypeScript.NodeType.Empty ||
                 ast.nodeType == TypeScript.NodeType.EmptyExpr ||
                 ast.nodeType == TypeScript.NodeType.EndCode;
+        }
+
+        isScalar(ast: TypeScript.AST) {
+            if (ast == null) return false;
+            if (ast.nodeType == TypeScript.NodeType.NumberLit ||
+                ast.nodeType == TypeScript.NodeType.QString ||
+                ast.nodeType == TypeScript.NodeType.True ||
+                ast.nodeType == TypeScript.NodeType.False) return true;
+            if (ast.nodeType != TypeScript.NodeType.ArrayLit) return false;
+            return (<TypeScript.ASTList>(<TypeScript.UnaryExpression>ast).operand).members.every(this.isScalar, this);
         }
 
         addError(ast: TypeScript.AST, message: string) {
@@ -651,6 +838,26 @@ module Pratphall {
 
         newTempVarName() {
             return '_tmp' + (++this.tempVarCounter);
+        }
+
+        hasSemicolonAfterStatement(ast: TypeScript.AST) {
+            //these handle their own semi colons
+            return !(ast instanceof TypeScript.Block) &&
+                !(ast instanceof TypeScript.DoWhileStatement) &&
+                !(ast instanceof TypeScript.ForStatement) &&
+                !(ast instanceof TypeScript.ForInStatement) &&
+                (!(ast instanceof TypeScript.FuncDecl) ||
+                    (<TypeScript.FuncDecl>ast).enclosingFnc != null ||
+                    (<TypeScript.FuncDecl>ast).isAnonymousFn()) &&
+                !(ast instanceof TypeScript.IfStatement) &&
+                (!(ast instanceof TypeScript.LabeledStatement) ||
+                    this.hasSemicolonAfterStatement((<TypeScript.LabeledStatement>ast).stmt)) &&
+                !(ast instanceof TypeScript.NamedDeclaration) &&
+                !(ast instanceof TypeScript.SwitchStatement) &&
+                !(ast instanceof TypeScript.Try) &&
+                !(ast instanceof TypeScript.TryCatch) &&
+                !(ast instanceof TypeScript.TryFinally) &&
+                !(ast instanceof TypeScript.WhileStatement);
         }
 
         typeHasNonObjectIndexFuncDecl(type: TypeScript.Type, checkedIds: number[] = []) {

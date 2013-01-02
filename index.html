@@ -85,13 +85,13 @@ arr.forEach((value: number) => {
 });
 
 //compile-time-only class
-declare class SampleCompileTimeClass {
+class SampleContract implements Pct.CompileTimeOnly {
     requiredProperty: string;
     optionalProperty?: bool;
 }
 
-//function using compile-time interface
-printInfo(info: SampleCompileTimeClass) => {
+//function using compile-time class
+printInfo(info: SampleContract) => {
     echo('Required: ' + info.requiredProperty + '\n');
     if (typeof info.optionalProperty !== 'undefined') {
         echo('Optional: ' + info.optionalProperty + '\n');
@@ -209,11 +209,13 @@ echo(sayHello(theSubject) + '\n');</code></pre>
 
       <span class="bookmark" id="Manual-Usage"></span>
       <h3>Usage</h3>
-      <pre>ppc [options] file...</pre>
+      <pre>ppc [options] FILE...</pre>
       <p>Options:</p>
       <dl class="dl-horizontal">
         <dt><code>--all-caps-consts</code></dt>
         <dd>When set and an externally declared variable is all capital letters, it will assume it's a constant and not prefix it with a dollar sign in PHP</dd>
+        <dt><code>--ext FILE</code></dt>
+        <dd>Can be used as many times as necessary to include extensions<dd>
         <dt><code>--no-comments</code></dt>
         <dd>Do not emit comments</dd>
         <dt><code>--no-js-lib</code></dt>
@@ -221,7 +223,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         <dt><code>--no-organize</code></dt>
         <dd>When set, this will not organize source files into the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0</a> autoloader-acceptable filesystem structure</dd>
         <dt><code>--no-php-lib</code></dt>
-        <dd>Do not automatically include the runtime/all.ts PHP definitions</dd>
+        <dd>Exclude the runtime/all.ts PHP definitions and exclude the ext/all.ts PHP extensions</dd>
         <dt><code>--no-type-hint</code></dt>
         <dd>Do not type hint emitted functions in any way</dd>
         <dt><code>-o, --out PATH</code></dt>
@@ -231,9 +233,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         <dt><code>--require-references</code></dt>
         <dd>When set, all <code>///&lt;reference /></code> will become <code>require_once</code></dd>
         <dt><code>--single</code></dt>
-        <dd>Compile all files to a single PHP file</dd>
-        <dt><code>--target VER</code></dt>
-        <dd>Which PHP version to target. Only 5.3, 5.4, and 5.5 is supported. 5.4 is the default if not present.</dd>
+        <dd>Compile all files to a single PHP file. This is basically also setting <code>--no-organize</code> also.</dd>
         <dt><code>--use-elseif</code></dt>
         <dd>When an "else if" is encountered in Pratphall, translate to "elseif" instead of the default "else if"</dd>
       </dl>
@@ -450,7 +450,7 @@ if (Pct.isFalse(strpos('team', 'I'))) {
     echo('There is no "I" in "team"\n');
 }</code></pre>
         <pre><code class="php">function printNumber($value) {
-    echo('Number: ' . $value . '\n');
+    echo('Number: ' . $value . "\n");
 }
 
 //compile-time cast only
@@ -696,7 +696,7 @@ echo("Done!\n");</code></pre>
         Overloads declarations are allowed in Pratphall like they are in TypeScript, but only one "catch all" function with an implementation is allowed. The overloaded signatures will be discarded.
       </p>
       <p>
-        Type hinting is done by default for arrays, callables, and actual type declarations. Parameters who are typed with ambient types (see ambient declarations below) will not be type hinted. If the compiler option <code>--no-type-hint</code> is set, type hinting will not be present on any function.
+        Type hinting is done by default for arrays, callables, and actual type declarations. Parameters who are typed with compile time only types (see compile time declarations below) will not be type hinted. If the compiler option <code>--no-type-hint</code> is set, type hinting will not be present on any function.
       </p>
 
       <h4>Variadic Functions</h4>
@@ -704,7 +704,7 @@ echo("Done!\n");</code></pre>
         Pratphall directly supports typed variadic function arguments (known as "RestParameters" in the TypeScript specification) whereas PHP does not. The use of variadic functions is not encouraged, but supported.
       </p>
       <p>
-        When the <code>arguments</code> array is referenced in a function, it is translated to PHP by using <code>func_get_args</code>. When a rest parameter is used as a parameter in a function, it is derived from <code>func_get_args</code>
+        When the <code>arguments</code> array is referenced in a function, it is translated to PHP by using <code>func_get_args</code> (see GOTCHA-023 about re-defining arguments). When a rest parameter is used as a parameter in a function, it is derived from <code>func_get_args</code>
       </p>
       <div class="code">
         <pre><code class="pratphall">function myprint(one: string, ...args: any[]) {
@@ -738,7 +738,7 @@ myprint('foo', true, 13.5, 'bar');</code></pre>
         Both PHP and Pratphall support optional function parameters. PHP supports only default parameters with only scalars/arrays and they can be anywhere within the parameter list. Pratphall supports both optional and default parameters which can be initialized to any type and must be at the end of the parameter list.
       </p>
       <p>
-        Optional parameters in Pratphall without a default value are assumed to be whatever the parameter types' versions of null are. If the default parameter is specified and it is not a constant, scalar value, it will be set at the beginning of the function (this practice is usually discouraged).
+        Optional parameters in Pratphall without a default value are assumed to be null. If the default parameter is specified and it is not a constant, scalar value, it will be set at the beginning of the function (this practice is usually discouraged).
       </p>
       <div class="code">
         <pre><code class="pratphall">function words(prefix?: bool, file = file('default.txt')) {
@@ -769,6 +769,85 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
 printWords();
 //uses array and prints w/ prefix
 printWords(true, ['foo bar', 'fu bar']);</code></pre>
+      </div>
+
+      <h4>Anonymous and Nested Functions</h4>
+      <p>
+        Pratphall and PHP have support for anonymous functions with a common syntax and are invoked and passed the same way.
+      </p>
+      <p>
+        PHP's parser supports nested functions, but it places them in the global scope. Pratphall does NOT support these nested functions. When Pratphall encounters a nested function, it treats it like an anonymous function assigned to the variable of the same name. This means the compiler will error if a variable and nested function appear in the same function with the same name.
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">function func() {
+    var anonFunc = (value: string) => { echo(value); }
+    var anonFunc2 = function (value: string) { echo(value); }
+    function nestedFunc(value: string) { echo(value); }
+}</code></pre>
+        <pre><code class="php">function func() {
+    $anonFunc = function ($value) { echo($value); };
+    $anonFunc2 = function ($value) { echo($value); };
+    $nestedFunc = function ($value) { echo($value); };
+}</code></pre>
+      </div>
+
+      <h4>Try/Catch</h4>
+      <p>
+        Pratphall's (ahem, JS's) native try/catch syntax is much more limited than PHP's. It is supported and will even emit PHP 5.5 finally statements. You can compile-time cast the catch variable or do an instanceof check.
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">try {
+    new ReflectionClass('NonExistentClass');
+} catch (err) {
+    if (err instanceof ReflectionException) {
+        echo('Not found: ' + (&lt;Exception>err).getMessage());
+    } else {
+        echo('Other: ' + (&lt;Exception>err).getMessage());
+    }
+} finally {
+    echo('This runs always in PHP 5.5');
+}</code></pre>
+        <pre><code class="php">try {
+    new ReflectionClass('NonExistentClass');
+} catch (Exception $err) {
+    if ($err instanceof ReflectionException) {
+        echo('Not found: ' . $err->getMessage());
+    } else {
+        echo('Other: ' . $err->getMessage());
+    }
+} finally {
+    echo('This runs always in PHP 5.5');
+}</code></pre>
+      </div>
+      <p>
+        Pratphall does include compile-time helpers to support the full try/catch syntax via <code>Pct.try</code>. It is an object literal w/ a try function, an optional catch function (or array of functions), and an optional finally function. If neither a catch nor finally is supplied, it assumes an empty catch statement.
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">Pct.try({
+    try: () => {
+        new ReflectionClass('NonExistentClass');
+    },
+    catch: [
+        (err: ReflectionException) => {
+            echo('Not found: ' . err->getMessage());
+        },
+        (err: Exception) => {
+            echo('Other: ' . err->getMessage());
+        }
+    ],
+    finally: () => {
+        echo('This runs always in PHP 5.5');
+    }
+});</code></pre>
+        <pre><code class="php">try {
+    new ReflectionClass('NonExistentClass');
+} catch (ReflectionException $err) {
+    echo('Not found: ' . $err.getMessage());
+} catch (Exception $err) {
+    echo('Other: ' . $err.getMessage());
+} finally {
+    echo('This runs always in PHP 5.5');
+}</code></pre>
       </div>
 
       <!-- TODO: more work -->
@@ -828,6 +907,10 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
         <dd>No PHP equivalent</dd>
         <dt><code>022: Second and third parameters of JSON.stringify are unsupported</code></dt>
         <dd>No PHP equivalent</dd>
+        <dt><code>023: the JS arguments variable that gets the function arguments is unavailable if redefined later in function</code></dt>
+        <dd>
+          Basically, if you use the arguments array, then create a var later named arguments, we cannot tell the one used above the re-declaration needs func_get_args. Basic rule of thumb is not to use the arguments array in a function unless you have to, and then don't redefine it in the function.
+        </dd>
       </dl>
 
 

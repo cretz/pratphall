@@ -68,7 +68,7 @@
       </div>
       <h3>Overview</h3>
       <p>
-        Pratphall is an optionally-typed language that compiles to readable PHP. PHP has a powerful engine and is very scalable since state is primarily per-request for PHP scripts. Unfortunately, due to the dynamic nature of PHP, it can be difficult to build large projects and retain the ability to refactor and manage the code. It can also be difficult to foresee errors with typing and properties and variables that are unavailable. Almost all of these issues cause many problems that don't surface until runtime. Pratphall aims to solve this.
+        Pratphall is an optionally-typed language that compiles to readable PHP. PHP has a powerful engine and is very scalable since state is primarily per-request for PHP scripts. Unfortunately, due to the dynamic nature of PHP, it can be difficult to build large projects and retain the ability to refactor and manage the code. It can also be difficult to foresee errors with typing and unavailable variables. Almost all of these issues cause many problems that don't surface until runtime. Pratphall aims to solve this.
       </p>
       <p>
         Pratphall started as kind of a joke (hence the name) and proof of concept to see if <a href="http://typescriptlang.org">TypeScript</a> could be reliably translated. It turns out it can. So Pratphall is for all practical purposes just TypeScript (which is a typed superset of JavaScript) cross-compiled. And although not every single JS idiom directly translates, remembering that <strong>Pratphall is just TypeScript which is just typed JavaScript</strong> will help development greatly.
@@ -218,6 +218,8 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         <dd>Can be used as many times as necessary to include extensions<dd>
         <dt><code>--no-comments</code></dt>
         <dd>Do not emit comments</dd>
+        <dt><code>--no-composer</code></dt>
+        <dd>Do not emit the composer autoloader require statement</dd>
         <dt><code>--no-js-lib</code></dt>
         <dd>Do not automatically include the lib.d.ts JS definitions</dd>
         <dt><code>--no-organize</code></dt>
@@ -227,13 +229,13 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         <dt><code>--no-type-hint</code></dt>
         <dd>Do not type hint emitted functions in any way</dd>
         <dt><code>-o, --out PATH</code></dt>
-        <dd>The directory to output all the PHP files to. If <code>--single</code> is present, this is the single PHP file to output to.</dd>
+        <dd>When <code>--single</code> is present or there is only a single file on the command line, this is the single file to output to. References in the file are emitted relative to this single file path when not using <code>--single</code>. Otherwise, this is the directory to put all files at relative to the files given.</dd>
         <dt><code>--prefer-single-quotes</code></dt>
         <dd>When set, this will try to use single quotes for all strings that don't have escape characters</dd>
         <dt><code>--require-references</code></dt>
-        <dd>When set, all <code>///&lt;reference /></code> will become <code>require_once</code></dd>
+        <dd>When set, all <code>///&lt;reference /></code> will become <code>require_once</code>. This is only allowed when <code>--no-organize</code> is set.</dd>
         <dt><code>--single</code></dt>
-        <dd>Compile all files to a single PHP file. This is basically also setting <code>--no-organize</code> also.</dd>
+        <dd>Compile all files to a single PHP file. This is basically also setting <code>--no-organize</code> also, so both cannot be present.</dd>
         <dt><code>--use-elseif</code></dt>
         <dd>When an "else if" is encountered in Pratphall, translate to "elseif" instead of the default "else if"</dd>
       </dl>
@@ -285,7 +287,7 @@ var_dump(explode(' ', $b));</code></pre>
 
       <h4>Integers/Floats</h4>
       <p>
-        In JS there is no difference between an integer and a float for the most part, and the same is true in Pratphall. Conversion and testing can still occur at runtime with intval, floatval, and other methods. At compile time however, they are simply numbers. There is no normal way to contrain a variable on one or the other. Hexadecimal and octal literals are translated to normal decimal integers during translation.
+        In JS there is no difference between an integer and a float for the most part, and the same is true in Pratphall. Conversion and testing can still occur at runtime with intval, floatval, and other methods. At compile time however, they are simply numbers. There is no normal way to constrain a variable on one type or the other. Hexadecimal and octal literals are translated to normal decimal integers during translation.
       </p>
 
       <h4>Arrays</h4>
@@ -443,7 +445,7 @@ printNumber(intval('10'));
 printNumber(Pct.toInt('10'));
 
 //two ways to check a FALSE return
-if (&lt;boolean>&lt;any>strpos('team', 'I') === false) {
+if (&lt;bool>&lt;any>strpos('team', 'I') === false) {
     echo('There is no "I" in "team"\n');
 }
 if (Pct.isFalse(strpos('team', 'I'))) {
@@ -685,6 +687,55 @@ echo("Done!\n");</code></pre>
         </dl>
       </p>
 
+      <h4>References</h4>
+      <p>
+        Pratphall recommends avoiding references. If you cannot, they are supported.
+      </p>
+      <p>
+        To assign by reference or otherwise reference, use <code>Pct.byRef</code>.
+      </p>
+      <p>
+        To pass by reference, the parameter in the function must start with a dollar sign. A compiler error occurs if the item passed by reference is not valid (e.g. expressions or literals).
+      </p>
+      <p>
+        To return by reference, the function name must start with a dollar sign. Also, to receive the returned result as a reference, you must call <code>Pct.byRef</code>.
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">//assign
+var a = 'hey';
+var b = Pct.byRef(a);
+//pass
+function addWord($val: string) {
+    $val += ' word';
+}
+addWord(b);
+echo('Changed? ' + (a == 'hey word'));
+//return
+var c = { d: 15 };
+function $getReference(val: { d: number; }) {
+    return val.d;
+}
+var e = Pct.byRef($getReference(c));
+e = 20;
+echo('Changed? ' + (c.d == 20));</code></pre>
+        <pre><code class="php">//assign
+$a = 'hey';
+$b = &amp;$a;
+//pass
+function addWord(&amp;$val) {
+    $val .= ' word';
+}
+addWord($b);
+echo('Changed? ' . ($a == 'hey word'));
+//return
+$c = (object)['d' => 15];
+function &amp;getReference($val) {
+    return $val->d;
+}
+$e = &amp;getReference($c);
+echo('Changed? ' . ($c->d == 20));</code></pre>
+      </div>
+
       <span class="bookmark" id="Manual-Structure"></span>
       <h3>Structure</h3>
 
@@ -829,10 +880,10 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
     },
     catch: [
         (err: ReflectionException) => {
-            echo('Not found: ' . err->getMessage());
+            echo('Not found: ' + err.getMessage());
         },
         (err: Exception) => {
-            echo('Other: ' . err->getMessage());
+            echo('Other: ' + err.getMessage());
         }
     ],
     finally: () => {
@@ -850,9 +901,436 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
 }</code></pre>
       </div>
 
+      <h4>Classes and Interfaces</h4>
+      <p>
+        Pratphall supports classes and interfaces just like PHP. There are several features that Pratphall does not support:
+        <ul>
+          <li>
+            <strong>abstract</strong> - No abstract members or classes are supported. There is no equivalent. (future possibility, see <a href="http://typescript.codeplex.com/workitem/395">TS-395</a> or maybe find some other way w/ function sigs in classes)
+          </li>
+          <li>
+            <strong>class constants</strong> - The closest you can get is public static properties. To interoperate with existing constants, you may use <code>Pct.const</code>. Also, you may use the <code>--all-caps-consts</code> compiler option to assume all uppercase references AND definitions of public static properties are constants. (future possibility, see <a href="http://typescript.codeplex.com/workitem/368">TS-368</a>)
+          </li>
+          <li>
+            <strong>protected</strong> - There simply is no equivalent. When making ambient declarations to interoperate with existing PHP code, choose private or public depending on whether you plan to inherit. (future possibility, see <a href="http://typescript.codeplex.com/workitem/125">TS-125</a>)
+          </li>
+          <li>
+            <strong>traits</strong> - No equivalent. To interoperate with code that uses traits, just use interfaces. (future possibility if TypeScript supports mixins)
+          </li>
+          <li>
+            <strong>property accessors</strong> - No equivalent. (future possibility, see <a href="https://wiki.php.net/rfc/propertygetsetsyntax-v1.2">PHP RFC</a>)
+          </li>
+          <li>
+            <strong>final</strong> - No equivalent. (future possibility, see <a href="http://typescript.codeplex.com/workitem/352">TS-352</a>)
+          </li>
+          <li>
+            <strong>self/static</strong> - Cannot use <code>self::</code> or <code>static::</code> to reference static members. Instead, you must use the class name explicitly. This means there is no late static binding. (future possibility, have a compile-time helper like <code>Pct.self</code> or <code>Pct.static</code>)
+          </li>
+        </ul>
+        Despite these non-existent features, the Pratphall object-oriented system is very strong. Actually, in practice we've found the absence of some of these features leads to cleaner code. Here are some features that Pratphall does support:
+        <ul>
+          <li>
+            <strong>constructors</strong> - Use <code>constructor</code> in Pratphall which translates to <code>__construct</code>. A member named <code>__construct</code> in Pratphall is an error. Also, using public or private before variable declarations in a constructor automatically make them properties.
+          </li>
+          <li>
+            <strong>public by default</strong> - All members are public by default.
+          </li>
+          <li>
+            <strong>interface properties</strong> - Interfaces can define properties that the class needs to end up defining. Note, these are NOT emitted to PHP, they are a compile-time only feature.
+          </li>
+          <li>
+            <strong>super calls</strong> - To call a parent method inside an overload, use <code>super</code> which is translated to <code>parent</code> in PHP.
+          </li>
+          <li>
+            <strong>overloads</strong> - Overloaded methods are supported in classes just like normal overloaded functions. This means there must be a single catch-all implementation and the overload signatures are not emitted.
+          </li>
+          <li>
+            <strong>callable class</strong> - Simply define a base call signature on the class itself and it will become <code>__invoke</code>
+          </li>
+          <li>
+            <strong>toString</strong> - In Pratphall, <code>toString</code> becomes <code>__toString</code>. A member named <code>__toString</code> in Pratphall is an error.
+          </li>
+          <li>
+            <strong>property initialization</strong> - In Pratphall a property (static or not) may be initialized in any way unlike PHP which requires a constant. If an instance property is initialized with a non-constant value, it is set in the constructor (if the constructor doesn't exist, it copies the base class constructor and defers to it). If a static property is initialized with a non-constant value, it is set just after the class declaration in PHP. Note, private static properties with non-constant initializers are set via reflection.
+          </li>
+          <li>
+            <strong>optional members</strong> - In Pratphall, using a question mark after a function or property name in an interface means the implementer doesn't have to implement it. Optional members are NOT emitted to PHP, they are a compile-time only feature.
+          </li>
+          <li>
+            <strong>magic methods</strong> - All magic methods besides <code>__construct</code>, <code>__toString</code>, and <code>__invoke</code> are supported as normal methods. If they are not public, an error occurs. Be advised, the compile-time type system is unaware of runtime-derived members from things like <code>__get</code>, <code>__callStatic</code>, etc. Pratphall discourages the use of these magic methods, but if you must, cast to any first then cast the result back.
+          </li>
+        </ul>
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">//spacing added below for clarity
+interface Iface {
+
+    numberProperty: number;
+
+    print(param: string);
+
+    notRequired?(...params: any[]): bool;
+}
+
+class BaseClass {
+
+    static fileContents = file_get_contents('myfile.txt');
+
+
+
+    constructor(public numberProperty: number) {
+
+        echo('Constructed!')
+    }
+}
+
+
+class MyClass extends BaseClass implements Iface {
+
+    static getFileContents() {
+        return BaseClass.fileContents;
+    }
+
+    constructor() {
+        super(12);
+    }
+
+    __destruct() { echo('Destructing!\n'); }
+
+    private secretFunction() { echo('Hello\n'); }
+
+    print(param: string) {
+        echo('Value: ' + param + '\n');
+    }
+
+    (someVal: string);
+    (someVal: number) {
+        echo('I have been invoked!\n');
+        return this.numberProperty + someVal;
+    }
+
+    __get(prop: string) { return 42; }
+
+    __set(prop: string, value: any) {
+        echo('Setting ' + prop + ' with ' + value);
+    }
+
+    toString() { return 'MyClass'; }
+}
+
+var myClass = new MyClass();
+echo('Instance? ' + (myClass instanceof Iface) + '\n');
+//call static
+var a = MyClass.getFileContents();
+//call normal
+myClass.print('Hey');
+//invoke
+var b = myClass(20);
+var c = myClass('15');
+//trigger getter/setter
+var d = &gt;number&gt;(&lt;any&gt;myClass).someProp;
+(&lt;any&gt;myClass).someNewProp = 20;
+//string version
+var e = myClass.toString();</code></pre>
+        <pre><code class="php">//spacing added below for clarity
+interface Iface {
+
+
+
+    public function print($param);
+
+
+}
+
+class BaseClass {
+
+    public static $fileContents;
+
+    public $numberProperty;
+
+    public function __construct($numberProperty) {
+        $this->numberProperty = $numberProperty;
+        echo('Constructed!');
+    }
+}
+BaseClass::fileContents = file_get_contents('myfile.txt');
+
+class MyClass extends BaseClass implements Iface {
+
+    public static function getFileContents() {
+        return BaseClass::$fileContents;
+    }
+
+    public function __construct() {
+        parent::__construct(12);
+    }
+
+    public function __destruct() { echo("Destructing!\n"); }
+
+    private function secretFunction() { echo("Hello\n"); }
+
+    public function print($param) {
+        echo('Value: ' . $param . "\n");
+    }
+
+
+    public function __invoke($someVal) {
+        echo("I have been invoked!\n");
+        return $this->numberProperty + $someVal;
+    }
+
+    public function __get($prop) { return 42; }
+
+    public function __set($prop, $value) {
+        echo('Setting ' . $prop . ' with ' . $value);
+    }
+
+    public function __toString() { return 'MyClass'; }
+}
+
+$myClass = new MyClass();
+echo('Instance? ' . ($myClass instanceof Iface) . "\n");
+//call static
+$a = MyClass::getFileContents();
+//call normal
+$myClass->print('Hey');
+//invoke
+$b = $myClass(20);
+$c = $myClass('15');
+//trigger getter/setter
+$d = $myClass->someProp;
+$myClass->someNewProp = 20;
+//string version
+$e = strval($myClass);</code></pre>
+      </div>
+
+      <h4>Ambient and Compile-Time Declarations</h4>
+      <p>
+        Ambient class, interface, variable, and function declarations are not emitted with the PHP output. They are best suited for describing external code. To make a variable, class, or function ambient, simple use the <code>declare</code> keyword before it. To make an interface ambient, make the interface explicitly extend <code>Pct.Ambient</code>. Another way to make all of these ambient is to simply place them in a declaration file (which is a file that has the <code>.d.ts</code> extension). For example, here is the contents of <code>json.d.ts</code> which describes the <a href="http://php.net/manual/en/book.json.php">JSON</a> library:
+      </p>
+      <pre><code class="pratphall">var JSON_ERROR_CTRL_CHAR: number;
+var JSON_ERROR_DEPTH: number;
+var JSON_ERROR_NONE: number;
+var JSON_ERROR_STATE_MISMATCH: number;
+var JSON_ERROR_SYNTAX: number;
+var JSON_ERROR_UTF8: number;
+
+var JSON_BIGINT_AS_STRING: number;
+var JSON_FORCE_OBJECT: number;
+var JSON_HEX_AMP: number;
+var JSON_HEX_APOS: number;
+var JSON_HEX_QUOT: number;
+var JSON_HEX_TAG: number;
+var JSON_NUMERIC_CHECK: number;
+var JSON_PRETTY_PRINT: number;
+var JSON_UNESCAPED_SLASHES: number;
+var JSON_UNESCAPED_UNICODE: number;
+
+interface JsonSerializable {
+    jsonSerialize(): any;
+}
+
+function json_decode(json: string, assoc?: bool, depth?: number, options?: number): any;
+function json_encode(value: any, options?: number): string;
+function json_last_error(): number;</code></pre>
+      <p>
+        Since ambient types are still seen at runtime, they will be emitted as type hints. Compile-time declarations do not suffer from this. They are only there to enforce a certain contract and that's it. Only interfaces and classes can be marked compile-time only, and this is done by extending or implementing the <code>Pct.CompileTimeOnly</code> interface.
+      </p>
+      <div class="code">
+        <pre><code class="pratphall">interface Location extends Pct.CompileTimeOnly {
+    zip: string;
+    city?: string;
+}
+
+interface Weather extends Pct.CompileTimeOnly {
+    location: Location;
+    temperature: number;
+}
+
+function printWeather(value: Weather) {
+    echo('It is ' + weather.temperature + ' in ');
+    if (property_exists(value, 'city') echo(value.city);
+    else echo(value.zip);
+}
+
+printWeather({
+    location: {
+        zip: '75001',
+        city: 'Addison'
+    },
+    temperature: 85
+});
+printWeather({
+    location: {zip: '76020'},
+    temperature: 88
+});</code></pre>
+        <pre><code class="php">
+
+
+
+
+
+
+
+
+
+function printWeather($value) {
+    echo('It is' . $value->temperature . ' in ');
+    if (property_exists($value, 'city') echo($value->city);
+    else echo($value->zip);
+}
+
+printWeather((object)[
+    'location' => (object)[
+        'zip' => '75001',
+        'city' => 'Addison'
+    ],
+    'temperature' => 85
+]);
+printWeather((object)[
+    'location' => (object)['zip' => '76020'],
+    'temperature' => 88
+]);</code></pre>
+      </div>
+
+
+      <h4>Modules and References</h4>
+      <p>
+        Modules in Pratphall are directly translatable as namespaces in PHP.
+      </p>
+      <p>
+        Even though PHP namespaces cannot be nested, Pratphall modules can. When emitted to PHP, they are separated. The dots translate to slashes in PHP. When not in the global namespace, globally namespaced type references are automatically prefixed with a slash.
+      </p>
+      <p>
+        If a module is imported with an alias, it is translated to a use statement. If the alias is the same as the last module part, the <code>as</code> alias in the use statement is not emitted. Currently, Pratphall can only import and alias other modules, there is no importing or aliasing of other classes/interfaces. The <code>namespace</code> operator to access something in the same module is not present in Pratphall.
+      </p>
+      <p>
+        External module references that use <code>import mod = module('modname')</code> format cause a compiler warning and are ignored for now. Use of the export feature to share items amongst modules is strictly a compile-time feature and is not emitted to PHP.
+      </p>
+      <p>
+        If you must reference code in another file, you can use <code>///&lt;reference path="PATH" /&gt;</code>. It is common practice to reference a file that might just be full of references to the other files in the project. This is just a compile-time reference unless both <code>--no-organize</code> and <code>--require-references</code> are set as compiler options. note, unless <code>--no-composer</code> is present, the Composer autoloader will be loaded at the top.
+      </p>
+      <p>
+        Different compiler options affect how the files are outputted. Below are descriptions of the options and output PHP examples based on these two files:
+        <pre><code class="pratphall">//file1.ts
+module MyModule {
+    interface MyIface {
+    }
+
+    module Sub {
+        class MyClass implements MyModule.MyIface {
+            causeErr() {
+                throw new Exception('Error');
+            }
+        }
+    }
+}
+
+//file2.ts
+///&lt;reference path="file1.ts" />
+import Sub = MyModule.Sub;
+var a = new Sub.MyClass();
+a.causeErr();</code></pre>
+        <dl>
+          <dt>default</dt>
+          <dd>
+            By default, all classes and interfaces are written into their own file according to <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0</a>. This means that except for the initial file passed to the compiler, no other files may have any top-level vars/functions or be in the global namespace. Also, unless <code>--no-composer</code> is present, the Composer autoloader will be loaded at the top.
+            <pre><code class="php">//MyModule/MyIface.php
+namespace MyModule;
+
+interface MyIface {
+}
+
+//MyModule/Sub/MyClass.php
+namespace MyModule\Sub;
+
+class MyClass implements MyModule\MyIface
+    public function causeErr() {
+        throw new \Exception('Error');
+    }
+}
+
+//file2.php
+require('vendor/autoload.php');
+use MyModule\Sub;
+$a = new Sub\MyClass();
+$a->causeErr();</code></pre>
+          </dd>
+          <dt>with <code>--no-organize</code></dt>
+          <dd>
+            When this option is set, all emitted PHP files are the same name as the Pratphall source files (.ts files) but with PHP extensions. This cannot be used with <code>--single</code> since that option basically includes this option. This option allows top-level code in any file and allows any file to operate in the global namespace. This option is best used in conjunction with <code>--require-references</code>. When that option is set, the <code>///&lt;reference path="PATH" /&gt;</code> references become <code>require_once</code> calls in PHP.
+            <pre><code class="php">//file1.php
+namespace MyModule {
+
+    interface MyIface {
+    }
+
+}
+
+namespace MyModule\Sub {
+
+    class MyClass implements MyModule\MyIface
+        public function causeErr() {
+            throw new \Exception('Error');
+        }
+    }
+
+}
+
+//file2.php
+require('vendor/autoload.php');
+use MyModule\Sub;
+$a = new Sub\MyClass();
+$a->causeErr();</code></pre>
+          </dd>
+          <dt>with <code>--single</code></dt>
+          <dd>
+            When this option is set, all Pratphall code is emitted to a single PHP file. Like the default, this means that except for the initial file passed to the compiler, no other files may have any top-level vars/functions. However, any file can have contents in the global namespace. This cannot be used with <code>--no-organize</code>.
+            <pre><code class="php">//file2.php
+require('vendor/autoload.php');
+namespace MyModule {
+
+    interface MyIface {
+    }
+
+}
+
+namespace MyModule\Sub {
+
+    class MyClass implements MyModule\MyIface
+        public function causeErr() {
+            throw new \Exception('Error');
+        }
+    }
+
+}
+
+namespace {
+    use MyModule\Sub;
+    $a = new Sub\MyClass();
+    $a->causeErr();
+}</code></pre>
+          </dd>
+        </dl>
+      </p>
+
+      <h4>Metaprogramming</h4>
+
+      <h3>Emitter Extensions</h3>
+      <p></p>
+
+      <h3>Validators</h3>
+      <p></p>
+
       <!-- TODO: more work -->
 
       <h3>Appendix</h3>
+
+      <h4>Visual Studio Support</h4>
+      <p>...</p>
+
+      <h4>Building From Source</h4>
+      <p>...</p>
 
       <h4>Gotchas</h4>
       <p>
@@ -912,6 +1390,13 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
           Basically, if you use the arguments array, then create a var later named arguments, we cannot tell the one used above the re-declaration needs func_get_args. Basic rule of thumb is not to use the arguments array in a function unless you have to, and then don't redefine it in the function.
         </dd>
       </dl>
+
+      <h4>Roadmap</h4>
+      <p>
+        This is just an ideal roadmap
+
+      <h4>Changelog</h4>
+      <p>...</p>
 
 
     </div>

@@ -1,6 +1,7 @@
 ///<reference path='all.ts' />
 
 declare interface Traversable {
+    forEach?(callbackfn: (value: any, index: any) => void);
 }
 
 declare interface Iterator extends Traversable {

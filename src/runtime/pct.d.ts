@@ -11,7 +11,13 @@ declare module Pct {
 
     interface CompileTimeOnly { }
     interface Ambient extends CompileTimeOnly { }
+
+    interface WithInvoke {
+        __invoke(...args: any[]): any;
+    }
     
+    function asCallable(val: WithInvoke): { (): any; };
+
     function newAssocArray(obj: Object): PhpAssocArray;
     function toArray(array: PhpAssocArray): any[];
     function toAssocArray(array: any[]): PhpAssocArray;
@@ -31,7 +37,8 @@ declare module Pct {
 
     function swallowErrors(value: any): any;
 
-    function const(value: any): any;
+    function const(value: number): number;
+    function const(value: string): string;
     var __LINE__: number;
     var __FILE__: string;
     var __DIR__: string;
@@ -54,7 +61,7 @@ declare module Pct {
         catch: { (e: Exception): any; }[];
         finally?: () => any;
     }
-    
+
     function try(val: TryCatch);
     function try(val: TryCatches);
 

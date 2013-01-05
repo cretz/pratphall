@@ -63,14 +63,26 @@ module Pratphall {
             emitter.emit(compiler.scripts.members[compiler.scripts.members.length - 1]);
             var str = emitter.getContents().trim();
             if (str != php) {
+                var expPieces = php.split('\n');
+                var actPieces = str.split('\n');
                 var reduce = (prev: string, curr: string) {
                     if (prev.length > 0) prev += '\n';
                     return prev + '"' + curr + '"';
                 };
-                var phpStr = php.split('\n').reduce(reduce, '');
-                var actualStr = str.split('\n').reduce(reduce, '');
-                this.io.writeLine('*****\n' + name + ' failed\n**EXPECTED**\n' + phpStr +
-                    '\n**ACTUAL**\n' + actualStr + '\n*****');
+                var expStr = expPieces.reduce(reduce, '');
+                var actStr = actPieces.reduce(reduce, '');
+                if (actPieces.length != expPieces.length) {
+                    this.io.writeLine('*****\n' + name + ' failed with different line counts\n**EXPECTED**\n' +
+                        expStr + '\n**ACTUAL**\n' + actStr + '\n*****');
+                } else {
+                    for (var i = 0; i < expPieces.length; i++) {
+                        if (actPieces[i] != expPieces[i]) {
+                            this.io.writeLine('*****\n' + name + ' failed on line ' + (i + 1) +
+                                '\n**EXPECTED**\n' + expStr + '\n**ACTUAL**\n' + actStr + '\n*****');
+                            break;
+                        }
+                    }
+                }
             } else {
                 //check expected pieces
                 this.assert.equal(emitter.warnings.length, expectedWarnings.length);

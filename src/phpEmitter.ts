@@ -268,6 +268,25 @@ module Pratphall {
                     this.emit(ast.operand2);
                 } else switch (ast.nodeType) {
                     case TypeScript.NodeType.Dot:
+                        //is this a reference to an object function? if so, we need to pull it out
+                        if (ast.type != null && ast.type.symbol.declAST instanceof TypeScript.FuncDecl &&
+                                ast.operand2 instanceof TypeScript.Identifier) {
+                            //ignore the __invoke reference
+                            if ((<TypeScript.Identifier>ast.operand2).actualText == '__invoke') {
+                                this.emit(ast.operand1);
+                                return;
+                            } else {
+                                //can't have call parent
+                                if (!this.stack.some((value: TypeScript.AST) {
+                                    return value instanceof TypeScript.CallExpression;
+                                })) {
+                                    this.write('(new ReflectionMethod(').emit(ast.operand1).write(", '" +
+                                        (<TypeScript.Identifier>ast.operand2).actualText + "'))->getClosure(").
+                                        emit(ast.operand1).write(')');
+                                    return;
+                                }
+                            }
+                        }
                         this.emit(ast.operand1).write('->').emit(ast.operand2);
                         break;
                     case TypeScript.NodeType.Member:
@@ -364,7 +383,47 @@ module Pratphall {
                     this.write('new ').emit(ast.target).write('(').emitCommaSeparated(ast.arguments).write(')');
                 }
             } else {
-                this.emit(ast.target).write('(').emitCommaSeparated(ast.arguments).write(')');
+                //is the target a property reference of an object?
+                if (ast.target.nodeType == TypeScript.NodeType.Dot &&
+                        (<TypeScript.BinaryExpression>ast.target).operand2 instanceof TypeScript.Identifier) {
+                    //any or unknown?
+                    if (ast.target.type == null ||
+                            TypeScript.hasFlag(ast.target.type.primitiveTypeClass, TypeScript.Primitive.Any)) {
+                        //warn
+                        this.addWarning(ast.target, 
+                            'Unknown type of call, cannot determine if closure or method, assuming method');
+                        this.emit(ast.target).write('(').emitCommaSeparated(ast.arguments).write(')');
+                    } else {
+                        var binex = <TypeScript.BinaryExpression>ast.target;
+                        var classDecl: TypeScript.NamedDeclaration = null;
+                        if (binex.operand1.type != null &&
+                                binex.operand1.type.symbol.declAST instanceof TypeScript.NamedDeclaration) {
+                            classDecl = <TypeScript.NamedDeclaration>binex.operand1.type.symbol.declAST;
+                        }
+                        //is class method?
+                        if (classDecl != null) {
+                            //is compile time only?
+                            if ('compileTimeOnly' in classDecl) {
+                                //unknown which, try either
+                                //(method_exists($val, 'bar') ? $val->bar() : $val->bar->__invoke());
+                                this.write('(method_exists(').emit((<TypeScript.BinaryExpression>ast.target).operand1).
+                                    write(", '" + (<TypeScript.Identifier>(<TypeScript.BinaryExpression>ast.
+                                        target).operand2).actualText + "') ? ").emit(ast.target).
+                                        write('(').emitCommaSeparated(ast.arguments).write(') : ').
+                                        emit(ast.target).write('->__invoke(').emitCommaSeparated(ast.arguments).
+                                        write('))');
+                            } else {
+                                //normal
+                                this.emit(ast.target).write('(').emitCommaSeparated(ast.arguments).write(')');
+                            }
+                        } else {
+                            //closure
+                            this.emit(ast.target).write('->__invoke(').emitCommaSeparated(ast.arguments).write(')');
+                        }
+                    }
+                } else {
+                    this.emit(ast.target).write('(').emitCommaSeparated(ast.arguments).write(')');
+                }
             }
         }
 
@@ -563,6 +622,26 @@ module Pratphall {
         }
 
         emitIdentifier(ast: TypeScript.Identifier) {
+            //if it's a reference to a top-level function, we have to make it a closure
+            if (ast.sym != null && !ast.sym.isVariable() && ast.type != null && ast.type.symbol != null &&
+                    ast.type.symbol.declAST instanceof TypeScript.FuncDecl &&
+                    this.stack.length > 1) {
+                //cannot have a parent that is a call w/ this type as the target (HACK)
+                var hasCallWithMeAsType = false;
+                for (var i = this.stack.length - 2; i >= 0; i--) {
+                    if (this.stack[i] instanceof TypeScript.CallExpression) {
+                        hasCallWithMeAsType = (<TypeScript.CallExpression>this.stack[i]).target.type != null &&
+                            (<TypeScript.CallExpression>this.stack[i]).target.type.typeID == ast.type.typeID;
+                        break;
+                    }
+                }
+                //func ref
+                if (!hasCallWithMeAsType) {
+                    //(new ReflectionFunction('a'))->getClosure()
+                    this.write("(new ReflectionFunction('" + ast.actualText + "'))->getClosure()");
+                    return;
+                }
+            }
             //must be variable for $
             var hasDollar = ast.sym != null && ast.sym.isVariable() && (ast.sym.container != null || 
                     ast.sym.name == 'arguments') && !TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Constant);

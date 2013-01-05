@@ -1,6 +1,6 @@
 ﻿Const test
 -----
-declare var A_CONST;
+declare var A_CONST: number;
 var a = A_CONST;
 var b = Pct.const(A_CONST);
 var c = Pct.__LINE__;

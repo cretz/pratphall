@@ -1,0 +1,50 @@
+﻿Function and closure test
+EXPECT-WARN:Unknown type of call, cannot determine if closure or method, assuming method
+-----
+//as known closure
+var a = { b: () => { return true; } };
+a.b();
+//as known function
+class Foo {
+    bar() { return true; }
+
+}
+
+var c = new Foo();
+c.bar();
+//unknown
+declare class Foo2 implements Pct.CompileTimeOnly {
+    bar(): bool;
+}
+function func(val: Foo2) {
+    val.bar();
+}
+
+//more unknown
+var d: any = null;
+d.bar();
+//known closure
+var e = [() => { return true; }];
+e[0]();
+-----
+//as known closure
+$a = (object)['b' => function () { return true; }];
+$a->b->__invoke();
+//as known function
+class Foo {
+    public function bar() { return true; }
+    
+}
+
+$c = new Foo();
+$c->bar();
+function func($val) {
+    (method_exists($val, 'bar') ? $val->bar() : $val->bar->__invoke());
+}
+
+//more unknown
+$d = null;
+$d->bar();
+//known closure
+$e = [function () { return true; }];
+$e[0]();

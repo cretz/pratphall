@@ -1,0 +1,14 @@
+﻿Global variable test
+-----
+var a = 'hello';
+function b() {
+	var b = ' world';
+    return a + $GLOBALS['hey'] + b;
+}
+-----
+$a = 'hello';
+function b() {
+    global $a;
+    $b = ' world';
+    return $a . $GLOBALS['hey'] . $b;
+}

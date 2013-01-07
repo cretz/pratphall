@@ -1,0 +1,9 @@
+﻿isInstance test
+-----
+var a = new Exception();
+var b = Pct.isInstance(a, 'Exception');
+var c = Pct.isInstance(a, a);
+-----
+$a = new Exception();
+$b = $a instanceof 'Exception';
+$c = $a instanceof $a;

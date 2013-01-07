@@ -1,5 +1,19 @@
 ///<reference path='all.ts' />
 
+declare var $GLOBALS: Pct.PhpAssocArray;
+declare var $_SERVER: Pct.PhpAssocArray;
+declare var $_GET: Pct.PhpAssocArray;
+declare var $_POST: Pct.PhpAssocArray;
+declare var $_FILES: Pct.PhpAssocArray;
+declare var $_REQUEST: Pct.PhpAssocArray;
+declare var $_SESSION: Pct.PhpAssocArray;
+declare var $_ENV: Pct.PhpAssocArray;
+declare var $_COOKIE: Pct.PhpAssocArray;
+declare var php_errormsg: string;
+declare var http_response_header: string[];
+declare var argc: number;
+declare var argv: string[];
+
 declare interface Traversable {
     forEach?(callbackfn: (value: any, index: any) => void);
 }
@@ -36,6 +50,9 @@ declare interface Closure {
 declare var Closure: {
     bindTo: (closure: Closure, newthis: any, newscope?: any) => Closure;
     prototype: Closure;
+}
+
+declare class stdClass {
 }
 
 declare class Exception implements Error {

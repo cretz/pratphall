@@ -15,12 +15,17 @@ declare module Pct {
     interface WithInvoke {
         __invoke(...args: any[]): any;
     }
-    
-    function asCallable(val: WithInvoke): { (): any; };
+
+    function declare(directive: string, value: any, block?: () => void): bool;
+
+    function isInstance(obj: any, check: any): bool;
 
     function newAssocArray(obj: Object): PhpAssocArray;
     function toArray(array: PhpAssocArray): any[];
     function toAssocArray(array: any[]): PhpAssocArray;
+    function unionArray(...arrays: any[][]): any[];
+    function unionArray(...arrays: PhpAssocArray[]): PhpAssocArray;
+    function unionArray(...arrays: any[]): PhpAssocArray;
 
     function castInt(value: any): number;
     function castBool(value: any): bool;

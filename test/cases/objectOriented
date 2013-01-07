@@ -1,0 +1,127 @@
+﻿Const test
+-----
+interface Iface {
+    numberProperty: number;
+
+    print(param: string);
+
+    notRequired?(...params: any[]): bool;
+}
+
+class BaseClass {
+    static fileContents = file_get_contents('myfile.txt');
+
+    constructor(public numberProperty: number) {
+        echo('Constructed!')
+    }
+}
+
+class MyClass extends BaseClass implements Iface {
+    static getFileContents() {
+        return BaseClass.fileContents;
+    }
+
+    constructor() {
+        super(12);
+    }
+
+    __destruct() { echo('Destructing!\n'); }
+
+    private secretFunction() { echo('Hello\n'); }
+
+    print(param: string) {
+        echo('Value: ' + param + '\n');
+    }
+
+    __invoke(someVal: any) {
+        echo('I have been invoked!\n');
+        return this.numberProperty + Pct.castInt(someVal);
+    }
+
+    __get(prop: string) { return 42; }
+
+    __set(prop: string, value: any) {
+        echo('Setting ' + prop + ' with ' + value);
+    }
+
+    toString() { return 'MyClass'; }
+}
+var myClass = new MyClass();
+echo('Instance? ' + (myClass instanceof Iface) + '\n');
+//call static
+var a = MyClass.getFileContents();
+//call normal
+myClass.print('Hey');
+//invoke
+var b = myClass.__invoke(20);
+var c = myClass.__invoke('15');
+//trigger getter/setter
+var d = <number>(<any>myClass).someProp;
+(<any>myClass).someNewProp = 20;
+//string version
+var e = myClass.toString();
+-----
+interface Iface {
+    public function print($param);
+    
+}
+
+class BaseClass {
+    public $numberProperty;
+    
+    public static $fileContents;
+    
+    public function __construct($numberProperty) {
+        $this->numberProperty = $numberProperty;
+        echo('Constructed!');
+    }
+    
+}
+BaseClass::$fileContents = file_get_contents('myfile.txt');
+
+class MyClass extends BaseClass implements Iface {
+    public static function getFileContents() {
+        return BaseClass::$fileContents;
+    }
+    
+    public function __construct() {
+        parent::__construct(12);
+    }
+    
+    public function __destruct() { echo("Destructing!\n"); }
+    
+    private function secretFunction() { echo("Hello\n"); }
+    
+    public function print($param) {
+        echo('Value: ' . $param . "\n");
+    }
+    
+    public function __invoke($someVal) {
+        echo("I have been invoked!\n");
+        return $this->numberProperty + (int) $someVal;
+    }
+    
+    public function __get($prop) { return 42; }
+    
+    public function __set($prop, $value) {
+        echo('Setting ' . $prop . ' with ' . $value);
+    }
+    
+    public function __toString() { return 'MyClass'; }
+    
+}
+
+$myClass = new MyClass();
+echo('Instance? ' . ($myClass instanceof Iface) . "\n");
+//call static
+$a = MyClass::getFileContents();
+//call normal
+$myClass->print('Hey');
+//invoke
+$b = $myClass(20);
+$c = $myClass('15');
+//trigger getter/setter
+$d = $myClass->someProp;
+$myClass->someNewProp = 20;
+//string version
+$e = strval($myClass);

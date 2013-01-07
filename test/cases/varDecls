@@ -8,6 +8,8 @@ var e = function (param: string) { return param + '-'; };
 var f = { a: 1, b: "2", c: false, "d": [1, 3, 7] }
 var g: any[] = [5, 7, { hey: "ho" }]
 var h = false;
+var i = 0xFF;
+var j = 0123;
 -----
 $a = 5;
 $b = 2.0;
@@ -17,3 +19,5 @@ $e = function ($param) { return $param . '-'; };
 $f = (object)['a' => 1, 'b' => '2', 'c' => false, 'd' => [1, 3, 7]];
 $g = [5, 7, (object)['hey' => 'ho']];
 $h = false;
+$i = 255;
+$j = 83;

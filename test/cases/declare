@@ -1,0 +1,13 @@
+﻿Declare test
+-----
+Pct.declare('encoding', 'ISO-8859-1');
+var a = true;
+Pct.declare('ticks', 1, () => {
+    var b = false;
+});
+-----
+declare(encoding = 'ISO-8859-1');
+$a = true;
+declare(ticks = 1) {
+    $b = false;
+}

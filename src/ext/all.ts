@@ -22,10 +22,13 @@
 ///<reference path='pct-clone.ts' />
 ///<reference path='pct-compileTimeOnly.ts' />
 ///<reference path='pct-const.ts' />
+///<reference path='pct-declare.ts' />
 ///<reference path='pct-false.ts' />
+///<reference path='pct-isInstance.ts' />
 ///<reference path='pct-phpAssocArray.ts' />
 ///<reference path='pct-swallowErrors.ts' />
 ///<reference path='pct-try.ts' />
+///<reference path='pct-unionArray.ts' />
 ///<reference path='string-charAt.ts' />
 ///<reference path='string-charCodeAt.ts' />
 ///<reference path='string-concat.ts' />

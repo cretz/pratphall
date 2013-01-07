@@ -7,9 +7,11 @@ var b = 5 + a;
 var c = a + 5;
 var d = 'hey';
 var e = d + 5;
+e += 'hey';
 -----
 $a = 'hey';
 $b = 5 + $a;
 $c = $a + 5;
 $d = 'hey';
 $e = $d . 5;
+$e .= 'hey';

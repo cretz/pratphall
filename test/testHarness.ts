@@ -43,8 +43,11 @@ module Pratphall {
             var php = pieces[2].trim();
             //compile TS
             var settings = new TypeScript.CompilationSettings();
+            settings.resolve = true;
             var err = new StringWriter();
             var compiler = new TypeScript.TypeScriptCompiler(err, new TypeScript.NullLogger(), settings);
+            //change error reporter
+            extendErrorReporter(compiler);
             //add lib.d.ts
             compiler.addUnit(this.io.readFile('../src/typescript/bin/lib.d.ts'), 'lib.d.ts');
             //add everything in runtime
@@ -53,8 +56,11 @@ module Pratphall {
                     compiler.addUnit(this.io.readFile('../src/runtime/' + value), value);
                 }
             });
+            //get referenced files
+            var source = new TypeScript.StringSourceText(typescript);
+            var referencedFiles = TypeScript.getReferencedFiles(source);
             //add text
-            compiler.addUnit(typescript, name);
+            compiler.addSourceUnit(source, name, false, referencedFiles);
             compiler.typeCheck();
             //this.assert.equal(compiler.scripts.members.length, 3);
             this.assert.ifError(err.contents);
@@ -85,7 +91,7 @@ module Pratphall {
                 }
             } else {
                 //check expected pieces
-                this.assert.equal(emitter.warnings.length, expectedWarnings.length);
+                this.assert.equal(emitter.warnings.length, expectedWarnings.length); 
                 emitter.warnings.forEach((value: EmitterError, index: number) => {
                     this.assert.equal(value.message, expectedWarnings[index]);
                 });

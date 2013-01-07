@@ -1,0 +1,9 @@
+﻿Require reference text
+SET-OPTION-TRUE:requireReferences
+-----
+///<reference path="temp.ts" />
+///<reference path="temp2.d.ts" />
+var a = true;
+-----
+require_once('temp.php');
+$a = true;

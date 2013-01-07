@@ -1,0 +1,9 @@
+﻿Union array test
+-----
+var a = [1, 2, 3];
+var b = Pct.newAssocArray({ c: 4, d: 5 });
+var c = Pct.unionArray(a, b, [6, 7, 8]);
+-----
+$a = [1, 2, 3];
+$b = ['c' => 4, 'd' => 5];
+$c = $a + $b + [6, 7, 8];

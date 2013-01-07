@@ -2,4 +2,5 @@
 
 var harness = new Pratphall.TestHarness();
 harness.run();
-//harness.runTest('closureAsVar');
+//harness.runTest('objectOriented');
+//harness.runTest('functionAndClosure');

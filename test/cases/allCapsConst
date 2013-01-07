@@ -1,0 +1,11 @@
+﻿Const test
+SET-OPTION-TRUE:allCapsConsts
+-----
+declare var A_CONST: number;
+var a = A_CONST;
+var B = 'hey';
+var c = B;
+-----
+$a = A_CONST;
+const B = 'hey';
+$c = B;

@@ -27,6 +27,9 @@ module Pratphall {
 
         //When true, elseif is used instead of "else if"
         useElseif = false;
+
+        //When require references is true, this emits a require_once
+        requireReferences = false;
     }
 
     export interface AstMatcher {
@@ -48,6 +51,9 @@ module Pratphall {
     }
 
     export class PhpEmitter {
+
+        static superGlobals = ['$GLOBALS', '$_SERVER', '$_GET', '$_POST', 
+            '$_FILES', '$_COOKIE', '$_SESSION', '$_REQUEST', '$_ENV'];
 
         static extensionsByNodeType: EmitterExtension[][] = [];
         
@@ -76,6 +82,7 @@ module Pratphall {
         errors: EmitterError[] = [];
         warnings: EmitterError[] = [];
         private tempVarCounter = 0;
+        private nextConstructorInitializers: TypeScript.VarDecl[];
 
         constructor(private checker: TypeScript.TypeChecker, 
             public options?: PhpEmitOptions = new PhpEmitOptions()) {
@@ -117,7 +124,7 @@ module Pratphall {
             if (this.extensionHandled(ast)) { /*no-op*/ }
             else {
                 //parens?
-                if (ast.isParenthesized) this.write('(');
+                if (ast.isParenthesized && !this.removeParentheses(ast)) this.write('(');
                 if (ast instanceof TypeScript.ArgDecl) this.emitArgDecl(<TypeScript.ArgDecl>ast);
                 else if (ast instanceof TypeScript.BinaryExpression) this.emitBinaryExpression(<TypeScript.BinaryExpression>ast);
                 else if (ast instanceof TypeScript.Block) this.emitBlock(<TypeScript.Block>ast);
@@ -177,7 +184,7 @@ module Pratphall {
                         break;
                     default: throw new Error('Unrecognized ast - ' + ast.printLabel());
                 }
-                if (ast.isParenthesized) this.write(')');
+                if (ast.isParenthesized && !this.removeParentheses(ast)) this.write(')');
             }
             this.stack.pop();
             return this;
@@ -251,12 +258,15 @@ module Pratphall {
                 if (tokenInfo != null) {
                     this.emit(ast.operand1);
                     //string concat is different in PHP
-                    var isAdd = tokenInfo.binopNodeType == TypeScript.NodeType.Add;
+                    var isAdd = tokenInfo.binopNodeType == TypeScript.NodeType.Add || 
+                        tokenInfo.binopNodeType == TypeScript.NodeType.AsgAdd;
                     var isStringConcat = isAdd && (
                         (ast.operand1.type != null && ast.operand1.type.isString()) ||
                         (ast.operand2.type != null && ast.operand2.type.isString()));
-                    if (isStringConcat) this.write(' . ');
-                    else {
+                    if (isStringConcat) {
+                        if (tokenInfo.binopNodeType == TypeScript.NodeType.Add) this.write(' . ');
+                        else this.write(' .= ');
+                    } else {
                         //warning, unknown type means we might have missed a string concat
                         if (isAdd && (ast.operand1.type == null || ast.operand1.type.getTypeName() == 'any')) {
                             this.addWarning(ast.operand1, 'Unknown type for addition, assuming arithmetic');
@@ -287,7 +297,13 @@ module Pratphall {
                                 }
                             }
                         }
-                        this.emit(ast.operand1).write('->').emit(ast.operand2);
+                        //is it a static ref?
+                        if (ast.operand1 instanceof TypeScript.Identifier &&
+                                (<TypeScript.Identifier>ast.operand1).sym.isType()) {
+                            this.emit(ast.operand1).write('::').emit(ast.operand2);
+                        } else {
+                            this.emit(ast.operand1).write('->').emit(ast.operand2);
+                        }
                         break;
                     case TypeScript.NodeType.Member:
                         if (ast.operand1 instanceof TypeScript.Identifier) {
@@ -335,8 +351,10 @@ module Pratphall {
                 //pre comments
                 if (this.options.comments && statement.preComments != null && statement.preComments.length > 0) {
                     statement.preComments.forEach((value: TypeScript.Comment) => {
-                        this.newline();
-                        this.emit(value);
+                        //ignore refs
+                        if (value.content.indexOf('///<reference') == -1) {
+                            this.newline().emit(value);
+                        }
                     });
                 }
                 //ignore empty
@@ -368,7 +386,10 @@ module Pratphall {
                 //post comments
                 if (this.options.comments && statement.postComments != null && statement.postComments.length > 0) {
                     statement.postComments.forEach((value: TypeScript.Comment) => {
-                        this.emit(value);
+                        //ignore refs
+                        if (value.content.indexOf('///<reference') == -1) {
+                            this.emit(value);
+                        }
                     });
                 }
             });
@@ -387,7 +408,7 @@ module Pratphall {
                 if (ast.target.nodeType == TypeScript.NodeType.Dot &&
                         (<TypeScript.BinaryExpression>ast.target).operand2 instanceof TypeScript.Identifier) {
                     //any or unknown?
-                    if (ast.target.type == null ||
+                    if (ast.target.type != null &&
                             TypeScript.hasFlag(ast.target.type.primitiveTypeClass, TypeScript.Primitive.Any)) {
                         //warn
                         this.addWarning(ast.target, 
@@ -400,10 +421,10 @@ module Pratphall {
                                 binex.operand1.type.symbol.declAST instanceof TypeScript.NamedDeclaration) {
                             classDecl = <TypeScript.NamedDeclaration>binex.operand1.type.symbol.declAST;
                         }
-                        //is class method?
-                        if (classDecl != null) {
+                        //is class method or static?
+                        if (classDecl != null || binex.operand1.type.isClassInstance()) {
                             //is compile time only?
-                            if ('compileTimeOnly' in classDecl) {
+                            if (classDecl != null && 'compileTimeOnly' in classDecl) {
                                 //unknown which, try either
                                 //(method_exists($val, 'bar') ? $val->bar() : $val->bar->__invoke());
                                 this.write('(method_exists(').emit((<TypeScript.BinaryExpression>ast.target).operand1).
@@ -422,7 +443,10 @@ module Pratphall {
                         }
                     }
                 } else {
-                    this.emit(ast.target).write('(').emitCommaSeparated(ast.arguments).write(')');
+                    this.emit(ast.target);
+                    //is the target a parent constructor call?
+                    if (ast.target.nodeType == TypeScript.NodeType.Super) this.write('::__construct');
+                    this.write('(').emitCommaSeparated(ast.arguments).write(')');
                 }
             }
         }
@@ -454,7 +478,8 @@ module Pratphall {
                 //don't handle compile time only extends
                 if (ast.extendsList.members[0].type == null ||
                         !('compileTimeOnly' in ast.extendsList.members[0].type.symbol.declAST)) {
-                    this.write(' extends ').emit(ast.extendsList.members[0]);
+                    this.write(' extends ').emit(
+                        (<TypeScript.NamedDeclaration>ast.extendsList.members[0].type.symbol.declAST).name);
                 }
             }
             if (ast.implementsList != null && ast.implementsList.members.length > 0) {
@@ -472,15 +497,44 @@ module Pratphall {
                 });
             }
             this.write(' {').increaseIndent();
-            //construct
-            if (ast.constructorDecl != null) this.newline().emit(ast.constructorDecl).newline();
+            var staticExtraInitVars: TypeScript.VarDecl[] = [];
             //members
             if (ast.members != null) {
+                //vars w/ complex inits end up in constructor or at end
+                this.nextConstructorInitializers = [];
+                //find extra inits first and handle constructor properties
+                ast.members.members.forEach((member: TypeScript.AST) => {
+                    //is a var decl w/ non-standard init?
+                    if (member instanceof TypeScript.VarDecl && (<TypeScript.VarDecl>member).init != null &&
+                            !this.isScalar((<TypeScript.VarDecl>member).init)) {
+                        if ((<TypeScript.VarDecl>member).isStatic()) {
+                            staticExtraInitVars.push(<TypeScript.VarDecl>member);
+                        } else this.nextConstructorInitializers.push(<TypeScript.VarDecl>member);
+                    } else if (member instanceof TypeScript.FuncDecl && (<TypeScript.FuncDecl>member).isConstructor) {
+                        //gotta make new properties from pub/priv constructor args
+                        (<TypeScript.FuncDecl>member).arguments.members.forEach((value: TypeScript.ArgDecl) => {
+                            if (value.isProperty()) {
+                                this.newline();
+                                if (value.isPublic()) this.write('public ');
+                                else this.write('private ');
+                                this.emit(value.id).write(';').newline();
+                            }
+                        });
+                    }
+                });
+                //now the actual members
                 ast.members.members.forEach((member: TypeScript.AST) => {
                     this.newline().emit(member).newline();
                 });
+                //unset constructor init
+                this.nextConstructorInitializers = [];
             }
             this.decreaseIndent().newline().write('}');
+            //static extra init vars?
+            staticExtraInitVars.forEach((value: TypeScript.VarDecl) => {
+                this.newline().write(ast.name.actualText + '::$' + value.id.actualText + ' = ').
+                    emit(value.init).write(';');
+            });
         }
 
         emitComment(ast: TypeScript.Comment) {
@@ -551,8 +605,10 @@ module Pratphall {
                 this.write('$' + ast.name.actualText + ' = ');
             }
             //visibility
-            if (ast.isPublic()) this.write('public ');
-            else if (ast.isPrivate()) this.write('private ');
+            if (ast.isMethod() || ast.isConstructor) {
+                if (!ast.isPrivate()) this.write('public ');
+                else this.write('private ');
+            }
             //static?
             if (ast.isStatic()) this.write('static ');
             this.write('function ');
@@ -561,6 +617,7 @@ module Pratphall {
             //closure?
             if (ast.isAnonymousFn() || ast.enclosingFnc != null) this.write('(');
             else if (ast.isConstructor) this.write('__construct(');
+            else if (ast.isMethod() && ast.name.actualText == 'toString') this.write('__toString(');
             else this.emit(ast.name).write('(');
             //must make sure we ignore rest params
             var first = true;
@@ -578,16 +635,23 @@ module Pratphall {
             else {
                 this.write(' {');
                 if (newlines) this.increaseIndent();
-                //need to assign arguments?
-                ast.freeVariables.some((value: TypeScript.Symbol) => {
-                    if (value.name == 'arguments' && value.declAST == null) {
-                        if (newlines) this.newline();
-                        else this.write(' ');
-                        this.write('$arguments = func_get_args();');
-                        return true;
+                //any globals?
+                var globCount = 0;
+                ast.freeVariables.some((value: TypeScript.Symbol, index: number) => {
+                    //is global but not super global?
+                    if (value.declModule == null && value.declAST != null && value.isVariable() &&
+                            PhpEmitter.superGlobals.indexOf(value.name) == -1) {
+                        globCount++;
+                        if (globCount == 1) {
+                            if (newlines) this.newline();
+                            else this.write(' ');
+                            this.write('global ');
+                        } else this.write(', ');
+                        if (value.name.charAt(0) != '$') this.write('$');
+                        this.write(value.name);
                     }
-                    return false;
                 });
+                if (globCount > 0) this.write(';');
                 //optional inits?
                 ast.arguments.members.forEach((value: TypeScript.ArgDecl, index: number) => {
                     //write?
@@ -598,6 +662,16 @@ module Pratphall {
                         this.write('if (').emit(value.id).write(' === null) ').
                             emit(value.id).write(' = ').emit(value.init).write(';');
                     }
+                });
+                //need to assign arguments?
+                ast.freeVariables.some((value: TypeScript.Symbol) => {
+                    if (value.name == 'arguments' && value.declAST == null) {
+                        if (newlines) this.newline();
+                        else this.write(' ');
+                        this.write('$arguments = func_get_args();');
+                        return true;
+                    }
+                    return false;
                 });
                 //variadic?
                 if (ast.variableArgList) {
@@ -613,6 +687,23 @@ module Pratphall {
                         this.emit((<TypeScript.ArgDecl>lastArg).id).write(' = array_slice(func_get_args(), ' +
                             (ast.arguments.members.length - 1) + ');');
                     }
+                }
+                //is constructor?
+                if (ast.isConstructor) {
+                    //has extra init vals?
+                    this.nextConstructorInitializers.forEach((value: TypeScript.VarDecl) => {
+                        if (newlines) this.newline();
+                        else this.write(' ');
+                        this.write('$this->' + value.id.actualText + ' = ').emit(value.init).write(';');
+                    });
+                    //how about pub/priv properties
+                    ast.arguments.members.forEach((value: TypeScript.ArgDecl) => {
+                        if (value.isProperty()) {
+                            if (newlines) this.newline();
+                            else this.write(' ');
+                            this.write('$this->' + value.id.actualText + ' = $' + value.id.actualText + ';');
+                        }
+                    });
                 }
                 this.emitBlockStatements(ast.bod, newlines);
                 if (newlines) this.decreaseIndent().newline();
@@ -635,18 +726,20 @@ module Pratphall {
                         break;
                     }
                 }
-                //func ref
-                if (!hasCallWithMeAsType) {
+                //func ref...but not class name?
+                if (!hasCallWithMeAsType && ast.sym.declAST instanceof TypeScript.FuncDecl &&
+                        !(<TypeScript.FuncDecl>ast.sym.declAST).isConstructor) {
                     //(new ReflectionFunction('a'))->getClosure()
                     this.write("(new ReflectionFunction('" + ast.actualText + "'))->getClosure()");
                     return;
                 }
             }
             //must be variable for $
-            var hasDollar = ast.sym != null && ast.sym.isVariable() && (ast.sym.container != null || 
-                    ast.sym.name == 'arguments') && !TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Constant);
+            var hasDollar = ast.sym != null && ast.sym.isVariable() && (!ast.sym.isInstanceProperty() ||
+                TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Static)) && 
+                !TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Constant);
             //can't be all caps with setting set
-            if (hasDollar && this.options.allCapsConsts && ast.actualText.toUpperCase() != ast.actualText) {
+            if (hasDollar && this.options.allCapsConsts && ast.actualText.toUpperCase() == ast.actualText) {
                 hasDollar = false;
             }
             //nested functions which we make anon are ok to have dollar signs
@@ -655,7 +748,7 @@ module Pratphall {
                     (<TypeScript.FuncDecl>ast.type.symbol.declAST).enclosingFnc != null) {
                 hasDollar = true;
             }
-            if (hasDollar) this.write('$');
+            if (hasDollar && ast.actualText.charAt(0) != '$') this.write('$');
             this.write(ast.actualText);
         }
 
@@ -700,7 +793,12 @@ module Pratphall {
             //members
             if (ast.members != null) {
                 ast.members.members.forEach((member: TypeScript.AST) => {
-                    this.newline().emit(member).newline();
+                    //no properties or optional ones
+                    if (member instanceof TypeScript.FuncDecl && member.type != null &&
+                            member.type.symbol != null && !TypeScript.hasFlag(
+                            member.type.symbol.flags, TypeScript.SymbolFlags.Optional)) {
+                        this.newline().emit(member).newline();
+                    }
                 });
             }
             this.decreaseIndent().newline().write('}');
@@ -748,6 +846,18 @@ module Pratphall {
         }
 
         emitScript(ast: TypeScript.Script) {
+            if (this.options.requireReferences) {
+                var first = false;
+                ast.referencedFiles.forEach((value: TS.IFileReference) => {
+                    //ignore decl files
+                    if ((value.path.length <= 5 || value.path.substr(-5) != '.d.ts') &&
+                            value.path.substr(-3) == '.ts') {
+                        if (first) first = false;
+                        else this.newline();
+                        this.write("require_once('" + value.path.slice(0, -3) + ".php');");
+                    }
+                });
+            }
             this.emitBlockStatements(ast.bod, true);
         }
 
@@ -849,12 +959,33 @@ module Pratphall {
         }
 
         emitVarDecl(ast: TypeScript.VarDecl) {
-            //no init, no emit
-            if (ast.init != null) {
+            var isConst = this.options.allCapsConsts && ast.id.actualText.toUpperCase() == ast.id.actualText;
+            //the init better be a literal
+            if (isConst) {
+                if (ast.init == null) {
+                    this.addError(ast, 'Constant declaration does not have initializer');
+                } else if (ast.init.nodeType != TypeScript.NodeType.True &&
+                        ast.init.nodeType != TypeScript.NodeType.False &&
+                        ast.init.nodeType != TypeScript.NodeType.NumberLit &&
+                        ast.init.nodeType != TypeScript.NodeType.QString) {
+                    this.addError(ast.init, 'Constant declaration has non-scalar initial value');
+                } else {
+                    this.write('const ').emit(ast.id).write(' = ').emit(ast.init);
+                }
+            } else if (ast.isProperty()) {
+                //prop...
+                if (!ast.isPrivate()) this.write('public ');
+                else this.write('private ');
+                if (ast.isStatic()) this.write('static ');
                 this.emit(ast.id);
-                if (ast.init != null) {
+                //init that's scalar?
+                if (ast.init != null && this.isScalar(ast.init)) {
                     this.write(' = ').emit(ast.init);
                 }
+                this.write(';');
+            } else if (ast.init != null) {
+                //otherwise...no init, no emit
+                this.emit(ast.id).write(' = ').emit(ast.init);
             }
         }
 
@@ -963,6 +1094,11 @@ module Pratphall {
                 })) return true;
             }
             return false;
+        }
+
+        removeParentheses(ast: TypeScript.AST) {
+            //(<type>anything) doesn't need parentheses
+            return ast.nodeType == TypeScript.NodeType.TypeAssertion;
         }
     }
 }

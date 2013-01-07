@@ -1,46 +1,42 @@
 <!DOCTYPE html>
 <html>
   <head lang="en">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pratphall</title>
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
     <link href="pratphall.css" rel="stylesheet">
   </head>
-  <body data-spy="scroll" data-target=".top-level-nav" data-offset="100">
-    <div class="container">
-      <div data-spy="affix" style="background-color: white; height: 80px; left: 10px; right: 10px">
-        <div style="text-align: right; position: relative; float: right; margin-top: 0px;">
-          <p class="muted">*Actually, it's just <a href="http://typescriptlang.org">TypeScript</a> cross-compiled.</p>
-          <a href="https://github.com/cretz/pratphall">GitHub</a> |
-          <a href="https://groups.google.com/d/forum/pratphall">Mailing List</a>
-        </div>
-        <h1 style="border-bottom: 1px solid #D3D3D3; margin-bottom: 0px">
-          <a class="title" href="#Top">Pratphall</a>
-          <small> - A typed language targeting <a href="http://php.net">PHP</a>*</small>
-        </h1>
-        <div class="top-level-nav">
-          <ul class="nav nav-pills">
-            <li style="display: none"><a href="#Top"></a></li>
-            <li class="top-nav-title">Getting Started </li>
-            <li><a href="#GettingStarted-Installation">Installation</a></li>
-            <li class="divider">|</li>
-            <li><a href="#GettingStarted-Compiling">Compiling</a></li>
-            <li class="top-nav-title" style="margin-left: 5px">Manual </li>
-            <li><a href="#Manual-Introduction">Introduction</a></li>
-            <li class="divider">|</li>
-            <li><a href="#Manual-Usage">Usage</a></li>
-            <li class="divider">|</li>
-            <li><a href="#Manual-Types">Types</a></li>
-            <li class="divider">|</li>
-            <li><a href="#Manual-Syntax">Syntax</a></li>
-            <li class="divider">|</li>
-            <li><a href="#Manual-Structure">Structure</a></li>
-          </ul>
-        </div>
+  <body>
+    <div class="topbar">
+      <h1 class="topbar-title">
+        <a class="title" href="#Top">Pratphall</a>
+        <small> - A typed language targeting <a href="http://php.net">PHP</a>*</small>
+      </h1>
+      <div style="text-align: right; position: relative; float: right; margin-top: 0px; right: 10px;">
+        <p class="muted">*Actually, it's just <a href="http://typescriptlang.org">TypeScript</a> cross-compiled.</p>
+        <a class="btn btn-link dropdown-toggle" data-toggle="dropdown" href="#" style="padding: 0px">
+          Doc <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li class="dropdown-title">Getting Started</li>
+          <li><a tabindex="-1" href="#GettingStarted-Installation">Installation</a></li>
+          <li><a tabindex="-1" href="#GettingStarted-Compiling">Compiling</a></li>
+          <li class="dropdown-title">Manual</li>
+          <li><a tabindex="-1" href="#Manual-Introduction">Introduction</a></li>
+          <li><a tabindex="-1" href="#Manual-Usage">Usage</a></li>
+          <li><a tabindex="-1" href="#Manual-Types">Types</a></li>
+          <li><a tabindex="-1" href="#Manual-Syntax">Syntax</a></li>
+          <li><a tabindex="-1" href="#Manual-Structure">Structure</a></li>
+          <li><a tabindex="-1" href="#Manual-Metaprogramming">Metaprogramming</a></li>
+          <li><a tabindex="-1" href="#Manual-Appendices">Appendices</a></li>
+        </ul> |
+        <a href="https://github.com/cretz/pratphall">GitHub</a> |
+        <a href="https://groups.google.com/d/forum/pratphall">Mailing List</a>
       </div>
+    </div>
+    <div class="container">
       <span class="bookmark" id="Top"></span>
       <div class="row" style="margin-top: 80px">
-        <div class="span1"></div>
+        <div class="span2"></div>
         <div class="span4">
           <h3>Features</h3>
           <ul>
@@ -52,7 +48,7 @@
             <li>Apache 2 licensed</li>
           </ul>
         </div>
-        <div class="span7">
+        <div class="span6">
           <h3>
             Anti-Features
           </h3>
@@ -213,7 +209,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
       <p>Options:</p>
       <dl class="dl-horizontal">
         <dt><code>--all-caps-consts</code></dt>
-        <dd>When set and an externally declared variable is all capital letters, it will assume it's a constant and not prefix it with a dollar sign in PHP</dd>
+        <dd>When set and any variable is all capital letters, it will assume it's a constant and not prefix it with a dollar sign in PHP</dd>
         <dt><code>--ext FILE</code></dt>
         <dd>Can be used as many times as necessary to include extensions<dd>
         <dt><code>--no-comments</code></dt>
@@ -428,7 +424,7 @@ $f('test');</code></pre>
         To cast to a value at compile time, use the TypeScript method. For example: <code>&lt;bool>&lt;any>stringValue</code> casts a string to a bool but will not be casted in the emitted PHP code. This is helpful for functions that return a value or FALSE. In fact, this is such a common pattern that there are compile-time helpers for it: <code>Pct.isFalse</code> and <code>Pct.isNotFalse</code>.
       </p>
       <p>
-        To cast a value at runtime, it is always preferred to use the built-in PHP methods such as `strval`, `intval`, etc. If you must have a literal cast, you can use the `Pct.to*` functions.
+        To cast a value at runtime, it is always preferred to use the built-in PHP methods such as `strval`, `intval`, etc. If you must have a literal cast, you can use the `Pct.cast*` functions.
       </p>
       <div class="code">
         <pre><code class="pratphall">function printNumber(value: number) {
@@ -442,7 +438,7 @@ printNumber(&lt;number>&lt;any>'10');
 printNumber(intval('10'));
 
 //runtime PHP explicit cast
-printNumber(Pct.toInt('10'));
+printNumber(Pct.castInt('10'));
 
 //two ways to check a FALSE return
 if (&lt;bool>&lt;any>strpos('team', 'I') === false) {
@@ -507,7 +503,10 @@ echo('Grandchild val: ' . $obj->child->{'grand' . 'child'});</code></pre>
 
       <h4>Constants</h4>
       <p>
-        Constants cannot be defined in Pratphall in any way. The closest you can get is creating a top-level var. Some existing libraries have constants though that need to be accessed when interoperating. You can avoid the dollar sign that is normally prefixed to PHP variables by using <code>Pct.const</code> to reference the constant. If the <code>--all-caps-consts</code> compiler option is set, externally defined variables that are in all capital letters will be assumed to be constant.
+        Constants cannot be defined in Pratphall by default. The closest you can get is creating a top-level var. Some existing libraries have constants though that need to be accessed when interoperating. You can avoid the dollar sign that is normally prefixed to PHP variables by using <code>Pct.const</code> to reference the constant.
+      </p>
+      <p>
+        If the <code>--all-caps-consts</code> compiler option is set, all variables that are in all capital letters will be considered constants when both defining and accessing. Note, a compiler warning will be issued for attempted const declarations that are not literal scalar values.
       </p>
       <p>
         All magic constants are supported in the Pratphall compile-time library. <code>Pct.__LINE__</code> is a number, and all other magic constants are strings.
@@ -739,7 +738,7 @@ echo('Changed? ' . ($c->d == 20));</code></pre>
       <span class="bookmark" id="Manual-Structure"></span>
       <h3>Structure</h3>
 
-      <h4>Basics</h4>
+      <h4>Function Basics</h4>
       <p>
         Functions in Pratphall behave very similarly to PHP.
       </p>
@@ -945,7 +944,7 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
             <strong>overloads</strong> - Overloaded methods are supported in classes just like normal overloaded functions. This means there must be a single catch-all implementation and the overload signatures are not emitted.
           </li>
           <li>
-            <strong>callable class</strong> - Simply define a base call signature on the class itself and it will become <code>__invoke</code>
+            <strong>callable class</strong> - When calling the class or passing around the class as a callable closure, simply pass around a reference to <code>__invoke</code> and it will automatically be removed. Until bare call signature implementations are supported in classes, you cannot call the class as a function directly.
           </li>
           <li>
             <strong>toString</strong> - In Pratphall, <code>toString</code> becomes <code>__toString</code>. A member named <code>__toString</code> in Pratphall is an error.
@@ -957,7 +956,7 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
             <strong>optional members</strong> - In Pratphall, using a question mark after a function or property name in an interface means the implementer doesn't have to implement it. Optional members are NOT emitted to PHP, they are a compile-time only feature.
           </li>
           <li>
-            <strong>magic methods</strong> - All magic methods besides <code>__construct</code>, <code>__toString</code>, and <code>__invoke</code> are supported as normal methods. If they are not public, an error occurs. Be advised, the compile-time type system is unaware of runtime-derived members from things like <code>__get</code>, <code>__callStatic</code>, etc. Pratphall discourages the use of these magic methods, but if you must, cast to any first then cast the result back.
+            <strong>magic methods</strong> - All magic methods besides <code>__construct</code> and <code>__toString</code> are supported as normal methods. If they are not public, an error occurs. Be advised, the compile-time type system is unaware of runtime-derived members from things like <code>__get</code>, <code>__callStatic</code>, etc. Pratphall discourages the use of these magic methods, but if you must, cast to any first then cast the result back.
           </li>
         </ul>
       </p>
@@ -1003,10 +1002,9 @@ class MyClass extends BaseClass implements Iface {
         echo('Value: ' + param + '\n');
     }
 
-    (someVal: string);
-    (someVal: number) {
+    __invoke(someVal: any) {
         echo('I have been invoked!\n');
-        return this.numberProperty + someVal;
+        return this.numberProperty + Pct.castInt(someVal);
     }
 
     __get(prop: string) { return 42; }
@@ -1025,10 +1023,10 @@ var a = MyClass.getFileContents();
 //call normal
 myClass.print('Hey');
 //invoke
-var b = myClass(20);
-var c = myClass('15');
+var b = myClass.__invoke(20);
+var c = myClass.__invoke('15');
 //trigger getter/setter
-var d = &gt;number&gt;(&lt;any&gt;myClass).someProp;
+var d = &lt;number&gt;(&lt;any&gt;myClass).someProp;
 (&lt;any&gt;myClass).someNewProp = 20;
 //string version
 var e = myClass.toString();</code></pre>
@@ -1053,7 +1051,7 @@ class BaseClass {
         echo('Constructed!');
     }
 }
-BaseClass::fileContents = file_get_contents('myfile.txt');
+BaseClass::$fileContents = file_get_contents('myfile.txt');
 
 class MyClass extends BaseClass implements Iface {
 
@@ -1073,10 +1071,9 @@ class MyClass extends BaseClass implements Iface {
         echo('Value: ' . $param . "\n");
     }
 
-
     public function __invoke($someVal) {
         echo("I have been invoked!\n");
-        return $this->numberProperty + $someVal;
+        return $this->numberProperty + (int) $someVal;
     }
 
     public function __get($prop) { return 42; }
@@ -1314,17 +1311,19 @@ namespace {
         </dl>
       </p>
 
-      <h4>Metaprogramming</h4>
+      <span class="bookmark" id="Manual-Metaprogramming"></span>
+      <h3>Metaprogramming</h3>
 
-      <h3>Emitter Extensions</h3>
+      <h4>Emitter Extensions</h3>
       <p></p>
 
-      <h3>Validators</h3>
+      <h4>Validators</h3>
       <p></p>
 
       <!-- TODO: more work -->
 
-      <h3>Appendix</h3>
+      <span class="bookmark" id="Manual-Appendices"></span>
+      <h3>Appendices</h3>
 
       <h4>Visual Studio Support</h4>
       <p>...</p>
@@ -1391,9 +1390,18 @@ namespace {
         </dd>
       </dl>
 
-      <h4>Roadmap</h4>
+      <h4>Future</h4>
       <p>
-        This is just an ideal roadmap
+        These are some items that could be implemented in the future.
+        <ul>
+          <li>
+            Emit exact PHPDoc based on the <a href="https://github.com/phpDocumentor/phpDocumentor2/blob/master/docs/PSR.md">PSR</a>.
+          </li>
+          <li>
+            Create a proxy (likely w/ TypeScript and nodejs) to proxy xdebug protocol to the JS source map protocol to facillitate debugging
+          </li>
+        </ul>
+      </p>
 
       <h4>Changelog</h4>
       <p>...</p>

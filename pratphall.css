@@ -1,5 +1,14 @@
+.container {
+    margin: 0;
+    padding-left: 10px;
+    width: 950px;
+}
+
+pre {
+    width: 900px;
+}
+
 code, pre, tt, textarea {
-    color: #115555;
     font-family: Monaco,Consolas,"Lucida Console",monospace;
     font-size: 12px;
     line-height: 18px;
@@ -7,16 +16,45 @@ code, pre, tt, textarea {
     word-wrap: break-word;
 }
 
+.topbar {
+    background-color: white;
+    height: 60px;
+    left: 0px;
+    min-width: 490px;
+    padding-left: 252px;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    z-index: 100;
+    border-bottom: 1px solid #D3D3D3;
+    white-space: nowrap;
+}
+
+.topbar-title {
+    display: block;
+    height: 60px;
+    left: 15px;
+    position: absolute;
+    top: 0;
+}
+
 div.code {
-    width: 950px;
+    position: relative;
+    background: none repeat scroll 0 0 #FFFFFF;
+    width: 920px;
     display: inline-block;
 }
 
 div.code pre {
-    background: none repeat scroll 0 0 #FFFFFF;
     float: left;
-    margin: 10px 0 15px 3px;
     width: 450px;
+    padding: 2px;
+    display: block;
+    background: none repeat scroll 0 0 #FFFFFF;
+}
+
+div.code pre code {
+    background: none repeat scroll 0 0 #F8F8FF;
 }
 
 div.code-nested {
@@ -46,6 +84,17 @@ div.top-level-nav > ul.nav-pills > li > a {
     padding: 2px;
     margin: 2px;
     border-radius: 0px 0px 0px 0px;
+}
+
+.dropdown-menu li {
+    text-align: left;
+}
+
+.dropdown-title {
+    border-bottom: 1px solid #D3D3D3;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .bookmark {

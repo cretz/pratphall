@@ -35,9 +35,9 @@
     </div>
     <div class="container">
       <span class="bookmark" id="Top"></span>
-      <div class="row" style="margin-top: 80px">
-        <div class="span2"></div>
-        <div class="span4">
+      <div style="margin-top: 80px">
+        <div style="float: left; width: 100px">&nbsp;</div>
+        <div style="float: left; width: 300px">
           <h3>Features</h3>
           <ul>
             <li>Optional typing</li>
@@ -48,10 +48,8 @@
             <li>Apache 2 licensed</li>
           </ul>
         </div>
-        <div class="span6">
-          <h3>
-            Anti-Features
-          </h3>
+        <div style="float: left; width: 400px">
+          <h3>Anti-Features</h3>
           <ul>
             <li>Not fixing PHP standard library</li>
             <li>Not emitting obtuse/complicated PHP code</li>
@@ -61,7 +59,9 @@
             <li>Not supporting every JS/TypeScript feature</li>
           </ul>
         </div>
+        <br class="clearfix" style="clear: left;" />
       </div>
+      <h1 style="color: red">Placeholder page...not ready yet!!!</h1>
       <h3>Overview</h3>
       <p>
         Pratphall is an optionally-typed language that compiles to readable PHP. PHP has a powerful engine and is very scalable since state is primarily per-request for PHP scripts. Unfortunately, due to the dynamic nature of PHP, it can be difficult to build large projects and retain the ability to refactor and manage the code. It can also be difficult to foresee errors with typing and unavailable variables. Almost all of these issues cause many problems that don't surface until runtime. Pratphall aims to solve this.
@@ -732,6 +732,7 @@ function &amp;getReference($val) {
     return $val->d;
 }
 $e = &amp;getReference($c);
+$e = 20;
 echo('Changed? ' . ($c->d == 20));</code></pre>
       </div>
 
@@ -1322,6 +1323,44 @@ namespace {
 
       <!-- TODO: more work -->
 
+      <span class="bookmark" id="Manual-Faq"></span>
+      <h3>FAQ</h3>
+
+      <dl>
+        <dt>This is neat, so I can convert my PHP programs to JavaScript/TypeScript? Can I convert my JavaScript/TypeScript programs to PHP?</dt>
+        <dd>
+          No and no (basically). The goal of this project is to provide a new language that emits PHP. Pratphall intentionally doesn't convert existing code because it would put too many constraints on the language's freedom and would require a significant runtime layer which is unacceptable.
+        </dd>
+        <dt>Well, can you generate the ambient declarations from existing PHP code with strong PHPDoc blocks? Or maybe generate PHPDoc annotations when emitting?</dt>
+        <dd>
+          In theory, ambient declarations could be generated from existing PHP code. Also, PHPDoc annotations could be generated during compilation. The problem is that PHPDoc and Pratphall's typing systems don't lineup very well. For example, PHPDoc doesn't support differentiating between numerically indexed arrays and associative arrays. And Pratphall doesn't support knowing whether a value is nullable or not (e.g. the <code>string|null</code> PHPDoc type).
+        </dd>
+        <dt>Ok, then can I at least write Pratphall code that can also run in a JavaScript environment?</dt>
+        <dd>
+          Technically, yes. Many features of JavaScript/TypeScript are supported. If you are careful and abstract properly, some of your Pratphall code can also run in a browser. For instance, imagine you had a bunch of model objects that are serialized to and from JSON for use in RESTful API calls. If you needed the server side to have these models for processing and the client side to have them for an AJAX call, you could share the Pratphall model code.
+        </dd>
+        <dt>How does this effort relate to <a href="http://phpjs.org">php.js</a>? Can I use it?</dt>
+        <dd>
+          Pratphall has not been tested with php.js in any way whatsoever, so use at your own risk. Though, in theory there are two ways Pratphall and php.js can work together. Firstly, if you were targeting both a JS environment and PHP, php.js has runtime support for many of the PHP functions you may need in both environments. Secondly, Pratphall supplies typed definitions for all PHP functions which means even if you're not developing in Pratphall and instead just developing in TypeScript, you now have a typed set of definitions for all the phpjs functions.
+        </dd>
+        <dt>You are almost there for supporting the entire language of JavaScript/TypeScript, why not support it 100%? Then you can bootstrap Pratphall in PHP too.</dt>
+        <dd>
+          This would require too much runtime support since certain features of JavaScript/TypeScript have no equivalent in PHP. It is possible that an ancillary fork of Pratphall may aim to support the entirety of JavaScript/TypeScript, but it will be as an extension because Pratphall's goal is to compile to readable, minimal, and predictable PHP.
+        </dd>
+        <dt>What is the minimum PHP version Pratphall supports?</dt>
+        <dd>
+          Currently, it is PHP 5.4. Several features (mainly short array syntax and closures w/ $this) are required. If you use <code>finally</code> in your try blocks, then PHP 5.5 is required. This decision was made since Pratphall is a new language and should not be bound by older environments. It is possible that 5.3 will be supported with a compiler option if there is enough need.
+        </dd>
+        <dt>I have heard that "transpiled" languages suffer from debugging issues. How do you debug code in Pratphall?</dt>
+        <dd>
+          Currently there is no easy method to debug Pratphall in your favorite editor. If the Visual Studio protocol was more public and friendly (i.e. not COM/DCOM) we could write a proxy to convert Xdebug events to Visual Studio events (if anyone can help here, we'd appreciate it). If node-inspector accepted source mapping (ref <a href="https://github.com/dannycoates/node-inspector/issues/100">issue 100</a>) we could possibly proxy the Xdebug events to V8 protocol. Or if <a href="http://jbaron.github.com/cats/">CATS</a> had integrated debugging w/ V8 protocol, we could do it there too (ref <a href="https://github.com/jbaron/cats/issues/6">issue 6</a>). Maybe the best idea is to combine the source map support in Chrome Canary and the remote debugger protocol and use Chrome's devtools as the client (maybe embedded via node-webkit). But for now, there is no direct debugging.
+        </dd>
+        <dt>How complete is this? Should I depend on it for production code?</dt>
+        <dd>
+          It is fairly complete, however TypeScript itself is still only in preview. They might implement new features or change existing ones which can affect Pratphall. Using for production code shouldn't be a problem since the language is cross-compiled and the PHP is easily readable and auditable. The only real problem comes from backwards incompatibilities from Pratphall being unstable. Pratphall's first stable release will not be before TypeScript's first stable release (and maybe well after, depending).
+        </dd>
+      </dl>
+
       <span class="bookmark" id="Manual-Appendices"></span>
       <h3>Appendices</h3>
 
@@ -1398,7 +1437,7 @@ namespace {
             Emit exact PHPDoc based on the <a href="https://github.com/phpDocumentor/phpDocumentor2/blob/master/docs/PSR.md">PSR</a>.
           </li>
           <li>
-            Create a proxy (likely w/ TypeScript and nodejs) to proxy xdebug protocol to the JS source map protocol to facillitate debugging
+            Create a proxy to proxy Xdebug protocol to other debugging protocols used in common IDE's.
           </li>
         </ul>
       </p>
@@ -1412,5 +1451,18 @@ namespace {
     <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js "></script>
     <script>hljs.initHighlightingOnLoad();</script>
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37431760-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+    </script>
   </body>
 </html>

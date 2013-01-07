@@ -58,15 +58,22 @@ div.code pre code {
 }
 
 div.code-nested {
-    width: 940px;
+    position: relative;
+    background: none repeat scroll 0 0 #FFFFFF;
+    width: 900px;
     display: inline-block;
 }
 
 div.code-nested pre {
-    background: none repeat scroll 0 0 #FFFFFF;
     float: left;
-    margin: 10px 0 15px 3px;
-    width: 445px;
+    width: 430px;
+    padding: 2px;
+    display: block;
+    background: none repeat scroll 0 0 #FFFFFF;
+}
+
+div.code-nested pre code {
+    background: none repeat scroll 0 0 #F8F8FF;
 }
 
 .title, .title:hover {
@@ -78,12 +85,6 @@ div.code-nested pre {
     margin-top: 1px;
     font-weight: bold;
     color: #999999;
-}
-
-div.top-level-nav > ul.nav-pills > li > a {
-    padding: 2px;
-    margin: 2px;
-    border-radius: 0px 0px 0px 0px;
 }
 
 .dropdown-menu li {

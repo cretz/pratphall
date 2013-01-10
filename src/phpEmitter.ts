@@ -19,12 +19,6 @@ module Pratphall {
         //When true, type hints are emitted
         typeHint = true;
 
-        //When true, nested namespaces are allowed
-        nestedNamespaces = true;
-
-        //When true, no top-level functions or vars or code, only type decls
-        typeDeclarationsOnly = true;
-
         //When true, elseif is used instead of "else if"
         useElseif = false;
 
@@ -35,7 +29,6 @@ module Pratphall {
     export interface AstMatcher {
         nodeType: TypeScript.NodeType[];
         priority: number;
-        typePropertyMatches?: {};
         propertyMatches?: {};
     }
         
@@ -48,6 +41,31 @@ module Pratphall {
 
     export class EmitterError {
         constructor(public message: string, public line: number, public col: number) { }
+    }
+
+    export class Namespace {
+        static order = 0;
+        priority: number;
+        children: Namespace[] = [];
+        types: TypeDecl[] = [];
+        code = '';
+        indent = 0;
+
+        constructor(public name: string) { 
+            this.priority = ++Namespace.order;
+        }
+
+        getPhpName() { return this.name.replace('.', '/'); }
+    }
+
+    export class TypeDecl {
+        priority: number;
+        indent = 0;
+        code = '';
+
+        constructor(public isInterface: bool, public name: string) {
+            this.priority = ++Namespace.order;
+        }
     }
 
     export class PhpEmitter {
@@ -75,24 +93,43 @@ module Pratphall {
             });
         }
 
-        private indent = 0;
-        private currStr = '';
+        topNamespace: Namespace;
+        private allNamespaces: Namespace[] = [];
+        private declStack: { code: string; indent: number; }[] = [];
         private stack: TypeScript.AST[] = [];
         skipNextSemicolon = false;
         errors: EmitterError[] = [];
         warnings: EmitterError[] = [];
         private tempVarCounter = 0;
         private nextConstructorInitializers: TypeScript.VarDecl[];
+        private transactionStack: { declStackLength: number; codeLength: number; }[] = [];
 
         constructor(private checker: TypeScript.TypeChecker, 
-            public options?: PhpEmitOptions = new PhpEmitOptions()) {
+                public options?: PhpEmitOptions = new PhpEmitOptions()) {
+            this.reset();
         }
 
-        getContents() { return this.currStr; }
+        reset() {
+            this.topNamespace = new Namespace('');
+            this.allNamespaces.push(this.topNamespace);
+            this.declStack.push(this.topNamespace);
+            this.tempVarCounter = 0;
+        }
+
+        clearErrors() {
+            var errors = this.errors;
+            this.errors = [];
+            return errors;
+        }
+
+        clearWarnings() {
+            var warnings = this.warnings;
+            this.warnings = [];
+            return warnings;
+        }
 
         write(val: string) {
-            //this.out.Write(val);
-            this.currStr += val;
+            this.declStack[this.declStack.length - 1].code += val;
             return this;
         }
 
@@ -103,19 +140,85 @@ module Pratphall {
         }
 
         increaseIndent() {
-            this.indent++;
+            this.declStack[this.declStack.length - 1].indent++;
             return this;
         }
 
         decreaseIndent() {
-            this.indent--;
+            this.declStack[this.declStack.length - 1].indent--;
             return this;
         }
 
         newline(indent = true) {
             this.write('\n');
-            if (indent) this.write(Array(this.indent + 1).join(this.options.indent));
+            if (indent) this.write(Array(this.declStack[this.declStack.length - 1].indent + 1).join(this.options.indent));
             return this;
+        }
+
+        beginTransaction() {
+            this.transactionStack.push({
+                declStackLength: this.declStack.length,
+                codeLength: this.declStack[this.declStack.length - 1].code.length
+            });
+        }
+
+        commitTransaction() {
+            this.transactionStack.pop();
+        }
+
+        rollbackTransaction() {
+            var entry = this.transactionStack.pop();
+            if (this.declStack.length > entry.declStackLength) {
+                this.declStack.splice(entry.declStackLength - 1, this.declStack.length - entry.declStackLength);
+            }
+            var top = this.declStack[this.declStack.length - 1];
+            if (top.code.length > entry.codeLength) {
+                top.code = top.code.substr(0, entry.codeLength);
+            }
+        }
+
+        currentNamespace() {
+            for (var i = this.declStack.length - 1; i >= 0; i--) {
+                if (this.declStack[i] instanceof Namespace) return <Namespace>this.declStack[i];
+            }
+            return null;
+        }
+
+        findOrCreateNamespace(nsName: string) {
+            //find it
+            var newNs = null;
+            this.allNamespaces.forEach((value: Namespace) => {
+                if (value.name == nsName) newNs = value;
+            });
+            if (newNs != null) return newNs;
+            //find/create my parent if I have one
+            var lastIndex = nsName.lastIndexOf('.');
+            var parent: Namespace;
+            if (lastIndex != -1) parent = this.findOrCreateNamespace(nsName.substr(0, lastIndex));
+            else parent = this.topNamespace;
+            //create and add to parent and all
+            newNs = new Namespace(nsName);
+            parent.children.push(newNs);
+            this.allNamespaces.push(newNs);
+            return newNs;
+        }
+
+        pushNamespace(nsName: string) {
+            var currNs = this.currentNamespace();
+            if (currNs.name != '') nsName = currNs.name + '.' + nsName;
+            //find/create it
+            var newNs = this.findOrCreateNamespace(nsName);
+            this.declStack.push(newNs);
+        }
+
+        pushTypeDecl(decl: TypeDecl) {
+            var ns = this.currentNamespace();
+            ns.types.push(decl);
+            this.declStack.push(decl);
+        }
+
+        popDecl() {
+            this.declStack.pop();
         }
 
         emit(ast: TypeScript.AST) {
@@ -330,14 +433,16 @@ module Pratphall {
         }
 
         emitBlock(ast: TypeScript.Block) {
-            var prevLength = this.currStr.length;
+            //need transaction because statements may become ambient after the extension is applied
+            this.beginTransaction();
             var newlines = !this.isAllOnOneLine(ast);
             this.write('{');
             if (newlines) this.increaseIndent();
             if (!this.emitBlockStatements(ast.statements, newlines)) {
                 //rollback
-                this.currStr = this.currStr.substr(0, prevLength);
+                this.rollbackTransaction();
             } else {
+                this.commitTransaction();
                 if (newlines) this.decreaseIndent().newline();
                 else this.write(' ');
                 this.write('}');
@@ -347,15 +452,11 @@ module Pratphall {
         emitBlockStatements(statements: TypeScript.ASTList, newlines: bool): bool {
             var atLeastOneSuccessOrEmpty = statements == null || statements.members.length == 0;
             statements.members.forEach((statement: TypeScript.AST, index: number) => {
-                var prevLength = this.currStr.length;
-                //pre comments
-                if (this.options.comments && statement.preComments != null && statement.preComments.length > 0) {
-                    statement.preComments.forEach((value: TypeScript.Comment) => {
-                        //ignore refs
-                        if (value.content.indexOf('///<reference') == -1) {
-                            this.newline().emit(value);
-                        }
-                    });
+                //begin txn because some things can be ambient after emit
+                this.beginTransaction();
+                //pre comments (but not on mods, classes, or interfaces)
+                if (!(statement instanceof TypeScript.NamedDeclaration)) {
+                    this.emitCommentSet(statement.preComments, true, false);
                 }
                 //ignore empty
                 if (!this.isEmpty(statement)) {
@@ -373,7 +474,7 @@ module Pratphall {
                         ((<TypeScript.FuncDecl>statement).isOverload || 
                         (<TypeScript.FuncDecl>statement).isAmbient()));
                     if (isRollback) {
-                        this.currStr = this.currStr.substr(0, prevLength);
+                        this.rollbackTransaction();
                         return;
                     }
                     atLeastOneSuccessOrEmpty = true;
@@ -383,14 +484,10 @@ module Pratphall {
                         statement instanceof TypeScript.NamedDeclaration;
                     if (newlines && hasExtraNewline) this.newline(false);
                 }
-                //post comments
-                if (this.options.comments && statement.postComments != null && statement.postComments.length > 0) {
-                    statement.postComments.forEach((value: TypeScript.Comment) => {
-                        //ignore refs
-                        if (value.content.indexOf('///<reference') == -1) {
-                            this.emit(value);
-                        }
-                    });
+                this.commitTransaction();                
+                //post comments (but not on mods, classes, or interfaces)
+                if (!(statement instanceof TypeScript.NamedDeclaration)) {
+                    this.emitCommentSet(statement.postComments, false, false);
                 }
             });
             return atLeastOneSuccessOrEmpty;
@@ -471,6 +568,10 @@ module Pratphall {
 
         emitClassDeclaration(ast: TypeScript.ClassDeclaration) {
             if (ast.isAmbient()) return;
+            //push a fresh decl
+            this.pushTypeDecl(new TypeDecl(false, ast.name.actualText));
+            //pre comments
+            this.emitCommentSet(ast.preComments, false, true);
             this.write('class ').emit(ast.name);
             //can only have one extends
             if (ast.extendsList != null && ast.extendsList.members.length > 1) throw new Error('Multiple extends');
@@ -535,6 +636,8 @@ module Pratphall {
                 this.newline().write(ast.name.actualText + '::$' + value.id.actualText + ' = ').
                     emit(value.init).write(';');
             });
+            //pop decl
+            this.popDecl();
         }
 
         emitComment(ast: TypeScript.Comment) {
@@ -547,14 +650,28 @@ module Pratphall {
                     else break;
                 }
                 //add space if last wasn't newline/space/tab and first of value isn't
-                if (value.length > 0 && this.currStr.length > 0) {
-                    var lastChar = this.currStr.charAt(this.currStr.length - 1);
+                var currCode = this.declStack[this.declStack.length - 1].code;
+                if (value.length > 0 && currCode.length > 0) {
+                    var lastChar = currCode.charAt(currCode.length - 1);
                     var firstChar = value.charAt(value.length - 1);
                     if (lastChar != '\n' && lastChar != ' ' && lastChar != '\t' &&
                         firstChar != '\n' && firstChar != ' ' && firstChar != '\t') this.write(' ');
                 }
                 this.write(value);
             });
+        }
+
+        emitCommentSet(comments: TypeScript.Comment[], newlineBefore: bool, newlineAfter: bool) {
+            if (this.options.comments && comments != null && comments.length > 0) {
+                comments.forEach((value: TypeScript.Comment) => {
+                    //ignore refs
+                    if (value.content.indexOf('///<reference') == -1) {
+                        if (newlineBefore) this.newline();
+                        this.emit(value);
+                        if (newlineAfter) this.newline();
+                    }
+                });
+            }
         }
 
         emitConditionalExpression(ast: TypeScript.ConditionalExpression) {
@@ -774,6 +891,10 @@ module Pratphall {
         emitInterfaceDeclaration(ast: TypeScript.InterfaceDeclaration) {
             //ignore ambient
             if (ast.isAmbient()) return;
+            //push decl
+            this.pushTypeDecl(new TypeDecl(true, ast.name.actualText));
+            //pre comments
+            this.emitCommentSet(ast.preComments, false, true);
             this.write('interface ').emit(ast.name);
             if (ast.extendsList != null && ast.extendsList.members.length > 0) {
                 //don't handle compile time only extends
@@ -802,6 +923,8 @@ module Pratphall {
                 });
             }
             this.decreaseIndent().newline().write('}');
+            //pop
+            this.popDecl();
         }
 
         emitJump(ast: TypeScript.Jump) {
@@ -825,10 +948,11 @@ module Pratphall {
         }
 
         emitModuleDeclaration(ast: TypeScript.ModuleDeclaration) {
-            this.write('namespace ' + ast.name.actualText.replace(/\./g, '\\'));
-            this.write(' {').newline().increaseIndent();
+            //push decl
+            this.pushNamespace(ast.name.actualText);
             this.emitBlockStatements(ast.members, true);
-            this.decreaseIndent().newline().write('}');
+            //pop
+            this.popDecl();
         }
 
         emitNumberLiteral(ast: TypeScript.NumberLiteral) {
@@ -848,7 +972,7 @@ module Pratphall {
         emitScript(ast: TypeScript.Script) {
             if (this.options.requireReferences) {
                 var first = false;
-                ast.referencedFiles.forEach((value: TS.IFileReference) => {
+                ast.referencedFiles.forEach((value: TypeScript.IFileReference) => {
                     //ignore decl files
                     if ((value.path.length <= 5 || value.path.substr(-5) != '.d.ts') &&
                             value.path.substr(-3) == '.ts') {

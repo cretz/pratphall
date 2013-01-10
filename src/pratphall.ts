@@ -1,7 +1,7 @@
 ///<reference path='typescript/src/compiler/typescript.ts' />
-///<reference path='assert.ts' />
+///<reference path='compiler.ts' />
 ///<reference path='errorReporter.ts' />
-///<reference path='io.ts' />
+///<reference path='sys.ts' />
 ///<reference path='phpEmitter.ts' />
 
 module Pratphall {

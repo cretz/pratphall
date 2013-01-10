@@ -15,15 +15,13 @@ module TestMod {
 	interface BlahInterface extends Pct.Ambient {}
 }
 -----
-namespace TestMod {
+namespace TestMod;
 
-    class FooBase {
-    }
+class FooBase {
+}
 
-    interface IFoo {
-    }
+interface IFoo {
+}
 
-    class Foo extends FooBase implements IFoo {
-    }
-
+class Foo extends FooBase implements IFoo {
 }

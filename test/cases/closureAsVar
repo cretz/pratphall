@@ -1,24 +1,24 @@
 ﻿Closure variables test
 -----
-//top-level func
-function a(param: string) { return false; }
-
-var b = a;
-a('hey');
 //class func
 class Foo {
     bar(param: string) { return false; }
     
 }
 
-var c = new Foo();
-var d = c.bar;
 //invocable
 class Foo2 {
     __invoke(param: string) { return false; }
     
 }
 
+//top-level func
+function a(param: string) { return false; }
+
+var b = a;
+a('hey');
+var c = new Foo();
+var d = c.bar;
 var e = new Foo2();
 //func that can accept
 function doSomething(closure: (param: string) => bool) {
@@ -32,25 +32,25 @@ doSomething(e.__invoke);
 var f = { g: (param: string) { return false; } };
 doSomething(f.g);
 -----
-//top-level func
-function a($param) { return false; }
-
-$b = (new ReflectionFunction('a'))->getClosure();
-a('hey');
 //class func
 class Foo {
     public function bar($param) { return false; }
     
 }
 
-$c = new Foo();
-$d = (new ReflectionMethod($c, 'bar'))->getClosure($c);
 //invocable
 class Foo2 {
     public function __invoke($param) { return false; }
     
 }
 
+//top-level func
+function a($param) { return false; }
+
+$b = (new ReflectionFunction('a'))->getClosure();
+a('hey');
+$c = new Foo();
+$d = (new ReflectionMethod($c, 'bar'))->getClosure($c);
 $e = new Foo2();
 //func that can accept
 function doSomething(callable $closure) {

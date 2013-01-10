@@ -3,13 +3,6 @@
 
 module Pratphall {
 
-    class StringWriter implements ITextWriter {
-        contents: string = '';
-        Write(s: string) { this.contents += s; }
-        WriteLine(s: string) { this.Write(s + '\n'); }
-        Close() { }
-    }
-
     export class TestHarness {
 
         constructor(public io: Io = loadIo(), public assert: Assert = loadAssert()) { }
@@ -67,7 +60,12 @@ module Pratphall {
             //emit PHP
             var emitter = new PhpEmitter(compiler.typeChecker, emitOptions);
             emitter.emit(compiler.scripts.members[compiler.scripts.members.length - 1]);
-            var str = emitter.getContents().trim();
+            //options
+            var options = new CompilerOptions();
+            options.composer = false;
+            var phpComp = new Compiler(options);
+            var file = phpComp.emitSingleScript(name, emitter, false);
+            var str = file.contents.trim();
             if (str != php) {
                 var expPieces = php.split('\n');
                 var actPieces = str.split('\n');

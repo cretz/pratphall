@@ -1,15 +1,15 @@
 ﻿Function and closure test
 EXPECT-WARN:Unknown type of call, cannot determine if closure or method, assuming method
 -----
-//as known closure
-var a = { b: () => { return true; } };
-a.b();
 //as known function
 class Foo {
     bar() { return true; }
 
 }
 
+//as known closure
+var a = { b: () => { return true; } };
+a.b();
 var c = new Foo();
 c.bar();
 //unknown
@@ -27,15 +27,15 @@ d.bar();
 var e = [() => { return true; }];
 e[0]();
 -----
-//as known closure
-$a = (object)['b' => function () { return true; }];
-$a->b->__invoke();
 //as known function
 class Foo {
     public function bar() { return true; }
     
 }
 
+//as known closure
+$a = (object)['b' => function () { return true; }];
+$a->b->__invoke();
 $c = new Foo();
 $c->bar();
 function func($val) {

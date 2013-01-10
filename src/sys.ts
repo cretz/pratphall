@@ -1,8 +1,27 @@
 ///<reference path='pratphall.ts' />
-///<reference path='node-impl/assert.ts' />
-///<referenceAlternative originalPath='node-impl/assert.ts' conditional='php' path='php-impl/assert.ts' />
+///<reference path='node-impl/sys.ts' />
 
 module Pratphall {
+    export interface Io {
+        basename(path: string): string;
+        dirPath(path: string): string;
+        exists(path: string): bool;
+        getArgs(): string[];
+        getExecutingFilePath(): string;
+        isDir(path: string): bool;
+        isFile(path: string): bool;
+        joinPaths(...paths: string[]): string;
+        readDir(path: string): string[];
+        readFile(path: string): string;
+        relativePath(from: string, to: string): string;
+        resolvePath(from: string, to: string): string;
+        writeErr(str: string);
+        writeFile(path: string, contents: string);
+        writeLine(str: string);
+    }
+    
+    declare function loadIo(): Io;
+    
     export interface Assert {
         fail(actual: any, expected: any, message: string, operator: string): void;
         assert(value: any, message: string): void;

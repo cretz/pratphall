@@ -27,6 +27,7 @@
           <li><a tabindex="-1" href="#Manual-Syntax">Syntax</a></li>
           <li><a tabindex="-1" href="#Manual-Structure">Structure</a></li>
           <li><a tabindex="-1" href="#Manual-Metaprogramming">Metaprogramming</a></li>
+          <li><a tabindex="-1" href="#Manual-Faq">FAQ</a></li>
           <li><a tabindex="-1" href="#Manual-Appendices">Appendices</a></li>
         </ul> |
         <a href="https://github.com/cretz/pratphall">GitHub</a> |
@@ -168,7 +169,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
       <h2>Manual</h2>
 
       <span class="bookmark" id="Manual-Introduction"></span>
-      <h3 id="Manual-Introduction">Introduction</h3>
+      <h3>Introduction</h3>
 
       <h4>Who?</h4>
       <p>
@@ -211,7 +212,9 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         <dt><code>--all-caps-consts</code></dt>
         <dd>When set and any variable is all capital letters, it will assume it's a constant and not prefix it with a dollar sign in PHP</dd>
         <dt><code>--ext FILE</code></dt>
-        <dd>Can be used as many times as necessary to include extensions<dd>
+        <dd>Can be used as many times as necessary to include extensions</dd>
+        <dt><code>-h</code>, <code>--help</code></dt>
+        <dd>Display help</dd>
         <dt><code>--no-comments</code></dt>
         <dd>Do not emit comments</dd>
         <dt><code>--no-composer</code></dt>
@@ -224,7 +227,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         <dd>Exclude the runtime/all.ts PHP definitions and exclude the ext/all.ts PHP extensions</dd>
         <dt><code>--no-type-hint</code></dt>
         <dd>Do not type hint emitted functions in any way</dd>
-        <dt><code>-o, --out PATH</code></dt>
+        <dt><code>-o</code>, <code>--out PATH</code></dt>
         <dd>When <code>--single</code> is present or there is only a single file on the command line, this is the single file to output to. References in the file are emitted relative to this single file path when not using <code>--single</code>. Otherwise, this is the directory to put all files at relative to the files given.</dd>
         <dt><code>--prefer-single-quotes</code></dt>
         <dd>When set, this will try to use single quotes for all strings that don't have escape characters</dd>
@@ -1259,6 +1262,7 @@ $a->causeErr();</code></pre>
             When this option is set, all emitted PHP files are the same name as the Pratphall source files (.ts files) but with PHP extensions. This cannot be used with <code>--single</code> since that option basically includes this option. This option allows top-level code in any file and allows any file to operate in the global namespace. This option is best used in conjunction with <code>--require-references</code>. When that option is set, the <code>///&lt;reference path="PATH" /&gt;</code> references become <code>require_once</code> calls in PHP.
             <pre><code class="php">//file1.php
 namespace MyModule {
+    require('vendor/autoload.php');
 
     interface MyIface {
     }
@@ -1276,7 +1280,6 @@ namespace MyModule\Sub {
 }
 
 //file2.php
-require('vendor/autoload.php');
 use MyModule\Sub;
 $a = new Sub\MyClass();
 $a->causeErr();</code></pre>
@@ -1285,8 +1288,8 @@ $a->causeErr();</code></pre>
           <dd>
             When this option is set, all Pratphall code is emitted to a single PHP file. Like the default, this means that except for the initial file passed to the compiler, no other files may have any top-level vars/functions. However, any file can have contents in the global namespace. This cannot be used with <code>--no-organize</code>.
             <pre><code class="php">//file2.php
-require('vendor/autoload.php');
 namespace MyModule {
+    require('vendor/autoload.php');
 
     interface MyIface {
     }
@@ -1315,10 +1318,10 @@ namespace {
       <span class="bookmark" id="Manual-Metaprogramming"></span>
       <h3>Metaprogramming</h3>
 
-      <h4>Emitter Extensions</h3>
+      <h4>Emitter Extensions</h4>
       <p></p>
 
-      <h4>Validators</h3>
+      <h4>Validators</h4>
       <p></p>
 
       <!-- TODO: more work -->
@@ -1431,7 +1434,7 @@ namespace {
 
       <h4>Future</h4>
       <p>
-        These are some items that could be implemented in the future.
+        These are some wishlist items that could be implemented in the future.
         <ul>
           <li>
             Emit exact PHPDoc based on the <a href="https://github.com/phpDocumentor/phpDocumentor2/blob/master/docs/PSR.md">PSR</a>.
@@ -1439,6 +1442,13 @@ namespace {
           <li>
             Create a proxy to proxy Xdebug protocol to other debugging protocols used in common IDE's.
           </li>
+          <li>
+            Add <code>--watch</code> option to watch for file changes and compile automatically when changed.
+          </li>
+        </ul>
+        These are some items that need to be fixed.
+        <ul>
+          <li>Need to stream output and stop using so much RAM</li>
         </ul>
       </p>
 

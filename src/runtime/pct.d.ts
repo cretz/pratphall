@@ -11,6 +11,7 @@ declare module Pct {
 
     interface CompileTimeOnly { }
     interface Ambient extends CompileTimeOnly { }
+    interface OldStyleNamespace extends CompileTimeOnly { }
 
     interface WithInvoke {
         __invoke(...args: any[]): any;

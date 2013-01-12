@@ -1,0 +1,26 @@
+﻿{
+    "name": "pratphall",
+    "author": "Chad Retz",
+    "homepage": "http://pratphall.org/",
+    "version": "0.1.0",
+    "licenses": [{
+            "type": "Apache License 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+    }],
+    "description": "Pratphall is a typed language targetting PHP",
+    "keywords": ["php", "pratphall", "compiler", "language"],
+    "bugs": { "url": "https://github.com/cretz/pratphall/issues" },
+    "repository": {
+        "type": "git",    
+        "url": "https://github.com/cretz/pratphall.git"
+    },
+    "preferGlobal" : true,
+    "main": "./bin/pratphall.js",
+    "bin": { "ppc": "./bin/ppc" },
+    "engines": { "node": ">=0.8.0" },
+    "devDependencies": {
+        "typescript": "0.8.1-1",
+		"jake": "latest",
+        "fs-extra": "latest"
+    }
+}

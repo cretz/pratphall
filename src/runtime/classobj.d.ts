@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare function class_alias(original: string, alias: string, autoload?: bool): bool; //TODO: inform users they have to declare the new one
 declare function class_exists(class_name: string, autoload?: bool): bool;

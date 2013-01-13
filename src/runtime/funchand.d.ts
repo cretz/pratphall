@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare function call_user_func(callback: string, ...parameter: any[]): any;
 declare function call_user_func(callback: Function, ...parameter: any[]): any;

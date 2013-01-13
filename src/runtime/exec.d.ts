@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare function escapeshellarg(arg: string): string;
 declare function escapeshellcmd(command: string): string;

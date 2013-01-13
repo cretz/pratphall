@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare var T_ABSTRACT: number;
 declare var T_AND_EQUAL: number;

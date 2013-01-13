@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 //constants
 

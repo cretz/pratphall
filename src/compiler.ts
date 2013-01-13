@@ -15,6 +15,8 @@ module Pratphall {
         requireReferences = false;
         single = false;
         useElseif = false;
+        verbose = false;
+        lint = false;
     }
 
     export class Compiler {
@@ -23,7 +25,12 @@ module Pratphall {
         constructor(public options: CompilerOptions) {
         }
 
+        private debug(str: string) {
+            if (this.options.verbose) this.io.writeLine(str);
+        }
+
         compile(files: string[], err: StringWriter) {
+            this.debug('Beginning compile');
             //validate options
             if (files == null || files.length == 0) throw new Error('No files given to compile');
             if (this.options.requireReferences && this.options.organize) {
@@ -46,6 +53,7 @@ module Pratphall {
                 var fullPath = this.io.resolvePath(baseDir, path);
                 if (knownFullPaths.indexOf(fullPath) != -1) return;
                 if (!this.io.isFile(fullPath)) throw new Error('Resolved file not found: ' + path);
+                this.debug('Loading source unit: ' + fullPath);
                 var unit = new TypeScript.SourceUnit(fullPath, this.io.readFile(fullPath));
                 unit.referencedFiles = TypeScript.getReferencedFiles(unit);
                 units.push(unit);
@@ -61,19 +69,31 @@ module Pratphall {
             }
             //add php runtime decls?
             if (this.options.phpLib) {
-                addUnitAndReferences('all.d.ts', this.io.getExecutingFilePath() + 'runtime');
+                addUnitAndReferences('php.d.ts', this.io.getExecutingFilePath());
             }
             //add given files
             files.forEach(addUnitAndReferences);
             //create compiler
             var settings = new TypeScript.CompilationSettings();
-            var compiler = new TypeScript.TypeScriptCompiler(err, new TypeScript.NullLogger(), settings);
+            var logger: TypeScript.ILogger = new TypeScript.NullLogger();
+            //add debug logger?
+            if (this.options.verbose) {
+                logger = {
+                    information: () => { return true; },
+                    debug: () => { return true; },
+                    warning: () => { return true; },
+                    error: () => { return true; },
+                    fatal: () => { return true; },
+                    log: this.io.writeLine
+                };
+            }
+            var compiler = new TypeScript.TypeScriptCompiler(err, logger, settings);
             //extend the error reporter
             extendErrorReporter(compiler);
             //add units to the compiler
             units.forEach((value: TypeScript.SourceUnit) => {
-                compiler.addSourceUnit(value, this.io.relativePath(this.io.dirPath(files[0]), value.path), 
-                    false, value.referencedFiles);
+                var path = this.io.relativePath(this.io.dirPath(files[0]), value.path);
+                compiler.addSourceUnit(value, path, false, value.referencedFiles);
             });
             //errors means null
             if (err.contents.length > 0) return null;
@@ -104,6 +124,7 @@ module Pratphall {
         }
 
         emitOrganized(compiler: TypeScript.TypeScriptCompiler, emitter: PhpEmitter) {
+            this.debug('Emitting organized files');
             var results = new Results();
             //loop through scripts
             compiler.scripts.members.forEach((value: TypeScript.Script, index: number) => {
@@ -125,6 +146,8 @@ module Pratphall {
             //first, the top namespace code as the main file
             if (emitter.topNamespace.code.trim().length > 0) {
                 var file = new OutputFile((<TypeScript.Script>compiler.scripts.members[0]).locationInfo.filename);
+                this.debug('Emitting top namespace code at ' + file.path);
+                file.contents += this.emitUseDeclarations(emitter.topNamespace);
                 if (this.options.composer) file.contents += "require('vendor/autoload.php');\n";
                 file.contents += emitter.topNamespace.code.trim();
                 results.files.push(file);
@@ -133,6 +156,9 @@ module Pratphall {
             var writeNamespace = (value: Namespace) => {
                 //if there is code in a non-top-level namespace, we have a problem
                 if (value.name != '' && value.code.trim().length > 0) {
+                    if (this.options.verbose) {
+                        this.debug('Top-level code found for ' + value.name + ':\n' + value.code.trim());
+                    }
                     throw new Error('Module ' + value.name + ' cannot have top level code');
                 }
                 value.types.forEach((decl: TypeDecl) => {
@@ -141,10 +167,14 @@ module Pratphall {
                     filename += decl.name + '.php';
                     var file = new OutputFile(filename);
                     if (value.name != '') file.contents += 'namespace ' + value.getPhpName() + ';\n\n';
+                    file.contents += this.emitUseDeclarations(decl);
                     file.contents += decl.code.trim();
                     results.files.push(file);
                 });
+                //and children
+                value.children.forEach(writeNamespace);
             }
+            writeNamespace(emitter.topNamespace);
             return results;
         }
 
@@ -191,6 +221,7 @@ module Pratphall {
             emitter.topNamespace.code = emitter.topNamespace.code.trim();
             var onlyNs: Namespace = null; 
             if (emitter.topNamespace.code.length == 0 && emitter.topNamespace.children.length == 1 &&
+                    emitter.topNamespace.types.length == 0 &&
                     emitter.topNamespace.children[0].children.length == 0) {
                 onlyNs = emitter.topNamespace.children[0];
             } else if (emitter.topNamespace.children.length == 0) onlyNs = emitter.topNamespace;
@@ -200,9 +231,12 @@ module Pratphall {
                 else ns.code = ns.code.trim();
                 if (ns.code == '' && ns.types.length == 0) return false;
                 file.contents += '\n';
-                if (wrap) file.contents += 'namespace ' + ns.getPhpName() + ' {\n' + emitter.options.indent;
+                if (wrap) file.contents += 'namespace ' + ns.getPhpName() + ' {\n';
+                //write use decls
+                file.contents += this.emitUseDeclarations(ns, wrap ? emitter.options.indent : null);
+                //composer require
                 if (bootstrap && first && this.options.composer) {
-                    file.contents += "require('vendor/autoload.php');\n";
+                    file.contents += emitter.options.indent + "require('vendor/autoload.php');\n";
                 }
                 //type decls before code
                 ns.types.forEach((value: TypeDecl, index: number) => {
@@ -228,7 +262,7 @@ module Pratphall {
                 }
                 writeNamespace(onlyNs, false, true);
             } else {
-                var hasTop = emitter.topNamespace.code.trim().length != 0;
+                var hasTop = emitter.topNamespace.code.trim().length != 0 || emitter.topNamespace.types.length > 0;
                 var first = !hasTop;
                 var writeChildren = (ns: Namespace) => {
                     //me if not top
@@ -247,6 +281,22 @@ module Pratphall {
             return file;
         }
 
+        emitUseDeclarations(decl: Declaration, indent?: string) {
+            var ret = '';
+            decl.uses.forEach((use: UseDecl) => {
+                if (indent != null) ret += indent;
+                ret += 'use ' + use.phpName;
+                if (use.alias != null) ret += ' as ' + use.alias;
+                ret += ';\n';
+            });
+            if (decl instanceof Namespace) {
+                (<Namespace>decl).types.forEach((type: TypeDecl) => {
+                    ret += this.emitUseDeclarations(type, indent);
+                });
+            }
+            return ret;
+        }
+
         outputResults(results: Results) {
             //errors and warnings
             results.errors.forEach((error: FileError) => {
@@ -261,16 +311,20 @@ module Pratphall {
                         value.col + ') - ' + value.message + '\n');
                 });
             });
-            //we don't write with errors
-            if (results.errors.length > 0) return;
+            //we don't write with errors or just linting
+            if (results.errors.length > 0 || this.options.lint) return;
             var isOutFile = this.options.out.indexOf('.php') != -1;
             var dir = isOutFile ? this.io.dirPath(this.options.out) : this.options.out;
             results.files.forEach((value: OutputFile, index: number) => {
                 //first file can be specified by out
                 var file = isOutFile && index == 0 ? this.options.out : this.io.joinPaths(dir, value.path);
-                //if (isOutFile && index == 0) this.io.writeFile(this.options.out, '<?php\n' + value.contents);
-                //else this.io.writeFile(this.io.joinPaths(dir, value.path), '<?php\n' + value.contents);
-                this.io.writeLine('Writing file: ' + file);
+                var fileDir = this.io.dirPath(file);
+                if (!this.io.exists(fileDir)) {
+                    this.debug('Creating directory: ' + fileDir);
+                    this.io.mkdirs(fileDir);
+                }
+                this.debug('Writing file: ' + file);
+                this.io.writeFile(file, '<?php\n' + value.contents);
             });
         }
 

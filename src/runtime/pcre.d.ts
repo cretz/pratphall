@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare var PCRE_VERSION: number;
 declare var PREG_BACKTRACK_LIMIT_ERROR: number;

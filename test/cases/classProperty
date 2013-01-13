@@ -1,0 +1,37 @@
+﻿Class property test
+-----
+class Foo {
+    constructor(public prop: string) {
+    }
+}
+
+class Bar extends Foo {
+    defaultPublic = 5;
+    
+    setInConstructor = strval(12);
+    
+    private privateVal;
+}
+-----
+class Foo {
+    public $prop;
+    
+    public function __construct($prop) {
+        $this->prop = $prop;
+    }
+    
+}
+
+class Bar extends Foo {
+    public $defaultPublic = 5;
+    
+    public $setInConstructor;
+    
+    private $privateVal;
+    
+    public function __construct($prop) {
+        parent::__construct($prop);
+        $this->setInConstructor = strval(12);
+    }
+    
+}

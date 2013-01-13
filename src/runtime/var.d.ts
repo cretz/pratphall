@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare function boolval(var_: any): bool;
 declare function debug_zval_dump(variable: any);

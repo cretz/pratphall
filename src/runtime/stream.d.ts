@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare var PSFS_ERR_FATAL: number;
 declare var PSFS_FEED_ME: number;

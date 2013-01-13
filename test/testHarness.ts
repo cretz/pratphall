@@ -8,12 +8,12 @@ module Pratphall {
         constructor(public io: Io = loadIo(), public assert: Assert = loadAssert()) { }
 
         run() {
-            this.io.readDir('cases').forEach(this.runTest, this);
+            this.io.readDir(this.io.getExecutingFilePath() + 'cases').forEach(this.runTest, this);
         }
 
         runTest(name: string) {
             this.io.writeLine('Running ' + name);
-            var contents = this.io.readFile('cases/' + name);
+            var contents = this.io.readFile(this.io.getExecutingFilePath() + 'cases/' + name);
             var pieces = contents.toString().replace(/\r/g, '').split('-----');
             this.assert.equal(pieces.length, 3);
             //expects?
@@ -42,11 +42,13 @@ module Pratphall {
             //change error reporter
             extendErrorReporter(compiler);
             //add lib.d.ts
-            compiler.addUnit(this.io.readFile('../src/typescript/bin/lib.d.ts'), 'lib.d.ts');
+            compiler.addUnit(this.io.readFile(this.io.getExecutingFilePath() +
+                '../src/typescript/bin/lib.d.ts'), 'lib.d.ts');
             //add everything in runtime
-            this.io.readDir('../src/runtime').forEach((value: string) => {
+            this.io.readDir(this.io.getExecutingFilePath() + '../src/runtime').forEach((value: string) => {
                 if (value.slice(-3) == '.ts') {
-                    compiler.addUnit(this.io.readFile('../src/runtime/' + value), value);
+                    compiler.addUnit(this.io.readFile(this.io.getExecutingFilePath() +
+                        '../src/runtime/' + value), value);
                 }
             });
             //get referenced files

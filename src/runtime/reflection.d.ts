@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare interface Reflector {
     //static export(): string; http://typescript.codeplex.com/workitem/80

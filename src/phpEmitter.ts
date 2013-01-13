@@ -43,28 +43,36 @@ module Pratphall {
         constructor(public message: string, public line: number, public col: number) { }
     }
 
-    export class Namespace {
+    export class UseDecl {
+        alias: string;
+        phpName: string;
+    }
+
+    export class Declaration {
         static order = 0;
         priority: number;
-        children: Namespace[] = [];
-        types: TypeDecl[] = [];
+        uses: UseDecl[] = [];
         code = '';
         indent = 0;
 
         constructor(public name: string) { 
-            this.priority = ++Namespace.order;
+            this.priority = ++Declaration.order;
         }
-
-        getPhpName() { return this.name.replace('.', '/'); }
     }
 
-    export class TypeDecl {
-        priority: number;
-        indent = 0;
-        code = '';
+    export class Namespace extends Declaration {
+        children: Namespace[] = [];
+        types: TypeDecl[] = [];
 
-        constructor(public isInterface: bool, public name: string) {
-            this.priority = ++Namespace.order;
+        constructor(name: string) { super(name); }
+
+        getPhpName() { return this.name.replace(/\./g, '\\'); }
+    }
+
+    export class TypeDecl extends Declaration {
+
+        constructor(public isInterface: bool, name: string) {
+            super(name);
         }
     }
 
@@ -95,7 +103,7 @@ module Pratphall {
 
         topNamespace: Namespace;
         private allNamespaces: Namespace[] = [];
-        private declStack: { code: string; indent: number; }[] = [];
+        private declStack: Declaration[] = [];
         private stack: TypeScript.AST[] = [];
         skipNextSemicolon = false;
         errors: EmitterError[] = [];
@@ -103,6 +111,7 @@ module Pratphall {
         private tempVarCounter = 0;
         private nextConstructorInitializers: TypeScript.VarDecl[];
         private transactionStack: { declStackLength: number; codeLength: number; }[] = [];
+        private justCallParentConstructor = false;
 
         constructor(private checker: TypeScript.TypeChecker, 
                 public options?: PhpEmitOptions = new PhpEmitOptions()) {
@@ -329,10 +338,11 @@ module Pratphall {
         emitArgDecl(ast: TypeScript.ArgDecl) {
             //do we have a type hint?
             if (this.options.typeHint && ast.type != null) {
+                //TODO: change the string Array check when TS-331 is solved
                 if (ast.type.isArray()) this.write('array ');
-                else if (ast.type.getTypeName() == 'PhpAssocArray') {
-                    this.write('array ');
-                } else if (ast.type.symbol.declAST != null &&
+                else if (ast.type.getTypeName() == 'Array') this.write('array ');
+                else if (ast.type.getTypeName() == 'PhpAssocArray') this.write('array ');
+                else if (ast.type.symbol.declAST != null &&
                         ast.type.symbol.declAST.nodeType == TypeScript.NodeType.FuncDecl) {
                     this.write('callable ');
                 } else if (ast.type.symbol.declAST instanceof TypeScript.TypeDeclaration &&
@@ -382,7 +392,8 @@ module Pratphall {
                 } else switch (ast.nodeType) {
                     case TypeScript.NodeType.Dot:
                         //is this a reference to an object function? if so, we need to pull it out
-                        if (ast.type != null && ast.type.symbol.declAST instanceof TypeScript.FuncDecl &&
+                        if (ast.type != null && ast.type.symbol != null && 
+                                ast.type.symbol.declAST instanceof TypeScript.FuncDecl &&
                                 ast.operand2 instanceof TypeScript.Identifier) {
                             //ignore the __invoke reference
                             if ((<TypeScript.Identifier>ast.operand2).actualText == '__invoke') {
@@ -400,9 +411,31 @@ module Pratphall {
                                 }
                             }
                         }
-                        //is it a static ref?
-                        if (ast.operand1 instanceof TypeScript.Identifier &&
+                        //is dots all the way up to import/mod?
+                        var curr = ast.operand1;
+                        while (curr instanceof TypeScript.BinaryExpression &&
+                                curr.nodeType == TypeScript.NodeType.Dot) {
+                            curr = (<TypeScript.BinaryExpression>curr).operand1;
+                        }
+                        //is it possibly a slashable decl?
+                        if (curr instanceof TypeScript.Identifier &&
+                                (<TypeScript.Identifier>curr).sym.isType() &&
+                                ((<TypeScript.Identifier>curr).sym.declAST instanceof TypeScript.ModuleDeclaration ||
+                                (<TypeScript.Identifier>curr).sym.declAST instanceof TypeScript.ImportDeclaration)) {
+                            //emit
+                            this.emit(ast.operand1).write('\\').emit(ast.operand2);
+                            //try a use statement as needed
+                            var ident = <TypeScript.Identifier>curr;
+                            if (ast.operand2 instanceof TypeScript.Identifier) {
+                                if (ident.sym.declAST instanceof TypeScript.ModuleDeclaration) {
+                                    this.addModuleReference(<TypeScript.ModuleDeclaration>ident.sym.declAST);
+                                } else {
+                                    this.addImportReference(ident, <TypeScript.ImportDeclaration>ident.sym.declAST);
+                                }
+                            }
+                        } else if (ast.operand1 instanceof TypeScript.Identifier &&
                                 (<TypeScript.Identifier>ast.operand1).sym.isType()) {
+                            //must be a static ref
                             this.emit(ast.operand1).write('::').emit(ast.operand2);
                         } else {
                             this.emit(ast.operand1).write('->').emit(ast.operand2);
@@ -484,7 +517,7 @@ module Pratphall {
                         statement instanceof TypeScript.NamedDeclaration;
                     if (newlines && hasExtraNewline) this.newline(false);
                 }
-                this.commitTransaction();                
+                this.commitTransaction();
                 //post comments (but not on mods, classes, or interfaces)
                 if (!(statement instanceof TypeScript.NamedDeclaration)) {
                     this.emitCommentSet(statement.postComments, false, false);
@@ -579,8 +612,7 @@ module Pratphall {
                 //don't handle compile time only extends
                 if (ast.extendsList.members[0].type == null ||
                         !('compileTimeOnly' in ast.extendsList.members[0].type.symbol.declAST)) {
-                    this.write(' extends ').emit(
-                        (<TypeScript.NamedDeclaration>ast.extendsList.members[0].type.symbol.declAST).name);
+                    this.write(' extends ').emit(ast.extendsList.members[0]);
                 }
             }
             if (ast.implementsList != null && ast.implementsList.members.length > 0) {
@@ -624,9 +656,43 @@ module Pratphall {
                     }
                 });
                 //now the actual members
+                var hasConstructor = false;
                 ast.members.members.forEach((member: TypeScript.AST) => {
                     this.newline().emit(member).newline();
+                    if (member instanceof TypeScript.FuncDecl &&
+                            (<TypeScript.FuncDecl>member).isConstructor) {
+                        hasConstructor = true;
+                    }
                 });
+                //if we have initializers but no constructor, we have to make one
+                if (this.nextConstructorInitializers.length > 0 && !hasConstructor) {
+                    //find the closest parent's constructor
+                    var hasParent = false;
+                    var parent = ast;
+                    do {
+                        if (parent.extendsList != null && parent.extendsList.members.length > 0) {
+                            hasParent = true;
+                            parent = <TypeScript.ClassDeclaration>(<TypeScript.FuncDecl>parent.extendsList.
+                                members[0].type.symbol.declAST).classDecl;
+                            if (parent.isAmbient()) parent = null;
+                        } else parent = null;
+                    } while (parent != null && parent.constructorDecl == null);
+                    if (parent != null) {
+                        //tell the func decl to skip the property stuff
+                        this.justCallParentConstructor = true;
+                        this.newline().emit(parent.constructorDecl).newline();
+                        this.justCallParentConstructor = false;
+                    } else {
+                        //we'll just make one
+                        this.newline().write('public function __construct() {').increaseIndent();
+                        if (hasParent) this.newline().write('parent::__construct();');
+                        this.nextConstructorInitializers.forEach((value: TypeScript.VarDecl) => {
+                            this.newline().write('$this->' + value.id.actualText + 
+                                ' = ').emit(value.init).write(';');
+                        });
+                        this.decreaseIndent().newline().write('}');
+                    }
+                }
                 //unset constructor init
                 this.nextConstructorInitializers = [];
             }
@@ -807,22 +873,40 @@ module Pratphall {
                 }
                 //is constructor?
                 if (ast.isConstructor) {
+                    //either defer to parent or set pub/priv properties
+                    if (this.justCallParentConstructor) {
+                        //we're just deferring to the parent here
+                        if (newlines) this.newline();
+                        else this.write(' ');
+                        this.write('parent::__construct(');
+                        if (ast.arguments != null) {
+                            ast.arguments.members.forEach((value: TypeScript.ArgDecl, index: number) => {
+                                if (index > 0) this.write(', ');
+                                this.emit(value.id);
+                            });
+                        }
+                        this.write(');');
+                    } else if (ast.arguments != null) {
+                        //pub/priv properties
+                        ast.arguments.members.forEach((value: TypeScript.ArgDecl) => {
+                            if (value.isProperty()) {
+                                if (newlines) this.newline();
+                                else this.write(' ');
+                                this.write('$this->' + value.id.actualText + ' = $' + value.id.actualText + ';');
+                            }
+                        });
+                    }
                     //has extra init vals?
                     this.nextConstructorInitializers.forEach((value: TypeScript.VarDecl) => {
                         if (newlines) this.newline();
                         else this.write(' ');
                         this.write('$this->' + value.id.actualText + ' = ').emit(value.init).write(';');
                     });
-                    //how about pub/priv properties
-                    ast.arguments.members.forEach((value: TypeScript.ArgDecl) => {
-                        if (value.isProperty()) {
-                            if (newlines) this.newline();
-                            else this.write(' ');
-                            this.write('$this->' + value.id.actualText + ' = $' + value.id.actualText + ';');
-                        }
-                    });
                 }
-                this.emitBlockStatements(ast.bod, newlines);
+                //emit contents
+                if (!ast.isConstructor || !this.justCallParentConstructor) {
+                    this.emitBlockStatements(ast.bod, newlines);
+                }
                 if (newlines) this.decreaseIndent().newline();
                 else this.write(' ');
                 this.write('}');
@@ -865,7 +949,23 @@ module Pratphall {
                     (<TypeScript.FuncDecl>ast.type.symbol.declAST).enclosingFnc != null) {
                 hasDollar = true;
             }
+            //has dollar if it's a property
+            if (!hasDollar && ast.sym != null && ast.sym.isMember() && 
+                    ast.sym.declAST instanceof TypeScript.BoundDecl &&
+                    (<TypeScript.BoundDecl>ast.sym.declAST).isProperty() &&
+                    (<TypeScript.BoundDecl>ast.sym.declAST).id === ast) {
+                hasDollar = true;
+            }
             if (hasDollar && ast.actualText.charAt(0) != '$') this.write('$');
+            //do we need to prefix with a slash?
+            if (ast.sym != null && ast.sym.declAST instanceof TypeScript.NamedDeclaration && 
+                    ast.sym.container.name == '__GLO') {
+                //if it's a top level module, we prefix with slash no matter what
+                //otherwise if it's a top level type, we only prefix if we are not in the top level namespace
+                if (ast.sym.declAST instanceof TypeScript.ModuleDeclaration) this.write('\\');
+                else if (this.currentNamespace().name != '') this.write('\\');
+            }
+            //if (ast
             this.write(ast.actualText);
         }
 
@@ -885,7 +985,7 @@ module Pratphall {
         }
 
         emitImportDeclaration(ast: TypeScript.ImportDeclaration) {
-            //TODO
+            //TODO: should I leave them alone?
         }
 
         emitInterfaceDeclaration(ast: TypeScript.InterfaceDeclaration) {
@@ -1036,15 +1136,17 @@ module Pratphall {
                     this.write('[');
                     if (newlineStyle) this.increaseIndent().newline();
                     var first = true;
-                    (<TypeScript.ASTList>ast.operand).members.forEach((value: TypeScript.AST) => {
-                        if (first) first = false;
-                        else {
-                            this.write(',');
-                            if (newlineStyle) this.newline();
-                            else this.write(' ');
-                        }
-                        this.emit(value);
-                    });
+                    if (ast.operand != null) {
+                        (<TypeScript.ASTList>ast.operand).members.forEach((value: TypeScript.AST) => {
+                            if (first) first = false;
+                            else {
+                                this.write(',');
+                                if (newlineStyle) this.newline();
+                                else this.write(' ');
+                            }
+                            this.emit(value);
+                        });
+                    }
                     if (newlineStyle) this.decreaseIndent().newline();
                     this.write(']');
                     break;
@@ -1157,7 +1259,9 @@ module Pratphall {
                 ast.nodeType == TypeScript.NodeType.True ||
                 ast.nodeType == TypeScript.NodeType.False) return true;
             if (ast.nodeType != TypeScript.NodeType.ArrayLit) return false;
-            return (<TypeScript.ASTList>(<TypeScript.UnaryExpression>ast).operand).members.every(this.isScalar, this);
+            var expr = <TypeScript.UnaryExpression>ast;
+            return expr.operand == null ||
+                (<TypeScript.ASTList>expr.operand).members.every(this.isScalar, this);
         }
 
         addError(ast: TypeScript.AST, message: string) {
@@ -1184,6 +1288,7 @@ module Pratphall {
                     (<TypeScript.FuncDecl>ast).enclosingFnc != null ||
                     (<TypeScript.FuncDecl>ast).isAnonymousFn()) &&
                 !(ast instanceof TypeScript.IfStatement) &&
+                !(ast instanceof TypeScript.ImportDeclaration) &&
                 (!(ast instanceof TypeScript.LabeledStatement) ||
                     this.hasSemicolonAfterStatement((<TypeScript.LabeledStatement>ast).stmt)) &&
                 !(ast instanceof TypeScript.NamedDeclaration) &&
@@ -1223,6 +1328,36 @@ module Pratphall {
         removeParentheses(ast: TypeScript.AST) {
             //(<type>anything) doesn't need parentheses
             return ast.nodeType == TypeScript.NodeType.TypeAssertion;
+        }
+
+        addModuleReference(ast: TypeScript.ModuleDeclaration, alias?: string) {
+            var curr = (<TypeScript.SymbolAggregateScope>ast.mod.containedScope).container;
+            if (curr.container.name == '__GLO') return;
+            //no alias if it's the same name
+            var origName = curr.name;
+            if (curr.name == alias) alias = null;
+            var useDecl = new UseDecl();
+            useDecl.alias = alias;
+            do {
+                if (useDecl.phpName == null) useDecl.phpName = curr.name;
+                else useDecl.phpName = curr.name + '\\' + useDecl.phpName;
+                curr = curr.container;
+            } while (curr.name != '__GLO');
+            //wait, if this is just off the current namespace, it doesn't need to be there
+            if (this.currentNamespace().getPhpName() + '\\' + origName == useDecl.phpName) return;
+            //add only if there aren't any other references
+            var currDecl = this.declStack[this.declStack.length - 1];
+            var alreadyThere = currDecl.uses.some((value: UseDecl) => {
+                return useDecl.alias == value.alias && useDecl.phpName == value.phpName;
+            });
+            if (!alreadyThere) currDecl.uses.push(useDecl);
+        }
+
+        addImportReference(ast: TypeScript.Identifier, mport: TypeScript.ImportDeclaration) {
+            if (mport.alias.type.symbol.declAST instanceof TypeScript.ModuleDeclaration) {
+                this.addModuleReference(<TypeScript.ModuleDeclaration>mport.alias.type.
+                    symbol.declAST, ast.actualText);
+            }
         }
     }
 }

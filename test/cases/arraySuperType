@@ -1,0 +1,16 @@
+﻿Broken array super type caused by http://typescript.codeplex.com/workitem/331
+-----
+function a(b: Array) { }
+//ok
+a([1, 2, 3]);
+//not ok
+var c = [1, 2, 3];
+a(c);
+-----
+function a(array $b) { }
+
+//ok
+a([1, 2, 3]);
+//not ok
+$c = [1, 2, 3];
+a($c);

@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare var FILE_APPEND: number;
 declare var FILE_BINARY: number;

@@ -1,8 +1,8 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare module Pct {
 
-    interface PhpAssocArray {
+    interface PhpAssocArray extends Array {
         [index: string]: any;
         [index: number]: any;
         forEach?(callbackfn: (value: any, index: any) => void): void;

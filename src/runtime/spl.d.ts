@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 //my god are the SPL docs bad...wrong return types, param types, etc...
 

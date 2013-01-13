@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare var DIRECTORY_SEPARATOR: string;
 declare var PATH_SEPARATOR: string;

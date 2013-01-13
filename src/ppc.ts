@@ -1,4 +1,5 @@
 ///<reference path="pratphall.ts" />
+///<reference path="ext/all.ts" />
 
 module Pratphall {
     interface Option {
@@ -31,6 +32,11 @@ module Pratphall {
                     names: ['-h', '--help'],
                     desc: 'Display help',
                     set: () => { showHelp = true; }
+                },
+                {
+                    names: ['--lint'],
+                    desc: 'Do not output files, just parse/compile',
+                    set: () => { options.lint = true; }
                 },
                 {
                     names: ['--no-comments'],
@@ -88,6 +94,11 @@ module Pratphall {
                     names: ['--use-elseif'],
                     desc: 'Use single elseif word on output',
                     set: () => { options.useElseif = true; }
+                },
+                {
+                    names: ['--verbose'],
+                    desc: 'Output lots of info',
+                    set: () => { options.verbose = true; }
                 }
             ];
             //let's parse

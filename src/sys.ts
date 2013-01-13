@@ -11,6 +11,7 @@ module Pratphall {
         isDir(path: string): bool;
         isFile(path: string): bool;
         joinPaths(...paths: string[]): string;
+        mkdirs(dir: string);
         readDir(path: string): string[];
         readFile(path: string): string;
         relativePath(from: string, to: string): string;

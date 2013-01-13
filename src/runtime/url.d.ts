@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare var PHP_QUERY_RFC1738: number;
 declare var PHP_QUERY_RFC3986: number;

@@ -1,4 +1,4 @@
-﻿Breack/continue test
+﻿Break/continue test
 -----
 while (true) { break; }
 while (true) { continue; }

@@ -4,14 +4,14 @@
     "homepage": "http://pratphall.org/",
     "version": "0.1.0",
     "licenses": [{
-            "type": "Apache License 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        "type": "MIT",
+        "url": "https://raw.github.com/cretz/pratphall/master/LICENSE"
     }],
     "description": "Pratphall is a typed language targetting PHP",
-    "keywords": ["php", "pratphall", "compiler", "language"],
+    "keywords": ["php", "pratphall", "ppc", "compiler", "language"],
     "bugs": { "url": "https://github.com/cretz/pratphall/issues" },
     "repository": {
-        "type": "git",    
+        "type": "git",
         "url": "https://github.com/cretz/pratphall.git"
     },
     "preferGlobal" : true,

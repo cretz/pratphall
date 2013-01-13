@@ -1,4 +1,5 @@
 ///<reference path='../typescript/src/compiler/typescript.ts' />
+///<reference path='../sys.ts' />
 
 import TS = TypeScript;
 
@@ -18,18 +19,28 @@ class ConsoleLogger implements TS.ILogger {
 }
 
 var contents = [
-    'class A { static b() { } c() { } }',
-    'A.b();',
-    'var d = new A();',
-    'd.c();'
+    'module Top.Sub {',
+    '    class SubClass {',
+    '    }',
+    '}',
+    'module Top {',
+    '    module Other {',
+    '        class OtherClass extends Sub.SubClass {',
+    '        }',
+    '    }',
+    '}'
 ].join('\n');
 //compile TS
 var settings = new TS.CompilationSettings();
 var err = new ConsoleWriter();
 var compiler = new TS.TypeScriptCompiler(err, new ConsoleLogger(), settings);
+//add lib.d.ts
+var io = Pratphall.loadIo();
+compiler.addUnit(io.readFile(io.getExecutingFilePath() +
+    '../typescript/bin/lib.d.ts'), 'lib.d.ts');
 compiler.addUnit(contents, 'tester.ts');
 compiler.typeCheck();
 //compiler.scripts.members[0]
 //console.log(compiler.typeChecker.globals.getAllKeys());
 //console.log(compiler.typeChecker.globals.lookup('a'));
-(new TS.AstLogger(new ConsoleLogger())).logScript(<TS.Script>compiler.scripts.members[0]);
+(new TS.AstLogger(new ConsoleLogger())).logScript(<TS.Script>compiler.scripts.members[1]);

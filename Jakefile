@@ -34,6 +34,12 @@ task('build', {async: true}, function () {
         //now make the ppc shell script
         console.log('Making ppc shell script');
         fs.writeFileSync('bin/ppc', "#!/usr/bin/env node\nrequire('./tsc.js');");
+
+        //remove typescript npmignore
+        if (fs.existsSync('src/typescript/.npmignore')) {
+            console.log("Removing typescript's .npmignore");
+            fs.removeSync('src/typescript/.npmignore');
+        }
     
         //copy over typescript and php runtime support
         console.log('Copying over runtime support');
@@ -45,23 +51,13 @@ task('build', {async: true}, function () {
     }, {printStdout: true, printStderr: true});
 });
 
-desc('Package');
-task('package', ['build'], {async: true}, function () {
-    //remove existing build
-    console.log('Removing existing build directory');
-    fs.removeSync('build');
-
-    //make build
-    console.log('Making build directory');
-    fs.mkdirSync('build');
-
-    //basically just copy bin, src, license, package, and readme
-    console.log('Copying everything over to build directory');
-    copyAll([
-        {src: 'bin', dest: 'build/bin'},
-        {src: 'src', dest: 'build/src'},
-        {src: 'LICENSE', dest: 'build/LICENSE'},
-        {src: 'package.json', dest: 'build/package.json'},
-        {src: 'README.md', dest: 'build/README.md'}
-    ], complete);
+desc('Test');
+task('test', {async: true}, function () {
+    //compile tests
+    console.log('Compiling and running tests');
+    var cmds = [
+        'node ./node_modules/typescript/bin/tsc.js --out ./test/main.js ./test/main.ts',
+        'node ./test/main.js'
+    ];
+    jake.exec(cmds, complete, {printStdout: true, printStderr: true});
 });

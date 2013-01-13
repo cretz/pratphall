@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare var ASSERT_ACTIVE: number;
 declare var ASSERT_WARNING: number;

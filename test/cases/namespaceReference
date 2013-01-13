@@ -1,0 +1,69 @@
+﻿Namespace reference test
+-----
+module Top.Sub {
+    export class SubClass {
+    }
+}
+module Top.Sub.Sub2 {
+    export interface SubSubInterface {
+    }
+}
+module Top.Other {
+    export class OtherClass extends Sub.SubClass implements Top.Sub.Sub2.SubSubInterface {
+    }
+}
+module Top {
+    class TopClass extends Other.OtherClass implements Sub.Sub2.SubSubInterface {
+    }
+}
+
+module Another {
+    import Meh = Top.Sub;
+
+    class NewException extends Exception {
+    }
+
+    class AnotherClass extends Meh.SubClass {
+    }
+}
+
+import Other = Top.Other;
+
+class MainClass extends Other.OtherClass {
+}
+-----
+namespace Top {
+    class TopClass extends Other\OtherClass implements Sub\Sub2\SubSubInterface {
+    }
+}
+
+namespace Top\Sub {
+    class SubClass {
+    }
+}
+
+namespace Top\Sub\Sub2 {
+    interface SubSubInterface {
+    }
+}
+
+namespace Top\Other {
+    use Top\Sub;
+    class OtherClass extends Sub\SubClass implements \Top\Sub\Sub2\SubSubInterface {
+    }
+}
+
+namespace Another {
+    use Top\Sub as Meh;
+    class NewException extends \Exception {
+    }
+
+    class AnotherClass extends Meh\SubClass {
+    }
+}
+
+namespace  {
+    use Top\Other;
+    class MainClass extends Other\OtherClass {
+    }
+}

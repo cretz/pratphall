@@ -1,0 +1,6 @@
+﻿Empty with reference
+-----
+///<reference path="temp.ts" />
+
+///<reference path="temp2.d.ts" />
+-----

@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare var HTML_ENTITIES: number;
 declare var HTML_SPECIALCHARS: number;

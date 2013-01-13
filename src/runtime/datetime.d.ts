@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare var SUNFUNCS_RET_TIMESTAMP: number;
 declare var SUNFUNCS_RET_STRING: number;

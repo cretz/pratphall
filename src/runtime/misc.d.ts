@@ -1,4 +1,4 @@
-///<reference path='all.ts' />
+///<reference path='all.d.ts' />
 
 declare var __COMPILER_HALT_OFFSET__: number;
 

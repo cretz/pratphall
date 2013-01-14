@@ -343,10 +343,14 @@ module Pratphall {
                 else if (ast.type.getTypeName() == 'Array') this.write('array ');
                 else if (ast.type.getTypeName() == 'PhpAssocArray') this.write('array ');
                 else if (ast.type.symbol.declAST != null &&
-                        ast.type.symbol.declAST.nodeType == TypeScript.NodeType.FuncDecl) {
+                        ast.type.symbol.declAST.nodeType == TypeScript.NodeType.FuncDecl &&
+                        !(<TypeScript.FuncDecl>ast.type.symbol.declAST).isConstructor) {
                     this.write('callable ');
-                } else if (ast.type.symbol.declAST instanceof TypeScript.TypeDeclaration &&
-                        !('compileTimeOnly' in ast.type.symbol.declAST)) {
+                } else if ((ast.type.symbol.declAST instanceof TypeScript.TypeDeclaration &&
+                        !('compileTimeOnly' in ast.type.symbol.declAST)) ||
+                        (ast.type.symbol.declAST instanceof TypeScript.FuncDecl &&
+                        (<TypeScript.FuncDecl>ast.type.symbol.declAST).isConstructor &&
+                        !('compileTimeOnly' in (<TypeScript.FuncDecl>ast.type.symbol.declAST).classDecl)))  {
                     this.write(ast.type.getTypeName() + ' ');
                 }
             }
@@ -418,7 +422,9 @@ module Pratphall {
                             curr = (<TypeScript.BinaryExpression>curr).operand1;
                         }
                         //is it possibly a slashable decl?
-                        if (curr instanceof TypeScript.Identifier &&
+                        if (curr instanceof TypeScript.Identifier && (!(ast.operand2 instanceof 
+                                TypeScript.Identifier) || (<TypeScript.Identifier>ast.operand2).sym == null ||
+                                !(<TypeScript.Identifier>ast.operand2).sym.isVariable()) &&
                                 (<TypeScript.Identifier>curr).sym.isType() &&
                                 ((<TypeScript.Identifier>curr).sym.declAST instanceof TypeScript.ModuleDeclaration ||
                                 (<TypeScript.Identifier>curr).sym.declAST instanceof TypeScript.ImportDeclaration)) {
@@ -433,8 +439,8 @@ module Pratphall {
                                     this.addImportReference(ident, <TypeScript.ImportDeclaration>ident.sym.declAST);
                                 }
                             }
-                        } else if (ast.operand1 instanceof TypeScript.Identifier &&
-                                (<TypeScript.Identifier>ast.operand1).sym.isType()) {
+                        } else if (curr instanceof TypeScript.Identifier &&
+                                (<TypeScript.Identifier>curr).sym.isType()) {
                             //must be a static ref
                             this.emit(ast.operand1).write('::').emit(ast.operand2);
                         } else {
@@ -659,8 +665,7 @@ module Pratphall {
                 var hasConstructor = false;
                 ast.members.members.forEach((member: TypeScript.AST) => {
                     this.newline().emit(member).newline();
-                    if (member instanceof TypeScript.FuncDecl &&
-                            (<TypeScript.FuncDecl>member).isConstructor) {
+                    if (member instanceof TypeScript.FuncDecl && (<TypeScript.FuncDecl>member).isConstructor) {
                         hasConstructor = true;
                     }
                 });

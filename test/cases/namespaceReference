@@ -2,6 +2,7 @@
 -----
 module Top.Sub {
     export class SubClass {
+        static staticVal = 5;
     }
 }
 module Top.Sub.Sub2 {
@@ -31,6 +32,8 @@ import Other = Top.Other;
 
 class MainClass extends Other.OtherClass {
 }
+
+var a = Top.Sub.SubClass.staticVal;
 -----
 namespace Top {
     class TopClass extends Other\OtherClass implements Sub\Sub2\SubSubInterface {
@@ -39,6 +42,8 @@ namespace Top {
 
 namespace Top\Sub {
     class SubClass {
+        public static $staticVal = 5;
+        
     }
 }
 
@@ -66,4 +71,6 @@ namespace  {
     use Top\Other;
     class MainClass extends Other\OtherClass {
     }
+
+    $a = \Top\Sub\SubClass::$staticVal;
 }

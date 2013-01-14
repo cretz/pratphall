@@ -4,7 +4,9 @@
 module Pratphall {
     export interface Io {
         basename(path: string): string;
+        cwd(): string;
         dirPath(path: string): string;
+        evalGlobal(js: string, filename?: string);
         exists(path: string): bool;
         getArgs(): string[];
         getExecutingFilePath(): string;

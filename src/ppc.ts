@@ -1,5 +1,4 @@
 ///<reference path="pratphall.ts" />
-///<reference path="ext/all.ts" />
 
 module Pratphall {
     interface Option {

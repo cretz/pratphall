@@ -1,0 +1,31 @@
+﻿OldStyleNamespace test
+-----
+module PHPUnit.Framework {
+    export declare class TestCase implements Pct.OldStyleNamespace {
+        static meh: number;
+    }
+}
+
+module Test1 {
+    class TestCase1 extends PHPUnit.Framework.TestCase {
+    }
+}
+
+import Blah = PHPUnit.Framework;
+
+class TestCase2 extends Blah.TestCase {
+}
+
+var a = PHPUnit.Framework.TestCase.meh;
+-----
+namespace Test1 {
+    class TestCase1 extends PHPUnit_Framework_TestCase {
+    }
+}
+
+namespace  {
+    class TestCase2 extends PHPUnit_Framework_TestCase {
+    }
+
+    $a = PHPUnit_Framework_TestCase::$meh;
+}

@@ -3,6 +3,7 @@
 ///<reference path='errorReporter.ts' />
 ///<reference path='sys.ts' />
 ///<reference path='phpEmitter.ts' />
+///<reference path="ext/all.ts" />
 
 module Pratphall {
 

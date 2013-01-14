@@ -46,6 +46,26 @@ module Pratphall {
             if (this.options.single && this.options.out == null && files.length > 1) {
                 throw new Error('out must be set if single is set and multiple compiled files are given');
             }
+            var logger: TypeScript.ILogger = new TypeScript.NullLogger();
+            //add extensions
+            if (this.options.extensions.length > 0) {
+                var scripts: { filename: string; contents: string; }[] = [];
+                this.options.extensions.forEach((value: string) => {
+                    this.debug('Adding extension: ' + value);
+                    scripts.push({
+                        filename: value,
+                        contents: this.io.readFile(value)
+                    });
+                });
+                var strings = typeScriptToJavaScript(scripts, err, logger, true);
+                //err is no good
+                if (err.contents.length > 0) return null;
+                //just eval it (sadface)
+                strings.forEach((value: string, index: number) => {
+                    this.debug("Eval'ing extension: " + scripts[index].filename);
+                    this.io.evalGlobal(value, scripts[index].filename);
+                });
+            }
             //resolve units
             var units: TypeScript.SourceUnit[] = [];
             var knownFullPaths: string[] = [];
@@ -75,7 +95,6 @@ module Pratphall {
             files.forEach(addUnitAndReferences);
             //create compiler
             var settings = new TypeScript.CompilationSettings();
-            var logger: TypeScript.ILogger = new TypeScript.NullLogger();
             //add debug logger?
             if (this.options.verbose) {
                 logger = {
@@ -114,12 +133,11 @@ module Pratphall {
             options.requireReferences = this.options.requireReferences;
             options.typeHint = this.options.typeHint;
             options.useElseif = this.options.typeHint;
-            //TODO: register custom extensions
             return new PhpEmitter(compiler.typeChecker, options);
         }
 
         emit(compiler: TypeScript.TypeScriptCompiler, emitter: PhpEmitter) {
-            if (this.options.organize) return this.emitOrganized(compiler, emitter);
+            if (this.options.organize && !this.options.single) return this.emitOrganized(compiler, emitter);
             else return this.emitNonOrganized(compiler, emitter);
         }
 
@@ -240,7 +258,13 @@ module Pratphall {
                 }
                 //type decls before code
                 ns.types.forEach((value: TypeDecl, index: number) => {
-                    if (wrap) value.code = value.code.replace('\n', '\n' + emitter.options.indent).trim();
+                    if (wrap) {
+                        //indent the whole block...
+                        value.code = value.code.trim().split('\n').reduce((prev: string, curr: string) => {
+                            if (prev != '') prev += '\n' + emitter.options.indent;
+                            return prev + curr;
+                        }, '');
+                    }
                     else value.code = value.code.trim();
                     if (index > 0) file.contents += '\n';
                     if (wrap) file.contents += emitter.options.indent;

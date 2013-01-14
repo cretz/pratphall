@@ -1,0 +1,20 @@
+﻿Class type hint
+This was breaking because it thought Foo was callable type hint
+-----
+class Foo {
+    constructor(public prop: string) { }
+}
+
+function bar(foo: Foo) {
+    //do something
+}
+-----
+class Foo {
+    public $prop;
+    
+    public function __construct($prop) { $this->prop = $prop; }
+    
+}
+
+function bar(Foo $foo) {
+}

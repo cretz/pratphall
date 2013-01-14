@@ -5,12 +5,18 @@ module Pratphall {
     
     export import assert = module('assert');
     export import fs = module('fs');
+    export import vm = module('vm');
     export import path = module('path');
-
+    
     export function loadIo(): Io {
         return {
             basename: path.basename,
+            cwd: () => { return <string><any>process.cwd(); },
             dirPath: path.dirname,
+            evalGlobal: (js: string, filename?: string) => {
+                //vm.runInThisContext(js, filename);
+                eval(js);
+            },
             exists: fs.existsSync,
             getArgs: () => { return process.argv.slice(2); },
             getExecutingFilePath: () => { return __dirname + '/'; },

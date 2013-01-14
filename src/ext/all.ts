@@ -25,6 +25,7 @@
 ///<reference path='pct-declare.ts' />
 ///<reference path='pct-false.ts' />
 ///<reference path='pct-isInstance.ts' />
+///<reference path='pct-oldStyleNamespace.ts' />
 ///<reference path='pct-phpAssocArray.ts' />
 ///<reference path='pct-swallowErrors.ts' />
 ///<reference path='pct-try.ts' />

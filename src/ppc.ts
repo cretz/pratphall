@@ -21,6 +21,11 @@ module Pratphall {
                     set: () => { options.allCapsConst = true; }
                 },
                 {
+                    names: ['--exclude-outside'],
+                    desc: 'Do not emit source above given path',
+                    set: () => { options.excludeOutside = true; }
+                },
+                {
                     names: ['--ext'],
                     title: '--ext FILE',
                     needsValue: true,

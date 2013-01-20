@@ -10,9 +10,7 @@ module Pratphall {
             nodeType: [TS.NodeType.Dot],
             priority: 1,
             propertyMatches: {
-                operand1: (value: TS.AST): bool => {
-                    return value.type != null && value.type.isArray();
-                },
+                operand1: (value: TS.AST): bool => { return typeIsArray(value); },
                 operand2: (value: TS.AST): bool => {
                     return value instanceof TS.Identifier && (<TS.Identifier>value).actualText == 'length';
                 }

@@ -13,6 +13,10 @@ module Pratphall {
             (<TS.Identifier>(<TS.BinaryExpression>expr).operand2).actualText == right;
     }
 
+    export function typeIsArray(ast: TS.AST) {
+        return ast.type != null && (ast.type.isArray() || ast.type.getTypeName() == 'PhpAssocArray');
+    }
+
     export function objectToAst(object: any): TypeScript.Script {
         return parseSingleTypeScript(toJavaScriptSource(object));
     }

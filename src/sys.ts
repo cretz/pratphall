@@ -17,7 +17,7 @@ module Pratphall {
         readDir(path: string): string[];
         readFile(path: string): string;
         relativePath(from: string, to: string): string;
-        resolvePath(from: string, to: string): string;
+        resolvePath(...paths: string[]): string;
         writeErr(str: string);
         writeFile(path: string, contents: string);
         writeLine(str: string);

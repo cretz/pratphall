@@ -1,0 +1,19 @@
+﻿Name ambiguity test
+-----
+module TopLevel_ {
+    class SubLevel extends TopLevel {
+    }
+}
+
+class TopLevel {
+}
+-----
+namespace TopLevel {
+    class SubLevel extends \TopLevel {
+    }
+}
+
+namespace  {
+    class TopLevel {
+    }
+}

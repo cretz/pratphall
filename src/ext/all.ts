@@ -29,6 +29,7 @@
 ///<reference path='pct-phpAssocArray.ts' />
 ///<reference path='pct-swallowErrors.ts' />
 ///<reference path='pct-try.ts' />
+///<reference path='pct-typeName.ts' />
 ///<reference path='pct-unionArray.ts' />
 ///<reference path='string-charAt.ts' />
 ///<reference path='string-charCodeAt.ts' />

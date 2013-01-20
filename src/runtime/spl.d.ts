@@ -54,6 +54,8 @@ declare class SplDoublyLinkedList implements Iterator, ArrayAccess, Countable {
     rewind();
     valid(): bool;
     offsetExists(offset: any): bool;
+    offsetGet(offset: any): any;
+    offsetSet(offset: any, value: any);
     offsetUnset(offset: any);
     count(): number;
 }
@@ -125,6 +127,8 @@ declare class SplFixedArray implements Iterator, ArrayAccess, Countable {
     rewind();
     valid(): bool;
     offsetExists(offset: any): bool;
+    offsetGet(offset: any): any;
+    offsetSet(offset: any, value: any);
     offsetUnset(offset: any);
     count(): number;
 }
@@ -146,6 +150,8 @@ declare class SplObjectStorage implements Countable, Iterator, Serializable, Arr
     rewind();
     valid(): bool;
     offsetExists(offset: any): bool;
+    offsetGet(offset: any): any;
+    offsetSet(offset: any, value: any);
     offsetUnset(offset: any);
     count(): number;
     serialize(): string;
@@ -172,6 +178,8 @@ declare class ArrayIterator implements ArrayAccess, SeekableIterator, Countable,
     valid(): bool;
     seek(position: number);
     offsetExists(offset: any): bool;
+    offsetGet(offset: any): any;
+    offsetSet(offset: any, value: any);
     offsetUnset(offset: any);
     count(): number;
     serialize(): string;
@@ -223,6 +231,8 @@ declare class CachingIterator extends IteratorIterator implements ArrayAccess, C
     setFlags(flags: number);
 
     offsetExists(offset: any): bool;
+    offsetGet(offset: any): any;
+    offsetSet(offset: any, value: any);
     offsetUnset(offset: any);
     count(): number;
 }
@@ -524,6 +534,8 @@ declare class ArrayObject implements IteratorAggregate, ArrayAccess, Serializabl
 
     getIterator(): ArrayIterator;
     offsetExists(offset: any): bool;
+    offsetGet(offset: any): any;
+    offsetSet(offset: any, value: any);
     offsetUnset(offset: any);
     serialize(): string;
     unserialize(serialized: string);

@@ -1,5 +1,4 @@
 ///<reference path='../src/pratphall.ts' />
-///<reference path='../src/ext/all.ts' />
 
 module Pratphall {
 

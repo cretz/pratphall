@@ -8,6 +8,7 @@ var e = typeof a.b.c !== 'undefined';
 var f = typeof a.b.c != 'undefined';
 var h = typeof(a.b.c) == 'undefined';
 var i = typeof a.b['c'] == 'undefined';
+var j = undefined;
 -----
 $a = (object)['b' => (object)['c' => 5]];
 $b = !array_key_exists('c', $a->b);
@@ -17,3 +18,4 @@ $e = array_key_exists('c', $a->b);
 $f = array_key_exists('c', $a->b);
 $h = !array_key_exists('c', $a->b);
 $i = !array_key_exists('c', $a->b);
+$j = null;

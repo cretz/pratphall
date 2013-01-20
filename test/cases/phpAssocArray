@@ -12,6 +12,7 @@ var g = Pct.newAssocArray({
     a: 15,
 	b: 15
 });
+var h = g.length;
 -----
 $c = ['a' => 15, 'b' => 15];
 $c[12] = 15;
@@ -25,3 +26,4 @@ $g = [
     'a' => 15,
     'b' => 15
 ];
+$h = count($g);

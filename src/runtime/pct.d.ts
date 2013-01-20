@@ -2,16 +2,20 @@
 
 declare module Pct {
 
-    interface PhpAssocArray extends Array {
-        [index: string]: any;
-        [index: number]: any;
-        forEach?(callbackfn: (value: any, index: any) => void): void;
-    }
-    interface PhpResource { }
-
     interface CompileTimeOnly { }
     interface Ambient extends CompileTimeOnly { }
     interface OldStyleNamespace extends CompileTimeOnly { }
+
+    interface Indexable extends CompileTimeOnly {
+        [index: string]: any;
+        [index: number]: any;
+    }
+
+    interface PhpAssocArray extends Array, Indexable, CompileTimeOnly {
+        forEach?(callbackfn: (value: any, index: any) => void): void;
+    }
+
+    interface PhpResource { }
 
     interface WithInvoke {
         __invoke(...args: any[]): any;
@@ -21,7 +25,9 @@ declare module Pct {
 
     function isInstance(obj: any, check: any): bool;
 
-    function newAssocArray(obj: Object): PhpAssocArray;
+    function typeName(obj: any): string;
+
+    function newAssocArray(obj?: Object): PhpAssocArray;
     function toArray(array: PhpAssocArray): any[];
     function toAssocArray(array: any[]): PhpAssocArray;
     function unionArray(...arrays: any[][]): any[];
@@ -45,14 +51,6 @@ declare module Pct {
 
     function const(value: number): number;
     function const(value: string): string;
-    var __LINE__: number;
-    var __FILE__: string;
-    var __DIR__: string;
-    var __FUNCTION__: string;
-    var __CLASS__: string;
-    var __TRAIT__: string;
-    var __METHOD__: string;
-    var __NAMESPACE__: string;
 
     function clone(value: any): any;
 

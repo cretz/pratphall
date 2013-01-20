@@ -45,5 +45,15 @@ module Pratphall {
             }
             if (!swallowed) oldSimpleError.call(compiler.errorReporter, ast, msg);
         }
+
+        var oldSimpleErrorFromSym = compiler.errorReporter.simpleErrorFromSym;
+        compiler.errorReporter.simpleErrorFromSym = (sym: TypeScript.Symbol, msg: string) => {
+            //index signature overload issue when implementing ArrayAccess
+            //http://typescript.codeplex.com/workitem/577
+            if (msg.indexOf('but does not implement it: Index signatures of types') == -1) {
+                //don't swallow
+                oldSimpleErrorFromSym.call(compiler.errorReporter, sym, msg);
+            }
+        }
     }
 }

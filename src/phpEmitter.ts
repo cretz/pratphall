@@ -108,6 +108,7 @@ module Pratphall {
         skipNextSemicolon = false;
         errors: EmitterError[] = [];
         warnings: EmitterError[] = [];
+        scriptsEmittingTopNamespaceCode: TypeScript.Script[] = [];
         private tempVarCounter = 0;
         private nextConstructorInitializers: TypeScript.VarDecl[];
         private transactionStack: { declStackLength: number; codeLength: number; }[] = [];
@@ -326,10 +327,12 @@ module Pratphall {
         }
 
         emitCommaSeparated(ast: TypeScript.ASTList) {
-            ast.members.forEach((member: TypeScript.AST, index: number) => {
-                if (index > 0) this.write(', ');
-                this.emit(member);
-            });
+            if (ast != null) {
+                ast.members.forEach((member: TypeScript.AST, index: number) => {
+                    if (index > 0) this.write(', ');
+                    this.emit(member);
+                });
+            }
             return this;
         }
 
@@ -351,7 +354,10 @@ module Pratphall {
                         (ast.type.symbol.declAST instanceof TypeScript.FuncDecl &&
                         (<TypeScript.FuncDecl>ast.type.symbol.declAST).isConstructor &&
                         !('compileTimeOnly' in (<TypeScript.FuncDecl>ast.type.symbol.declAST).classDecl)))  {
-                    this.write(ast.type.getTypeName() + ' ');
+                    //must be type reference it appears
+                    if (ast.typeExpr instanceof TypeScript.TypeReference) {
+                        this.emit((<TypeScript.TypeReference>ast.typeExpr).term).write(' ');
+                    }
                 }
             }
             this.emit(ast.id);
@@ -400,7 +406,7 @@ module Pratphall {
                                 ast.type.symbol.declAST instanceof TypeScript.FuncDecl &&
                                 ast.operand2 instanceof TypeScript.Identifier) {
                             //ignore the __invoke reference
-                            if ((<TypeScript.Identifier>ast.operand2).actualText == '__invoke') {
+                            if (this.getIdentifierText(<TypeScript.Identifier>ast.operand2) == '__invoke') {
                                 this.emit(ast.operand1);
                                 return;
                             } else {
@@ -409,8 +415,8 @@ module Pratphall {
                                     return value instanceof TypeScript.CallExpression;
                                 })) {
                                     this.write('(new ReflectionMethod(').emit(ast.operand1).write(", '" +
-                                        (<TypeScript.Identifier>ast.operand2).actualText + "'))->getClosure(").
-                                        emit(ast.operand1).write(')');
+                                        this.getIdentifierText(<TypeScript.Identifier>ast.operand2) + 
+                                        "'))->getClosure(").emit(ast.operand1).write(')');
                                     return;
                                 }
                             }
@@ -450,7 +456,8 @@ module Pratphall {
                     case TypeScript.NodeType.Member:
                         if (ast.operand1 instanceof TypeScript.Identifier) {
                             //must be a string literal in PHP
-                            this.emit(new TypeScript.StringLiteral('"' + (<TypeScript.Identifier>ast.operand1).actualText + '"'));
+                            this.emit(new TypeScript.StringLiteral('"' + 
+                                this.getIdentifierText(<TypeScript.Identifier>ast.operand1) + '"'));
                         } else {
                             this.emit(ast.operand1);
                         }
@@ -564,8 +571,8 @@ module Pratphall {
                                 //unknown which, try either
                                 //(method_exists($val, 'bar') ? $val->bar() : $val->bar->__invoke());
                                 this.write('(method_exists(').emit((<TypeScript.BinaryExpression>ast.target).operand1).
-                                    write(", '" + (<TypeScript.Identifier>(<TypeScript.BinaryExpression>ast.
-                                        target).operand2).actualText + "') ? ").emit(ast.target).
+                                    write(", '" + this.getIdentifierText(<TypeScript.Identifier>(<TypeScript.BinaryExpression>ast.
+                                        target).operand2) + "') ? ").emit(ast.target).
                                         write('(').emitCommaSeparated(ast.arguments).write(') : ').
                                         emit(ast.target).write('->__invoke(').emitCommaSeparated(ast.arguments).
                                         write('))');
@@ -588,7 +595,7 @@ module Pratphall {
         }
 
         emitCatch(ast: TypeScript.Catch) {
-            this.write(' catch (Exception $' + ast.param.id.actualText + ') ').emit(ast.body);
+            this.write(' catch (Exception $' + this.getIdentifierText(ast.param.id) + ') ').emit(ast.body);
         }
 
         emitCaseStatement(ast: TypeScript.CaseStatement) {
@@ -608,7 +615,7 @@ module Pratphall {
         emitClassDeclaration(ast: TypeScript.ClassDeclaration) {
             if (ast.isAmbient()) return;
             //push a fresh decl
-            this.pushTypeDecl(new TypeDecl(false, ast.name.actualText));
+            this.pushTypeDecl(new TypeDecl(false, this.getIdentifierText(ast.name)));
             //pre comments
             this.emitCommentSet(ast.preComments, false, true);
             this.write('class ').emit(ast.name);
@@ -692,7 +699,7 @@ module Pratphall {
                         this.newline().write('public function __construct() {').increaseIndent();
                         if (hasParent) this.newline().write('parent::__construct();');
                         this.nextConstructorInitializers.forEach((value: TypeScript.VarDecl) => {
-                            this.newline().write('$this->' + value.id.actualText + 
+                            this.newline().write('$this->' + this.getIdentifierText(value.id) + 
                                 ' = ').emit(value.init).write(';');
                         });
                         this.decreaseIndent().newline().write('}');
@@ -704,8 +711,8 @@ module Pratphall {
             this.decreaseIndent().newline().write('}');
             //static extra init vars?
             staticExtraInitVars.forEach((value: TypeScript.VarDecl) => {
-                this.newline().write(ast.name.actualText + '::$' + value.id.actualText + ' = ').
-                    emit(value.init).write(';');
+                this.newline().write(this.getIdentifierText(ast.name) + '::$' + 
+                    this.getIdentifierText(value.id) + ' = ').emit(value.init).write(';');
             });
             //pop decl
             this.popDecl();
@@ -750,8 +757,7 @@ module Pratphall {
         }
 
         emitDoWhileStatement(ast: TypeScript.DoWhileStatement) {
-            this.write('do ').emit(ast.body).semicolon(ast.body).write(' while (').emit(ast.cond).
-                write(')').semicolon(null);
+            this.write('do ').emit(ast.body).semicolon(ast.body).write(' while (').emit(ast.cond).write(')');
         }
 
         emitFinally(ast: TypeScript.Finally) {
@@ -784,13 +790,14 @@ module Pratphall {
             if (ast.enclosingFnc != null && !ast.isAnonymousFn()) {
                 //it's an error if we have any variable of the same name
                 if (ast.enclosingFnc.vars != null && ast.enclosingFnc.vars.members.some((value: TypeScript.AST) => {
-                    return value instanceof TypeScript.VarDecl &&
-                        (<TypeScript.Identifier>(<TypeScript.VarDecl>value).id).actualText == ast.name.actualText;
+                    return value instanceof TypeScript.VarDecl && 
+                        this.getIdentifierText(<TypeScript.Identifier>(<TypeScript.VarDecl>value).id) == 
+                        this.getIdentifierText(ast.name);
                 })) {
                     this.addError(ast.name, 'Cannot have variable and nested function with the same name in function');
                     return;
                 }
-                this.write('$' + ast.name.actualText + ' = ');
+                this.write('$' + this.getIdentifierText(ast.name) + ' = ');
             }
             //visibility
             if (ast.isMethod() || ast.isConstructor) {
@@ -805,7 +812,7 @@ module Pratphall {
             //closure?
             if (ast.isAnonymousFn() || ast.enclosingFnc != null) this.write('(');
             else if (ast.isConstructor) this.write('__construct(');
-            else if (ast.isMethod() && ast.name.actualText == 'toString') this.write('__toString(');
+            else if (ast.isMethod() && this.getIdentifierText(ast.name) == 'toString') this.write('__toString(');
             else this.emit(ast.name).write('(');
             //must make sure we ignore rest params
             var first = true;
@@ -897,7 +904,8 @@ module Pratphall {
                             if (value.isProperty()) {
                                 if (newlines) this.newline();
                                 else this.write(' ');
-                                this.write('$this->' + value.id.actualText + ' = $' + value.id.actualText + ';');
+                                this.write('$this->' + this.getIdentifierText(value.id) + ' = $' + 
+                                    this.getIdentifierText(value.id) + ';');
                             }
                         });
                     }
@@ -905,7 +913,7 @@ module Pratphall {
                     this.nextConstructorInitializers.forEach((value: TypeScript.VarDecl) => {
                         if (newlines) this.newline();
                         else this.write(' ');
-                        this.write('$this->' + value.id.actualText + ' = ').emit(value.init).write(';');
+                        this.write('$this->' + this.getIdentifierText(value.id) + ' = ').emit(value.init).write(';');
                     });
                 }
                 //emit contents
@@ -919,6 +927,11 @@ module Pratphall {
         }
 
         emitIdentifier(ast: TypeScript.Identifier) {
+            //undefined is null, no more processing...
+            if (ast.actualText == 'undefined') {
+                this.write('null');
+                return;
+            }
             //if it's a reference to a top-level function, we have to make it a closure
             if (ast.sym != null && !ast.sym.isVariable() && ast.type != null && ast.type.symbol != null &&
                     ast.type.symbol.declAST instanceof TypeScript.FuncDecl &&
@@ -936,7 +949,7 @@ module Pratphall {
                 if (!hasCallWithMeAsType && ast.sym.declAST instanceof TypeScript.FuncDecl &&
                         !(<TypeScript.FuncDecl>ast.sym.declAST).isConstructor) {
                     //(new ReflectionFunction('a'))->getClosure()
-                    this.write("(new ReflectionFunction('" + ast.actualText + "'))->getClosure()");
+                    this.write("(new ReflectionFunction('" + this.getIdentifierText(ast) + "'))->getClosure()");
                     return;
                 }
             }
@@ -945,7 +958,8 @@ module Pratphall {
                 TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Static)) && 
                 !TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Constant);
             //can't be all caps with setting set
-            if (hasDollar && this.options.allCapsConsts && ast.actualText.toUpperCase() == ast.actualText) {
+            if (hasDollar && this.options.allCapsConsts && this.getIdentifierText(ast).toUpperCase() == 
+                    this.getIdentifierText(ast)) {
                 hasDollar = false;
             }
             //nested functions which we make anon are ok to have dollar signs
@@ -961,24 +975,40 @@ module Pratphall {
                     (<TypeScript.BoundDecl>ast.sym.declAST).id === ast) {
                 hasDollar = true;
             }
-            if (hasDollar && ast.actualText.charAt(0) != '$') this.write('$');
-            //do we need to prefix with a slash?
-            if (ast.sym != null && ast.sym.declAST instanceof TypeScript.NamedDeclaration && 
-                    ast.sym.container.name == '__GLO') {
-                //if it's a top level module, we prefix with slash no matter what
-                //otherwise if it's a top level type, we only prefix if we are not in the top level namespace
-                if (ast.sym.declAST instanceof TypeScript.ModuleDeclaration) this.write('\\');
-                else if (this.currentNamespace().name != '') this.write('\\');
+            if (hasDollar && this.getIdentifierText(ast).charAt(0) != '$') this.write('$');
+            var shouldWrite = true;
+            //check namespaces and what not
+            if (ast.sym != null && ast.sym.declAST instanceof TypeScript.NamedDeclaration) {
+                //do we need to prefix with a slash?
+                if (ast.sym.container.name == '__GLO') {
+                    //if it's a top level module, we prefix with slash no matter what
+                    //otherwise if it's a top level type, we only prefix if we are not in the top level namespace
+                    if (ast.sym.declAST instanceof TypeScript.ModuleDeclaration) this.write('\\');
+                    else if (this.currentNamespace().name != '') this.write('\\');
+                } else if (ast.sym.declAST instanceof TypeScript.TypeDeclaration) {
+                    //if the current namespace is a child of what's referenced, 
+                    //  we have to fully qualify the reference
+                    //can't have a binary expression above me, because those are handled w/ imports
+                    if (this.stack.length == 1 ||
+                           !(this.stack[this.stack.length - 2] instanceof TypeScript.BinaryExpression)) {
+                        var qualified = this.getQualifiedTypeName(ast.sym.declAST);
+                        if (qualified.indexOf('\\' + this.currentNamespace().getPhpName()) != 0) {
+                            this.write(qualified);
+                            shouldWrite = false;
+                        }
+                    }
+                }
             }
-            //if (ast
-            this.write(ast.actualText);
+            //write
+            if (shouldWrite) this.write(this.getIdentifierText(ast));
         }
 
         emitIfStatement(ast: TypeScript.IfStatement) {
             this.write('if (').emit(ast.cond).write(') ').emit(ast.thenBod).semicolon(ast.thenBod);
             if (ast.elseBod != null) {
                 //do we need a newline?
-                if (this.getEndLine(ast.thenBod).line != this.getStartLine(ast.elseBod).line) {
+                if (this.hasSemicolonAfterStatement(ast.thenBod) || 
+                        this.getEndLine(ast.thenBod).line != this.getStartLine(ast.elseBod).line) {
                     this.newline();
                 } else this.write(' ');
                 this.write('else');
@@ -997,7 +1027,7 @@ module Pratphall {
             //ignore ambient
             if (ast.isAmbient()) return;
             //push decl
-            this.pushTypeDecl(new TypeDecl(true, ast.name.actualText));
+            this.pushTypeDecl(new TypeDecl(true, this.getIdentifierText(ast.name)));
             //pre comments
             this.emitCommentSet(ast.preComments, false, true);
             this.write('interface ').emit(ast.name);
@@ -1054,7 +1084,7 @@ module Pratphall {
 
         emitModuleDeclaration(ast: TypeScript.ModuleDeclaration) {
             //push decl
-            this.pushNamespace(ast.name.actualText);
+            this.pushNamespace(this.getIdentifierText(ast.name));
             this.emitBlockStatements(ast.members, true);
             //pop
             this.popDecl();
@@ -1075,6 +1105,9 @@ module Pratphall {
         }
 
         emitScript(ast: TypeScript.Script) {
+            //grab length of top ns code
+            var topNsCodeLength = this.topNamespace.code.length;
+            //include refs?
             if (this.options.requireReferences) {
                 var first = false;
                 ast.referencedFiles.forEach((value: TypeScript.IFileReference) => {
@@ -1088,6 +1121,11 @@ module Pratphall {
                 });
             }
             this.emitBlockStatements(ast.bod, true);
+            //did we emit top ns code?
+            if (this.topNamespace.code.length > topNsCodeLength &&
+                    this.topNamespace.code.substr(topNsCodeLength).trim().length > 0) {
+                this.scriptsEmittingTopNamespaceCode.push(ast);
+            }
         }
 
         emitStringLiteral(ast: TypeScript.StringLiteral) {
@@ -1190,7 +1228,8 @@ module Pratphall {
         }
 
         emitVarDecl(ast: TypeScript.VarDecl) {
-            var isConst = this.options.allCapsConsts && ast.id.actualText.toUpperCase() == ast.id.actualText;
+            var isConst = this.options.allCapsConsts && this.getIdentifierText(ast.id).toUpperCase() == 
+                this.getIdentifierText(ast.id);
             //the init better be a literal
             if (isConst) {
                 if (ast.init == null) {
@@ -1251,6 +1290,16 @@ module Pratphall {
             return this.stack[this.stack.length - 2];
         }
 
+        getIdentifierText(ast: TypeScript.Identifier) {
+            var actualText = ast.actualText;
+            //ends w/ underscore but doesn't start w/ it means we remove it
+            if (actualText.length > 1 && actualText.charAt(actualText.length - 1) == '_' &&
+                    actualText.charAt(0) != '_') {
+                actualText = actualText.substr(0, actualText.length - 1);
+            }
+            return actualText;
+        }
+
         isEmpty(ast: TypeScript.AST) {
             return ast.nodeType == TypeScript.NodeType.Empty ||
                 ast.nodeType == TypeScript.NodeType.EmptyExpr ||
@@ -1286,7 +1335,6 @@ module Pratphall {
         hasSemicolonAfterStatement(ast: TypeScript.AST) {
             //these handle their own semi colons
             return !(ast instanceof TypeScript.Block) &&
-                !(ast instanceof TypeScript.DoWhileStatement) &&
                 !(ast instanceof TypeScript.ForStatement) &&
                 !(ast instanceof TypeScript.ForInStatement) &&
                 (!(ast instanceof TypeScript.FuncDecl) ||
@@ -1361,8 +1409,19 @@ module Pratphall {
         addImportReference(ast: TypeScript.Identifier, mport: TypeScript.ImportDeclaration) {
             if (mport.alias.type.symbol.declAST instanceof TypeScript.ModuleDeclaration) {
                 this.addModuleReference(<TypeScript.ModuleDeclaration>mport.alias.type.
-                    symbol.declAST, ast.actualText);
+                    symbol.declAST, this.getIdentifierText(ast));
             }
+        }
+
+        getQualifiedTypeName(ast: TypeScript.AST) {
+            var curr = (<TypeScript.SymbolAggregateScope>ast.type.containedScope).container;
+            var name = '';
+            while (curr.name != '__GLO') {
+                if (name == '') name = curr.name;
+                else name = curr.name + '\\' + name;
+                curr = curr.container;
+            }
+            return '\\' + name;
         }
     }
 }

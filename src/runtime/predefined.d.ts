@@ -1,5 +1,14 @@
 ///<reference path='all.d.ts' />
 
+var __LINE__: number;
+var __FILE__: string;
+var __DIR__: string;
+var __FUNCTION__: string;
+var __CLASS__: string;
+var __TRAIT__: string;
+var __METHOD__: string;
+var __NAMESPACE__: string;
+
 declare var $GLOBALS: Pct.PhpAssocArray;
 declare var $_SERVER: Pct.PhpAssocArray;
 declare var $_GET: Pct.PhpAssocArray;
@@ -13,6 +22,11 @@ declare var php_errormsg: string;
 declare var http_response_header: string[];
 declare var argc: number;
 declare var argv: string[];
+
+function include(path: string): any;
+function include_once(path: string): any;
+function require(path: string): any;
+function require_once(path: string): any;
 
 declare interface Traversable {
     forEach?(callbackfn: (value: any, index: any) => void);
@@ -30,10 +44,10 @@ declare interface IteratorAggregate extends Traversable {
     getIterator(): Traversable;
 }
 
-declare interface ArrayAccess {
-    [offset: string]: any;
-    //[offset: number]: any; TODO: Why? Ref: http://typescript.codeplex.com/discussions/412174
+declare interface ArrayAccess extends Pct.Indexable {
     offsetExists(offset: any): bool;
+    offsetGet(offset: any): any;
+    offsetSet(offset: any, value: any);
     offsetUnset(offset: any);
 }
 

@@ -1,0 +1,23 @@
+﻿Type name test
+-----
+module Outer {
+    declare export class InnerClass {
+    }
+
+    export module Inner {
+        declare export class ReallyInner {
+        }
+    }
+}
+
+import Inner = Outer.Inner;
+var a = Pct.typeName(Outer.InnerClass);
+var b = Pct.typeName(Inner.ReallyInner);
+var c = Pct.typeName(Exception);
+-----
+namespace  {
+
+    $a = '\Outer\InnerClass';
+    $b = '\Outer\Inner\ReallyInner';
+    $c = '\Exception';
+}

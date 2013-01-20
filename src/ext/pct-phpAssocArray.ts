@@ -21,7 +21,7 @@ module Pratphall {
             }
         },
         emit: (ast: TS.UnaryExpression, emitter: PhpEmitter): bool => {
-            //just ignore the cast and make sure the object lit doesn't become stdClass 
+            //just ignore the cast and make sure the object lit doesn't become stdClass
             emitter.emitUnaryExpression(<TS.UnaryExpression>ast.operand, true);
             return true;
         }
@@ -40,13 +40,17 @@ module Pratphall {
             }
         },
         emit: (ast: TS.CallExpression, emitter: PhpEmitter): bool => {
-            //better be a single object lit
-            if (ast.arguments.members.length != 1 || ast.arguments.members[0].nodeType != TS.NodeType.ObjectLit) {
-                emitter.addError(ast.arguments, 'Pct.newAssocArray must have a single object literal argument');
+            //no args? empty array
+            if (ast.arguments == null || ast.arguments.members.length == 0) {
+                emitter.write('[]');
+            } else if (ast.arguments.members.length != 1 || ast.arguments.members[0].nodeType != TS.NodeType.ObjectLit) {
+                //needed be a single object lit
+                emitter.addError(ast.arguments, 'Pct.newAssocArray must have a single object literal argument or no arguments');
                 return false;
+            } else {
+                //ignore call
+                emitter.emitUnaryExpression(<TS.UnaryExpression>ast.arguments.members[0], true);
             }
-            //ignore call
-            emitter.emitUnaryExpression(<TS.UnaryExpression>ast.arguments.members[0], true);
             return true;
         }
     });

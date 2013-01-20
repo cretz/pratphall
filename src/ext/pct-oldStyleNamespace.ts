@@ -31,6 +31,9 @@ module Pratphall {
             }
         },
         emit: (ast: TS.BinaryExpression, emitter: PhpEmitter): bool => {
+            //if we aren't in top NS, we need to prepend slash
+            if (emitter.currentNamespace().name != '') emitter.write('\\');
+            //write
             emitter.write((<TS.Identifier>ast.operand2).sym.pathToRoot().reduce((prev: string, curr: TS.Symbol) => {
                 if (prev != '') prev = '_' + prev;
                 return curr.name + prev;

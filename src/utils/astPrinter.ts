@@ -1,8 +1,6 @@
 ///<reference path='../typescript/src/compiler/typescript.ts' />
 ///<reference path='../sys.ts' />
 
-import TS = TypeScript;
-
 class ConsoleWriter implements ITextWriter {
     Write(s: string) { console.log(s);  }
     WriteLine(s: string) { this.Write(s + '\n'); }
@@ -19,16 +17,7 @@ class ConsoleLogger implements TS.ILogger {
 }
 
 var contents = [
-    'module Top.Sub {',
-    '    class SubClass {',
-    '    }',
-    '}',
-    'module Top {',
-    '    module Other {',
-    '        class OtherClass extends Sub.SubClass {',
-    '        }',
-    '    }',
-    '}'
+    'var a = undefined;'
 ].join('\n');
 //compile TS
 var settings = new TS.CompilationSettings();

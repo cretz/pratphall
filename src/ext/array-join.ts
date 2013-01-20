@@ -13,7 +13,7 @@ module Pratphall {
                 target: (value: TS.AST): bool => {
                     return value instanceof TS.BinaryExpression &&
                         value.nodeType == TS.NodeType.Dot &&
-                        (<TS.BinaryExpression>value).operand1.type.isArray() &&
+                        typeIsArray((<TS.BinaryExpression>value).operand1) &&
                         (<TS.BinaryExpression>value).operand2 instanceof TS.Identifier &&
                         (<TS.Identifier>(<TS.BinaryExpression>value).operand2).text == 'join';
                 }

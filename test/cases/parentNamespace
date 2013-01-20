@@ -1,0 +1,26 @@
+﻿Parent namespace test
+-----
+module Outer {
+    class Foo {
+    }
+
+    module Inner {
+        class Bar extends Foo {
+            test(a: Foo) {
+            }
+        }
+    }
+}
+-----
+namespace Outer {
+    class Foo {
+    }
+}
+
+namespace Outer\Inner {
+    class Bar extends \Outer\Foo {
+        public function test(\Outer\Foo $a) {
+        }
+        
+    }
+}

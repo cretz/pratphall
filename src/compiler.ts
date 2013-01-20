@@ -17,6 +17,7 @@ module Pratphall {
         useElseif = false;
         verbose = false;
         lint = false;
+        excludeOutside = false;
     }
 
     export class Compiler {
@@ -66,6 +67,17 @@ module Pratphall {
                     this.io.evalGlobal(value, scripts[index].filename);
                 });
             }
+            //grab acceptable in paths
+            var acceptableInDirs: string[] = [];
+            if (this.options.excludeOutside) {
+                files.forEach((value: string) => {
+                    var dir = this.io.resolvePath(this.io.dirPath(value));
+                    if (acceptableInDirs.indexOf(value) == -1) {
+                        acceptableInDirs.push(dir);
+                    }
+                });
+                this.debug('Only emitting source from: ' + acceptableInDirs);
+            }
             //resolve units
             var units: TypeScript.SourceUnit[] = [];
             var knownFullPaths: string[] = [];
@@ -76,6 +88,15 @@ module Pratphall {
                 this.debug('Loading source unit: ' + fullPath);
                 var unit = new TypeScript.SourceUnit(fullPath, this.io.readFile(fullPath));
                 unit.referencedFiles = TypeScript.getReferencedFiles(unit);
+                //check included?
+                if (acceptableInDirs.length > 0) {
+                    if (!acceptableInDirs.some((value: string) => {
+                        return fullPath.indexOf(value) == 0;
+                    })) {
+                        unit['excludeEmit'] = true;
+                    }
+                }
+                //add
                 units.push(unit);
                 knownFullPaths.push(fullPath);
                 //loop through references
@@ -112,7 +133,8 @@ module Pratphall {
             //add units to the compiler
             units.forEach((value: TypeScript.SourceUnit) => {
                 var path = this.io.relativePath(this.io.dirPath(files[0]), value.path);
-                compiler.addSourceUnit(value, path, false, value.referencedFiles);
+                var script = compiler.addSourceUnit(value, path, false, value.referencedFiles);
+                if (value['excludeEmit']) script['excludeEmit'] = true;
             });
             //errors means null
             if (err.contents.length > 0) return null;
@@ -132,7 +154,7 @@ module Pratphall {
             options.comments = this.options.comments;
             options.requireReferences = this.options.requireReferences;
             options.typeHint = this.options.typeHint;
-            options.useElseif = this.options.typeHint;
+            options.useElseif = this.options.useElseif;
             return new PhpEmitter(compiler.typeChecker, options);
         }
 
@@ -146,8 +168,8 @@ module Pratphall {
             var results = new Results();
             //loop through scripts
             compiler.scripts.members.forEach((value: TypeScript.Script, index: number) => {
-                //ignore decl
-                if (value.isDeclareFile) return;
+                //ignore decl or non-emit
+                if (value.isDeclareFile || value['excludeEmit']) return;
                 emitter.emit(value);
                 //errors and warnings
                 var errors = emitter.clearErrors();
@@ -163,7 +185,9 @@ module Pratphall {
             if (results.errors.length != 0) return results;
             //first, the top namespace code as the main file
             if (emitter.topNamespace.code.trim().length > 0) {
-                var file = new OutputFile((<TypeScript.Script>compiler.scripts.members[0]).locationInfo.filename);
+                var file = new OutputFile(emitter.scriptsEmittingTopNamespaceCode[0].locationInfo.filename);
+                //fix the file extension
+                file.path = file.path.slice(0, -3) + '.php';
                 this.debug('Emitting top namespace code at ' + file.path);
                 file.contents += this.emitUseDeclarations(emitter.topNamespace);
                 if (this.options.composer) file.contents += "require('vendor/autoload.php');\n";
@@ -203,8 +227,8 @@ module Pratphall {
                 return value.locationInfo.filename.replace('.ts', '.php');
             };
             compiler.scripts.members.forEach((value: TypeScript.Script, index: number) => {
-                //ignore decl
-                if (value.isDeclareFile) return;
+                //ignore decl or non-emit
+                if (value.isDeclareFile || value['excludeEmit']) return;
                 //not single means reset
                 if (!this.options.single) emitter.reset();
                 emitter.emit(value);
@@ -245,8 +269,7 @@ module Pratphall {
             } else if (emitter.topNamespace.children.length == 0) onlyNs = emitter.topNamespace;
             //namespace writer
             var writeNamespace = (ns: Namespace, wrap: bool, first = false) => {
-                if (wrap) ns.code = ns.code.replace('\n', '\n' + emitter.options.indent).trim();
-                else ns.code = ns.code.trim();
+                ns.code = ns.code.trim();
                 if (ns.code == '' && ns.types.length == 0) return false;
                 file.contents += '\n';
                 if (wrap) file.contents += 'namespace ' + ns.getPhpName() + ' {\n';
@@ -258,22 +281,15 @@ module Pratphall {
                 }
                 //type decls before code
                 ns.types.forEach((value: TypeDecl, index: number) => {
-                    if (wrap) {
-                        //indent the whole block...
-                        value.code = value.code.trim().split('\n').reduce((prev: string, curr: string) => {
-                            if (prev != '') prev += '\n' + emitter.options.indent;
-                            return prev + curr;
-                        }, '');
-                    }
+                    if (wrap) value.code = this.getIndentedCode(value.code, emitter.options.indent);
                     else value.code = value.code.trim();
                     if (index > 0) file.contents += '\n';
-                    if (wrap) file.contents += emitter.options.indent;
                     file.contents += value.code + '\n';
                 });
                 //now code
                 if (ns.code.trim() != '') {
                     file.contents += '\n';
-                    if (wrap) file.contents += emitter.options.indent;
+                    if (wrap) ns.code = this.getIndentedCode(ns.code, emitter.options.indent);
                     file.contents += ns.code + '\n';
                 }
                 if (wrap) file.contents += '}\n';
@@ -303,6 +319,14 @@ module Pratphall {
             }
             //return the file
             return file;
+        }
+
+        getIndentedCode(code: string, indent: string) {
+            return code.trim().split('\n').reduce((prev: string, curr: string) => {
+                if (prev != null) prev += '\n';
+                else prev = '';
+                return prev + indent + curr;
+            }, null);
         }
 
         emitUseDeclarations(decl: Declaration, indent?: string) {

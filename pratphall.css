@@ -120,6 +120,15 @@ div.code-nested pre code {
     margin-left: 180px;
 }
 
+.para-link a {
+    color: #FFFFFF;
+}
+
+.para-link:hover a {
+    color: #D3D3D3;
+    text-decoration: none;
+}
+
 /*ref: https://github.com/isagalaev/highlight.js/blob/master/src/styles/github.css */
 
 pre code {

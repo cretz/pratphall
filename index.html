@@ -2,8 +2,9 @@
 <html>
   <head lang="en">
     <title>Pratphall</title>
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
-    <link href="pratphall.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet" />
+    <link href="pratphall.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   </head>
   <body>
     <div class="topbar">
@@ -111,7 +112,7 @@ foreach ($arr as $value) {
 
 
 
-//function using compile-time interface
+//function using compile-time class
 function printInfo($info) {
     echo('Required: ' . $info->requiredProperty . "\n");
     if (array_key_exists('optionalProperty', $info)) {
@@ -123,19 +124,20 @@ function printInfo($info) {
 printInfo((object)[ 'requiredProperty' => 'required val' ]);</code></pre>
       </div>
 
-      <h2>Getting Started</h2>
+      <span class="bookmark" id="GettingStarted"></span>
+      <h2 class="para-link">Getting Started <a href="#GettingStarted">&nbsp;&para;</a></h2>
 
       <span class="bookmark" id="GettingStarted-Installation"></span>
-      <h5>Installation</h5>
+      <h4 class="para-link">Installation <a href="#GettingStarted-Installation">&nbsp;&para;</a></h4>
       <p>To use Pratphall from the command line, simply install via NPM:</p>
       <pre>npm install -g pratphall</pre>
       <p>
-        You may also want to install <a href="http://www.microsoft.com/en-us/download/details.aspx?id=34790">TypeScript for Visual Studio 2012</a> if you want to use Visual Studio as your editor. For more information about Visual Studio support, see <a href="#Appendix-VisualStudioSupport">below</a>.
+        You may also want to install <a href="http://www.microsoft.com/en-us/download/details.aspx?id=34790">TypeScript for Visual Studio 2012</a> if you want to use Visual Studio as your editor. For more information about Visual Studio support, see <a href="#Manual-Appendices-VisualStudio">below</a>.
       </p>
-      <p>If you want to build Pratphall from source, see the <a href="#Appendix-BuildingFromSource">Building From Source</a> appendix.</p>
+      <p>If you want to build Pratphall from source, see the <a href="#Manual-Appendices-Building">Building From Source</a> appendix.</p>
 
       <span class="bookmark" id="GettingStarted-Compiling"></span>
-      <h5>Compiling</h5>
+      <h4 class="para-link">Compiling <a href="#GettingStarted-Compiling">&nbsp;&para;</a></h4>
       <p>Write the following simple script and save it as sayHello.ts:</p>
       <pre><code class="pratphall">function sayHello(subject: string) {
     return 'Hello, ' + subject;
@@ -166,19 +168,20 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         You would get: <code>sayHello.ts(7,5): Supplied parameters do not match any signature of call target</code>. This is because you are attempting to pass a number to a function that only accepts strings.
       </p>
 
-      <h2>Manual</h2>
+      <span class="bookmark" id="Manual"></span>
+      <h2 class="para-link">Manual <a href="#Manual">&nbsp;&para;</a></h2>
 
       <span class="bookmark" id="Manual-Introduction"></span>
-      <h3>Introduction</h3>
+      <h3 class="para-link">Introduction <a href="#Manual-Introduction">&nbsp;&para;</a></h3>
 
       <h4>Who?</h4>
       <p>
-        Nobody really. It's a project that was started in <a href="http://github.com/cretz">my</a> spare time and only maintained in my <em>spare</em> time. There is no commercial support, no guarantee that anything will get fixed, and no guarantee that the project will be properly maintained. I am not aware of any use in a production environment, so use at your own risk. If it becomes popular, it is possible it could become a more professional language. Feel free to discuss the language or ask questions on the <a href="https://groups.google.com/d/forum/pratphall">mailing list</a>.
+        Nobody really. It's a project that was started in <a href="http://github.com/cretz">my</a> spare time and only maintained in my <em>spare</em> time. There is no commercial support, no guarantee that anything will get fixed, and no guarantee that the project will be properly maintained. The only project known to  use Pratphall is <a href="http://github.com/cretz/dust-php">dust-php</a>. If it becomes popular, it is possible it could become a more professional language. Feel free to discuss the language or ask questions on the <a href="https://groups.google.com/d/forum/pratphall">mailing list</a>.
       </p>
 
       <h4>What?</h4>
       <p>
-        Pratphall is <a href="http://typescriptlang.org">TypeScript</a> compiled to PHP. It includes several helpers to make this easier. Pratphall is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2</a> license.
+        Pratphall is <a href="http://typescriptlang.org">TypeScript</a> compiled to PHP. It includes several helpers to make this easier. Pratphall's code is licensed under the MIT license, but the Microsoft TypeScript code within (referenced as a submodule) is licensed under the Apache 2 license.
       </p>
 
       <h4>Where?</h4>
@@ -196,7 +199,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         This is basically for static typing enthusiasts that use PHP either because they are forced to or like the PHP engine and scalability. Using PHPDoc annotations is rarely a good enough solution and editor support for them is limited. After noticing extreme parity between TypeScript and PHP, a simple tool was built to do the cross-compiling. This is the result.
       </p>
       <p>
-        Pratphall can be used to make a really scalable codebase in PHP. It can also reduce the verbosity (e.g. several classes/modules in one file) and increase productivity through editor support (e.g. Visual Studio with IntelliSense). Refactoring and determining use throughout the your codebase will now be really easy. And, if the abstraction is written properly, code can even be shared between JS/PHP. At the very least this really helps when defining typed model classes.
+        Pratphall can be used to make a really scalable codebase in PHP. It can also reduce verbosity (e.g. several classes/modules in one file) and increase productivity through editor support (e.g. Visual Studio with IntelliSense). Refactoring and determining use throughout the your codebase will now be really easy. And, if the abstraction is written properly, code can even be shared between JS/PHP. At the very least this really helps when defining typed model classes.
       </p>
 
       <h4>How?</h4>
@@ -205,7 +208,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
       </p>
 
       <span class="bookmark" id="Manual-Usage"></span>
-      <h3>Usage</h3>
+      <h3 class="para-link">Usage <a href="#Manual-Usage">&nbsp;&para;</a></h3>
       <pre>ppc [options] FILE...</pre>
       <p>Options:</p>
       <dl class="dl-horizontal">
@@ -213,6 +216,8 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         <dd>When set and any variable is all capital letters, it will assume it's a constant and not prefix it with a dollar sign in PHP</dd>
         <dt><code>--ext FILE</code></dt>
         <dd>Can be used as many times as necessary to include extensions</dd>
+        <dt><code>--exclude-outside</code></dt>
+        <dd>Do not emit Pratphall files referenced in directories above and outside the given file</dd>
         <dt><code>-h</code>, <code>--help</code></dt>
         <dd>Display help</dd>
         <dt><code>--no-comments</code></dt>
@@ -240,19 +245,21 @@ echo(sayHello(theSubject) + '\n');</code></pre>
       </dl>
 
       <span class="bookmark" id="Manual-Types"></span>
-      <h3>Types</h3>
+      <h3 class="para-link">Types <a href="#Manual-Types">&nbsp;&para;</a></h3>
 
-      <h4>Booleans</h4>
+      <span class="bookmark" id="Manual-Types-Booleans"></span>
+      <h4 class="para-link">Booleans <a href="#Manual-Types-Booleans">&nbsp;&para;</a></h4>
       <p>Booleans and conversions happen the same way in Pratphall as they do in PHP.</p>
 
-      <h4>Strings</h4>
+      <span class="bookmark" id="Manual-Types-Strings"></span>
+      <h4 class="para-link">Strings <a href="#Manual-Types-Strings">&nbsp;&para;</a></h4>
       <p>
-        Strings in Pratphall and PHP are very similar. There are no multiline strings. There is no string interpolation (attempts are escaped). Usually, the preference of single quote or double quote in the Pratphall script is translated verbatim to PHP. However, if there is an escape character in a single-quoted string, it will become double quoted. To request that all strings without escape characters to become single quoted in PHP, use the <code>--prefer-single-quotes</code> compiler option.
+        Strings in Pratphall and PHP are somewhat similar. There are no multiline strings. There is no string interpolation (attempts are escaped). Usually, the preference of single quote or double quote in the Pratphall script is translated verbatim to PHP. However, if there is an escape character in a single-quoted string, it will become double quoted. To request that all strings without escape characters to become single quoted in PHP, use the <code>--prefer-single-quotes</code> compiler option.
       </p>
       <p>
         In Pratphall strings are concatenated with a plus sign. In PHP the dot operator is used. Type inference is used to determine when this translation should occur. In Pratphall, if either side of the plus operator is a string, concatenation is assumed. If either side of a plus operator is an unknown/any type a normal arithmetic plus will be used and a compiler warning will be issued.
       </p>
-      <p>Normal JavaScript string functions are translated to common PHP idioms.</p>
+      <p>Normal JavaScript string functions are translated to common PHP idioms with some <a href="#Manual-Appendices-Gotchas">gotchas</a>.</p>
       <div class="code">
         <pre><code class="pratphall">//will be converted to double quotes
 var a = 'My\nNewline\nString$escaped{$interpolation}';
@@ -284,19 +291,23 @@ var_dump($b[0]);
 var_dump(explode(' ', $b));</code></pre>
       </div>
 
-      <h4>Integers/Floats</h4>
+      <span class="bookmark" id="Manual-Types-IntFloat"></span>
+      <h4 class="para-link">Integers/Floats <a href="#Manual-Types-IntFloat">&nbsp;&para;</a></h4>
       <p>
         In JS there is no difference between an integer and a float for the most part, and the same is true in Pratphall. Conversion and testing can still occur at runtime with intval, floatval, and other methods. At compile time however, they are simply numbers. There is no normal way to constrain a variable on one type or the other. Hexadecimal and octal literals are translated to normal decimal integers during translation.
       </p>
 
-      <h4>Arrays</h4>
+      <span class="bookmark" id="Manual-Types-Arrays"></span>
+      <h4 class="para-link">Arrays <a href="#Manual-Types-Arrays">&nbsp;&para;</a></h4>
       <p>
         Unlike PHP, Pratphall differentiates between associative arrays and normal indexed arrays. The former is of type <code>Pct.PhpAssocArray</code> whereas the latter is a normal JS array. This can be confusing at first, but in practice it helps the developer make more accurate assumptions about the typing of variables. You can convert between these types at compile time using <code>Pct.toAssocArray</code> or <code>Pct.toArray</code>. Note when using the latter, (until TypeScript has generics) the result is <code>any[]</code> so it is recommended to cast it to the exact form of array expected.
       </p>
       <p>
         Associative arrays can be created with <code>Pct.newAssocArray</code>. Only object literals can be passed to the function. Indexed arrays are handled almost exactly like they are in JS. They are created with the normal bracketed syntax.
       </p>
-      <p>Normal JavaScript array functions are translated to common PHP idioms.</p>
+      <p>
+        Normal JavaScript array functions are translated to common PHP idioms with a few <a href="#Manual-Appendices-Gotchas">gotchas</a>.
+      </p>
       <div class="code">
         <pre><code class="pratphall">//regular array
 var a = [1, 2, 3];
@@ -344,9 +355,10 @@ $c['prop3'] = 15;
 var_dump(count($c));</code></pre>
       </div>
 
-      <h4>Objects</h4>
+      <span class="bookmark" id="Manual-Types-Objects"></span>
+      <h4 class="para-link">Objects <a href="#Manual-Types-Objects">&nbsp;&para;</a></h4>
       <p>
-        Objects in Pratphall and PHP work very similarly. Anonymous object literals become an stdClass via cast. Note, if you have a closure as an object property, it cannot necessarily be invoked like a method in PHP, so Pratphall has to do special handling (see <a href="#Appendix-Gotchas-001">GOTCHA-001</a>). TypeScript property accessors are not currently supported.
+        Objects in Pratphall and PHP work very similarly. Anonymous object literals become an stdClass via cast. Note, if you have a closure as an object property, it cannot necessarily be invoked like a method in PHP, so Pratphall has to do special handling (see <a href="#Manual-Appendices-Gotchas">GOTCHA-001</a>). TypeScript property accessors are not currently supported.
       </p>
       <div class="code">
         <pre><code class="pratphall">var obj = {
@@ -363,10 +375,12 @@ var_dump(count($c));</code></pre>
 ];</code></pre>
       </div>
 
-      <h4>Resources</h4>
+      <span class="bookmark" id="Manual-Types-Resources"></span>
+      <h4 class="para-link">Resources <a href="#Manual-Types-Resources">&nbsp;&para;</a></h4>
       <p>PHP resources are represented by the <code>Pct.PhpResource</code> type in Pratphall.</p>
 
-      <h4>Null and Undefined</h4>
+      <span class="bookmark" id="Manual-Types-NullUndefined"></span>
+      <h4 class="para-link">Null and Undefined <a href="#Manual-Types-NullUndefined">&nbsp;&para;</a></h4>
       <p>Null is handled the same way in Pratphall and PHP.</p>
       <p>
         Undefined is different. In Pratphall, <code>delete</code> translates directly to <code>unset</code>. Conditions that check typeof <code>undefined</code> are translated to safe PHP that avoids false positives with NULL values unlike isset.
@@ -391,7 +405,8 @@ unset($a->prop1);
 echo('a.prop1 set? ' . (!array_key_exists('prop1', $a)));</code></pre>
       </div>
 
-      <h4>Callbacks</h4>
+      <span class="bookmark" id="Manual-Types-Callbacks"></span>
+      <h4 class="para-link">Callbacks <a href="#Manual-Types-Callbacks">&nbsp;&para;</a></h4>
       <p>
         Pratphall supports full typed closure type definitions instead of just the callable type hint in PHP. Even methods of objects can be passed around like normal.
       </p>
@@ -414,15 +429,17 @@ $f = (new ReflectionMethod('Foo', 'bar'))->getClosure($foo);
 $f('test');</code></pre>
       </div>
       <p>
-        This is safe since unlike PHP, Pratphall does not support naming properties/variables and methods/functions the same name. See <a href="#Appendix-Gotchas-002">GOTCHA-002</a> about interoperating with existing PHP that does
+        This is safe since unlike PHP, Pratphall does not support naming properties/variables and methods/functions the same name. See <a href="#Manual-Appendices-Gotchas">GOTCHA-002</a> about interoperating with existing PHP that does.
       </p>
 
-      <h4>Pseudo-types</h4>
+      <span class="bookmark" id="Manual-Types-Pseudo"></span>
+      <h4 class="para-link">Pseudo-types <a href="#Manual-Types-Pseudo">&nbsp;&para;</a></h4>
       <p>
         Void can be used for return types of functions. There is no such thing as <code>mixed</code>, but there is <code>any</code> which loosely translates. The use of the <code>any</code> type should be avoided when possible. If using <code>any</code>, you are encouraged to cast to a known type as soon as you can.
       </p>
 
-      <h4>Casting</h4>
+      <span class="bookmark" id="Manual-Types-Casting"></span>
+      <h4 class="para-link">Casting <a href="#Manual-Types-Casting">&nbsp;&para;</a></h4>
       <p>
         To cast to a value at compile time, use the TypeScript method. For example: <code>&lt;bool>&lt;any>stringValue</code> casts a string to a bool but will not be casted in the emitted PHP code. This is helpful for functions that return a value or FALSE. In fact, this is such a common pattern that there are compile-time helpers for it: <code>Pct.isFalse</code> and <code>Pct.isNotFalse</code>.
       </p>
@@ -473,9 +490,10 @@ if (strpos('team', 'I') === false) {
       </div>
 
       <span class="bookmark" id="Manual-Syntax"></span>
-      <h3>Syntax</h3>
+      <h3 class="para-link">Syntax <a href="#Manual-Syntax">&nbsp;&para;</a></h3>
 
-      <h4>Variables</h4>
+      <span class="bookmark" id="Manual-Syntax-Variables"></span>
+      <h4 class="para-link">Variables <a href="#Manual-Syntax-Variables">&nbsp;&para;</a></h4>
       <p>Variables names are case sensitive and are NOT prefixed with dollar signs (except for references, see later).</p>
       <p>
         All variables in Pratphall are defined somewhere. If they are declared globally and are used in a function, the <code>global</code> keyword is applied in the translated PHP. There is no Pratphall equivalent to the static variable in PHP (not to be confused with the static property/function of a class).
@@ -504,18 +522,17 @@ echo('Grandchild val: ' + obj.child['grand' + 'child']);</code></pre>
 echo('Grandchild val: ' . $obj->child->{'grand' . 'child'});</code></pre>
       </div>
 
-      <h4>Constants</h4>
+      <span class="bookmark" id="Manual-Syntax-Constants"></span>
+      <h4 class="para-link">Constants <a href="#Manual-Syntax-Constants">&nbsp;&para;</a></h4>
       <p>
         Constants cannot be defined in Pratphall by default. The closest you can get is creating a top-level var. Some existing libraries have constants though that need to be accessed when interoperating. You can avoid the dollar sign that is normally prefixed to PHP variables by using <code>Pct.const</code> to reference the constant.
       </p>
       <p>
         If the <code>--all-caps-consts</code> compiler option is set, all variables that are in all capital letters will be considered constants when both defining and accessing. Note, a compiler warning will be issued for attempted const declarations that are not literal scalar values.
       </p>
-      <p>
-        All magic constants are supported in the Pratphall compile-time library. <code>Pct.__LINE__</code> is a number, and all other magic constants are strings.
-      </p>
 
-      <h4>Operators</h4>
+      <span class="bookmark" id="Manual-Syntax-Operators"></span>
+      <h4 class="para-link">Operators <a href="#Manual-Syntax-Operators">&nbsp;&para;</a></h4>
       <p>
         All operators work the same in Pratphall and PHP with the following exceptions:
         <dl>
@@ -584,7 +601,8 @@ $b = a instanceof 'Foo';</code></pre>
         </dl>
       </p>
 
-      <h4>Control Structures</h4>
+      <span class="bookmark" id="Manual-Syntax-ControlStructures"></span>
+      <h4 class="para-link">Control Structures <a href="#Manual-Syntax-ControlStructures">&nbsp;&para;</a></h4>
       <p>
         All control structures work the same in Pratphall and PHP with the following exceptions:
         <dl>
@@ -689,7 +707,8 @@ echo("Done!\n");</code></pre>
         </dl>
       </p>
 
-      <h4>References</h4>
+      <span class="bookmark" id="Manual-Syntax-References"></span>
+      <h4 class="para-link">References <a href="#Manual-Syntax-References">&nbsp;&para;</a></h4>
       <p>
         Pratphall recommends avoiding references. If you cannot, they are supported.
       </p>
@@ -740,9 +759,10 @@ echo('Changed? ' . ($c->d == 20));</code></pre>
       </div>
 
       <span class="bookmark" id="Manual-Structure"></span>
-      <h3>Structure</h3>
+      <h3 class="para-link">Structure <a href="#Manual-Structure">&nbsp;&para;</a></h3>
 
-      <h4>Function Basics</h4>
+      <span class="bookmark" id="Manual-Structure-FunctionBasics"></span>
+      <h4 class="para-link">Function Basics <a href="#Manual-Structure-FunctionBasics">&nbsp;&para;</a></h4>
       <p>
         Functions in Pratphall behave very similarly to PHP.
       </p>
@@ -753,12 +773,13 @@ echo('Changed? ' . ($c->d == 20));</code></pre>
         Type hinting is done by default for arrays, callables, and actual type declarations. Parameters who are typed with compile time only types (see compile time declarations below) will not be type hinted. If the compiler option <code>--no-type-hint</code> is set, type hinting will not be present on any function.
       </p>
 
-      <h4>Variadic Functions</h4>
+      <span class="bookmark" id="Manual-Structure-VariadicFunctions"></span>
+      <h4 class="para-link">Variadic Functions <a href="#Manual-Structure-VariadicFunctions">&nbsp;&para;</a></h4>
       <p>
         Pratphall directly supports typed variadic function arguments (known as "RestParameters" in the TypeScript specification) whereas PHP does not. The use of variadic functions is not encouraged, but supported.
       </p>
       <p>
-        When the <code>arguments</code> array is referenced in a function, it is translated to PHP by using <code>func_get_args</code> (see GOTCHA-023 about re-defining arguments). When a rest parameter is used as a parameter in a function, it is derived from <code>func_get_args</code>
+        When the <code>arguments</code> array is referenced in a function, it is translated to PHP by using <code>func_get_args</code> (see <a href="#Manual-Appendices-Gotchas">GOTCHA-003</a> about re-defining arguments). When a rest parameter is used as a parameter in a function, it is derived from <code>func_get_args</code>
       </p>
       <div class="code">
         <pre><code class="pratphall">function myprint(one: string, ...args: any[]) {
@@ -787,7 +808,8 @@ myprint('foo', true, 13.5, 'bar');</code></pre>
 myprint('foo', true, 13.5, 'bar');</code></pre>
       </div>
 
-      <h4>Optional Function Parameters</h4>
+      <span class="bookmark" id="Manual-Structure-OptionalParameters"></span>
+      <h4 class="para-link">Optional Function Parameters <a href="#Manual-Structure-OptionalParameters">&nbsp;&para;</a></h4>
       <p>
         Both PHP and Pratphall support optional function parameters. PHP supports only default parameters with only scalars/arrays and they can be anywhere within the parameter list. Pratphall supports both optional and default parameters which can be initialized to any type and must be at the end of the parameter list.
       </p>
@@ -845,7 +867,8 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
 }</code></pre>
       </div>
 
-      <h4>Try/Catch</h4>
+      <span class="bookmark" id="Manual-Structure-TryCatch"></span>
+      <h4 class="para-link">Try/Catch <a href="#Manual-Structure-TryCatch">&nbsp;&para;</a></h4>
       <p>
         Pratphall's (ahem, JS's) native try/catch syntax is much more limited than PHP's. It is supported and will even emit PHP 5.5 finally statements. You can compile-time cast the catch variable or do an instanceof check.
       </p>
@@ -904,7 +927,8 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
 }</code></pre>
       </div>
 
-      <h4>Classes and Interfaces</h4>
+      <span class="bookmark" id="Manual-Structure-ClassInterface"></span>
+      <h4 class="para-link">Classes and Interfaces <a href="#Manual-Structure-ClassInterface">&nbsp;&para;</a></h4>
       <p>
         Pratphall supports classes and interfaces just like PHP. There are several features that Pratphall does not support:
         <ul>
@@ -1105,9 +1129,10 @@ $myClass->someNewProp = 20;
 $e = strval($myClass);</code></pre>
       </div>
 
-      <h4>Ambient and Compile-Time Declarations</h4>
+      <span class="bookmark" id="Manual-Structure-AmbientCompileTime"></span>
+      <h4 class="para-link">Ambient and Compile-Time Declarations <a href="#Manual-Structure-AmbientCompileTime">&nbsp;&para;</a></h4>
       <p>
-        Ambient class, interface, variable, and function declarations are not emitted with the PHP output. They are best suited for describing external code. To make a variable, class, or function ambient, simple use the <code>declare</code> keyword before it. To make an interface ambient, make the interface explicitly extend <code>Pct.Ambient</code>. Another way to make all of these ambient is to simply place them in a declaration file (which is a file that has the <code>.d.ts</code> extension). For example, here is the contents of <code>json.d.ts</code> which describes the <a href="http://php.net/manual/en/book.json.php">JSON</a> library:
+        Ambient class, interface, variable, and function declarations are not emitted with the PHP output. They are best suited for describing external code. To make a variable, class, or function ambient, simple use the <code>declare</code> keyword before it. To make an interface ambient, make the interface explicitly extend <code>Pct.Ambient</code>. Another way to make all of these ambient is to simply place them in a declaration file (which is a file that has the <code>.d.ts</code> extension). For example, here are the contents of <code>json.d.ts</code> which describes the <a href="http://php.net/manual/en/book.json.php">JSON</a> library:
       </p>
       <pre><code class="pratphall">var JSON_ERROR_CTRL_CHAR: number;
 var JSON_ERROR_DEPTH: number;
@@ -1135,7 +1160,7 @@ function json_decode(json: string, assoc?: bool, depth?: number, options?: numbe
 function json_encode(value: any, options?: number): string;
 function json_last_error(): number;</code></pre>
       <p>
-        Since ambient types are still seen at runtime, they will be emitted as type hints. Compile-time declarations do not suffer from this. They are only there to enforce a certain contract and that's it. Only interfaces and classes can be marked compile-time only, and this is done by extending or implementing the <code>Pct.CompileTimeOnly</code> interface.
+        Since ambient types are still seen at runtime, they will be emitted as type hints. Compile-time declarations do not suffer from this. They are only there to enforce a certain contract and that's it. Only interfaces and classes can be marked compile-time only, and this is done by explicitly extending or implementing the <code>Pct.CompileTimeOnly</code> interface. Just because a super class/interface implements <code>Pct.CompileTimeOnly</code> doesn't mean it's children do, it must be explicitly stated.
       </p>
       <div class="code">
         <pre><code class="pratphall">interface Location extends Pct.CompileTimeOnly {
@@ -1194,8 +1219,8 @@ printWeather((object)[
 ]);</code></pre>
       </div>
 
-
-      <h4>Modules and References</h4>
+      <span class="bookmark" id="Manual-Structure-Modules"></span>
+      <h4 class="para-link">Modules and References <a href="#Manual-Structure-Modules">&nbsp;&para;</a></h4>
       <p>
         Modules in Pratphall are directly translatable as namespaces in PHP.
       </p>
@@ -1209,7 +1234,7 @@ printWeather((object)[
         External module references that use <code>import mod = module('modname')</code> format cause a compiler warning and are ignored for now. Use of the export feature to share items amongst modules is strictly a compile-time feature and is not emitted to PHP.
       </p>
       <p>
-        If you must reference code in another file, you can use <code>///&lt;reference path="PATH" /&gt;</code>. It is common practice to reference a file that might just be full of references to the other files in the project. This is just a compile-time reference unless both <code>--no-organize</code> and <code>--require-references</code> are set as compiler options. note, unless <code>--no-composer</code> is present, the Composer autoloader will be loaded at the top.
+        If you must reference code in another file, you can use <code>///&lt;reference path="PATH" /&gt;</code>. It is common practice to reference a file that might just be full of references to the other files in the project. This is just a compile-time reference unless both <code>--no-organize</code> and <code>--require-references</code> are set as compiler options. Note, unless <code>--no-composer</code> is present, the Composer autoloader will be loaded at the top.
       </p>
       <p>
         Different compiler options affect how the files are outputted. Below are descriptions of the options and output PHP examples based on these two files:
@@ -1316,18 +1341,14 @@ namespace {
       </p>
 
       <span class="bookmark" id="Manual-Metaprogramming"></span>
-      <h3>Metaprogramming</h3>
+      <h3 class="para-link">Metaprogramming <a href="#Manual-Metaprogramming">&nbsp;&para;</a></h3>
 
-      <h4>Emitter Extensions</h4>
-      <p></p>
-
-      <h4>Validators</h4>
-      <p></p>
+      TODO
 
       <!-- TODO: more work -->
 
       <span class="bookmark" id="Manual-Faq"></span>
-      <h3>FAQ</h3>
+      <h3 class="para-link">FAQ <a href="#Manual-Faq">&nbsp;&para;</a></h3>
 
       <dl>
         <dt>This is neat, so I can convert my PHP programs to JavaScript/TypeScript? Can I convert my JavaScript/TypeScript programs to PHP?</dt>
@@ -1365,19 +1386,62 @@ namespace {
       </dl>
 
       <span class="bookmark" id="Manual-Appendices"></span>
-      <h3>Appendices</h3>
+      <h3 class="para-link">Appendices <a href="#Manual-Appendices">&nbsp;&para;</a></h3>
 
-      <h4>Visual Studio Support</h4>
-      <p>...</p>
+      <span class="bookmark" id="Manual-Appendices-VisualStudio"></span>
+      <h4 class="para-link">Visual Studio Support <a href="#Manual-Appendices-VisualStudio">&nbsp;&para;</a></h4>
+      <p>
+        Until the next version of TypeScript is available, Visual Studio support for Pratphall is lacking. This is because the platform is too closed to alter the implicit library definitions to include the PHP runtime definitions. Having said that, it is still the most complete IDE for Pratphall. It is recommended to use --no-php-lib when compiling and adding a reference to php.d.ts (in the bin directory of installation) to a commonly referenced base. This will give intellisense support and all normal Visual Studio features.
+      </p>
+      <p>
+        There are a few reported errors from the TypeScript compiler that Pratphall suppresses. These will appear as errors in Visual Studio, but are not Pratphall errors. They are:
+        <ul>
+          <li>
+            When an interface is used in an instanceof expression, TypeScript emits an error. This is due to the fact that in TypeScript, all interfaces are compile-time only whereas in Pratphall most of them are runtime interfaces. There is currently no workaround for this.
+          </li>
+          <li>
+            The super type for both PHP associative arrays and indexed arrays is the Array type. However, there is currently a bug in TypeScript preventing using this type to represent both, so for all PHP functions that use this super type in their parameters, Visual Studio will show an error for normal indexed arrays. TypeScript issue <a href="http://typescript.codeplex.com/workitem/331">TS-331</a> should fix this issue.
+          </li>
+          <li>
+            In certain cases, Visual Studio says items are not visible that are. Currently the Pratphall compiler swallows these errors. TypeScript issue <a href="http://typescript.codeplex.com/workitem/245">TS-245</a> should fix this issue.
+          </li>
+          <li>
+            Implementations of ArrayAccess will show an error in Visual Studio because it is currently impossible to overload indexes. TypeScript issue <a href="http://typescript.codeplex.com/workitem/577">TS-577</a> should fix this issue.
+          </li>
+        </ul>
+      </p>
 
-      <h4>Building From Source</h4>
-      <p>...</p>
+      <span class="bookmark" id="Manual-Appendices-Building"></span>
+      <h4 class="para-link">Building From Source <a href="#Manual-Appendices-Building">&nbsp;&para;</a></h4>
+      <p>
+        Building from source is done very easily. You must have nodejs installed. Then, clone the <a href="https://github.com/cretz/pratphall.git">git repository</a>:
+        <pre>git clone https://github.com/cretz/pratphall.git</pre>
+        Run npm install to resolve the development dependencies:
+        <pre>npm install</pre>
+        This will install jake locally. Now run the build task with local Jake (or the global version if you already have Jake installed):
+        <pre>node_modules/.bin/jake build</pre>
+        This will compile everything into a single JS and move everything to the bin directory. You can also run the test cases very easily:
+        <pre>node_modules/.bin/jake test</pre>
+      </p>
 
-      <h4>Gotchas</h4>
+      <span class="bookmark" id="Manual-Appendices-Gotchas"></span>
+      <h4 class="para-link">Gotchas <a href="#Manual-Appendices-Gotchas">&nbsp;&para;</a></h4>
       <p>
         Below are gotchas that might not be expected during development
       </p>
       <dl>
+        <dt><code>001: Pratphall can't tell whether it's invoking an object's method or object's property that's a closure</code></dt>
+        <dd>
+          Unfortunately if you have an object property that's a closure in PHP, you cannot invoke it like <code>$obj->property();</code>, you have to do something like <code>$obj->property->__invoke();</code>. Sometimes there isn't enough typing information to determine whether a method invocation is a closure on a property or a method on an object. Therefore, Pratphall has to emit something like <code>(method_exists($obj, 'property') ? $obj->property() : $obj->property->__invoke());</code>. In order to avoid this, make sure your types are strong so the engine can tell which is which.
+        </dd>
+        <dt><code>002: Pratphall doesn't support naming properties/variables and methods/functions the same, making declarations for external PHP w/ name ambiguities difficult</code></dt>
+        <dd>
+          Any time you want name ambiguity in your PHP code, simply use an extra underscore at the end of either identifier in Pratphall. Any identifier that doesn't start with an underscore, but ends with one will have the ending underscore removed in translation.
+        </dd>
+        <dt><code>003: the JS arguments variable that gets the function arguments is unavailable if redefined later in function</code></dt>
+        <dd>
+          Basically, if you use the arguments array, then create a var later in the same function named arguments, we cannot tell the one used above the re-declaration needs func_get_args. Basic rule of thumb is not to use the arguments array in a function unless you have to, and then don't redefine it in the function.
+        </dd>
         <dt><code>004: String.charCodeAt only uses ord when emitting</code></dt>
         <dd>
           Even though <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/charCodeAt">String.charCodeAt</a> supports unicode in JS, we only use <a href="http://php.net/manual/en/function.ord.php">ord</a>. Please handle unicode needs separately.
@@ -1394,7 +1458,7 @@ namespace {
         </dd>
         <dt><code>009: String.toLocaleLowerCase and toLocaleUpperCase are unsupported</code></dt>
         <dd>There is no guarantee that mb_ functions are available</dd>
-        <dt><code>010: Object.valueOfis unsupported</code></dt>
+        <dt><code>010: Object.valueOf is unsupported</code></dt>
         <dd>No equivalent in PHP</dd>
         <dt><code>011: Many Object functions (e.g. freeze) are unsupported</code></dt>
         <dd>No equivalents in PHP, but no errors emitted because they can be overridden</dd>
@@ -1426,18 +1490,24 @@ namespace {
         <dd>No PHP equivalent</dd>
         <dt><code>022: Second and third parameters of JSON.stringify are unsupported</code></dt>
         <dd>No PHP equivalent</dd>
-        <dt><code>023: the JS arguments variable that gets the function arguments is unavailable if redefined later in function</code></dt>
+        <dt><code>023: Class/interface names cannot be the same as module/namespace names at the same level</code></dt>
         <dd>
-          Basically, if you use the arguments array, then create a var later named arguments, we cannot tell the one used above the re-declaration needs func_get_args. Basic rule of thumb is not to use the arguments array in a function unless you have to, and then don't redefine it in the function.
-        </dd>
+          This is common practice in PHP especially before namespaces were introduced. We believe this lack of support will actually help properly group types instead of using namespaces as OOP extension paths. Any time you want name ambiguity in the PHP code, an underscore can be added to the end of any identifier and (assuming the identifier doesn't start with an underscore), it will be removed.
       </dl>
 
-      <h4>Future</h4>
+      <span class="bookmark" id="Manual-Appendices-Future"></span>
+      <h4 class="para-link">Future <a href="#Manual-Appendices-Future">&nbsp;&para;</a></h4>
       <p>
         These are some wishlist items that could be implemented in the future.
         <ul>
           <li>
-            Emit exact PHPDoc based on the <a href="https://github.com/phpDocumentor/phpDocumentor2/blob/master/docs/PSR.md">PSR</a>.
+            Emit exact PHPDoc based on the <a href="https://github.com/phpDocumentor/phpDocumentor2/blob/master/docs/PSR.md">PSR</a>. Pending TypeScript 0.8.2 to formalize JSDoc-to-PHPDoc.
+          </li>
+          <li>
+            Optionally emit runtime type checks at the beginning of functions and/or results from functions.
+          </li>
+          <li>
+            Support generators.
           </li>
           <li>
             Create a proxy to proxy Xdebug protocol to other debugging protocols used in common IDE's.
@@ -1445,16 +1515,47 @@ namespace {
           <li>
             Add <code>--watch</code> option to watch for file changes and compile automatically when changed.
           </li>
+          <li>
+            A macro syntax that is inline.
+          </li>
+          <li>
+            Now that it appears property accessors <a href="https://wiki.php.net/rfc/propertygetsetsyntax-v1.2#voting">will be accepted</a>, support the TypeScript property accessor syntax and think about how best to support isset and unset.
+          </li>
+          <li>
+            Expose extensibility in the type checking system.
+          </li>
+          <li>
+            Support open classes/interfaces.
+          </li>
+          <li>
+            Add online playground. Should be very easy since it's all simple JavaScript. Could even leverage phpfiddle's API and the GitHub gist framework to execute the compiled code, save it for later use, etc.
+          </li>
+          <li>
+            Get up and running on Travis CI.
+          </li>
+          <li>
+            Optionally auto-use all needed references outside of the current namespace.
+          </li>
         </ul>
         These are some items that need to be fixed.
         <ul>
           <li>Need to stream output and stop using so much RAM</li>
+          <li>
+            In Pratphall, type-hinted parameters w/out default null can still accept null. This needs to be a compiler error since PHP does not support it.
+          </li>
         </ul>
       </p>
 
-      <h4>Changelog</h4>
-      <p>...</p>
-
+      <span class="bookmark" id="Manual-Appendices-Changelog"></span>
+      <h4 class="para-link">Changelog <a href="#Manual-Appendices-Changelog">&nbsp;&para;</a></h4>
+      <p>
+        <dl>
+          <dt>0.1.0</dt>
+          <dd>
+            Initial release
+          </dd>
+        </dl>
+      </p>
 
     </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>

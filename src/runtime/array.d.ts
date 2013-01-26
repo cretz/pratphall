@@ -1,7 +1,4 @@
 ///<reference path='all.d.ts' />
-
-//constants
-
 declare var CASE_LOWER: number;
 declare var CASE_UPPER: number;
 
@@ -17,44 +14,42 @@ declare var SORT_FLAG_CASE: number;
 declare var COUNT_NORMAL: number;
 declare var COUNT_RECURSIVE: number;
 
-//TODO: maybe some kind of result/option/either style later?
-
 declare function array(contents: any[]): Array;
 declare function array(contents: Pct.PhpAssocArray): Array;
 declare function array_change_key_case(input: Array, case_?: number): Array;
 declare function array_chunk(input: Array, size: number, preserve_keys?: bool): Array;
 declare function array_combine(keys: Array, values: Array): Array;
 declare function array_count_values(input: Array): Array;
-declare function array_diff(...arrays: Array[]): Array;
-declare function array_diff_assoc(...arrays: Array[]): Array;
-declare function array_diff_key(...arrays: Array[]): Array;
+declare function array_diff(array1: Array, array2: Array, ...arrays: Array[]): Array;
+declare function array_diff_assoc(array1: Array, array2: Array, ...arrays: Array[]): Array;
+declare function array_diff_key(array1: Array, array2: Array, ...arrays: Array[]): Array;
 declare function array_diff_uassoc(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 declare function array_diff_ukey(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 declare function array_fill(start_index: number, num: number, value: any): Array;
 declare function array_fill_keys(keys: Array, value: any): Array;
 declare function array_filter(input: Array, callback?: (value: any) => bool): Array;
 declare function array_flip(trans: Array): Array;
-declare function array_intersect(...arrays: Array[]): Array;
-declare function array_intersect_assoc(...arrays: Array[]): Array;
-declare function array_intersect_key(...arrays: Array[]): Array;
+declare function array_intersect(array1: Array, array2: Array, ...array: Array[]): Array;
+declare function array_intersect_assoc(array1: Array, array2: Array, ...array: Array[]): Array;
+declare function array_intersect_key(array1: Array, array2: Array, ...array: Array[]): Array;
 declare function array_intersect_uassoc(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 declare function array_intersect_ukey(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 declare function array_key_exists(key: number, search: Array): bool;
 declare function array_key_exists(key: string, search: Array): bool;
 declare function array_keys(input: Array, search_value?: any, strict?: bool): Array;
-declare function array_map(callback: (value: any) => any, ...arrays: Array[]): Array;
-declare function array_map(callback: Function, ...arrays: Array[]): Array;
-declare function array_merge(...arrays: Array[]): Array;
-declare function array_merge_recursive(...arrays: Array[]): Array;
-declare function array_multisort($arr: Array, ...args: number[]): bool;
+declare function array_map(callback: (value: any) => any, ...array: Array[]): Array;
+declare function array_map(callback: Function, ...array: Array[]): Array;
+declare function array_merge(array1: Array, ...arrays: Array[]): Array;
+declare function array_merge_recursive(array1: Array, ...arrays: Array[]): Array;
+declare function array_multisort($arr: Array, arg?: number, ...args: number[]): bool;
 declare function array_pad(input: Array, pad_size: number, value: any): Array;
 declare function array_pop($array: Array): any;
 declare function array_product(array: Array): number;
-declare function array_push($array: Array, ...vars: any[]): number;
+declare function array_push($array: Array, ...var_: any[]): number;
 declare function array_rand(input: Array, num_req?: number): any;
 declare function array_reduce(input: Array, callback: ($result: any, item: any) => any, initial?: any): any;
-declare function array_replace(array: Array, ...arrays: Array[]): Array;
-declare function array_replace_recursive(array: Array, ...arrays: Array[]): Array;
+declare function array_replace(array: Array, array1: Array, ...arrays: Array[]): Array;
+declare function array_replace_recursive(array: Array, array1: Array, ...arrays: Array[]): Array;
 declare function array_reverse(array: Array, preserve_keys?: bool): Array;
 declare function array_search(needle: any, haystack: Array, strict?: bool): any;
 declare function array_shift($array: Array): any;
@@ -68,13 +63,13 @@ declare function array_uintersect(array1: Array, array2: Array, data_compare_fun
 declare function array_uintersect_assoc(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 declare function array_uintersect_uassoc(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 declare function array_unique(array: Array, sort_flags?: number): Array;
-declare function array_unshift($array: Array, ...vars: any[]): number;
+declare function array_unshift($array: Array, ...var_: any[]): number;
 declare function array_values(input: Array): Array;
 declare function array_walk($array: Array, funcname: ($value: any, key: any) => any, userdata?: any): bool;
 declare function array_walk_recursive($array: Array, funcname: ($value: any, key: any) => any, userdata?: any): bool;
 declare function arsort($array: Array, sort_flags?: number): bool;
 declare function asort($array: Array, sort_flags?: number): bool;
-declare function compact(...varnames: any[]): Array;
+declare function compact(...varname: any[]): Array;
 declare function count(var_: Array, mode?: number): number;
 declare function count(var_: Countable, mode?: number): number;
 declare function current($array: Array): any;

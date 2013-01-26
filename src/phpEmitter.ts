@@ -31,7 +31,7 @@ module Pratphall {
         priority: number;
         propertyMatches?: {};
     }
-        
+
     export interface EmitterExtension {
         name: string;
         description: string;
@@ -55,7 +55,7 @@ module Pratphall {
         code = '';
         indent = 0;
 
-        constructor(public name: string) { 
+        constructor(public name: string) {
             this.priority = ++Declaration.order;
         }
     }
@@ -78,11 +78,11 @@ module Pratphall {
 
     export class PhpEmitter {
 
-        static superGlobals = ['$GLOBALS', '$_SERVER', '$_GET', '$_POST', 
+        static superGlobals = ['$GLOBALS', '$_SERVER', '$_GET', '$_POST',
             '$_FILES', '$_COOKIE', '$_SESSION', '$_REQUEST', '$_ENV'];
 
         static extensionsByNodeType: EmitterExtension[][] = [];
-        
+
         static registerExtension(extension: EmitterExtension) {
             var arr: EmitterExtension[];
             extension.matcher.nodeType.forEach((value: TypeScript.NodeType) => {
@@ -113,8 +113,9 @@ module Pratphall {
         private nextConstructorInitializers: TypeScript.VarDecl[];
         private transactionStack: { declStackLength: number; codeLength: number; }[] = [];
         private justCallParentConstructor = false;
+        currentScript: TypeScript.Script;
 
-        constructor(private checker: TypeScript.TypeChecker, 
+        constructor(private checker: TypeScript.TypeChecker,
                 public options?: PhpEmitOptions = new PhpEmitOptions()) {
             this.reset();
         }
@@ -360,6 +361,9 @@ module Pratphall {
                     }
                 }
             }
+            //if the ID starts with a dollar sign, it's a reference
+            if (ast.id.actualText.charAt(0) == '$') this.write('&');
+            //write id
             this.emit(ast.id);
             //optional?
             if (ast.isOptionalArg()) {
@@ -373,7 +377,7 @@ module Pratphall {
         emitBinaryExpression(ast: TypeScript.BinaryExpression) {
             //"in" becomes array_key_exists
             if (ast.nodeType == TypeScript.NodeType.In) {
-                this.emit(new TypeScript.CallExpression(TypeScript.NodeType.Call, 
+                this.emit(new TypeScript.CallExpression(TypeScript.NodeType.Call,
                     new TypeScript.Identifier('array_key_exists'),
                     (new TypeScript.ASTList()).append(ast.operand1).append(ast.operand2)));
             } else {
@@ -381,7 +385,7 @@ module Pratphall {
                 if (tokenInfo != null) {
                     this.emit(ast.operand1);
                     //string concat is different in PHP
-                    var isAdd = tokenInfo.binopNodeType == TypeScript.NodeType.Add || 
+                    var isAdd = tokenInfo.binopNodeType == TypeScript.NodeType.Add ||
                         tokenInfo.binopNodeType == TypeScript.NodeType.AsgAdd;
                     var isStringConcat = isAdd && (
                         (ast.operand1.type != null && ast.operand1.type.isString()) ||
@@ -402,7 +406,7 @@ module Pratphall {
                 } else switch (ast.nodeType) {
                     case TypeScript.NodeType.Dot:
                         //is this a reference to an object function? if so, we need to pull it out
-                        if (ast.type != null && ast.type.symbol != null && 
+                        if (ast.type != null && ast.type.symbol != null &&
                                 ast.type.symbol.declAST instanceof TypeScript.FuncDecl &&
                                 ast.operand2 instanceof TypeScript.Identifier) {
                             //ignore the __invoke reference
@@ -411,11 +415,11 @@ module Pratphall {
                                 return;
                             } else {
                                 //can't have call parent
-                                if (!this.stack.some((value: TypeScript.AST) {
+                                if (!this.stack.some((value: TypeScript.AST) => {
                                     return value instanceof TypeScript.CallExpression;
                                 })) {
                                     this.write('(new ReflectionMethod(').emit(ast.operand1).write(", '" +
-                                        this.getIdentifierText(<TypeScript.Identifier>ast.operand2) + 
+                                        this.getIdentifierText(<TypeScript.Identifier>ast.operand2) +
                                         "'))->getClosure(").emit(ast.operand1).write(')');
                                     return;
                                 }
@@ -428,7 +432,7 @@ module Pratphall {
                             curr = (<TypeScript.BinaryExpression>curr).operand1;
                         }
                         //is it possibly a slashable decl?
-                        if (curr instanceof TypeScript.Identifier && (!(ast.operand2 instanceof 
+                        if (curr instanceof TypeScript.Identifier && (!(ast.operand2 instanceof
                                 TypeScript.Identifier) || (<TypeScript.Identifier>ast.operand2).sym == null ||
                                 !(<TypeScript.Identifier>ast.operand2).sym.isVariable()) &&
                                 (<TypeScript.Identifier>curr).sym.isType() &&
@@ -456,7 +460,7 @@ module Pratphall {
                     case TypeScript.NodeType.Member:
                         if (ast.operand1 instanceof TypeScript.Identifier) {
                             //must be a string literal in PHP
-                            this.emit(new TypeScript.StringLiteral('"' + 
+                            this.emit(new TypeScript.StringLiteral('"' +
                                 this.getIdentifierText(<TypeScript.Identifier>ast.operand1) + '"'));
                         } else {
                             this.emit(ast.operand1);
@@ -517,7 +521,7 @@ module Pratphall {
                         (<TypeScript.VarDecl>statement).init == null);
                     //also on ambient func decl
                     isRollback = isRollback || (statement instanceof TypeScript.FuncDecl &&
-                        ((<TypeScript.FuncDecl>statement).isOverload || 
+                        ((<TypeScript.FuncDecl>statement).isOverload ||
                         (<TypeScript.FuncDecl>statement).isAmbient()));
                     if (isRollback) {
                         this.rollbackTransaction();
@@ -554,7 +558,7 @@ module Pratphall {
                     if (ast.target.type != null &&
                             TypeScript.hasFlag(ast.target.type.primitiveTypeClass, TypeScript.Primitive.Any)) {
                         //warn
-                        this.addWarning(ast.target, 
+                        this.addWarning(ast.target,
                             'Unknown type of call, cannot determine if closure or method, assuming method');
                         this.emit(ast.target).write('(').emitCommaSeparated(ast.arguments).write(')');
                     } else {
@@ -699,7 +703,7 @@ module Pratphall {
                         this.newline().write('public function __construct() {').increaseIndent();
                         if (hasParent) this.newline().write('parent::__construct();');
                         this.nextConstructorInitializers.forEach((value: TypeScript.VarDecl) => {
-                            this.newline().write('$this->' + this.getIdentifierText(value.id) + 
+                            this.newline().write('$this->' + this.getIdentifierText(value.id) +
                                 ' = ').emit(value.init).write(';');
                         });
                         this.decreaseIndent().newline().write('}');
@@ -711,7 +715,7 @@ module Pratphall {
             this.decreaseIndent().newline().write('}');
             //static extra init vars?
             staticExtraInitVars.forEach((value: TypeScript.VarDecl) => {
-                this.newline().write(this.getIdentifierText(ast.name) + '::$' + 
+                this.newline().write(this.getIdentifierText(ast.name) + '::$' +
                     this.getIdentifierText(value.id) + ' = ').emit(value.init).write(';');
             });
             //pop decl
@@ -790,8 +794,8 @@ module Pratphall {
             if (ast.enclosingFnc != null && !ast.isAnonymousFn()) {
                 //it's an error if we have any variable of the same name
                 if (ast.enclosingFnc.vars != null && ast.enclosingFnc.vars.members.some((value: TypeScript.AST) => {
-                    return value instanceof TypeScript.VarDecl && 
-                        this.getIdentifierText(<TypeScript.Identifier>(<TypeScript.VarDecl>value).id) == 
+                    return value instanceof TypeScript.VarDecl &&
+                        this.getIdentifierText(<TypeScript.Identifier>(<TypeScript.VarDecl>value).id) ==
                         this.getIdentifierText(ast.name);
                 })) {
                     this.addError(ast.name, 'Cannot have variable and nested function with the same name in function');
@@ -813,7 +817,11 @@ module Pratphall {
             if (ast.isAnonymousFn() || ast.enclosingFnc != null) this.write('(');
             else if (ast.isConstructor) this.write('__construct(');
             else if (ast.isMethod() && this.getIdentifierText(ast.name) == 'toString') this.write('__toString(');
-            else this.emit(ast.name).write('(');
+            else {
+                //if it starts with dollar sign, it's actually a reference
+                if (ast.name.actualText.charAt(0) == '$') this.write('&');
+                this.emit(ast.name).write('(');
+            }
             //must make sure we ignore rest params
             var first = true;
             ast.arguments.members.forEach((value: TypeScript.ArgDecl, index: number) => {
@@ -850,7 +858,7 @@ module Pratphall {
                 //optional inits?
                 ast.arguments.members.forEach((value: TypeScript.ArgDecl, index: number) => {
                     //write?
-                    if (value.isOptionalArg() && (!ast.variableArgList || index != ast.arguments.members.length - 1) && 
+                    if (value.isOptionalArg() && (!ast.variableArgList || index != ast.arguments.members.length - 1) &&
                             value.init != null && !this.isScalar(value.init)) {
                         if (newlines) this.newline();
                         else this.write(' ');
@@ -904,7 +912,7 @@ module Pratphall {
                             if (value.isProperty()) {
                                 if (newlines) this.newline();
                                 else this.write(' ');
-                                this.write('$this->' + this.getIdentifierText(value.id) + ' = $' + 
+                                this.write('$this->' + this.getIdentifierText(value.id) + ' = $' +
                                     this.getIdentifierText(value.id) + ';');
                             }
                         });
@@ -955,10 +963,10 @@ module Pratphall {
             }
             //must be variable for $
             var hasDollar = ast.sym != null && ast.sym.isVariable() && (!ast.sym.isInstanceProperty() ||
-                TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Static)) && 
+                TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Static)) &&
                 !TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Constant);
             //can't be all caps with setting set
-            if (hasDollar && this.options.allCapsConsts && this.getIdentifierText(ast).toUpperCase() == 
+            if (hasDollar && this.options.allCapsConsts && this.getIdentifierText(ast).toUpperCase() ==
                     this.getIdentifierText(ast)) {
                 hasDollar = false;
             }
@@ -969,13 +977,14 @@ module Pratphall {
                 hasDollar = true;
             }
             //has dollar if it's a property
-            if (!hasDollar && ast.sym != null && ast.sym.isMember() && 
+            if (!hasDollar && ast.sym != null && ast.sym.isMember() &&
                     ast.sym.declAST instanceof TypeScript.BoundDecl &&
                     (<TypeScript.BoundDecl>ast.sym.declAST).isProperty() &&
                     (<TypeScript.BoundDecl>ast.sym.declAST).id === ast) {
                 hasDollar = true;
             }
-            if (hasDollar && this.getIdentifierText(ast).charAt(0) != '$') this.write('$');
+            //write dollar
+            if (hasDollar) this.write('$');
             var shouldWrite = true;
             //check namespaces and what not
             if (ast.sym != null && ast.sym.declAST instanceof TypeScript.NamedDeclaration) {
@@ -986,7 +995,7 @@ module Pratphall {
                     if (ast.sym.declAST instanceof TypeScript.ModuleDeclaration) this.write('\\');
                     else if (this.currentNamespace().name != '') this.write('\\');
                 } else if (ast.sym.declAST instanceof TypeScript.TypeDeclaration) {
-                    //if the current namespace is a child of what's referenced, 
+                    //if the current namespace is a child of what's referenced,
                     //  we have to fully qualify the reference
                     //can't have a binary expression above me, because those are handled w/ imports
                     if (this.stack.length == 1 ||
@@ -1007,7 +1016,7 @@ module Pratphall {
             this.write('if (').emit(ast.cond).write(') ').emit(ast.thenBod).semicolon(ast.thenBod);
             if (ast.elseBod != null) {
                 //do we need a newline?
-                if (this.hasSemicolonAfterStatement(ast.thenBod) || 
+                if (this.hasSemicolonAfterStatement(ast.thenBod) ||
                         this.getEndLine(ast.thenBod).line != this.getStartLine(ast.elseBod).line) {
                     this.newline();
                 } else this.write(' ');
@@ -1105,6 +1114,7 @@ module Pratphall {
         }
 
         emitScript(ast: TypeScript.Script) {
+            this.currentScript = ast;
             //grab length of top ns code
             var topNsCodeLength = this.topNamespace.code.length;
             //include refs?
@@ -1126,6 +1136,7 @@ module Pratphall {
                     this.topNamespace.code.substr(topNsCodeLength).trim().length > 0) {
                 this.scriptsEmittingTopNamespaceCode.push(ast);
             }
+            this.currentScript = null;
         }
 
         emitStringLiteral(ast: TypeScript.StringLiteral) {
@@ -1228,7 +1239,7 @@ module Pratphall {
         }
 
         emitVarDecl(ast: TypeScript.VarDecl) {
-            var isConst = this.options.allCapsConsts && this.getIdentifierText(ast.id).toUpperCase() == 
+            var isConst = this.options.allCapsConsts && this.getIdentifierText(ast.id).toUpperCase() ==
                 this.getIdentifierText(ast.id);
             //the init better be a literal
             if (isConst) {
@@ -1269,13 +1280,13 @@ module Pratphall {
 
         getStartLine(ast: TypeScript.AST) {
             var lineCol = { line: -1, col: -1 };
-            TypeScript.getSourceLineColFromMap(lineCol, ast.minChar, this.checker.locationInfo.lineMap);
+            TypeScript.getSourceLineColFromMap(lineCol, ast.minChar, this.currentScript.locationInfo.lineMap);
             return lineCol;
         }
 
         getEndLine(ast: TypeScript.AST) {
             var lineCol = { line: -1, col: -1 };
-            TypeScript.getSourceLineColFromMap(lineCol, ast.limChar, this.checker.locationInfo.lineMap);
+            TypeScript.getSourceLineColFromMap(lineCol, ast.limChar, this.currentScript.locationInfo.lineMap);
             return lineCol;
         }
 
@@ -1297,6 +1308,8 @@ module Pratphall {
                     actualText.charAt(0) != '_') {
                 actualText = actualText.substr(0, actualText.length - 1);
             }
+            //can't start w/ dollar sign
+            if (actualText.charAt(0) == '$') actualText = actualText.substr(1);
             return actualText;
         }
 

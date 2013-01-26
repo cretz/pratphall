@@ -1,4 +1,4 @@
-﻿Closure variables test
+Closure variables test
 -----
 //class func
 class Foo {
@@ -29,7 +29,7 @@ function doSomething(closure: (param: string) => bool) {
 doSomething(b);
 doSomething(d);
 doSomething(e.__invoke);
-var f = { g: (param: string) { return false; } };
+var f = { g: (param: string) => { return false; } };
 doSomething(f.g);
 -----
 //class func

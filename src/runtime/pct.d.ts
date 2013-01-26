@@ -21,6 +21,8 @@ declare module Pct {
         __invoke(...args: any[]): any;
     }
 
+    function byRef(any): any;
+
     function declare(directive: string, value: any, block?: () => void): bool;
 
     function isInstance(obj: any, check: any): bool;

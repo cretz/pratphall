@@ -5,7 +5,7 @@ c[12] = 15;
 c['blah'] = 15;
 var d = Pct.toArray(c);
 var e = Pct.toAssocArray(d);
-Pct.newAssocArray({a: 15, b: 15 }).forEach((value: number, index: string) {
+Pct.newAssocArray({a: 15, b: 15 }).forEach((value: number, index: string) => {
 	var f = value + ' ' + index;
 });
 var g = Pct.newAssocArray({

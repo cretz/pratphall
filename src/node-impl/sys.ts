@@ -2,12 +2,19 @@
 ///<reference path='node.d.ts' />
 
 module Pratphall {
-    
-    export import assert = module('assert');
-    export import fs = module('fs');
-    export import vm = module('vm');
-    export import path = module('path');
-    
+
+    /*
+    damn: https://typescript.codeplex.com/discussions/430782
+    import assert = module('assert');
+    import fs = module('fs');
+    import vm = module('vm');
+    import path = module('path');
+    */
+    export var assert = require('assert');
+    export var fs = require('fs');
+    export var vm = require('vm');
+    export var path = require('path');
+
     export function loadIo(): Io {
         return {
             basename: path.basename,
@@ -72,7 +79,7 @@ module Pratphall {
                 switch (buffer[0]) {
                     case 0xFE:
                         if (buffer[1] == 0xFF) {
-                            // utf16-be. Reading the buffer as big endian is not supported, so convert it to 
+                            // utf16-be. Reading the buffer as big endian is not supported, so convert it to
                             // Little Endian first
                             var i = 0;
                             while ((i + 1) < buffer.length) {
@@ -86,7 +93,7 @@ module Pratphall {
                         break;
                     case 0xFF:
                         if (buffer[1] == 0xFE) {
-                            // utf16-le 
+                            // utf16-le
                             return buffer.toString("ucs2", 2);
                         }
                         break;

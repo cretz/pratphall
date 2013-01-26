@@ -146,6 +146,6 @@ module Pratphall {
             new Compiler(options).run(files);
         }
     }
-}
 
-new Pratphall.CommandLineRunner().run(Pratphall.loadIo().getArgs());
+    new CommandLineRunner().run(Pratphall.loadIo().getArgs());
+}

@@ -19,7 +19,7 @@
     "bin": { "ppc": "./bin/ppc" },
     "engines": { "node": ">=0.8.0" },
     "devDependencies": {
-        "typescript": "0.8.1-1",
+        "typescript": "0.8.2",
         "jake": "latest",
         "fs-extra": "latest"
     }

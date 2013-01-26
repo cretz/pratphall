@@ -45,8 +45,7 @@ task('build', {async: true}, function () {
         console.log('Copying over runtime support');
         copyAll([
             {src: 'node_modules/typescript/bin/lib.d.ts', dest: 'bin/lib.d.ts'},
-            {src: 'src/php.d.ts', dest: 'bin/php.d.ts'},
-            {src: 'src/runtime', dest: 'bin/runtime'}
+            {src: 'src/php.d.ts', dest: 'bin/php.d.ts'}
         ], complete);
     }, {printStdout: true, printStderr: true});
 });
@@ -58,6 +57,23 @@ task('test', {async: true}, function () {
     var cmds = [
         'node ./node_modules/typescript/bin/tsc.js --out ./test/main.js ./test/main.ts',
         'node ./test/main.js'
+    ];
+    jake.exec(cmds, complete, {printStdout: true, printStderr: true});
+});
+
+desc('PHPDoc Build');
+task('phpdocbuild', {async: true}, function(path) {
+    //make dir
+    if (!fs.existsSync('bin')) {
+        console.log('Making phpdocbuild/');
+        fs.mkdirSync('phpdocbuild');
+    }
+    console.log('Compiling doc extractor php and running');
+    var cmds = [
+        'node ./bin/ppc.js --no-php-lib --all-caps-const --no-composer --single -o ./phpdocbuild/phpDocExtractor.php ./src/utils/phpDocExtractor.ts',
+        'php phpdocbuild/phpDocExtractor.php ' + path + ' ./phpdocbuild/phpdoc.json',
+        'node ./node_modules/typescript/bin/tsc.js --out ./phpdocbuild/phpDefinitionBuilder.js ./src/utils/phpDefinitionBuilder.ts',
+        'node ./phpdocbuild/phpDefinitionBuilder.js ./src/php.d.ts'
     ];
     jake.exec(cmds, complete, {printStdout: true, printStderr: true});
 });

@@ -70,7 +70,7 @@ module Pratphall {
             if (str != php) {
                 var expPieces = php.split('\n');
                 var actPieces = str.split('\n');
-                var reduce = (prev: string, curr: string) {
+                var reduce = (prev: string, curr: string) => {
                     if (prev.length > 0) prev += '\n';
                     return prev + '"' + curr + '"';
                 };
@@ -90,7 +90,7 @@ module Pratphall {
                 }
             } else {
                 //check expected pieces
-                this.assert.equal(emitter.warnings.length, expectedWarnings.length); 
+                this.assert.equal(emitter.warnings.length, expectedWarnings.length);
                 emitter.warnings.forEach((value: EmitterError, index: number) => {
                     this.assert.equal(value.message, expectedWarnings[index]);
                 });

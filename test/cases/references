@@ -1,0 +1,39 @@
+﻿References test
+-----
+//assign
+var a = 'hey';
+var b = Pct.byRef(a);
+//pass
+function addWord($val: string) {
+    $val += ' word';
+}
+addWord(b);
+echo('Changed? ' + (a == 'hey word'));
+//return
+var c = { d: 15 };
+function $getReference(val: { d: number; }) {
+    return val.d;
+}
+var e = Pct.byRef($getReference(c));
+e = 20;
+echo('Changed? ' + (c.d == 20));
+-----
+//assign
+$a = 'hey';
+$b = &$a;
+//pass
+function addWord(&$val) {
+    $val .= ' word';
+}
+
+addWord($b);
+echo('Changed? ' . ($a == 'hey word'));
+//return
+$c = (object)['d' => 15];
+function &getReference($val) {
+    return $val->d;
+}
+
+$e = &getReference($c);
+$e = 20;
+echo('Changed? ' . ($c->d == 20));

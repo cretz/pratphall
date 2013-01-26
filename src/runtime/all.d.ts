@@ -4,6 +4,7 @@
 ///<reference path='ctype.d.ts' />
 ///<reference path='datetime.d.ts' />
 ///<reference path='dir.d.ts' />
+///<reference path='dom.d.ts' />
 ///<reference path='exec.d.ts' />
 ///<reference path='fileinfo.d.ts' />
 ///<reference path='filesystem.d.ts' />
@@ -11,6 +12,7 @@
 ///<reference path='funchand.d.ts' />
 ///<reference path='info.d.ts' />
 ///<reference path='json.d.ts' />
+///<reference path='libxml.d.ts' />
 ///<reference path='mail.d.ts' />
 ///<reference path='math.d.ts' />
 ///<reference path='misc.d.ts' />
@@ -19,6 +21,7 @@
 ///<reference path='predefined.d.ts' />
 ///<reference path='reflection.d.ts' />
 ///<reference path='session.d.ts' />
+///<reference path='simplexml.d.ts' />
 ///<reference path='spl.d.ts' />
 ///<reference path='stream.d.ts' />
 ///<reference path='strings.d.ts' />

@@ -8,3 +8,4 @@
 *.js.map
 /build
 /node_modules
+/phpdocbuild

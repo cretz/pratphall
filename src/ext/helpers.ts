@@ -22,7 +22,7 @@ module Pratphall {
     }
 
     //no resolution right now
-    export function parseSingleTypeScript(str: string, needsPratphall = false, 
+    export function parseSingleTypeScript(str: string, needsPratphall = false,
             ignoreErrors = false): TypeScript.Script {
         var err = new StringWriter();
         var compiler = parseToCompiler([{ contents: str, filename: '__singleScript.ts' }],
@@ -33,7 +33,7 @@ module Pratphall {
         return <TypeScript.Script>compiler.scripts.members[compiler.scripts.members.length - 1];
     }
 
-    export function parseMultipleTypeScripts(strs: string[], needsPratphall = false, 
+    export function parseMultipleTypeScripts(strs: string[], needsPratphall = false,
             ignoreErrors = false): TypeScript.Script[] {
         var err = new StringWriter();
         var scripts: { contents: string; filename: string; }[] = [];
@@ -49,7 +49,7 @@ module Pratphall {
         }
         return <TypeScript.Script[]>compiler.scripts.members.slice(compiler.scripts.members.length - strs.length);
     }
-    
+
     //no resolution right now
     export function parseToCompiler(
             scripts: { filename: string; contents: string; }[],
@@ -101,11 +101,11 @@ module Pratphall {
         return compiler;
     }
 
-    export function toJavaScriptSource(object: any, filter?: (obj: any) => any, 
+    export function toJavaScriptSource(object: any, filter?: (obj: any) => any,
             indent = '    ', startingIndent = ''): string {
         //hacked from https://github.com/marcello3d/node-tosource/blob/master/tosource.js
         var seen = []
-        
+
         //legal key?
         var KEYWORD_REGEXP = /^(abstract|boolean|break|byte|case|catch|char|class|const|continue|debugger|default|delete|do|double|else|enum|export|extends|false|final|finally|float|for|function|goto|if|implements|import|in|instanceof|int|interface|long|native|new|null|package|private|protected|public|return|short|static|super|switch|synchronized|this|throw|throws|transient|true|try|typeof|undefined|var|void|volatile|while|with)$/
         function legalKey(string) {
@@ -147,12 +147,12 @@ module Pratphall {
                 return (legalKey(key) ? key : JSON.stringify(key)) + ':' + walk(object[key], filter, indent, nextIndent)
             })) + '}' : '{}'
         }
-        
+
         //call
         return walk(object, filter, indent === undefined ? ' ' : (indent || ''), startingIndent || '')
     }
 
-    export function typeScriptToString(compiler: TypeScript.TypeScriptCompiler, 
+    export function typeScriptToString(compiler: TypeScript.TypeScriptCompiler,
             ast: TypeScript.AST, path: string) {
         var str = '';
         //build emitter
@@ -161,15 +161,9 @@ module Pratphall {
             WriteLine: (s: string) => { str += s + '\n'; },
             Close: () => { },
         };
-        var options = {
-            minWhitespace: false,
-            propagateConstants: false,
-            emitComments: false,
-            path: path,
-            createFile: (path: string, useUTF8?: bool) => { return outFile },
-            outputMany: false
-        };
-        var emitter = new TypeScript.Emitter(compiler.typeChecker, outFile, options);
+        var options = new TypeScript.EmitOptions(compiler.settings);
+        options.outputMany = false;
+        var emitter = new TypeScript.Emitter(compiler.typeChecker, path, outFile, options, compiler.errorReporter);
         emitter.emitJavascript(ast, TypeScript.TokenID.Comma, false);
         return str;
     }

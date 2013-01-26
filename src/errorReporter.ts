@@ -35,8 +35,10 @@ module Pratphall {
                 //  ast or walk the tree, but I don't want to since this should be fixed 
                 //  by MS soon    
                 var func = <TypeScript.FuncDecl>(<TypeScript.Identifier>ast).sym.declAST;
-                swallowed = func.arguments != null &&  func.arguments.members.some((value: TypeScript.ArgDecl) => {
-                    return value.type.getTypeName() == 'Array';
+                swallowed = func.arguments != null && func.arguments.members.some((value: TypeScript.ArgDecl) => {
+                    return (value.type != null && value.type.getTypeName() == 'Array') ||
+                        (value.typeExpr != null && value.typeExpr.type != null &&
+                        value.typeExpr.type.getTypeName() == 'Array');
                 });
             }
             //http://typescript.codeplex.com/workitem/245 :-(

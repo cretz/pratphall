@@ -22,9 +22,9 @@ module Pratphall {
         writeFile(path: string, contents: string);
         writeLine(str: string);
     }
-    
+
     declare function loadIo(): Io;
-    
+
     export interface Assert {
         fail(actual: any, expected: any, message: string, operator: string): void;
         assert(value: any, message: string): void;

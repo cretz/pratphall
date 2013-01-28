@@ -27,6 +27,8 @@ module Pratphall {
                         expectedWarnings.push(descPieces[i].substring(12));
                     } else if (descPieces[i].indexOf('SET-OPTION-TRUE:') == 0) {
                         emitOptions[descPieces[i].substring(16)] = true;
+                    } else if (descPieces[i].indexOf('SET-OPTION-FALSE:') == 0) {
+                        emitOptions[descPieces[i].substring(17)] = false;
                     }
                 }
             }
@@ -56,14 +58,13 @@ module Pratphall {
             //add text
             compiler.addSourceUnit(source, name, false, referencedFiles);
             compiler.typeCheck();
-            //this.assert.equal(compiler.scripts.members.length, 3);
+            //make sure no errors
             this.assert.ifError(err.contents);
             //emit PHP
             var emitter = new PhpEmitter(compiler.typeChecker, emitOptions);
             emitter.emit(compiler.scripts.members[compiler.scripts.members.length - 1]);
             //options
             var options = new CompilerOptions();
-            options.composer = false;
             var phpComp = new Compiler(options);
             var file = phpComp.emitSingleScript(name, emitter, false);
             var str = file.contents.trim();

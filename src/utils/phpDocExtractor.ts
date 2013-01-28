@@ -239,7 +239,9 @@ module Pratphall.PhpDocExtract {
             filename = realpath(filename);
             if (!is_file(filename)) return null;
             var contents = file_get_contents(filename);
-            //remove all the entities
+            //change true/false entities
+            contents = str_ireplace(['&true;', '&false;'], ['true', 'false'], contents);
+            //remove all other entities
             contents = preg_replace('/&([a-zA-Z0-9\\.\\-_]*);/', '', contents);
             //get rid of the default namespace to make xpath easier
             contents = str_replace('xmlns="http://docbook.org/ns/docbook"', '', contents);

@@ -1,0 +1,21 @@
+﻿Put opening brace of functions (but not closures) on next line
+SET-OPTION-TRUE:openingFunctionBraceNextLine
+-----
+function foo() { }
+
+function bar() {
+}
+
+var a = () => {
+}
+-----
+function foo()
+{
+}
+
+function bar()
+{
+}
+
+$a = function () {
+};

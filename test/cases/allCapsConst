@@ -1,5 +1,4 @@
 ﻿Const test
-SET-OPTION-TRUE:allCapsConsts
 -----
 declare var A_CONST: number;
 var a = A_CONST;

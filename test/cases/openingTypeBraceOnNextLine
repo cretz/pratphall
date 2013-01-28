@@ -1,0 +1,15 @@
+﻿Put opening brace of types on next line
+SET-OPTION-TRUE:openingTypeBraceOnNextLine
+-----
+class Foo {
+}
+
+interface Wat { }
+-----
+class Foo
+{
+}
+
+interface Wat
+{
+}

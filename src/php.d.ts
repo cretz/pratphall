@@ -1,4 +1,4 @@
-﻿
+
 //--------------------------------------------------------------------------------
 // array
 //--------------------------------------------------------------------------------
@@ -128,8 +128,8 @@ declare function array(contents: Pct.PhpAssocArray): Array;
  *
  * @param input The array to work on
  * @param case_ Either CASE_UPPER or CASE_LOWER (default)
- * @return Returns an array with its keys lower or uppercased, or  if input is not
- *         an array.
+ * @return Returns an array with its keys lower or uppercased, or false if input
+ *         is not an array.
  */
 declare function array_change_key_case(input: Array, case_?: number): Array;
 
@@ -141,8 +141,8 @@ declare function array_change_key_case(input: Array, case_?: number): Array;
  *
  * @param input The array to work on
  * @param size The size of each chunk
- * @param preserve_keys When set to  keys will be preserved. Default is  which
- *                      will reindex the chunk numerically
+ * @param preserve_keys When set to true keys will be preserved. Default is false
+ *                      which will reindex the chunk numerically
  * @return Returns a multidimensional numerically indexed array, starting with
  *         zero, with each dimension containing size elements.
  */
@@ -157,8 +157,8 @@ declare function array_chunk(input: Array, size: number, preserve_keys?: bool): 
  * @param keys Array of keys to be used. Illegal values for key will be converted
  *             to string.
  * @param values Array of values to be used
- * @return Returns the combined array,  if the number of elements for each array
- *         isn't equal.
+ * @return Returns the combined array, false if the number of elements for each
+ *         array isn't equal.
  */
 declare function array_combine(keys: Array, values: Array): Array;
 
@@ -293,8 +293,8 @@ declare function array_fill_keys(keys: Array, value: any): Array;
  * @param input The array to iterate over
  * @param callback The callback function to use
  *                 
- *                 If no callback is supplied, all entries of input equal to  (see
- *                 converting to boolean) will be removed.
+ *                 If no callback is supplied, all entries of input equal to false
+ *                 (see converting to boolean) will be removed.
  * @return Returns the filtered array.
  */
 declare function array_filter(input: Array, callback?: (value: any) => bool): Array;
@@ -389,8 +389,8 @@ declare function array_intersect_ukey(array1: Array, array2: Array, key_compare_
 /**
  * Checks if the given key or index exists in the array
  * 
- * array_key_exists returns  if the given key is set in the array. key can be any
- * value possible for an array index.
+ * array_key_exists returns true if the given key is set in the array. key can be
+ * any value possible for an array index.
  *
  * @param key Value to check.
  * @param search An array with keys to check.
@@ -400,8 +400,8 @@ declare function array_key_exists(key: number, search: Array): bool;
 /**
  * Checks if the given key or index exists in the array
  * 
- * array_key_exists returns  if the given key is set in the array. key can be any
- * value possible for an array index.
+ * array_key_exists returns true if the given key is set in the array. key can be
+ * any value possible for an array index.
  *
  * @param key Value to check.
  * @param search An array with keys to check.
@@ -653,8 +653,8 @@ declare function array_replace_recursive(array: Array, array1: Array, ...arrays:
  * reversed.
  *
  * @param array The input array.
- * @param preserve_keys If set to  numeric keys are preserved. Non-numeric keys
- *                      are not affected by this setting and will always be
+ * @param preserve_keys If set to true numeric keys are preserved. Non-numeric
+ *                      keys are not affected by this setting and will always be
  *                      preserved.
  * @return Returns the reversed array.
  */
@@ -671,11 +671,12 @@ declare function array_reverse(array: Array, preserve_keys?: bool): Array;
  *               If needle is a string, the comparison is done in a case-sensitive
  *               manner.
  * @param haystack The array.
- * @param strict If the third parameter strict is set to then the array_search
- *               function will search for identical elements in the haystack. This
- *               means it will also check the types of the needle in the haystack,
- *               and objects must be the same instance.
- * @return Returns the key for needle if it is found in the array,  otherwise.
+ * @param strict If the third parameter strict is set to true then the
+ *               array_search function will search for identical elements in the
+ *               haystack. This means it will also check the types of the needle
+ *               in the haystack, and objects must be the same instance.
+ * @return Returns the key for needle if it is found in the array, false
+ *         otherwise.
  *         
  *         If needle is found in haystack more than once, the first matching key
  *         is returned. To return the keys for all matching values, use array_keys
@@ -715,7 +716,7 @@ declare function array_shift($array: Array): any;
  *               end of the array.
  * @param preserve_keys Note that array_slice will reorder and reset the numeric
  *                      array indices by default. You can change this behaviour by
- *                      setting preserve_keys to .
+ *                      setting preserve_keys to true.
  * @return Returns the slice.
  */
 declare function array_slice(array: Array, offset: number, length?: number, preserve_keys?: bool): Array;
@@ -1084,7 +1085,7 @@ declare function count(var_: Countable, mode?: number): number;
  * @return The current function simply returns the value of the array element
  *         that's currently being pointed to by the internal pointer.  It does not
  *         move the pointer in any way.  If the internal pointer points beyond the
- *         end of the elements list or the array is empty, current returns .
+ *         end of the elements list or the array is empty, current returns false.
  */
 declare function current($array: Array): any;
 
@@ -1105,7 +1106,7 @@ declare function current($array: Array): any;
  *         and 1 and value contain the data.
  *         
  *         If the internal pointer for the array points past the end of the array
- *         contents, each returns .
+ *         contents, each returns false.
  */
 declare function each($array: Array): Array;
 
@@ -1119,7 +1120,7 @@ declare function each($array: Array): Array;
  *               modified by the function.  This means you must pass it a real
  *               variable and not a function returning an array because only
  *               actual variables may be passed by reference.
- * @return Returns the value of the last element or  for empty array.
+ * @return Returns the value of the last element or false for empty array.
  */
 declare function end($array: Array): any;
 //extract() TODO: extract no worky on purpose (and don't think I want it)
@@ -1134,10 +1135,10 @@ declare function end($array: Array): any;
  *               If needle is a string, the comparison is done in a case-sensitive
  *               manner.
  * @param haystack The array.
- * @param strict If the third parameter strict is set to then the in_array
+ * @param strict If the third parameter strict is set to true then the in_array
  *               function will also check the types of the needle in the haystack.
  *               
- * @return Returns  if needle is found in the array, otherwise.
+ * @return Returns true if needle is found in the array, false otherwise.
  */
 declare function in_array(needle: any, haystack: Array, strict?: bool): bool;
 
@@ -1214,7 +1215,7 @@ declare function natsort($array: Array): bool;
  *
  * @param $array The array being affected.
  * @return Returns the array value in the next place that's pointed to by the
- *         internal array pointer, or  if there are no more elements.
+ *         internal array pointer, or false if there are no more elements.
  */
 declare function next($array: Array): any;
 
@@ -1228,7 +1229,7 @@ declare function next($array: Array): any;
  *
  * @param $array The input array.
  * @return Returns the array value in the previous place that's pointed to by the
- *         internal array pointer, or  if there are no more elements.
+ *         internal array pointer, or false if there are no more elements.
  */
 declare function prev($array: Array): any;
 
@@ -1253,7 +1254,7 @@ declare function range(start: any, end: any, step?: number): Array;
  * value of the first array element.
  *
  * @param $array The input array.
- * @return Returns the value of the first array element, or  if the array is
+ * @return Returns the value of the first array element, or false if the array is
  *         empty.
  */
 declare function reset($array: Array): any;
@@ -1541,7 +1542,7 @@ declare function class_alias(original: string, alias: string, autoload?: bool): 
  * @param class_name The class name. The name is matched in a case-insensitive
  *                   manner.
  * @param autoload Whether or not to call  by default.
- * @return Returns  if class_name is a defined class, otherwise.
+ * @return Returns true if class_name is a defined class, false otherwise.
  */
 declare function class_exists(class_name: string, autoload?: bool): bool;
 
@@ -1549,7 +1550,7 @@ declare function class_exists(class_name: string, autoload?: bool): bool;
  * the "Late Static Binding" class name
  * 
  * Gets the name of the class the static method is called in.
- * @return Returns the class name.  Returns  if called from outside a class.
+ * @return Returns the class name.  Returns false if called from outside a class.
  */
 declare function get_called_class(): string;
 
@@ -1560,8 +1561,8 @@ declare function get_called_class(): string;
  *
  * @param object The tested object. This parameter may be omitted when inside a
  *               class.
- * @return Returns the name of the class of which object is an instance. Returns 
- *         if object is not an object.
+ * @return Returns the name of the class of which object is an instance. Returns
+ *         false if object is not an object.
  *         
  *         If object is omitted when inside a class, the name of that class is
  *         returned.
@@ -1588,7 +1589,7 @@ declare function get_class_methods(class_name: any): string[];
  * @return Returns an associative array of declared properties visible from the
  *         current scope, with their default value. The resulting array elements
  *         are in the form of varname =&gt; value. In case of an error, it returns
- *         .
+ *         false.
  */
 declare function get_class_vars(class_name: string): Pct.PhpAssocArray[];
 
@@ -1645,10 +1646,11 @@ declare function get_object_vars(object: any): Pct.PhpAssocArray;
  * @return Returns the name of the parent class of the class of which object is an
  *         instance or the name.
  *         
- *         If the object does not have a parent or the class given does not exist 
- *         will be returned.
+ *         If the object does not have a parent or the class given does not exist
+ *         false will be returned.
  *         
- *         If called without parameter outside object, this function returns .
+ *         If called without parameter outside object, this function returns
+ *         false.
  */
 declare function get_parent_class(object?: any): string;
 
@@ -1659,8 +1661,8 @@ declare function get_parent_class(object?: any): string;
  *
  * @param interface_name The interface name
  * @param autoload Whether to call  or not by default.
- * @return Returns  if the interface given by interface_name has been defined, 
- *         otherwise.
+ * @return Returns true if the interface given by interface_name has been defined,
+ *         false otherwise.
  */
 declare function interface_exists(interface_name: string, autoload?: bool): bool;
 
@@ -1672,11 +1674,11 @@ declare function interface_exists(interface_name: string, autoload?: bool): bool
  *
  * @param object The tested object
  * @param class_name The class name
- * @param allow_string If this parameter set to , string class name as object is
- *                     not allowed. This also prevents from calling autoloader if
- *                     the class doesn't exist.
- * @return Returns  if the object is of this class or has this class as one of its
- *         parents,  otherwise.
+ * @param allow_string If this parameter set to false, string class name as object
+ *                     is not allowed. This also prevents from calling autoloader
+ *                     if the class doesn't exist.
+ * @return Returns true if the object is of this class or has this class as one of
+ *         its parents, false otherwise.
  */
 declare function is_a(object: any, class_name: string, allow_string?: bool): bool;
 
@@ -1690,8 +1692,8 @@ declare function is_a(object: any, class_name: string, allow_string?: bool): boo
  * @param allow_string If this parameter set to false, string class name as object
  *                     is not allowed. This also prevents from calling autoloader
  *                     if the class doesn't exist.
- * @return This function returns  if the object object, belongs to a class which
- *         is a subclass of class_name,  otherwise.
+ * @return This function returns true if the object object, belongs to a class
+ *         which is a subclass of class_name, false otherwise.
  */
 declare function is_subclass_of(object: any, class_name: string, allow_string?: bool): bool;
 
@@ -1702,8 +1704,8 @@ declare function is_subclass_of(object: any, class_name: string, allow_string?: 
  *
  * @param object An object instance or a class name
  * @param method_name The method name
- * @return Returns  if the method given by method_name has been defined for the
- *         given object, otherwise.
+ * @return Returns true if the method given by method_name has been defined for
+ *         the given object, false otherwise.
  */
 declare function method_exists(object: any, method_name: string): bool;
 
@@ -1712,13 +1714,13 @@ declare function method_exists(object: any, method_name: string): bool;
  * 
  * This function checks if the given property exists in the specified class.
  * 
- * As opposed with isset, property_exists returns  even if the property has the
+ * As opposed with isset, property_exists returns true even if the property has the
  * value .
  *
  * @param object
  * @param property The name of the property
- * @return Returns  if the property exists,  if it doesn't exist or in case of an
- *         error.
+ * @return Returns true if the property exists, false if it doesn't exist or in
+ *         case of an error.
  */
 declare function property_exists(object: any, property: string): bool;
 
@@ -1727,7 +1729,7 @@ declare function property_exists(object: any, property: string): bool;
  *
  * @param traitname Name of the trait to check
  * @param autoload Whether to autoload if not already loaded.
- * @return Returns  if trait exists,  if not,  in case of an error.
+ * @return Returns true if trait exists, false if not,  in case of an error.
  */
 declare function trait_exists(traitname: string, autoload?: bool): bool;
 
@@ -1747,11 +1749,11 @@ declare function trait_exists(traitname: string, autoload?: bool): bool;
  * 256 will be added and the check will be done on that.
  * 
  * When called with a string argument they will check every character in the string
- * and will only return if every character in the string matches the requested
- * criteria. When called with an empty string the result will always be  in PHP 
- * 5.1 and  since 5.1.
+ * and will only return true if every character in the string matches the requested
+ * criteria. When called with an empty string the result will always be true in PHP
+ * 5.1 and false since 5.1.
  * 
- * Passing anything else but a string or integer will return  immediately.
+ * Passing anything else but a string or integer will return false immediately.
  * 
  * It should be noted that ctype functions are always preferred over regular
  * expressions, and even to some equivalent "str_*" and "is_*" functions. This is
@@ -1765,8 +1767,8 @@ declare function trait_exists(traitname: string, autoload?: bool): bool;
  * Checks if all of the characters in the provided string, text, are alphanumeric.
  *
  * @param text The tested string.
- * @return Returns  if every character in text is either a letter or a digit, 
- *         otherwise.
+ * @return Returns true if every character in text is either a letter or a digit,
+ *         false otherwise.
  */
 declare function ctype_alnum(text: string): bool;
 
@@ -1780,8 +1782,8 @@ declare function ctype_alnum(text: string): bool;
  * case.
  *
  * @param text The tested string.
- * @return Returns  if every character in text is a letter from the current
- *         locale,  otherwise.
+ * @return Returns true if every character in text is a letter from the current
+ *         locale, false otherwise.
  */
 declare function ctype_alpha(text: string): bool;
 
@@ -1792,8 +1794,8 @@ declare function ctype_alpha(text: string): bool;
  * characters. Control characters are e.g. line feed, tab, escape.
  *
  * @param text The tested string.
- * @return Returns  if every character in text is a control character from the
- *         current locale,  otherwise.
+ * @return Returns true if every character in text is a control character from the
+ *         current locale, false otherwise.
  */
 declare function ctype_cntrl(text: string): bool;
 
@@ -1803,8 +1805,8 @@ declare function ctype_cntrl(text: string): bool;
  * Checks if all of the characters in the provided string, text, are numerical.
  *
  * @param text The tested string.
- * @return Returns  if every character in the string text is a decimal digit, 
- *         otherwise.
+ * @return Returns true if every character in the string text is a decimal digit,
+ *         false otherwise.
  */
 declare function ctype_digit(text: string): bool;
 
@@ -1815,8 +1817,8 @@ declare function ctype_digit(text: string): bool;
  * output.
  *
  * @param text The tested string.
- * @return Returns  if every character in text is printable and actually creates
- *         visible output (no white space), otherwise.
+ * @return Returns true if every character in text is printable and actually
+ *         creates visible output (no white space), false otherwise.
  */
 declare function ctype_graph(text: string): bool;
 
@@ -1827,7 +1829,7 @@ declare function ctype_graph(text: string): bool;
  * letters.
  *
  * @param text The tested string.
- * @return Returns  if every character in text is a lowercase letter in the
+ * @return Returns true if every character in text is a lowercase letter in the
  *         current locale.
  */
 declare function ctype_lower(text: string): bool;
@@ -1838,9 +1840,9 @@ declare function ctype_lower(text: string): bool;
  * Checks if all of the characters in the provided string, text, are printable.
  *
  * @param text The tested string.
- * @return Returns  if every character in text will actually create output
- *         (including blanks). Returns  if text contains control characters or
- *         characters that do not have any output or control function at all.
+ * @return Returns true if every character in text will actually create output
+ *         (including blanks). Returns false if text contains control characters
+ *         or characters that do not have any output or control function at all.
  */
 declare function ctype_print(text: string): bool;
 
@@ -1852,8 +1854,8 @@ declare function ctype_print(text: string): bool;
  * character.
  *
  * @param text The tested string.
- * @return Returns  if every character in text is printable, but neither letter,
- *         digit or blank,  otherwise.
+ * @return Returns true if every character in text is printable, but neither
+ *         letter, digit or blank, false otherwise.
  */
 declare function ctype_punct(text: string): bool;
 
@@ -1864,9 +1866,10 @@ declare function ctype_punct(text: string): bool;
  * whitespace.
  *
  * @param text The tested string.
- * @return Returns  if every character in text creates some sort of white space, 
- *         otherwise. Besides the blank character this also includes tab, vertical
- *         tab, line feed, carriage return and form feed characters.
+ * @return Returns true if every character in text creates some sort of white
+ *         space, false otherwise. Besides the blank character this also includes
+ *         tab, vertical tab, line feed, carriage return and form feed characters.
+ *         
  */
 declare function ctype_space(text: string): bool;
 
@@ -1877,7 +1880,7 @@ declare function ctype_space(text: string): bool;
  * characters.
  *
  * @param text The tested string.
- * @return Returns  if every character in text is an uppercase letter in the
+ * @return Returns true if every character in text is an uppercase letter in the
  *         current locale.
  */
 declare function ctype_upper(text: string): bool;
@@ -1889,8 +1892,8 @@ declare function ctype_upper(text: string): bool;
  * 'digits'.
  *
  * @param text The tested string.
- * @return Returns  if every character in text is a hexadecimal 'digit', that is a
- *         decimal digit or a character from [A-Fa-f] ,  otherwise.
+ * @return Returns true if every character in text is a hexadecimal 'digit', that
+ *         is a decimal digit or a character from [A-Fa-f] , false otherwise.
  */
 declare function ctype_xdigit(text: string): bool;
 
@@ -2409,7 +2412,7 @@ declare class DateInterval {
     
     /**
      * If the DateInterval object was created by DateTime::diff, then this is the total
-     * number of days between the start and end dates. Otherwise, days will be .
+     * number of days between the start and end dates. Otherwise, days will be false.
      */
     days: number;
 
@@ -2522,7 +2525,7 @@ declare class DatePeriod implements Traversable {
  * @param day The day is within the allowed number of days for the given month. 
  *            Leap years are taken into consideration.
  * @param year The year is between 1 and 32767 inclusive.
- * @return Returns  if the date given is valid; otherwise returns .
+ * @return Returns true if the date given is valid; otherwise returns false.
  */
 declare function checkdate(month: number, day: number, year: number): bool;
 
@@ -2573,8 +2576,8 @@ declare function date_default_timezone_get(): string;
  *
  * @param timezone_identifier The timezone identifier, like UTC or Europe/Lisbon.
  *                            The list of valid identifiers is available in the .
- * @return This function returns  if the timezone_identifier isn't valid, or
- *         otherwise.
+ * @return This function returns false if the timezone_identifier isn't valid, or
+ *         true otherwise.
  */
 declare function date_default_timezone_set(timezone_identifier: string): bool;
 
@@ -2650,7 +2653,7 @@ declare function date_default_timezone_set(timezone_identifier: string): bool;
  *               user based timestamps created with date_create.
  * @param timestamp 
  * @return Returns a formatted date string. If a non-numeric value is used for
- *         timestamp,  is returned and an E_WARNING level error is emitted.
+ *         timestamp, false is returned and an E_WARNING level error is emitted.
  */
 declare function date(format: string, timestamp?: number): string;
 
@@ -2774,7 +2777,7 @@ declare function gettimeofday(): Pct.PhpAssocArray;
  * This is an interface to gettimeofday(2). It returns an associative array
  * containing the data returned from the system call.
  *
- * @param return_float When set to , a float instead of an array is returned.
+ * @param return_float When set to true, a float instead of an array is returned.
  * @return By default an array is returned. If return_float is set, then a float
  *         is returned.
  *         
@@ -2794,7 +2797,7 @@ declare function gettimeofday(return_float?: bool): any;
  *               options for the date function.
  * @param timestamp 
  * @return Returns a formatted date string. If a non-numeric value is used for
- *         timestamp,  is returned and an E_WARNING level error is emitted.
+ *         timestamp, false is returned and an E_WARNING level error is emitted.
  */
 declare function gmdate(format: string, timestamp?: number): string;
 
@@ -2902,13 +2905,13 @@ declare function localtime(timestamp?: number): number[];
  * returned by the C function call.
  *
  * @param timestamp 
- * @param is_associative If set to  or not supplied then the array is returned as
- *                       a regular, numerically indexed array.  If the argument is
- *                       set to  then localtime returns an associative array
- *                       containing all the different elements of the structure
- *                       returned by the C function call to localtime.  The names
- *                       of the different keys of the associative array are as
- *                       follows:
+ * @param is_associative If set to false or not supplied then the array is
+ *                       returned as a regular, numerically indexed array.  If the
+ *                       argument is set to true then localtime returns an
+ *                       associative array containing all the different elements
+ *                       of the structure returned by the C function call to
+ *                       localtime.  The names of the different keys of the
+ *                       associative array are as follows:
  *                       
  *                       "tm_sec" - seconds, 0 to 59     "tm_min" - minutes, 0 to
  *                       59     "tm_hour" - hours, 0 to 23     "tm_mday" - day of
@@ -2932,7 +2935,7 @@ declare function localtime(timestamp?: number, is_associative?: bool): Array;
  *         Unix epoch (0:00:00 January 1, 1970 GMT), and msec is the number of
  *         microseconds that have elapsed since sec expressed in seconds.
  *         
- *         If get_as_float is set to , then microtime returns a float, which
+ *         If get_as_float is set to true, then microtime returns a float, which
  *         represents the current time in seconds since the Unix epoch accurate to
  *         the nearest microsecond.
  */
@@ -2945,15 +2948,15 @@ declare function microtime(): string;
  * only available on operating systems that support the gettimeofday() system call.
  * 
  *
- * @param get_as_float If used and set to , microtime will return a float instead
- *                     of a string, as described in the return values section
- *                     below.
+ * @param get_as_float If used and set to true, microtime will return a float
+ *                     instead of a string, as described in the return values
+ *                     section below.
  * @return By default, microtime returns a string in the form "msec sec", where
  *         sec is the current time measured in the number of seconds since the
  *         Unix epoch (0:00:00 January 1, 1970 GMT), and msec is the number of
  *         microseconds that have elapsed since sec expressed in seconds.
  *         
- *         If get_as_float is set to , then microtime returns a float, which
+ *         If get_as_float is set to true, then microtime returns a float, which
  *         represents the current time in seconds since the Unix epoch accurate to
  *         the nearest microsecond.
  */
@@ -3015,7 +3018,7 @@ declare function microtime(get_as_float: bool): any;
  *               As of PHP 5.1.0, this parameter became deprecated. As a result,
  *               the new timezone handling features should be used instead.
  * @return mktime returns the Unix timestamp of the arguments given. If the
- *         arguments are invalid, the function returns  (before PHP 5.1 it
+ *         arguments are invalid, the function returns false (before PHP 5.1 it
  *         returned -1).
  */
 declare function mktime(hour?: number, minute?: number, second?: number, month?: number, day?: number, year?: number, is_dst?: number): number;
@@ -3121,7 +3124,7 @@ declare function strftime(format: string, timestamp?: number): string;
 /**
  * Parse a time/date generated with strftime
  * 
- * strptime returns an array with the date parsed, or  on error.
+ * strptime returns an array with the date parsed, or false on error.
  * 
  * Month and weekday names and other language dependent strings respect the current
  * locale set with setlocale (LC_TIME).
@@ -3158,8 +3161,8 @@ declare function strptime(date: string, format: string): Pct.PhpAssocArray;
  * @param time 
  * @param now The timestamp which is used as a base for the calculation of
  *            relative dates.
- * @return Returns a timestamp on success,  otherwise. Previous to PHP 5.1.0, this
- *         function would return -1 on failure.
+ * @return Returns a timestamp on success, false otherwise. Previous to PHP 5.1.0,
+ *         this function would return -1 on failure.
  */
 declare function strtotime(time: string, now?: number): number;
 
@@ -3318,8 +3321,8 @@ declare function closedir(dir_handle?: Pct.PhpResource);
  *
  * @param directory Directory to open
  * @param context 
- * @return Returns an instance of Directory, or  with wrong parameters, or  in
- *         case of another error.
+ * @return Returns an instance of Directory, or  with wrong parameters, or false
+ *         in case of another error.
  */
 declare function dir(directory: string, context?: Pct.PhpResource): Directory;
 
@@ -3327,12 +3330,12 @@ declare function dir(directory: string, context?: Pct.PhpResource): Directory;
  * Gets the current working directory
  * 
  * Gets the current working directory.
- * @return Returns the current working directory on success, or  on failure.
+ * @return Returns the current working directory on success, or false on failure.
  *         
- *         On some Unix variants, getcwd will return if any one of the parent
- *         directories does not have the readable or search mode set, even if the
- *         current directory does. See chmod for more information on modes and
- *         permissions.
+ *         On some Unix variants, getcwd will return false if any one of the
+ *         parent directories does not have the readable or search mode set, even
+ *         if the current directory does. See chmod for more information on modes
+ *         and permissions.
  */
 declare function getcwd(): string;
 
@@ -3345,12 +3348,13 @@ declare function getcwd(): string;
  * @param path The directory path that is to be opened
  * @param context For a description of the context parameter, refer to the streams
  *                section of the manual.
- * @return Returns a directory handle resource on success, or on failure.
+ * @return Returns a directory handle resource on success, or false on failure.
  *         
  *         If path is not a valid directory or the directory can not be opened due
- *         to permission restrictions or filesystem errors, opendir returns  and
- *         generates a PHP error of level  E_WARNING.  You can suppress the error
- *         output of opendir by prepending '@' to the front of the function name.
+ *         to permission restrictions or filesystem errors, opendir returns false
+ *         and generates a PHP error of level  E_WARNING.  You can suppress the
+ *         error output of opendir by prepending '@' to the front of the function
+ *         name.
  */
 declare function opendir(path: string, context?: Pct.PhpResource): Pct.PhpResource;
 
@@ -3392,9 +3396,9 @@ declare function rewinddir(dir_handle?: Pct.PhpResource);
  *                      SCANDIR_SORT_NONE then the result is unsorted.
  * @param context For a description of the context parameter, refer to the streams
  *                section of the manual.
- * @return Returns an array of filenames on success, or  on failure. If directory
- *         is not a directory, then boolean  is returned, and an error of level
- *         E_WARNING is generated.
+ * @return Returns an array of filenames on success, or false on failure. If
+ *         directory is not a directory, then boolean false is returned, and an
+ *         error of level E_WARNING is generated.
  */
 declare function scandir(directory?: string, sorting_order?: number, context?: Pct.PhpResource): string[];
 
@@ -3585,7 +3589,7 @@ class DOMNode {
      * Creates a copy of the node.
      *
      * @param deep Indicates whether to copy all descendant nodes. This parameter is
-     *             defaulted to .
+     *             defaulted to false.
      * @return The cloned node.
      */
     cloneNode(deep?: bool): DOMNode;
@@ -3640,7 +3644,7 @@ class DOMNode {
      * Tells whether namespaceURI is the default namespace.
      *
      * @param namespaceURI The namespace URI to look for.
-     * @return Return  if namespaceURI is the default namespace,  otherwise.
+     * @return Return true if namespaceURI is the default namespace, false otherwise.
      */
     isDefaultNamespace(namespaceURI: string): bool;
     
@@ -3713,7 +3717,7 @@ class DOMNode {
      *                created by one of the DOMDocument-&gt;createXXX() methods or
      *                imported in the document by .
      * @param oldnode The old node.
-     * @return The old node or  if an error occur.
+     * @return The old node or false if an error occur.
      */
     replaceChild(newnode: DOMNode, oldnode: DOMNode): DOMNode;
 }
@@ -4014,7 +4018,7 @@ class DOMDocument extends DOMNode {
     implementation: DOMImplementation;
     
     /**
-     * Do not remove redundant white space. Default to .
+     * Do not remove redundant white space. Default to true.
      */
     preserveWhiteSpace: bool;
     
@@ -4026,8 +4030,8 @@ class DOMDocument extends DOMNode {
     recover: bool;
     
     /**
-     * Set it to  to load external entities from a doctype declaration. This is useful
-     * for including character entities in your XML document.
+     * Set it to true to load external entities from a doctype declaration. This is
+     * useful for including character entities in your XML document.
      */
     resolveExternals: bool;
     
@@ -4038,7 +4042,7 @@ class DOMDocument extends DOMNode {
     standalone: bool;
     
     /**
-     * Throws DOMException on errors. Default to .
+     * Throws DOMException on errors. Default to true.
      */
     strictErrorChecking: bool;
     
@@ -4049,7 +4053,7 @@ class DOMDocument extends DOMNode {
     substituteEntities: bool;
     
     /**
-     * Loads and validates against the DTD. Default to .
+     * Loads and validates against the DTD. Default to false.
      */
     validateOnParse: bool;
     
@@ -4067,7 +4071,7 @@ class DOMDocument extends DOMNode {
     
     /**
      * An attribute specifying, as part of the XML declaration, whether this document
-     * is standalone. This is  when unspecified.
+     * is standalone. This is false when unspecified.
      */
     xmlStandalone: bool;
     
@@ -4096,7 +4100,7 @@ class DOMDocument extends DOMNode {
      * This function creates a new instance of class DOMAttr.
      *
      * @param name The name of the attribute.
-     * @return The new DOMAttr or  if an error occured.
+     * @return The new DOMAttr or false if an error occured.
      */
     createAttribute(name: string): DOMAttr;
     
@@ -4108,7 +4112,7 @@ class DOMDocument extends DOMNode {
      * @param namespaceURI The URI of the namespace.
      * @param qualifiedName The tag name and prefix of the attribute, as
      *                      prefix:tagname.
-     * @return The new DOMAttr or  if an error occured.
+     * @return The new DOMAttr or false if an error occured.
      */
     createAttributeNS(namespaceURI: string, qualifiedName: string): DOMAttr;
     
@@ -4118,7 +4122,7 @@ class DOMDocument extends DOMNode {
      * This function creates a new instance of class DOMCDATASection.
      *
      * @param data The content of the cdata.
-     * @return The new DOMCDATASection or  if an error occured.
+     * @return The new DOMCDATASection or false if an error occured.
      */
     createCDATASection(data: string): DOMCdataSection;
     
@@ -4128,7 +4132,7 @@ class DOMDocument extends DOMNode {
      * This function creates a new instance of class DOMComment.
      *
      * @param data The content of the comment.
-     * @return The new DOMComment or  if an error occured.
+     * @return The new DOMComment or false if an error occured.
      */
     createComment(data: string);
     
@@ -4136,7 +4140,7 @@ class DOMDocument extends DOMNode {
      * Create new document fragment
      * 
      * This function creates a new instance of class DOMDocumentFragment.
-     * @return The new DOMDocumentFragment or  if an error occured.
+     * @return The new DOMDocumentFragment or false if an error occured.
      */
     createDocumentFragment(): DOMDocumentFragment;
     
@@ -4149,7 +4153,8 @@ class DOMDocument extends DOMNode {
      * @param value The value of the element. By default, an empty element will be
      *              created. The value can also be set later with
      *              DOMElement::$nodeValue.
-     * @return Returns a new instance of class DOMElement or if an error occured.
+     * @return Returns a new instance of class DOMElement or false if an error
+     *         occured.
      */
     createElement(name: string, value?: string): DOMElement;
     
@@ -4163,7 +4168,7 @@ class DOMDocument extends DOMNode {
      * @param value The value of the element. By default, an empty element will be
      *              created. You can also set the value later with
      *              DOMElement::$nodeValue.
-     * @return The new DOMElement or  if an error occured.
+     * @return The new DOMElement or false if an error occured.
      */
     createElementNS(namepsaceURI: string, qualifiedName: string, value?: string): DOMElement;
     
@@ -4174,7 +4179,7 @@ class DOMDocument extends DOMNode {
      *
      * @param name The content of the entity reference, e.g. the entity reference
      *             minus the leading  and the trailing ; characters.
-     * @return The new DOMEntityReference or  if an error occured.
+     * @return The new DOMEntityReference or false if an error occured.
      */
     createEntityReference(name: string): DOMEntityReference;
     
@@ -4185,7 +4190,7 @@ class DOMDocument extends DOMNode {
      *
      * @param target The target of the processing instruction.
      * @param data The content of the processing instruction.
-     * @return The new DOMProcessingInstruction or  if an error occured.
+     * @return The new DOMProcessingInstruction or false if an error occured.
      */
     createProcessingInstruction(target: string, data?: string): DOMProcessingInstruction;
     
@@ -4195,7 +4200,7 @@ class DOMDocument extends DOMNode {
      * This function creates a new instance of class DOMText.
      *
      * @param context
-     * @return The new DOMText or  if an error occured.
+     * @return The new DOMText or false if an error occured.
      */
     createTextNode(context: string): DOMText;
     
@@ -4245,11 +4250,11 @@ class DOMDocument extends DOMNode {
      * current document.
      *
      * @param importedNode The node to import.
-     * @param deep If set to , this method will recursively import the subtree under
-     *             the importedNode.
+     * @param deep If set to true, this method will recursively import the subtree
+     *             under the importedNode.
      *             
-     *             To copy the nodes attributes deep needs to be set to
-     * @return The copied node or , if it cannot be copied.
+     *             To copy the nodes attributes deep needs to be set to true
+     * @return The copied node or false, if it cannot be copied.
      */
     importNode(importedNode: DOMNode, deep?: bool): DOMNode;
     
@@ -4349,7 +4354,7 @@ class DOMDocument extends DOMNode {
      * @param filename The path to the saved XML document.
      * @param options Additional Options. Currently only LIBXML_NOEMPTYTAG is
      *                supported.
-     * @return Returns the number of bytes written or  if an error occurred.
+     * @return Returns the number of bytes written or false if an error occurred.
      */
     save(filename: string, options?: number): number;
     
@@ -4360,7 +4365,7 @@ class DOMDocument extends DOMNode {
      * called after building a new dom document from scratch as in the example below.
      *
      * @param node Optional parameter to output a subset of the document.
-     * @return Returns the HTML, or  if an error occurred.
+     * @return Returns the HTML, or false if an error occurred.
      */
     saveHTML(node?: DOMNode): string;
     
@@ -4371,7 +4376,7 @@ class DOMDocument extends DOMNode {
      * called after building a new dom document from scratch as in the example below.
      *
      * @param filename The path to the saved HTML document.
-     * @return Returns the number of bytes written or  if an error occurred.
+     * @return Returns the number of bytes written or false if an error occurred.
      */
     saveHTMLFile(filename: string): number;
     
@@ -4385,7 +4390,7 @@ class DOMDocument extends DOMNode {
      *             declaration rather than the entire document.
      * @param options Additional Options. Currently only LIBXML_NOEMPTYTAG is
      *                supported.
-     * @return Returns the XML, or  if an error occurred.
+     * @return Returns the XML, or false if an error occurred.
      */
     saveXML(node?: DOMNode, options?: number): string;
     
@@ -4414,7 +4419,7 @@ class DOMDocument extends DOMNode {
      * 
      * You can also use the validateOnParse property of DOMDocument to make a DTD
      * validation.
-     * @return If the document have no DTD attached, this method will return .
+     * @return If the document have no DTD attached, this method will return false.
      */
     validate(): bool;
     
@@ -4428,7 +4433,7 @@ class DOMDocument extends DOMNode {
      *
      * @param options libxml parameters. Available since PHP 5.1.0 and Libxml 2.6.7.
      * @return Returns the number of XIncludes in the document, -1 if some processing
-     *         failed, or  if there were no substitutions.
+     *         failed, or false if there were no substitutions.
      */
     xinclude(options?: number): number;
 }
@@ -4651,7 +4656,7 @@ class DOMElement extends DOMNode {
      *
      * @param name The name of the attribute.
      * @param value The value of the attribute.
-     * @return The new DOMAttr or  if an error occured.
+     * @return The new DOMAttr or false if an error occured.
      */
     setAttribute(name: string, value: string): DOMAttr;
     
@@ -4693,7 +4698,7 @@ class DOMElement extends DOMNode {
      * Declares the attribute name to be of type ID.
      *
      * @param name The name of the attribute.
-     * @param isId Set it to  if you want name to be of type ID,  otherwise.
+     * @param isId Set it to true if you want name to be of type ID, false otherwise.
      */
     setIdAttribute(name: string, isId: bool);
     
@@ -4703,7 +4708,7 @@ class DOMElement extends DOMNode {
      * Declares the attribute specified by attr to be of type ID.
      *
      * @param attr The attribute node.
-     * @param isId Set it to  if you want name to be of type ID,  otherwise.
+     * @param isId Set it to true if you want name to be of type ID, false otherwise.
      */
     setIdAttributeNode(attr: DOMAttr, isId: bool);
     
@@ -4715,7 +4720,7 @@ class DOMElement extends DOMNode {
      *
      * @param namespaceURI The namespace URI of the attribute.
      * @param localName The local name of the attribute, as prefix:tagname.
-     * @param isId Set it to  if you want name to be of type ID,  otherwise.
+     * @param isId Set it to true if you want name to be of type ID, false otherwise.
      */
     setIdAttributeNS(namespaceURI: string, localName: string, isId: bool);
 }
@@ -4973,7 +4978,7 @@ class DOMXPath {
      *         nodes matching the given XPath expression.
      *         
      *         If the expression is malformed or the contextnode is invalid,
-     *         DOMXPath::evaluate returns .
+     *         DOMXPath::evaluate returns false.
      */
     evaluate(expression: string, contextnode?: DOMNode, registerNodeNS?: bool): any;
     
@@ -4993,7 +4998,7 @@ class DOMXPath {
      *         empty DOMNodeList.
      *         
      *         If the expression is malformed or the contextnode is invalid,
-     *         DOMXPath::query returns .
+     *         DOMXPath::query returns false.
      */
     query(expression: string, contextnode?: DOMNode, registerNodeNS?: bool): DOMNodeList;
     
@@ -5042,7 +5047,7 @@ class DOMXPath {
  * DOMElement node. This new object can then be used as a native DOMElement node.
  *
  * @param node The SimpleXMLElement node.
- * @return The DOMElement node added or  if any errors occur.
+ * @return The DOMElement node added or false if any errors occur.
  */
 function dom_import_simplexml(node: SimpleXMLElement): DOMElement;
 
@@ -5150,21 +5155,22 @@ declare function proc_close(process: Pct.PhpResource): number;
  * proc_get_status fetches data about a process opened using proc_open.
  *
  * @param process The proc_open resource that will be evaluated.
- * @return An array of collected information on success, and on failure. The
+ * @return An array of collected information on success, and false on failure. The
  *         returned array contains the following elements:
  *         
  *         elementtypedescription    command string  The command string that was
- *         passed to proc_open.    pid int process id   running bool  if the
- *         process is still running,  if it has terminated.    signaled bool  if
- *         the child process has been terminated by an uncaught signal. Always set
- *         to  on Windows.    stopped bool  if the child process has been stopped
- *         by a signal. Always set to  on Windows.    exitcode int  The exit code
- *         returned by the process (which is only meaningful if running is ). Only
- *         first call of this function return real value, next calls return -1.   
- *         termsig int  The number of the signal that caused the child process to
- *         terminate its execution (only meaningful if signaled is ).    stopsig
- *         int  The number of the signal that caused the child process to stop its
- *         execution (only meaningful if stopped is ).
+ *         passed to proc_open.    pid int process id   running bool  true if the
+ *         process is still running, false if it has terminated.    signaled bool 
+ *         true if the child process has been terminated by an uncaught signal.
+ *         Always set to false on Windows.    stopped bool  true if the child
+ *         process has been stopped by a signal. Always set to false on Windows.  
+ *         exitcode int  The exit code returned by the process (which is only
+ *         meaningful if running is false). Only first call of this function
+ *         return real value, next calls return -1.    termsig int  The number of
+ *         the signal that caused the child process to terminate its execution
+ *         (only meaningful if signaled is true).    stopsig int  The number of
+ *         the signal that caused the child process to stop its execution (only
+ *         meaningful if stopped is true).
  */
 declare function proc_get_status(process: Pct.PhpResource): Pct.PhpAssocArray;
 
@@ -5223,10 +5229,11 @@ declare function proc_nice(increment: number): bool;
  * @param other_options Allows you to specify additional options. Currently
  *                      supported options include:   suppress_errors (windows
  *                      only): suppresses errors generated by this function when
- *                      it's set to   bypass_shell (windows only): bypass cmd.exe
- *                      shell when set to
+ *                      it's set to true   bypass_shell (windows only): bypass
+ *                      cmd.exe shell when set to true
  * @return Returns a resource representing the process, which should be freed
- *         using proc_close when you are finished with it. On failure returns .
+ *         using proc_close when you are finished with it. On failure returns
+ *         false.
  */
 declare function proc_open(cmd: string, descriptorspec: Array, $pipes: number[], cwd?: string, env?: Pct.PhpAssocArray, other_options?: Pct.PhpAssocArray): Pct.PhpResource;
 
@@ -5275,7 +5282,8 @@ declare function shell_exec(cmd: string): string;
  * @param $return_var If the return_var argument is present, then the return
  *                    status of the executed command will be written to this
  *                    variable.
- * @return Returns the last line of the command output on success, and on failure.
+ * @return Returns the last line of the command output on success, and false on
+ *         failure.
  */
 declare function system(command: string, $return_var?: number): string;
 
@@ -5358,8 +5366,8 @@ declare class finfo {
  * @param string_ Content of a file to be checked.
  * @param options One or disjunction of more Fileinfo constants.
  * @param context 
- * @return Returns a textual description of the string argument, or  if an error
- *         occurred.
+ * @return Returns a textual description of the string argument, or false if an
+ *         error occurred.
  */
 declare function finfo_buffer(finfo: Pct.PhpResource, string_?: string, options?: number, context?: Pct.PhpResource): string;
 
@@ -5382,7 +5390,7 @@ declare function finfo_close(finfo: Pct.PhpResource): bool;
  * @param options One or disjunction of more Fileinfo constants.
  * @param context For a description of contexts, refer to .
  * @return Returns a textual description of the contents of the filename argument,
- *         or  if an error occurred.
+ *         or false if an error occurred.
  */
 declare function finfo_file(finfo: Pct.PhpResource, file_name?: string, options?: number, context?: Pct.PhpResource): string;
 
@@ -5590,9 +5598,10 @@ declare function chown(filename: string, user: number): bool;
  * the information that PHP caches about a file.
  * 
  * You should also note that PHP doesn't cache information about non-existent
- * files. So, if you call file_exists on a file that doesn't exist, it will return 
- * until you create the file. If you create the file, it will return  even if you
- * then delete the file. However unlink clears the cache automatically.
+ * files. So, if you call file_exists on a file that doesn't exist, it will return
+ * false until you create the file. If you create the file, it will return true
+ * even if you then delete the file. However unlink clears the cache automatically.
+ * 
  * 
  * This function caches information about specific filenames, so you only need to
  * call clearstatcache if you are performing multiple operations on the same
@@ -5605,7 +5614,7 @@ declare function chown(filename: string, user: number): bool;
  *
  * @param clear_realpath_cache Whether to clear the realpath cache or not.
  * @param filename Clear the realpath and the stat cache for a specific filename
- *                 only; only used if clear_realpath_cache is .
+ *                 only; only used if clear_realpath_cache is true.
  */
 declare function clearstatcache(clear_realpath_cache?: bool, filename?: string);
 
@@ -5685,8 +5694,8 @@ declare function fclose(handle: Pct.PhpResource): bool;
  * Tests for end-of-file on a file pointer.
  *
  * @param handle 
- * @return Returns  if the file pointer is at EOF or an error occurs (including
- *         socket timeout); otherwise returns .
+ * @return Returns true if the file pointer is at EOF or an error occurs
+ *         (including socket timeout); otherwise returns false.
  */
 declare function feof(handle: Pct.PhpResource): bool;
 
@@ -5707,7 +5716,7 @@ declare function fflush(handle: Pct.PhpResource): bool;
  *
  * @param handle 
  * @return Returns a string containing a single character read from the file
- *         pointed to by handle. Returns  on EOF.
+ *         pointed to by handle. Returns false on EOF.
  */
 declare function fgetc(handle: Pct.PhpResource): string;
 
@@ -5733,8 +5742,8 @@ declare function fgetc(handle: Pct.PhpResource): string;
  *         A blank line in a CSV file will be returned as an array comprising a
  *         single null field, and will not be treated as an error.
  *         
- *         fgetcsv returns  if an invalid handle is supplied or  on other errors,
- *         including end of file.
+ *         fgetcsv returns  if an invalid handle is supplied or false on other
+ *         errors, including end of file.
  */
 declare function fgetcsv(handle: Pct.PhpResource, length?: number, delimter?: string, enclosure?: string, escape?: string): any[];
 
@@ -5755,9 +5764,9 @@ declare function fgetcsv(handle: Pct.PhpResource, length?: number, delimter?: st
  *               specify the maximum line length.
  * @return Returns a string of up to length - 1 bytes read from the file pointed
  *         to by handle. If there is no more data to read in the file pointer,
- *         then  is returned.
+ *         then false is returned.
  *         
- *         If an error occurs,  is returned.
+ *         If an error occurs, false is returned.
  */
 declare function fgets(handle: Pct.PhpResource, length?: number): string;
 
@@ -5774,7 +5783,7 @@ declare function fgets(handle: Pct.PhpResource, length?: number): string;
  * @return Returns a string of up to length - 1 bytes read from the file pointed
  *         to by handle, with all HTML and PHP code stripped.
  *         
- *         If an error occurs, returns .
+ *         If an error occurs, returns false.
  */
 declare function fgetss(handle: Pct.PhpResource, length?: number, allowable_tags?: string): string;
 
@@ -5795,7 +5804,7 @@ declare function fgetss(handle: Pct.PhpResource, length?: number, allowable_tags
  *                function.
  * @return Returns the file in an array. Each element of the array corresponds to
  *         a line in the file, with the newline still attached. Upon failure, file
- *         returns .
+ *         returns false.
  *         
  *         Each line in the resulting array will include the line ending, unless
  *         FILE_IGNORE_NEW_LINES is used, so you still need to use rtrim if you do
@@ -5813,12 +5822,13 @@ declare function file(filename: string, flags?: number, context?: Pct.PhpResourc
  *                 On windows, use //computername/share/filename or
  *                 \\computername\share\filename to check files on network shares.
  *                 
- * @return Returns  if the file or directory specified by filename exists; 
- *         otherwise.
+ * @return Returns true if the file or directory specified by filename exists;
+ *         false otherwise.
  *         
- *         This function will return  for symlinks pointing to non-existing files.
+ *         This function will return false for symlinks pointing to non-existing
+ *         files.
  *         
- *         This function returns  for files inaccessible due to safe mode
+ *         This function returns false for files inaccessible due to safe mode
  *         restrictions. However these files still can be included if they are
  *         located in safe_mode_include_dir.
  *         
@@ -5831,7 +5841,7 @@ declare function file_exists(filename: string): bool;
  * 
  * This function is similar to file, except that file_get_contents returns the file
  * in a string, starting at the specified offset up to maxlen bytes. On failure,
- * file_get_contents will return .
+ * file_get_contents will return false.
  * 
  * file_get_contents is the preferred way to read the contents of a file into a
  * string.  It will use memory mapping techniques if supported by your OS to
@@ -5889,7 +5899,7 @@ declare function file_get_contents(filename: string, use_include_path?: bool, co
  *              to the writing.
  * @param context A valid context resource created with stream_context_create.
  * @return This function returns the number of bytes that were written to the
- *         file, or on failure.
+ *         file, or false on failure.
  */
 declare function file_put_contents(filename: string, data: string, flags?: number, context?: Pct.PhpResource): number;
 
@@ -5924,7 +5934,7 @@ declare function file_put_contents(filename: string, data: string, flags?: numbe
  *              to the writing.
  * @param context A valid context resource created with stream_context_create.
  * @return This function returns the number of bytes that were written to the
- *         file, or on failure.
+ *         file, or false on failure.
  */
 declare function file_put_contents(filename: string, data: any[], flags?: number, context?: Pct.PhpResource): number;
 
@@ -5959,7 +5969,7 @@ declare function file_put_contents(filename: string, data: any[], flags?: number
  *              to the writing.
  * @param context A valid context resource created with stream_context_create.
  * @return This function returns the number of bytes that were written to the
- *         file, or on failure.
+ *         file, or false on failure.
  */
 declare function file_put_contents(filename: string, data: Pct.PhpResource, flags?: number, context?: Pct.PhpResource): number;
 
@@ -5990,9 +6000,9 @@ declare function filectime(filename: string): number;
  * posix_getgrgid to resolve it to a group name.
  *
  * @param filename Path to the file.
- * @return Returns the group ID of the file, or  if an error occurs. The group ID
- *         is returned in numerical format, use posix_getgrgid to resolve it to a
- *         group name. Upon failure,  is returned.
+ * @return Returns the group ID of the file, or false if an error occurs. The
+ *         group ID is returned in numerical format, use posix_getgrgid to resolve
+ *         it to a group name. Upon failure, false is returned.
  */
 declare function filegroup(filename: string): number;
 
@@ -6056,8 +6066,8 @@ declare function fileperms(filename: string): number;
  * Gets the size for the given file.
  *
  * @param filename Path to the file.
- * @return Returns the size of the file in bytes, or  (and generates an error of
- *         level E_WARNING) in case of an error.
+ * @return Returns the size of the file in bytes, or false (and generates an error
+ *         of level E_WARNING) in case of an error.
  */
 declare function filesize(filename: string): number;
 
@@ -6070,8 +6080,9 @@ declare function filesize(filename: string): number;
  * @return Returns the type of the file. Possible values are fifo, char, dir,
  *         block, link, file, socket and unknown.
  *         
- *         Returns  if an error occurs. filetype will also produce an E_NOTICE
- *         message if the stat call fails or if the file type is unknown.
+ *         Returns false if an error occurs. filetype will also produce an
+ *         E_NOTICE message if the stat call fails or if the file type is unknown.
+ *         
  */
 declare function filetype(filename: string): string;
 
@@ -6099,7 +6110,7 @@ declare function filetype(filename: string): string;
  *                  It is also possible to add LOCK_NB as a bitmask to one of the
  *                  above operations if you don't want flock to block while
  *                  locking. (not supported on Windows)
- * @param $wouldblock The optional third argument is set to  if the lock would
+ * @param $wouldblock The optional third argument is set to true if the lock would
  *                    block (EWOULDBLOCK errno condition). (not supported on
  *                    Windows)
  */
@@ -6126,7 +6137,7 @@ declare function flock(handle: Pct.PhpResource, operation: number, $wouldblock?:
  *              slash in the given pattern.    FNM_PERIOD  Leading period in
  *              string must be exactly matched by period in the given pattern.   
  *              FNM_CASEFOLD  Caseless match. Part of the GNU extension.
- * @return Returns  if there is a match,  otherwise.
+ * @return Returns true if there is a match, false otherwise.
  */
 declare function fnmatch(pattern: string, string_: string, flags?: number): bool;
 
@@ -6178,9 +6189,9 @@ declare function fnmatch(pattern: string, string_: string, flags?: number): bool
  *             writing; place the file pointer at the end of the file. If the file
  *             does not exist, attempt to create it.    'x'  Create and open for
  *             writing only; place the file pointer at the beginning of the file. 
- *             If the file already exists, the fopen call will fail by returning 
- *             and generating an error of level E_WARNING.  If the file does not
- *             exist, attempt to create it.  This is equivalent to specifying
+ *             If the file already exists, the fopen call will fail by returning
+ *             false and generating an error of level E_WARNING.  If the file does
+ *             not exist, attempt to create it.  This is equivalent to specifying
  *             O_EXCL|O_CREAT flags for the underlying open(2) system call.   
  *             'x+'  Create and open for reading and writing; otherwise it has the
  *             same behavior as 'x'.    'c'  Open the file for writing only. If
@@ -6231,10 +6242,10 @@ declare function fnmatch(pattern: string, string_: string, flags?: number): bool
  *             re-write code that uses or relies upon the 't' mode so that it uses
  *             the correct line endings and 'b' mode instead.
  * @param use_include_path The optional third use_include_path parameter can be
- *                         set to '1' or  if you want to search for the file in
- *                         the include_path, too.
+ *                         set to '1' or true if you want to search for the file
+ *                         in the include_path, too.
  * @param context 
- * @return Returns a file pointer resource on success, or  on error.
+ * @return Returns a file pointer resource on success, or false on error.
  */
 declare function fopen(filename: string, mode: string, use_include_path?: bool, context?: Pct.PhpResource): Pct.PhpResource;
 
@@ -6252,9 +6263,9 @@ declare function fopen(filename: string, mode: string, use_include_path?: bool, 
  * readfile, which saves you the fopen call.
  *
  * @param handle 
- * @return If an error occurs, fpassthru returns .  Otherwise, fpassthru returns
- *         the number of characters read from handle and passed through to the
- *         output.
+ * @return If an error occurs, fpassthru returns false.  Otherwise, fpassthru
+ *         returns the number of characters read from handle and passed through to
+ *         the output.
  */
 declare function fpassthru(handle: Pct.PhpResource): number;
 
@@ -6362,7 +6373,7 @@ declare function fstat(handle: Pct.PhpResource): Pct.PhpAssocArray;
  * @return Returns the position of the file pointer referenced by handle as an
  *         integer; i.e., its offset into the file stream.
  *         
- *         If an error occurs, returns .
+ *         If an error occurs, returns false.
  */
 declare function ftell(handle: Pct.PhpResource): number;
 
@@ -6418,7 +6429,7 @@ declare function fwrite(handle: Pct.PhpResource, string_: string, length?: numbe
  *              read errors (like unreadable directories), by default errors are
  *              ignored.
  * @return Returns an array containing the matched files/directories, an empty
- *         array if no file matched or  on error.
+ *         array if no file matched or false on error.
  *         
  *         On some systems it is impossible to distinguish between empty match and
  *         an error.
@@ -6435,7 +6446,8 @@ declare function glob(pattern: string, flags?: number): string[];
  *                 filename is a symbolic or hard link then the link will be
  *                 resolved and checked. If you have enabled , or open_basedir
  *                 further restrictions may apply.
- * @return Returns  if the filename exists and is a directory, otherwise.
+ * @return Returns true if the filename exists and is a directory, false
+ *         otherwise.
  */
 declare function is_dir(filename: string): bool;
 
@@ -6445,7 +6457,8 @@ declare function is_dir(filename: string): bool;
  * Tells whether the filename is executable.
  *
  * @param filename Path to the file.
- * @return Returns  if the filename exists and is executable, or  on error.
+ * @return Returns true if the filename exists and is executable, or false on
+ *         error.
  */
 declare function is_executable(filename: string): bool;
 
@@ -6455,7 +6468,8 @@ declare function is_executable(filename: string): bool;
  * Tells whether the given file is a regular file.
  *
  * @param filename Path to the file.
- * @return Returns  if the filename exists and is a regular file, otherwise.
+ * @return Returns true if the filename exists and is a regular file, false
+ *         otherwise.
  */
 declare function is_file(filename: string): bool;
 
@@ -6465,7 +6479,8 @@ declare function is_file(filename: string): bool;
  * Tells whether the given file is a symbolic link.
  *
  * @param filename Path to the file.
- * @return Returns  if the filename exists and is a symbolic link, otherwise.
+ * @return Returns true if the filename exists and is a symbolic link, false
+ *         otherwise.
  */
 declare function is_link(filename: string): bool;
 
@@ -6475,15 +6490,15 @@ declare function is_link(filename: string): bool;
  * Tells whether a file exists and is readable.
  *
  * @param filename Path to the file.
- * @return Returns  if the file or directory specified by filename exists and is
- *         readable,  otherwise.
+ * @return Returns true if the file or directory specified by filename exists and
+ *         is readable, false otherwise.
  */
 declare function is_readable(filename: string): bool;
 
 /**
  * Tells whether the file was uploaded via HTTP POST
  * 
- * Returns  if the file named by filename was uploaded via HTTP POST. This is
+ * Returns true if the file named by filename was uploaded via HTTP POST. This is
  * useful to help ensure that a malicious user hasn't tried to trick the script
  * into working on files upon which it should not be working--for instance,
  * /etc/passwd.
@@ -6503,15 +6518,15 @@ declare function is_uploaded_file(filename: string): bool;
 /**
  * Tells whether the filename is writable
  * 
- * Returns  if the filename exists and is writable.  The filename argument may be a
- * directory name allowing you to check if a directory is writable.
+ * Returns true if the filename exists and is writable.  The filename argument may
+ * be a directory name allowing you to check if a directory is writable.
  * 
  * Keep in mind that PHP may be accessing the file as the user id that the web
  * server runs as (often 'nobody'). Safe mode limitations are not taken into
  * account.
  *
  * @param filename The filename being checked.
- * @return Returns  if the filename exists and is writable.
+ * @return Returns true if the filename exists and is writable.
  */
 declare function is_writable(filename: string): bool;
 
@@ -6585,7 +6600,7 @@ declare function link(target: string, link: string): bool;
  *
  * @param path Path to the link.
  * @return linkinfo returns the st_dev field of the Unix C stat structure returned
- *         by the lstat system call. Returns 0 or  in case of error.
+ *         by the lstat system call. Returns 0 or false in case of error.
  */
 declare function linkinfo(path: string): number;
 
@@ -6637,13 +6652,13 @@ declare function mkdir(pathname: string, mode?: number, recursive?: bool, contex
  *
  * @param filename The filename of the uploaded file.
  * @param destination The destination of the moved file.
- * @return Returns  on success.
+ * @return Returns true on success.
  *         
  *         If filename is not a valid upload file, then no action will occur, and
- *         move_uploaded_file will return .
+ *         move_uploaded_file will return false.
  *         
  *         If filename is a valid upload file, but cannot be moved for some
- *         reason, no action will occur, and move_uploaded_file will return .
+ *         reason, no action will occur, and move_uploaded_file will return false.
  *         Additionally, a warning will be issued.
  */
 declare function move_uploaded_file(filename: string, destination: string): bool;
@@ -6657,14 +6672,15 @@ declare function move_uploaded_file(filename: string, destination: string): bool
  * The structure of the ini file is the same as the 's.
  *
  * @param filename The filename of the ini file being parsed.
- * @param process_sections By setting the process_sections parameter to , you get
- *                         a multidimensional array, with the section names and
- *                         settings included. The default for process_sections is
+ * @param process_sections By setting the process_sections parameter to true, you
+ *                         get a multidimensional array, with the section names
+ *                         and settings included. The default for process_sections
+ *                         is false
  * @param scanner_mode Can either be INI_SCANNER_NORMAL (default) or
  *                     INI_SCANNER_RAW. If INI_SCANNER_RAW is supplied, then
  *                     option values will not be parsed.
- * @return The settings are returned as an associative array on success, and  on
- *         failure.
+ * @return The settings are returned as an associative array on success, and false
+ *         on failure.
  */
 declare function parse_ini_file(filename: string, process_sections?: bool, scanner_mode?: number): Pct.PhpAssocArray;
 
@@ -6676,14 +6692,15 @@ declare function parse_ini_file(filename: string, process_sections?: bool, scann
  * The structure of the ini string is the same as the 's.
  *
  * @param ini The contents of the ini file being parsed.
- * @param process_sections By setting the process_sections parameter to , you get
- *                         a multidimensional array, with the section names and
- *                         settings included. The default for process_sections is
+ * @param process_sections By setting the process_sections parameter to true, you
+ *                         get a multidimensional array, with the section names
+ *                         and settings included. The default for process_sections
+ *                         is false
  * @param scanner_mode Can either be INI_SCANNER_NORMAL (default) or
  *                     INI_SCANNER_RAW. If INI_SCANNER_RAW is supplied, then
  *                     option values will not be parsed.
- * @return The settings are returned as an associative array on success, and  on
- *         failure.
+ * @return The settings are returned as an associative array on success, and false
+ *         on failure.
  */
 declare function parse_ini_string(ini: string, process_sections?: bool, scanner_mode?: number): Pct.PhpAssocArray;
 
@@ -6756,7 +6773,7 @@ declare function pclose(handle: Pct.PhpResource): number;
  *         STDOUT of the command, when the mode is 'w', the returned file pointer
  *         equals to the STDIN of the command.
  *         
- *         If an error occurs, returns .
+ *         If an error occurs, returns false.
  */
 declare function popen(command: string, mode: string): Pct.PhpResource;
 
@@ -6767,12 +6784,12 @@ declare function popen(command: string, mode: string): Pct.PhpResource;
  *
  * @param filename The filename being read.
  * @param use_include_path You can use the optional second parameter and set it to
- *                         , if you want to search for the file in the
+ *                         true, if you want to search for the file in the
  *                         include_path, too.
  * @param context A context stream resource.
- * @return Returns the number of bytes read from the file. If an error occurs,  is
- *         returned and unless the function was called as @readfile, an error
- *         message is printed.
+ * @return Returns the number of bytes read from the file. If an error occurs,
+ *         false is returned and unless the function was called as @readfile, an
+ *         error message is printed.
  */
 declare function readfile(filename: string, use_include_path?: bool, context?: Pct.PhpResource): number;
 
@@ -6782,7 +6799,7 @@ declare function readfile(filename: string, use_include_path?: bool, context?: P
  * readlink does the same as the readlink C function.
  *
  * @param path The symbolic link path.
- * @return Returns the contents of the symbolic link path or  on error.
+ * @return Returns the contents of the symbolic link path or false on error.
  */
 declare function readlink(path: string): string;
 
@@ -6802,10 +6819,10 @@ declare function readlink(path: string): string;
  * @return Returns the canonicalized absolute pathname on success. The resulting
  *         path will have no symbolic link, '/./' or '/../' components.
  *         
- *         realpath returns  on failure, e.g. if the file does not exist.
+ *         realpath returns false on failure, e.g. if the file does not exist.
  *         
  *         The running script must have executable permissions on all directories
- *         in the hierarchy, otherwise realpath will return .
+ *         in the hierarchy, otherwise realpath will return false.
  */
 declare function realpath(path: string): string;
 
@@ -6888,7 +6905,7 @@ declare function rmdir(dirname: string, context?: Pct.PhpResource): bool;
  *         ** Only valid on systems supporting the st_blksize type - other systems
  *         (e.g. Windows) return -1.
  *         
- *         In case of error, stat returns .
+ *         In case of error, stat returns false.
  */
 declare function stat(filename: string): Pct.PhpAssocArray;
 
@@ -6912,7 +6929,7 @@ declare function symlink(target: string, link: string): bool;
  *
  * @param dir The directory where the temporary filename will be created.
  * @param prefix The prefix of the generated temporary filename.
- * @return Returns the new temporary filename, or  on failure.
+ * @return Returns the new temporary filename, or false on failure.
  */
 declare function tempnam(dir: string, prefix: string): string;
 
@@ -7269,7 +7286,7 @@ declare function filter_has_var(type: number, variable_name: string): bool;
  * Returns the filter ID belonging to a named filter
  *
  * @param filtername Name of a filter to get.
- * @return ID of a filter on success or  if filter doesn't exist.
+ * @return ID of a filter on success or false if filter doesn't exist.
  */
 declare function filter_id(filtername: string): number;
 
@@ -7284,10 +7301,10 @@ declare function filter_id(filtername: string): number;
  * @param options Associative array of options or bitwise disjunction of flags. If
  *                filter accepts options, flags can be provided in "flags" field
  *                of array.
- * @return Value of the requested variable on success,  if the filter fails, or 
- *         if the variable_name variable is not set. If the flag
- *         FILTER_NULL_ON_FAILURE is used, it returns  if the variable is not set
- *         and  if the filter fails.
+ * @return Value of the requested variable on success, false if the filter fails,
+ *         or  if the variable_name variable is not set. If the flag
+ *         FILTER_NULL_ON_FAILURE is used, it returns false if the variable is not
+ *         set and  if the filter fails.
  */
 declare function filter_input(type: number, variable_name: string, filter?: number, options?: any): any;
 
@@ -7312,9 +7329,10 @@ declare function filter_input(type: number, variable_name: string, filter?: numb
  *                   constant. Then all values in the input array are filtered by
  *                   this filter.
  * @return An array containing the values of the requested variables on success,
- *         or on failure. An array value will be  if the filter fails, or  if the
- *         variable is not set. Or if the flag FILTER_NULL_ON_FAILURE is used, it
- *         returns  if the variable is not set and  if the filter fails.
+ *         or false on failure. An array value will be false if the filter fails,
+ *         or  if the variable is not set. Or if the flag FILTER_NULL_ON_FAILURE
+ *         is used, it returns false if the variable is not set and  if the filter
+ *         fails.
  */
 declare function filter_input_array(type: number, definition?: any): any;
 
@@ -7355,7 +7373,7 @@ declare function filter_list(): string[];
  *                $notstrings) { return false; } else { return $value; } } $var =
  *                filter_var('Doe, Jane Sue', FILTER_CALLBACK, array('options' =>
  *                'foo')); ?> ]]>
- * @return Returns the filtered data, or  if the filter fails.
+ * @return Returns the filtered data, or false if the filter fails.
  */
 declare function filter_var(variable: any, filter?: number, options?: any): any;
 
@@ -7379,8 +7397,8 @@ declare function filter_var(variable: any, filter?: number, options?: any): any;
  *                   constant. Then all values in the input array are filtered by
  *                   this filter.
  * @return An array containing the values of the requested variables on success,
- *         or on failure. An array value will be  if the filter fails, or  if the
- *         variable is not set.
+ *         or false on failure. An array value will be false if the filter fails,
+ *         or  if the variable is not set.
  */
 declare function filter_var_array(data: Pct.PhpAssocArray, definition?: any): any;
 
@@ -7404,7 +7422,7 @@ declare function filter_var_array(data: Pct.PhpAssocArray, definition?: any): an
  *                  
  *                  Note that the parameters for call_user_func are not passed by
  *                  reference.  call_user_func example and references   ]]>
- * @return Returns the return value of the callback, or  on error.
+ * @return Returns the return value of the callback, or false on error.
  */
 declare function call_user_func(callback: string, ...parameter: any[]): any;
 
@@ -7419,7 +7437,7 @@ declare function call_user_func(callback: string, ...parameter: any[]): any;
  *                  
  *                  Note that the parameters for call_user_func are not passed by
  *                  reference.  call_user_func example and references   ]]>
- * @return Returns the return value of the callback, or  on error.
+ * @return Returns the return value of the callback, or false on error.
  */
 declare function call_user_func(callback: Function, ...parameter: any[]): any;
 
@@ -7432,7 +7450,7 @@ declare function call_user_func(callback: Function, ...parameter: any[]): any;
  * @param callback The callable to be called.
  * @param param_arr The parameters to be passed to the callback, as an indexed
  *                  array.
- * @return Returns the return value of the callback, or  on error.
+ * @return Returns the return value of the callback, or false on error.
  */
 declare function call_user_func_array(callback: string, param_arr: any[]): any;
 
@@ -7445,7 +7463,7 @@ declare function call_user_func_array(callback: string, param_arr: any[]): any;
  * @param callback The callable to be called.
  * @param param_arr The parameters to be passed to the callback, as an indexed
  *                  array.
- * @return Returns the return value of the callback, or  on error.
+ * @return Returns the return value of the callback, or false on error.
  */
 declare function call_user_func_array(callback: Function, param_arr: any[]): any;
 
@@ -7457,7 +7475,7 @@ declare function call_user_func_array(callback: Function, param_arr: any[]): any
  *
  * @param args The function arguments.
  * @param code The function code.
- * @return Returns a unique function name as a string, or  on error.
+ * @return Returns a unique function name as a string, or false on error.
  */
 declare function create_function(args: string, code: string): string;
 
@@ -7470,7 +7488,7 @@ declare function create_function(args: string, code: string): string;
  *
  * @param callback
  * @param parameter Zero or more parameters to be passed to the function.
- * @return Returns the function result, or  on error.
+ * @return Returns the function result, or false on error.
  */
 declare function forward_static_call(callback: string, ...parameter: any[]): any;
 
@@ -7483,7 +7501,7 @@ declare function forward_static_call(callback: string, ...parameter: any[]): any
  *
  * @param callback
  * @param parameter Zero or more parameters to be passed to the function.
- * @return Returns the function result, or  on error.
+ * @return Returns the function result, or false on error.
  */
 declare function forward_static_call(callback: Function, ...parameter: any[]): any;
 
@@ -7497,7 +7515,7 @@ declare function forward_static_call(callback: Function, ...parameter: any[]): a
  *
  * @param callback
  * @param parameters 
- * @return Returns the function result, or  on error.
+ * @return Returns the function result, or false on error.
  */
 declare function forward_static_call_array(callback: string, parameters: any[]): any;
 
@@ -7511,7 +7529,7 @@ declare function forward_static_call_array(callback: string, parameters: any[]):
  *
  * @param callback
  * @param parameters 
- * @return Returns the function result, or  on error.
+ * @return Returns the function result, or false on error.
  */
 declare function forward_static_call_array(callback: Function, parameters: any[]): any;
 
@@ -7525,7 +7543,7 @@ declare function forward_static_call_array(callback: Function, parameters: any[]
  *
  * @param arg_num The argument offset. Function arguments are counted starting
  *                from zero.
- * @return Returns the specified argument, or  on error.
+ * @return Returns the specified argument, or false on error.
  */
 declare function func_get_arg(arg_num: number): any;
 
@@ -7554,16 +7572,17 @@ declare function func_get_args(): any[];
 declare function func_num_args(): number;
 
 /**
- * Return  if the given function has been defined
+ * Return true if the given function has been defined
  * 
  * Checks the list of defined functions, both built-in (internal) and user-defined,
  * for function_name.
  *
  * @param function_name The function name, as a string.
- * @return Returns  if function_name exists and is a function,  otherwise.
+ * @return Returns true if function_name exists and is a function, false
+ *         otherwise.
  *         
- *         This function will return  for constructs, such as include_once and
- *         echo.
+ *         This function will return false for constructs, such as include_once
+ *         and echo.
  */
 declare function function_exists(function_name: string): bool;
 
@@ -7691,15 +7710,15 @@ declare var INFO_ALL: number;
  *             ASSERT_CALLBACK assert.callback () Callback to call on failed
  *             assertions
  * @param value An optional new value for the option.
- * @return Returns the original setting of any option or  on errors.
+ * @return Returns the original setting of any option or false on errors.
  */
 declare function assert_options(what: number, value?: any): any;
 
 /**
- * Checks if assertion is
+ * Checks if assertion is false
  * 
  * assert will check the given assertion and take appropriate action if its result
- * is .
+ * is false.
  * 
  * If the assertion is given as a string it will be evaluated as PHP code by
  * assert. The advantages of a string assertion are less overhead when assertion
@@ -7707,13 +7726,13 @@ declare function assert_options(what: number, value?: any): any;
  * assertion fails. This means that if you pass a boolean condition as assertion
  * this condition will not show up as parameter to the assertion function which you
  * may have defined with the assert_options function, the condition is converted to
- * a string before calling that handler function, and the boolean is converted as
- * the empty string.
+ * a string before calling that handler function, and the boolean false is
+ * converted as the empty string.
  * 
  * Assertions should be used as a debugging feature only. You may use them for
- * sanity-checks that test for conditions that should always be  and that indicate
- * some programming errors if not or to check for the presence of certain features
- * like extension functions or certain system limits and features.
+ * sanity-checks that test for conditions that should always be true and that
+ * indicate some programming errors if not or to check for the presence of certain
+ * features like extension functions or certain system limits and features.
  * 
  * Assertions should not be used for normal runtime operations like input parameter
  * checks. As a rule of thumb your code should always be able to work correctly if
@@ -7740,15 +7759,15 @@ declare function assert_options(what: number, value?: any): any;
  * @param assertion The assertion.
  * @param description An optional description that will be included in the failure
  *                    message if the assertion fails.
- * @return if the assertion is false,  otherwise.
+ * @return false if the assertion is false, true otherwise.
  */
 declare function assert(assertion: bool, description?: string): bool;
 
 /**
- * Checks if assertion is
+ * Checks if assertion is false
  * 
  * assert will check the given assertion and take appropriate action if its result
- * is .
+ * is false.
  * 
  * If the assertion is given as a string it will be evaluated as PHP code by
  * assert. The advantages of a string assertion are less overhead when assertion
@@ -7756,13 +7775,13 @@ declare function assert(assertion: bool, description?: string): bool;
  * assertion fails. This means that if you pass a boolean condition as assertion
  * this condition will not show up as parameter to the assertion function which you
  * may have defined with the assert_options function, the condition is converted to
- * a string before calling that handler function, and the boolean is converted as
- * the empty string.
+ * a string before calling that handler function, and the boolean false is
+ * converted as the empty string.
  * 
  * Assertions should be used as a debugging feature only. You may use them for
- * sanity-checks that test for conditions that should always be  and that indicate
- * some programming errors if not or to check for the presence of certain features
- * like extension functions or certain system limits and features.
+ * sanity-checks that test for conditions that should always be true and that
+ * indicate some programming errors if not or to check for the presence of certain
+ * features like extension functions or certain system limits and features.
  * 
  * Assertions should not be used for normal runtime operations like input parameter
  * checks. As a rule of thumb your code should always be able to work correctly if
@@ -7789,7 +7808,7 @@ declare function assert(assertion: bool, description?: string): bool;
  * @param assertion The assertion.
  * @param description An optional description that will be included in the failure
  *                    message if the assertion fails.
- * @return if the assertion is false,  otherwise.
+ * @return false if the assertion is false, true otherwise.
  */
 declare function assert(assertion: string, description?: string): bool;
 
@@ -7830,7 +7849,7 @@ declare function assert(assertion: string, description?: string): bool;
  * @return If the functionality of loading modules is not available or has been
  *         disabled (either by setting enable_dl off or by enabling in ) an
  *         E_ERROR is emitted and execution is stopped. If dl fails because the
- *         specified library couldn't be loaded, in addition to  an E_WARNING
+ *         specified library couldn't be loaded, in addition to false an E_WARNING
  *         message is emitted.
  */
 declare function dl(library: string): bool;
@@ -7845,7 +7864,8 @@ declare function dl(library: string): bool;
  *             You can see the names of various extensions by using phpinfo or if
  *             you're using the CGI or CLI version of PHP you can use the -m
  *             switch to list all available extensions:
- * @return Returns  if the extension identified by name is loaded,  otherwise.
+ * @return Returns true if the extension identified by name is loaded, false
+ *         otherwise.
  */
 declare function extension_loaded(name: string): bool;
 
@@ -7875,7 +7895,7 @@ declare function gc_enable();
  * Returns status of the circular reference collector
  * 
  * Returns status of the circular reference collector.
- * @return Returns  if the garbage collector is enabled,  otherwise.
+ * @return Returns true if the garbage collector is enabled, false otherwise.
  */
 declare function gc_enabled(): bool;
 
@@ -7893,7 +7913,7 @@ declare function gc_enabled(): bool;
  *
  * @param option The configuration option name.
  * @return Returns the current value of the PHP configuration variable specified
- *         by option, or  if an error occurs.
+ *         by option, or false if an error occurs.
  */
 declare function get_cfg_var(option: string): string;
 
@@ -7936,8 +7956,8 @@ declare function get_defined_constants(categorize?: bool): Pct.PhpAssocArray;
  * @param module_name The module name.
  *                    
  *                    This parameter must be in lowercase.
- * @return Returns an array with all the functions, or  if module_name is not a
- *         valid extension.
+ * @return Returns an array with all the functions, or false if module_name is not
+ *         a valid extension.
  */
 declare function get_extension_funcs(module_name: string): string[];
 
@@ -7970,8 +7990,8 @@ declare function get_included_files(): string[];
  * PHP interpreter.
  *
  * @param zend_extensions Only return Zend extensions, if not then regular
- *                        extensions, like mysqli are listed. Defaults to  (return
- *                        regular extensions).
+ *                        extensions, like mysqli are listed. Defaults to false
+ *                        (return regular extensions).
  * @return Returns an indexed array of all the modules names.
  */
 declare function get_loaded_extensions(zend_extensions?: bool): string[];
@@ -7986,7 +8006,7 @@ declare function get_loaded_extensions(zend_extensions?: bool): string[];
  * Meta-Variables".
  *
  * @param varname The variable name.
- * @return Returns the value of the environment variable varname, or  if the
+ * @return Returns the value of the environment variable varname, or false if the
  *         environment variable varname does not exist.
  */
 declare function getenv(varname: string): string;
@@ -8000,13 +8020,13 @@ declare function getenv(varname: string): string;
  * consider using filemtime.
  * @return Returns the time of the last modification of the current page. The
  *         value returned is a Unix timestamp, suitable for feeding to date.
- *         Returns  on error.
+ *         Returns false on error.
  */
 declare function getlastmod(): number;
 
 /**
  * Get PHP script owner's GID
- * @return Returns the group ID of the current script, or  on error.
+ * @return Returns the group ID of the current script, or false on error.
  */
 declare function getmygid(): number;
 
@@ -8014,7 +8034,7 @@ declare function getmygid(): number;
  * Gets the inode of the current script
  * 
  * Gets the inode of the current script.
- * @return Returns the current script's inode as an integer, or  on error.
+ * @return Returns the current script's inode as an integer, or false on error.
  */
 declare function getmyinode(): number;
 
@@ -8022,13 +8042,13 @@ declare function getmyinode(): number;
  * Gets PHP's process ID
  * 
  * Gets the current PHP process ID.
- * @return Returns the current PHP process ID, or  on error.
+ * @return Returns the current PHP process ID, or false on error.
  */
 declare function getmypid(): number;
 
 /**
  * Gets PHP script owner's UID
- * @return Returns the user ID of the current script, or  on error.
+ * @return Returns the user ID of the current script, or false on error.
  */
 declare function getmyuid(): number;
 
@@ -8039,8 +8059,8 @@ declare function getmyuid(): number;
  *
  * @param options 
  * @param longopts 
- * @return This function will return an array of option / argument pairs or  on
- *         failure.
+ * @return This function will return an array of option / argument pairs or false
+ *         on failure.
  *         
  *         The parsing of options will end at the first non-option found, anything
  *         that follows is discarded.
@@ -8067,7 +8087,7 @@ declare function getrusage(who?: number): Pct.PhpAssocArray;
  *
  * @param varname The configuration option name.
  * @return Returns the value of the configuration option as a string on success,
- *         or an empty string for null values. Returns  if the configuration
+ *         or an empty string for null values. Returns false if the configuration
  *         option doesn't exist.
  */
 declare function ini_get(varname: string): string;
@@ -8080,14 +8100,15 @@ declare function ini_get(varname: string): string;
  * @param extension An optional extension name. If set, the function return only
  *                  options specific for that extension.
  * @param details Retrieve details settings or only the current value for each
- *                setting. Default is  (retrieve details).
+ *                setting. Default is true (retrieve details).
  * @return Returns an associative array with directive name as the array key.
  *         
- *         When details is  (default) the array will contain global_value (set in
- *         ), local_value (perhaps set with ini_set or ), and access (the access
- *         level).
+ *         When details is true (default) the array will contain global_value (set
+ *         in ), local_value (perhaps set with ini_set or ), and access (the
+ *         access level).
  *         
- *         When details is  the value will be the current value of the option.
+ *         When details is false the value will be the current value of the
+ *         option.
  *         
  *         See the manual section for information on what access levels mean.
  *         
@@ -8115,7 +8136,7 @@ declare function ini_restore(varname: string);
  * @param varname Not all the available options can be changed using ini_set.
  *                There is a list of all available options in the appendix.
  * @param newvalue The new value for the option.
- * @return Returns the old value on success,  on failure.
+ * @return Returns the old value on success, false on failure.
  */
 declare function ini_set(varname: string, newvalue: string): string;
 
@@ -8124,9 +8145,9 @@ declare function ini_set(varname: string, newvalue: string): string;
  * 
  * Returns the peak of memory, in bytes, that's been allocated to your PHP script.
  *
- * @param real_usage Set this to  to get the real size of memory allocated from
- *                   system. If not set or  only the memory used by emalloc() is
- *                   reported.
+ * @param real_usage Set this to true to get the real size of memory allocated
+ *                   from system. If not set or false only the memory used by
+ *                   emalloc() is reported.
  * @return Returns the memory peak in bytes.
  */
 declare function memory_get_peak_usage(real_usage?: bool): number;
@@ -8137,9 +8158,9 @@ declare function memory_get_peak_usage(real_usage?: bool): number;
  * Returns the amount of memory, in bytes, that's currently being allocated to your
  * PHP script.
  *
- * @param real_usage Set this to  to get the real size of memory allocated from
- *                   system. If not set or  only the memory used by emalloc() is
- *                   reported.
+ * @param real_usage Set this to true to get the real size of memory allocated
+ *                   from system. If not set or false only the memory used by
+ *                   emalloc() is reported.
  * @return Returns the memory amount in bytes.
  */
 declare function memory_get_usage(real_usage?: bool): number;
@@ -8148,7 +8169,7 @@ declare function memory_get_usage(real_usage?: bool): number;
  * Retrieve a path to the loaded php.ini file
  * 
  * Check if a  file is loaded, and retrieve its path.
- * @return The loaded  path, or  if one is not loaded.
+ * @return The loaded  path, or false if one is not loaded.
  */
 declare function php_ini_loaded_file(): string;
 
@@ -8163,10 +8184,10 @@ declare function php_ini_loaded_file(): string;
  * --with-config-file-scan-dir option.
  * @return Returns a comma-separated string of .ini files on success. Each comma
  *         is followed by a newline. If the directive --with-config-file-scan-dir
- *         wasn't set, is returned.  If it was set and the directory was empty, an
- *         empty string is returned.  If a file is unrecognizable, the file will
- *         still make it into the returned string but a PHP error will also
- *         result. This PHP error will be seen both at compile time and while
+ *         wasn't set, false is returned.  If it was set and the directory was
+ *         empty, an empty string is returned.  If a file is unrecognizable, the
+ *         file will still make it into the returned string but a PHP error will
+ *         also result. This PHP error will be seen both at compile time and while
  *         using php_ini_scanned_files.
  */
 declare function php_ini_scanned_files(): string;
@@ -8282,8 +8303,8 @@ declare function phpinfo(what?: number): bool;
  *
  * @param extension An optional extension name.
  * @return If the optional extension parameter is specified, phpversion returns
- *         the version of that extension, or  if there is no version information
- *         associated or the extension isn't enabled.
+ *         the version of that extension, or false if there is no version
+ *         information associated or the extension isn't enabled.
  */
 declare function phpversion(extension?: string): string;
 
@@ -8373,8 +8394,9 @@ declare function sys_get_temp_dir(): string;
  * @return By default, version_compare returns -1 if the first version is lower
  *         than the second, 0 if they are equal, and 1 if the second is lower.
  *         
- *         When using the optional operator argument, the function will return  if
- *         the relationship is the one specified by the operator,  otherwise.
+ *         When using the optional operator argument, the function will return
+ *         true if the relationship is the one specified by the operator, false
+ *         otherwise.
  */
 declare function version_compare(version1: string, version2: string): number;
 
@@ -8406,8 +8428,9 @@ declare function version_compare(version1: string, version2: string): number;
  * @return By default, version_compare returns -1 if the first version is lower
  *         than the second, 0 if they are equal, and 1 if the second is lower.
  *         
- *         When using the optional operator argument, the function will return  if
- *         the relationship is the one specified by the operator,  otherwise.
+ *         When using the optional operator argument, the function will return
+ *         true if the relationship is the one specified by the operator, false
+ *         otherwise.
  */
 declare function version_compare(version1: string, version2: string, operator: string): bool;
 
@@ -8559,15 +8582,16 @@ declare interface JsonSerializable {
  * @param json The json string being decoded.
  *             
  *             This function only works with UTF-8 encoded data.
- * @param assoc When , returned objects will be converted into associative arrays.
+ * @param assoc When true, returned objects will be converted into associative
+ *              arrays.
  * @param depth User specified recursion depth.
  * @param options Bitmask of JSON decode options.  Currently only
  *                JSON_BIGINT_AS_STRING is supported (default is to cast large
  *                integers as floats)
  * @return Returns the value encoded in json in appropriate PHP type. Values true,
- *         false and null (case-insensitive) are returned as , and  respectively. 
- *         is returned if the json cannot be decoded or if the encoded data is
- *         deeper than the recursion limit.
+ *         false and null (case-insensitive) are returned as true, false and 
+ *         respectively.  is returned if the json cannot be decoded or if the
+ *         encoded data is deeper than the recursion limit.
  */
 declare function json_decode(json: string, assoc?: bool, depth?: number, options?: number): any;
 
@@ -8736,8 +8760,8 @@ function libxml_clear_errors();
  * 
  * Disable/enable the ability to load external entities.
  *
- * @param disable Disable () or enable () libxml extensions (such as ,  and ) to
- *                load external entities.
+ * @param disable Disable (true) or enable (false) libxml extensions (such as , 
+ *                and ) to load external entities.
  * @return Returns the previous value.
  */
 function libxml_disable_entity_loader(disable?: bool): bool;
@@ -8755,7 +8779,7 @@ function libxml_get_errors(): LibXMLError[];
  * Retrieve last error from libxml
  * 
  * Retrieve last error from libxml.
- * @return Returns a LibXMLError object if there is any error in the buffer, 
+ * @return Returns a LibXMLError object if there is any error in the buffer, false
  *         otherwise.
  */
 function libxml_get_last_error(): LibXMLError;
@@ -8789,8 +8813,8 @@ function libxml_set_streams_context(streams_context: Pct.PhpResource);
  * libxml_use_internal_errors allows you to disable standard libxml errors and
  * enable user error handling.
  *
- * @param use_errors Enable () user error handling or disable () user error
- *                   handling. Disabling will also clear any existing libxml
+ * @param use_errors Enable (true) user error handling or disable (false) user
+ *                   error handling. Disabling will also clear any existing libxml
  *                   errors.
  * @return This function returns the previous value of use_errors.
  */
@@ -8869,7 +8893,7 @@ declare function ezmlm_hash(addr: string): number;
  *                              being added to the message when the envelope
  *                              sender (-f) is set using this method. For sendmail
  *                              users, this file is /etc/mail/trusted-users.
- * @return Returns  if the mail was successfully accepted for delivery, 
+ * @return Returns true if the mail was successfully accepted for delivery, false
  *         otherwise.
  *         
  *         It is important to note that just because the mail was accepted for
@@ -9208,19 +9232,19 @@ declare function hypot(x: number, y: number): number;
  * Checks whether val is a legal finite on this platform.
  *
  * @param val The value to check
- * @return if val is a legal finite number within the allowed range for a PHP
- *         float on this platform, else .
+ * @return true if val is a legal finite number within the allowed range for a PHP
+ *         float on this platform, else false.
  */
 declare function is_finite(val: number): bool;
 
 /**
  * Finds whether a value is infinite
  * 
- * Returns  if val is infinite (positive or negative), like the result of log(0) or
- * any value too big to fit into a float on this platform.
+ * Returns true if val is infinite (positive or negative), like the result of
+ * log(0) or any value too big to fit into a float on this platform.
  *
  * @param val The value to check
- * @return if val is infinite, else .
+ * @return true if val is infinite, else false.
  */
 declare function is_infinite(val: number): bool;
 
@@ -9230,7 +9254,7 @@ declare function is_infinite(val: number): bool;
  * Checks whether val is 'not a number', like the result of acos(1.01).
  *
  * @param val The value to check
- * @return Returns  if val is 'not a number', else .
+ * @return Returns true if val is 'not a number', else false.
  */
 declare function is_nan(val: number): bool;
 
@@ -9377,7 +9401,7 @@ declare function mt_getrandmax(): number;
 /**
  * Generate a better random value
  * @return A random integer value between min (or 0) and max (or mt_getrandmax,
- *         inclusive), or  if max is less than min.
+ *         inclusive), or false if max is less than min.
  */
 declare function mt_rand(): number;
 
@@ -9387,7 +9411,7 @@ declare function mt_rand(): number;
  * @param min Optional lowest value to be returned (default: 0)
  * @param max Optional highest value to be returned (default: mt_getrandmax)
  * @return A random integer value between min (or 0) and max (or mt_getrandmax,
- *         inclusive), or  if max is less than min.
+ *         inclusive), or false if max is less than min.
  */
 declare function mt_rand(min: number, max: number): number;
 
@@ -9605,7 +9629,7 @@ declare function constant(name: string): any;
  *              allowed. Scalar values are integer, float, string or boolean
  *              values. It is possible to define resource constants, however it is
  *              not recommended and may cause unpredictable behavior.
- * @param case_insensitive If set to , the constant will be defined
+ * @param case_insensitive If set to true, the constant will be defined
  *                         case-insensitive. The default behavior is
  *                         case-sensitive; i.e. CONSTANT and Constant represent
  *                         different values.
@@ -9623,8 +9647,8 @@ declare function define(name: string, value: any, case_insensitive?: bool): bool
  * constants. If you want to see if a function exists, use function_exists.
  *
  * @param name The constant name.
- * @return Returns  if the named constant given by name has been defined, 
- *         otherwise.
+ * @return Returns true if the named constant given by name has been defined,
+ *         false otherwise.
  */
 declare function defined(name: string): bool;
 //NOTE: eval is already part of JS...but I'm gonna gripe in the compiler when I see it just out of principal (just a warning)
@@ -9681,12 +9705,12 @@ declare function exit(status: number);
  *                   look up another browser's info) by passing this parameter.
  *                   
  *                   You can bypass this parameter with a  value.
- * @param return_array If set to , this function will return an array instead of
- *                     an object.
+ * @param return_array If set to true, this function will return an array instead
+ *                     of an object.
  * @return The information is returned in an object or an array which will contain
  *         various data elements representing, for instance, the browser's major
- *         and minor version numbers and ID string; / values for features such as
- *         frames, JavaScript, and cookies; and so forth.
+ *         and minor version numbers and ID string; true/false values for features
+ *         such as frames, JavaScript, and cookies; and so forth.
  *         
  *         The cookies value simply means that the browser itself is capable of
  *         accepting cookies and does not mean the user has enabled the browser to
@@ -9718,8 +9742,9 @@ declare function __halt_compiler(); //TODO: explain how I am going to handle thi
  * highlighted source of the file. To enable this, add this line to the :
  *
  * @param filename Path to the PHP file to be highlighted.
- * @return If return is set to , returns the highlighted code as a string instead
- *         of printing it out. Otherwise, it will return on success,  on failure.
+ * @return If return is set to true, returns the highlighted code as a string
+ *         instead of printing it out. Otherwise, it will return true on success,
+ *         false on failure.
  */
 declare function highlight_file(filename: string): bool;
 
@@ -9734,10 +9759,11 @@ declare function highlight_file(filename: string): bool;
  * highlighted source of the file. To enable this, add this line to the :
  *
  * @param filename Path to the PHP file to be highlighted.
- * @param return_ Set this parameter to  to make this function return the
+ * @param return_ Set this parameter to true to make this function return the
  *                highlighted code.
- * @return If return is set to , returns the highlighted code as a string instead
- *         of printing it out. Otherwise, it will return on success,  on failure.
+ * @return If return is set to true, returns the highlighted code as a string
+ *         instead of printing it out. Otherwise, it will return true on success,
+ *         false on failure.
  */
 declare function highlight_file(filename: string, return_: bool): any;
 
@@ -9745,8 +9771,9 @@ declare function highlight_file(filename: string, return_: bool): any;
  * Syntax highlighting of a string
  *
  * @param str The PHP code to be highlighted. This should include the opening tag.
- * @return If return is set to , returns the highlighted code as a string instead
- *         of printing it out. Otherwise, it will return on success,  on failure.
+ * @return If return is set to true, returns the highlighted code as a string
+ *         instead of printing it out. Otherwise, it will return true on success,
+ *         false on failure.
  */
 declare function highlight_string(str: string): bool;
 
@@ -9754,10 +9781,11 @@ declare function highlight_string(str: string): bool;
  * Syntax highlighting of a string
  *
  * @param str The PHP code to be highlighted. This should include the opening tag.
- * @param return_ Set this parameter to  to make this function return the
+ * @param return_ Set this parameter to true to make this function return the
  *                highlighted code.
- * @return If return is set to , returns the highlighted code as a string instead
- *         of printing it out. Otherwise, it will return on success,  on failure.
+ * @return If return is set to true, returns the highlighted code as a string
+ *         instead of printing it out. Otherwise, it will return true on success,
+ *         false on failure.
  */
 declare function highlight_string(str: string, return_: bool): any;
 
@@ -9768,7 +9796,7 @@ declare function highlight_string(str: string, return_: bool): any;
  * 
  * When running PHP as a command line script, and the script's tty goes away
  * without the script being terminated then the script will die the next time it
- * tries to write anything, unless value is set to
+ * tries to write anything, unless value is set to true
  *
  * @param value If set, this function will set the ignore_user_abort ini setting
  *              to the given value. If not, this function will only return the
@@ -9840,8 +9868,8 @@ declare function pack(format: string, ...args: any[]): string;
  * @param $error_message If the error_message parameter is used, it will contain
  *                       the error message generated by the syntax check.
  *                       error_message is passed by reference.
- * @return Returns  if the lint check passed, and  if the link check failed or if
- *         filename cannot be opened.
+ * @return Returns true if the lint check passed, and false if the link check
+ *         failed or if filename cannot be opened.
  */
 declare function php_check_syntax(filename: string, $error_message?: string): bool;
 
@@ -9867,7 +9895,7 @@ declare function php_strip_whitespace(filename: string): string;
  * Delay execution
  *
  * @param seconds Halt time in seconds.
- * @return Returns zero on success, or  on error.
+ * @return Returns zero on success, or false on error.
  *         
  *         If the call was interrupted by a signal, sleep returns a non-zero
  *         value. On Windows, this value will always be 192 (the value of the
@@ -9920,10 +9948,10 @@ declare function time_sleep_until(timestamp: number): bool;
  *               identifier at the same microsecond.
  *               
  *               With an empty prefix, the returned string will be 13 characters
- *               long.  If more_entropy is , it will be 23 characters.
- * @param more_entropy If set to , uniqid will add additional entropy (using the
- *                     combined linear congruential generator) at the end of the
- *                     return value, which increases the likelihood that the
+ *               long.  If more_entropy is true, it will be 23 characters.
+ * @param more_entropy If set to true, uniqid will add additional entropy (using
+ *                     the combined linear congruential generator) at the end of
+ *                     the return value, which increases the likelihood that the
  *                     result will be unique.
  * @return Returns the unique identifier, as a string.
  */
@@ -10204,7 +10232,7 @@ declare function preg_last_error(): number;
  *               
  *               will produce
  * @return preg_match returns 1 if the pattern matches given subject, 0 if it does
- *         not, or if an error occurred.
+ *         not, or false if an error occurred.
  */
 declare function preg_match(pattern: string, subject: string, $matches?: Array, flags?: number, offset?: number): number;
 
@@ -10270,8 +10298,8 @@ declare function preg_match(pattern: string, subject: string, $matches?: Array, 
  *               $offset) to preg_match_all in place of the subject string,
  *               because pattern can contain assertions such as ^, $ or (?=x). See
  *               preg_match for examples.
- * @return Returns the number of full pattern matches (which might be zero), or 
- *         if an error occurred.
+ * @return Returns the number of full pattern matches (which might be zero), or
+ *         false if an error occurred.
  */
 declare function preg_match_all(pattern: string, subject: string, $matches?: Array, flags?: number, offset?: number): number;
 
@@ -10938,75 +10966,249 @@ declare function preg_split(pattern: string, subject: string, limit?: number, fl
 //--------------------------------------------------------------------------------
 // pct
 //--------------------------------------------------------------------------------
-declare module Pct {
+/**
+ * Pratphall Compile-Time
+ *
+ * These are utilities that assist in writing Pratphall code. Many
+ * of the utilities are accompanied by extensions that affect the
+ * PHP output.
+ */
+module Pct {
 
-    interface CompileTimeOnly { }
-    interface Ambient extends CompileTimeOnly { }
+    /**
+     * When a class or interface explicitly implements this interface
+     * (i.e. not just have a super type that implements it), the type
+     * will not be emitted to PHP. It is for use with compile-time
+     * only checks for satisfying certain interfaces. This is really
+     * helpful for type checking stdClass objects or callbacks. 
+     *
+     * Note, to define classes or interfaces in external code that still
+     * may need to apply to type hints, instanceof checks, etc use the
+     * Ambient interface.
+     */
+    interface CompileTimeOnly {}
+
+    /**
+     * When a class or interface explicitly implements this interface
+     * (i.e. not just have a super type that implements it), the type
+     * will not be emitted to PHP. It is for use with classes or
+     * interfaces that may be defined in external libraries but still
+     * need to be handled in instanceof checks, type hints, etc.
+     *
+     * Any items in a .d.ts file (a declaration file) are automatically
+     * assumed to be ambient. Similarly any classes, vars, or functions
+     * that are prefixed with "declare" are also assumed ambient. 
+     * Interfaces outside of declaration files are required to explicitly
+     * implement this to be assumed ambient.
+     *
+     * Note, to define classes or interfaces for compile-time use only,
+     * use the CompileTimeOnly interface.
+     */
+    interface Ambient extends CompileTimeOnly {}
+
+    /**
+     * When a class or interface explicitly implements this interface,
+     * the type is assumed to use old-style namespaces which are underscores
+     * instead of native PHP 5.3+ namespaces. This is only allowed on
+     * ambient types, not in compiled code.
+     */
     interface OldStyleNamespace extends CompileTimeOnly { }
 
+    /**
+     * Simple interface for defining indexers. This interface should not
+     * be confused with ArrayAccess which provides runtime support for
+     * bracketed index-based lookups.
+     */
     interface Indexable extends CompileTimeOnly {
         [index: string]: any;
         [index: number]: any;
     }
 
+    /**
+     * Associative array in PHP. Has all features of normal array.
+     */
     interface PhpAssocArray extends Array, Indexable, CompileTimeOnly {
         forEach?(callbackfn: (value: any, index: any) => void): void;
     }
 
-    interface PhpResource { }
+    /**
+     * Representation of a PHP resource
+     */
+    interface PhpResource extends CompileTimeOnly { }
 
-    interface WithInvoke {
-        __invoke(...args: any[]): any;
-    }
+    /**
+     * Makes anything passed as "by-reference" essentially prefixing
+     * an ampersand.
+     */
+    function byRef(expression: any): any;
 
-    function byRef(any): any;
+    /**
+     * Takes the given expression and assumes the last identifier is
+     * a variable. This is useful when you have a variable that is 
+     * completely capitalized but you want to use it as a variable instead
+     * of Pratphall's default which is a const.
+     */
+    function asVar(id: any): any;
 
+    /**
+     * Takes the given expression and assumes it is a constant, avoiding
+     * prefixing the dollar sign. This is useful when you have a variable
+     * that is actually a constant, but is not all capitalized so Pratphall
+     * does not know it is a constant.
+     */
+    function const(value: any): any;
+
+    /**
+     * Handles PHP's declare construct
+     */
     function declare(directive: string, value: any, block?: () => void): bool;
 
+    /**
+     * This will emit a PHP instanceof check. Usually the regular instanceof
+     * operator is preferred. This is useful when the right-hand side of the
+     * operator needs to be a string or an expression.
+     */
     function isInstance(obj: any, check: any): bool;
 
+    /**
+     * Gets the name of the type at compile time, NOT runtime. This means it
+     * can output values like "any" or "number". It is best used for class or
+     * interface types where it will return a fully-qualified, slash-style PHP
+     * type name.
+     */
     function typeName(obj: any): string;
 
+    /**
+     * Create a new associative array. An empty array is created if no 
+     * parameters are present. Otherwise, the parameter must be an object
+     * literal which properly translates.
+     */
     function newAssocArray(obj?: Object): PhpAssocArray;
+
+    /**
+     * Convert an associative array to a numerically indexed array at compile
+     * time. This does NOT emit anything in PHP.
+     */
     function toArray(array: PhpAssocArray): any[];
+
+    /**
+     * Convert a numerically indexed array to an associative array at compile
+     * time. This does NOT emit anything in PHP.
+     */
     function toAssocArray(array: any[]): PhpAssocArray;
+
+    /**
+     * Unions two arrays like the plus operator in PHP.
+     */
     function unionArray(...arrays: any[][]): any[];
+
+    /**
+     * Unions two arrays like the plus operator in PHP.
+     */
     function unionArray(...arrays: PhpAssocArray[]): PhpAssocArray;
+
+    /**
+     * Unions two arrays like the plus operator in PHP.
+     */
     function unionArray(...arrays: any[]): PhpAssocArray;
 
+    /**
+     * A literal PHP (int) cast
+     */
     function castInt(value: any): number;
+
+    /**
+     * A literal PHP (bool) cast
+     */
     function castBool(value: any): bool;
+
+    /**
+     * A literal PHP (float) cast
+     */
     function castFloat(value: any): number;
+
+    /**
+     * A literal PHP (string) cast
+     */
     function castString(value: any): string;
+
+    /**
+     * A literal PHP (array) cast returning a compile-time
+     * numerically indexed array.
+     */
     function castArray(value: any): any[];
+
+    /**
+     * A literal PHP (array) cast returning a compile-time
+     * associative array.
+     */
     function castAssocArray(value: any): PhpAssocArray;
+
+    /**
+     * A literal PHP (object) cast
+     */
     function castObject(value: any): Object;
+
+    /**
+     * A literal PHP (unset) cast
+     */
     function castUnset(value: any): undefined;
+
+    /**
+     * A literal PHP (binary) cast
+     */
     function castBinary(value: any): string;
 
+    /**
+     * Strict === false check. Beware "!Pct.isFalse(val)" will
+     * not do what you think, it will do !$val === false. Use
+     * Pct.isNotFalse for !== false.
+     */
     function isFalse(value: any): bool;
+
+    /**
+     * Strict !== false check.
+     */
     function isNotFalse(value: any): bool;
 
+    /**
+     * Support for the PHP error control operator "@".
+     */
     function swallowErrors(value: any): any;
 
-    function const(value: number): number;
-    function const(value: string): string;
-
+    /**
+     * Support for the PHP clone keyword.
+     */
     function clone(value: any): any;
 
+    /**
+     * Advanced try-catch that can support a single catch and/or finally.
+     * A standalone try can als be provided.
+     */
     interface TryCatch {
         try: () => any;
         catch?: { (e: Exception): any; };
         finally?: () => any;
     }
 
+
+    /**
+     * Advanced try-catch that can support a mulitple catches and/or finally.
+     */
     interface TryCatches {
         try: () => any;
         catch: { (e: Exception): any; }[];
         finally?: () => any;
     }
 
+    /**
+     * Handle advanced try/catch logic
+     */
     function try(val: TryCatch);
+
+    /**
+     * Handle advanced try/catch logic
+     */
     function try(val: TryCatches);
 
 }
@@ -11023,15 +11225,15 @@ var __TRAIT__: string;
 var __METHOD__: string;
 var __NAMESPACE__: string;
 
-declare var $GLOBALS: Pct.PhpAssocArray;
-declare var $_SERVER: Pct.PhpAssocArray;
-declare var $_GET: Pct.PhpAssocArray;
-declare var $_POST: Pct.PhpAssocArray;
-declare var $_FILES: Pct.PhpAssocArray;
-declare var $_REQUEST: Pct.PhpAssocArray;
-declare var $_SESSION: Pct.PhpAssocArray;
-declare var $_ENV: Pct.PhpAssocArray;
-declare var $_COOKIE: Pct.PhpAssocArray;
+declare var GLOBALS: Pct.PhpAssocArray;
+declare var _SERVER: Pct.PhpAssocArray;
+declare var _GET: Pct.PhpAssocArray;
+declare var _POST: Pct.PhpAssocArray;
+declare var _FILES: Pct.PhpAssocArray;
+declare var _REQUEST: Pct.PhpAssocArray;
+declare var _SESSION: Pct.PhpAssocArray;
+declare var _ENV: Pct.PhpAssocArray;
+declare var _COOKIE: Pct.PhpAssocArray;
 declare var php_errormsg: string;
 declare var http_response_header: string[];
 declare var argc: number;
@@ -11240,7 +11442,7 @@ declare class ReflectionClass implements Reflector {
      * Gets doc comments
      * 
      * Gets doc comments from a class.
-     * @return The doc comment if it exists, otherwise
+     * @return The doc comment if it exists, otherwise false
      */
     getDocComment(): string;
     
@@ -11248,7 +11450,7 @@ declare class ReflectionClass implements Reflector {
      * Gets end line
      * 
      * Gets end line number from a user-defined class definition.
-     * @return The ending line number of the user defined class, or  if unknown.
+     * @return The ending line number of the user defined class, or false if unknown.
      */
     getEndLine(): number;
     
@@ -11265,8 +11467,8 @@ declare class ReflectionClass implements Reflector {
      * Gets the name of the extension which defined the class
      * 
      * Gets the name of the extension which defined the class.
-     * @return The name of the extension which defined the class, or  for user-defined
-     *         classes.
+     * @return The name of the extension which defined the class, or false for
+     *         user-defined classes.
      */
     getExtensionName(): string;
     
@@ -11275,7 +11477,7 @@ declare class ReflectionClass implements Reflector {
      * 
      * Gets the filename of the file in which the class has been defined.
      * @return Returns the filename of the file in which the class has been defined.
-     *         If the class is defined in the PHP core or in a PHP extension, is
+     *         If the class is defined in the PHP core or in a PHP extension, false is
      *         returned.
      */
     getFileName(): string;
@@ -11437,7 +11639,7 @@ declare class ReflectionClass implements Reflector {
      * Checks whether the class has a specific constant defined or not.
      *
      * @param name The name of the constant being checked for.
-     * @return if the constant is defined, otherwise .
+     * @return true if the constant is defined, otherwise false.
      */
     hasConstant(name: string): bool;
     
@@ -11447,7 +11649,7 @@ declare class ReflectionClass implements Reflector {
      * Checks whether a specific method is defined in a class.
      *
      * @param name Name of the method being checked for.
-     * @return if it has the method, otherwise
+     * @return true if it has the method, otherwise false
      */
     hasMethod(name: string): bool;
     
@@ -11457,7 +11659,7 @@ declare class ReflectionClass implements Reflector {
      * Checks whether the specified property is defined.
      *
      * @param name Name of the property being checked for.
-     * @return if it has the property, otherwise
+     * @return true if it has the property, otherwise false
      */
     hasProperty(name: string): bool;
     
@@ -11488,7 +11690,7 @@ declare class ReflectionClass implements Reflector {
      * Returns whether this class is cloneable
      * 
      * Returns whether this class is cloneable.
-     * @return Returns  if the class is cloneable,  otherwise.
+     * @return Returns true if the class is cloneable, false otherwise.
      */
     isCloneable(): bool;
     
@@ -11549,7 +11751,8 @@ declare class ReflectionClass implements Reflector {
     
     /**
      * Returns whether this is a trait
-     * @return Returns  if this is a trait,  otherwise. Returns  in case of an error.
+     * @return Returns true if this is a trait, false otherwise. Returns  in case of
+     *         an error.
      */
     isTrait(): bool;
     
@@ -11744,13 +11947,13 @@ declare class ReflectionExtension implements Reflector {
     
     /**
      * Returns whether this extension is persistent
-     * @return Returns  for extensions loaded by extension, otherwise.
+     * @return Returns true for extensions loaded by extension, false otherwise.
      */
     isPersistent(): bool;
     
     /**
      * Returns whether this extension is temporary
-     * @return Returns  for extensions loaded by dl, otherwise.
+     * @return Returns true for extensions loaded by dl, false otherwise.
      */
     isTemporary(): bool;
 }
@@ -11777,7 +11980,7 @@ declare class ReflectionFunctionAbstract implements Reflector {
      * Gets doc comment
      * 
      * Get a Doc comment from a function.
-     * @return The doc comment if it exists, otherwise
+     * @return The doc comment if it exists, otherwise false
      */
     getDocComment(): string;
     
@@ -11785,7 +11988,8 @@ declare class ReflectionFunctionAbstract implements Reflector {
      * Gets end line number
      * 
      * Get the ending line number.
-     * @return The ending line number of the user defined function, or  if unknown.
+     * @return The ending line number of the user defined function, or false if
+     *         unknown.
      */
     getEndLine(): number;
     
@@ -11882,7 +12086,7 @@ declare class ReflectionFunctionAbstract implements Reflector {
      * Checks if function in namespace
      * 
      * Checks whether a function is defined in a namespace.
-     * @return if it's in a namespace, otherwise
+     * @return true if it's in a namespace, otherwise false
      */
     inNamespace(): bool;
     
@@ -11890,7 +12094,7 @@ declare class ReflectionFunctionAbstract implements Reflector {
      * Checks if closure
      * 
      * Checks whether it's a closure.
-     * @return if it's a closure, otherwise
+     * @return true if it's a closure, otherwise false
      */
     isClosure(): bool;
     
@@ -11898,7 +12102,7 @@ declare class ReflectionFunctionAbstract implements Reflector {
      * Checks if deprecated
      * 
      * Checks whether the function is deprecated.
-     * @return if it's deprecated, otherwise
+     * @return true if it's deprecated, otherwise false
      */
     isDeprecated(): bool;
     
@@ -11906,7 +12110,7 @@ declare class ReflectionFunctionAbstract implements Reflector {
      * Checks if is internal
      * 
      * Checks whether the function is internal, as opposed to user-defined.
-     * @return if it's internal, otherwise
+     * @return true if it's internal, otherwise false
      */
     isInternal(): bool;
     
@@ -11914,7 +12118,7 @@ declare class ReflectionFunctionAbstract implements Reflector {
      * Checks if user defined
      * 
      * Checks whether the function is user-defined, as opposed to internal.
-     * @return if it's user-defined, otherwise false;
+     * @return true if it's user-defined, otherwise false;
      */
     isUserDefined(): bool;
     
@@ -11922,7 +12126,7 @@ declare class ReflectionFunctionAbstract implements Reflector {
      * Checks if returns reference
      * 
      * Checks whether the function returns a reference.
-     * @return if it returns a reference, otherwise
+     * @return true if it returns a reference, otherwise false
      */
     returnsReference(): bool;
 }
@@ -11985,7 +12189,7 @@ declare class ReflectionFunction extends ReflectionFunctionAbstract {
      * Checks if function is disabled
      * 
      * Checks if the function is disabled, via the disable_functions directive.
-     * @return if it's disable, otherwise
+     * @return true if it's disable, otherwise false
      */
     isDisabled(): bool;
 }
@@ -12121,7 +12325,7 @@ declare class ReflectionMethod extends ReflectionFunctionAbstract {
      * Checks if method is abstract
      * 
      * Checks if the method is abstract.
-     * @return if the method is abstract, otherwise
+     * @return true if the method is abstract, otherwise false
      */
     isAbstract(): bool;
     
@@ -12129,7 +12333,7 @@ declare class ReflectionMethod extends ReflectionFunctionAbstract {
      * Checks if method is a constructor
      * 
      * Checks if the method is a constructor.
-     * @return if the method is a constructor, otherwise
+     * @return true if the method is a constructor, otherwise false
      */
     isConstructor(): bool;
     
@@ -12137,7 +12341,7 @@ declare class ReflectionMethod extends ReflectionFunctionAbstract {
      * Checks if method is a destructor
      * 
      * Checks if the method is a destructor.
-     * @return if the method is a destructor, otherwise
+     * @return true if the method is a destructor, otherwise false
      */
     isDestructor(): bool;
     
@@ -12145,7 +12349,7 @@ declare class ReflectionMethod extends ReflectionFunctionAbstract {
      * Checks if method is final
      * 
      * Checks if the method is final.
-     * @return if the method is final, otherwise
+     * @return true if the method is final, otherwise false
      */
     isFinal(): bool;
     
@@ -12153,7 +12357,7 @@ declare class ReflectionMethod extends ReflectionFunctionAbstract {
      * Checks if method is private
      * 
      * Checks if the method is private.
-     * @return if the method is private, otherwise
+     * @return true if the method is private, otherwise false
      */
     isPrivate(): bool;
     
@@ -12161,7 +12365,7 @@ declare class ReflectionMethod extends ReflectionFunctionAbstract {
      * Checks if method is protected
      * 
      * Checks if the method is protected.
-     * @return if the method is protected, otherwise
+     * @return true if the method is protected, otherwise false
      */
     isProtected(): bool;
     
@@ -12169,7 +12373,7 @@ declare class ReflectionMethod extends ReflectionFunctionAbstract {
      * Checks if method is public
      * 
      * Checks if the method is public.
-     * @return if the method is public, otherwise
+     * @return true if the method is public, otherwise false
      */
     isPublic(): bool;
     
@@ -12177,7 +12381,7 @@ declare class ReflectionMethod extends ReflectionFunctionAbstract {
      * Checks if method is static
      * 
      * Checks if the method is static.
-     * @return if the method is static, otherwise
+     * @return true if the method is static, otherwise false
      */
     isStatic(): bool;
     
@@ -12187,7 +12391,7 @@ declare class ReflectionMethod extends ReflectionFunctionAbstract {
      * Sets a method to be accessible. For example, it may allow protected and private
      * methods to be invoked.
      *
-     * @param accessible to allow accessibility, or .
+     * @param accessible true to allow accessibility, or false.
      */
     setAccessible(accessible: bool);
 }
@@ -12232,14 +12436,14 @@ declare class ReflectionParameter implements Reflector {
      * Checks if null is allowed
      * 
      * Checks whether the parameter allows .
-     * @return if  is allowed, otherwise
+     * @return true if  is allowed, otherwise false
      */
     allowsNull(): bool;
     
     /**
      * Returns whether this parameter can be passed by value
-     * @return Returns  if the parameter can be passed by value,  otherwise. Returns 
-     *         in case of an error.
+     * @return Returns true if the parameter can be passed by value, false otherwise.
+     *         Returns  in case of an error.
      */
     canBePassedByValue(): bool;
     
@@ -12296,7 +12500,7 @@ declare class ReflectionParameter implements Reflector {
      * Checks if parameter expects an array
      * 
      * Checks if the parameter expects an array.
-     * @return if an array is expected,  otherwise.
+     * @return true if an array is expected, false otherwise.
      */
     isArray(): bool;
     
@@ -12304,7 +12508,7 @@ declare class ReflectionParameter implements Reflector {
      * Checks if a default value is available
      * 
      * Checks if a default value for the parameter is available.
-     * @return if a default value is available, otherwise
+     * @return true if a default value is available, otherwise false
      */
     isDefaultValueAvailable(): bool;
     
@@ -12312,7 +12516,7 @@ declare class ReflectionParameter implements Reflector {
      * Checks if optional
      * 
      * Checks if the parameter is optional.
-     * @return if the parameter is optional, otherwise
+     * @return true if the parameter is optional, otherwise false
      */
     isOptional(): bool;
     
@@ -12320,7 +12524,7 @@ declare class ReflectionParameter implements Reflector {
      * Checks if passed by reference
      * 
      * Checks if the parameter is passed in by reference.
-     * @return if the parameter is passed in by reference, otherwise
+     * @return true if the parameter is passed in by reference, otherwise false
      */
     isPassedByReference(): bool;
 }
@@ -12424,8 +12628,8 @@ declare class ReflectionProperty implements Reflector {
      * Checks if default value
      * 
      * Checks whether the property is the default.
-     * @return if the property was declared at compile-time, or  if it was created at
-     *         run-time.
+     * @return true if the property was declared at compile-time, or false if it was
+     *         created at run-time.
      */
     isDefault(): bool;
     
@@ -12433,7 +12637,7 @@ declare class ReflectionProperty implements Reflector {
      * Checks if property is private
      * 
      * Checks whether the property is private.
-     * @return if the property is private,  otherwise.
+     * @return true if the property is private, false otherwise.
      */
     isPrivate(): bool;
     
@@ -12441,7 +12645,7 @@ declare class ReflectionProperty implements Reflector {
      * Checks if property is protected
      * 
      * Checks whether the property is protected.
-     * @return if the property is protected,  otherwise.
+     * @return true if the property is protected, false otherwise.
      */
     isProtected(): bool;
     
@@ -12449,7 +12653,7 @@ declare class ReflectionProperty implements Reflector {
      * Checks if property is public
      * 
      * Checks whether the property is public.
-     * @return if the property is public,  otherwise.
+     * @return true if the property is public, false otherwise.
      */
     isPublic(): bool;
     
@@ -12457,7 +12661,7 @@ declare class ReflectionProperty implements Reflector {
      * Checks if property is static
      * 
      * Checks whether the property is static.
-     * @return if the property is static,  otherwise.
+     * @return true if the property is static, false otherwise.
      */
     isStatic(): bool;
     
@@ -12467,7 +12671,7 @@ declare class ReflectionProperty implements Reflector {
      * Sets a property to be accessible. For example, it may allow protected and
      * private properties to be accessed.
      *
-     * @param accessible to allow accessibility, or .
+     * @param accessible true to allow accessibility, or false.
      */
     setAccessible(accessible: bool);
     
@@ -12548,7 +12752,7 @@ declare interface SessionHandlerInterface {
     /**
      * Destroy a session
      * 
-     * Destroys a session. Called by session_regenerate_id (with $destroy = ),
+     * Destroys a session. Called by session_regenerate_id (with $destroy = true),
      * session_destroy and when session_decode fails.
      *
      * @param session_id The session ID being destroyed.
@@ -12690,7 +12894,7 @@ declare class SessionHandler implements SessionHandlerInterface {
      * Destroy a session
      * 
      * Destroys a session. Called by internally by PHP with session_regenerate_id
-     * (assuming the $destory is set to , by session_destroy or when session_decode
+     * (assuming the $destory is set to true, by session_destroy or when session_decode
      * fails.
      * 
      * This method wraps the internal PHP save handler defined in the
@@ -12874,8 +13078,8 @@ class SimpleXMLElement implements Traversable, Pct.Indexable {
      * 
      * The asXML method formats the parent object's data in XML version 1.0.
      * @return If the filename isn't specified, this function returns a string on
-     *         success and  on error. If the parameter is specified, it returns  if
-     *         the file was written successfully and  otherwise.
+     *         success and false on error. If the parameter is specified, it returns
+     *         true if the file was written successfully and false otherwise.
      */
     asXML(): string;
     
@@ -12887,8 +13091,8 @@ class SimpleXMLElement implements Traversable, Pct.Indexable {
      * @param filename If specified, the function writes the data to the file rather
      *                 than returning it.
      * @return If the filename isn't specified, this function returns a string on
-     *         success and  on error. If the parameter is specified, it returns  if
-     *         the file was written successfully and  otherwise.
+     *         success and false on error. If the parameter is specified, it returns
+     *         true if the file was written successfully and false otherwise.
      */
     asXML(filename: string): bool;
     
@@ -12898,7 +13102,7 @@ class SimpleXMLElement implements Traversable, Pct.Indexable {
      * This function provides the attributes and values defined within an xml tag.
      *
      * @param ns An optional namespace for the retrieved attributes
-     * @param is_prefix Default to
+     * @param is_prefix Default to false
      * @return Returns a SimpleXMLElement object that can be iterated over to loop
      *         through the attributes on the tag.
      *         
@@ -12914,8 +13118,8 @@ class SimpleXMLElement implements Traversable, Pct.Indexable {
      * iteration rules.
      *
      * @param ns An XML namespace.
-     * @param is_prefix If is_prefix is , ns will be regarded as a prefix. If , ns
-     *                  will be regarded as a namespace URL.
+     * @param is_prefix If is_prefix is true, ns will be regarded as a prefix. If
+     *                  false, ns will be regarded as a namespace URL.
      * @return Returns a SimpleXMLElement element, whether the node has children or
      *         not.
      */
@@ -12987,7 +13191,8 @@ class SimpleXMLElement implements Traversable, Pct.Indexable {
      * path.
      *
      * @param path An XPath path
-     * @return Returns an array of SimpleXMLElement objects or  in case of an error.
+     * @return Returns an array of SimpleXMLElement objects or false in case of an
+     *         error.
      */
     xpath(path: string): SimpleXMLElement[];
 }
@@ -13015,7 +13220,7 @@ class SimpleXMLIterator extends SimpleXMLElement implements RecursiveIterator, C
      * 
      * This method gets the XML tag name of the current element.
      * @return Returns the XML tag name of the element referenced by the current
-     *         SimpleXMLIterator object or
+     *         SimpleXMLIterator object or false
      */
     key(): string;
     
@@ -13038,7 +13243,7 @@ class SimpleXMLIterator extends SimpleXMLElement implements RecursiveIterator, C
      * 
      * This method checks if the current element is valid after calls to
      * SimpleXMLIterator::rewind or SimpleXMLIterator::next.
-     * @return Returns  if the current element is valid, otherwise
+     * @return Returns true if the current element is valid, otherwise false
      */
     valid(): bool;
     
@@ -13057,7 +13262,7 @@ class SimpleXMLIterator extends SimpleXMLElement implements RecursiveIterator, C
      * 
      * This method checks whether the current SimpleXMLIterator element has
      * sub-elements.
-     * @return if the current element has sub-elements, otherwise
+     * @return true if the current element has sub-elements, otherwise false
      */
     hasChildren(): bool;
 }
@@ -13095,7 +13300,8 @@ function simplexml_import_dom(node: DOMNode, class_name?: string): SimpleXMLElem
  * @param options Since PHP 5.1.0 and Libxml 2.6.0, you may also use the options
  *                parameter to specify additional Libxml parameters.
  * @param ns Namespace prefix or URI.
- * @param is_prefix if ns is a prefix,  if it's a URI; defaults to .
+ * @param is_prefix true if ns is a prefix, false if it's a URI; defaults to
+ *                  false.
  * @return Returns an object of class SimpleXMLElement with properties containing
  *         the data held within the XML document,.
  */
@@ -13113,7 +13319,8 @@ function simplexml_load_file(filename: string, class_name?: string, options?: nu
  * @param options Since PHP 5.1.0 and Libxml 2.6.0, you may also use the options
  *                parameter to specify additional Libxml parameters.
  * @param ns Namespace prefix or URI.
- * @param is_prefix if ns is a prefix,  if it's a URI; defaults to .
+ * @param is_prefix true if ns is a prefix, false if it's a URI; defaults to
+ *                  false.
  * @return Returns an object of class SimpleXMLElement with properties containing
  *         the data held within the xml document,.
  */
@@ -13183,7 +13390,8 @@ declare interface RecursiveIterator extends Iterator {
      * 
      * Returns if an iterator can be created for the current entry.
      * RecursiveIterator::getChildren.
-     * @return Returns  if the current entry can be iterated over, otherwise returns .
+     * @return Returns true if the current entry can be iterated over, otherwise
+     *         returns false.
      */
     hasChildren(): bool;
 }
@@ -13389,7 +13597,8 @@ declare class SplDoublyLinkedList implements Iterator, ArrayAccess, Countable {
      * Check whether the doubly linked list contains more nodes
      * 
      * Checks if the doubly linked list contains any more nodes.
-     * @return Returns  if the doubly linked list contains any more nodes,  otherwise.
+     * @return Returns true if the doubly linked list contains any more nodes, false
+     *         otherwise.
      */
     valid(): bool;
     
@@ -13397,7 +13606,7 @@ declare class SplDoublyLinkedList implements Iterator, ArrayAccess, Countable {
      * Returns whether the requested $index exists
      *
      * @param offset
-     * @return if the requested index exists, otherwise
+     * @return true if the requested index exists, otherwise false
      */
     offsetExists(offset: any): bool;
     
@@ -13567,7 +13776,7 @@ declare class SplHeap implements Iterator, Countable {
      * Check whether the heap contains more nodes
      * 
      * Checks if the heap contains any more nodes.
-     * @return Returns  if the heap contains any more nodes,  otherwise.
+     * @return Returns true if the heap contains any more nodes, false otherwise.
      */
     valid(): bool;
     
@@ -13703,7 +13912,7 @@ declare class SplPriorityQueue implements Iterator, Countable {
      * Check whether the queue contains more nodes
      * 
      * Checks if the queue contains any more nodes.
-     * @return Returns  if the queue contains any more nodes,  otherwise.
+     * @return Returns true if the queue contains any more nodes, false otherwise.
      */
     valid(): bool;
     
@@ -13814,7 +14023,7 @@ declare class SplFixedArray implements Iterator, ArrayAccess, Countable {
      * Check whether the array contains more elements
      * 
      * Checks if the array contains any more elements.
-     * @return Returns  if the array contains any more elements,  otherwise.
+     * @return Returns true if the array contains any more elements, false otherwise.
      */
     valid(): bool;
     
@@ -13824,7 +14033,7 @@ declare class SplFixedArray implements Iterator, ArrayAccess, Countable {
      * Checks whether the requested index index exists.
      *
      * @param offset
-     * @return if the requested index exists, otherwise
+     * @return true if the requested index exists, otherwise false
      */
     offsetExists(offset: any): bool;
     
@@ -13899,7 +14108,7 @@ declare class SplObjectStorage implements Countable, Iterator, Serializable, Arr
      * Checks if the storage contains the object provided.
      *
      * @param object The object to look for.
-     * @return Returns  if the object is in the storage,  otherwise.
+     * @return Returns true if the object is in the storage, false otherwise.
      */
     contains(object: Object): bool;
     
@@ -14005,7 +14214,7 @@ declare class SplObjectStorage implements Countable, Iterator, Serializable, Arr
      * Returns if the current iterator entry is valid
      * 
      * Returns if the current iterator entry is valid.
-     * @return Returns  if the iterator entry is valid,  otherwise.
+     * @return Returns true if the iterator entry is valid, false otherwise.
      */
     valid(): bool;
     
@@ -14017,7 +14226,7 @@ declare class SplObjectStorage implements Countable, Iterator, Serializable, Arr
      * SplObjectStorage::offsetExists is an alias of SplObjectStorage::contains.
      *
      * @param offset
-     * @return Returns  if the object exists in the storage, and  otherwise.
+     * @return Returns true if the object exists in the storage, and false otherwise.
      */
     offsetExists(offset: any): bool;
     
@@ -14238,7 +14447,7 @@ declare class ArrayIterator implements ArrayAccess, SeekableIterator, Countable,
      * Checks if the offset exists.
      *
      * @param offset
-     * @return if the offset exists, otherwise
+     * @return true if the offset exists, otherwise false
      */
     offsetExists(offset: any): bool;
     
@@ -14321,8 +14530,8 @@ declare class RecursiveArrayIterator extends ArrayIterator implements RecursiveI
      * 
      * Returns whether current entry is an array or an object for which an iterator can
      * be obtained via RecursiveArrayIterator::getChildren.
-     * @return Returns  if the current entry is an array or an object, otherwise  is
-     *         returned.
+     * @return Returns true if the current entry is an array or an object, otherwise
+     *         false is returned.
      */
     hasChildren(): bool;
 }
@@ -14365,6 +14574,7 @@ declare class EmptyIterator implements Iterator {
      * The valid() method
      * 
      * The EmptyIterator valid() method.
+     * @return false
      */
     valid(): bool;
 }
@@ -14423,7 +14633,7 @@ declare class IteratorIterator implements OuterIterator {
      * Checks if the iterator is valid
      * 
      * Checks if the iterator is valid.
-     * @return Returns  if the iterator is valid, otherwise
+     * @return Returns true if the iterator is valid, otherwise false
      */
     valid(): bool;
     
@@ -14550,7 +14760,8 @@ declare class CachingIterator extends IteratorIterator implements ArrayAccess, C
      * The offsetExists purpose
      *
      * @param offset
-     * @return Returns  if an entry referenced by the offset exists,  otherwise.
+     * @return Returns true if an entry referenced by the offset exists, false
+     *         otherwise.
      */
     offsetExists(offset: any): bool;
     
@@ -14600,7 +14811,7 @@ declare class RecursiveCachingIterator extends CachingIterator implements Recurs
     
     /**
      * Check whether the current element of the inner iterator has children
-     * @return if the inner iterator has children, otherwise
+     * @return true if the inner iterator has children, otherwise false
      */
     hasChildren(): bool;
 }
@@ -14629,7 +14840,7 @@ declare class FilterIterator extends IteratorIterator {
      * 
      * Returns whether the current element of the iterator is acceptable through this
      * filter.
-     * @return if the current element is acceptable, otherwise .
+     * @return true if the current element is acceptable, otherwise false.
      */
     accept(): bool;
 }
@@ -14677,8 +14888,8 @@ declare class RecursiveCallbackFilterIterator extends CallbackFilterIterator imp
     /**
      * Check whether the inner iterator's current element has children
      * 
-     * Returns  if the current element has children,  otherwise.
-     * @return Returns  if the current element has children,  otherwise.
+     * Returns true if the current element has children, false otherwise.
+     * @return Returns true if the current element has children, false otherwise.
      */
     hasChildren(): bool;
 }
@@ -14714,7 +14925,7 @@ declare class RecursiveFilterIterator extends FilterIterator implements Recursiv
      * Check whether the inner iterator's current element has children
      * 
      * Check whether the inner iterator's current element has children.
-     * @return if the inner iterator has children, otherwise
+     * @return true if the inner iterator has children, otherwise false
      */
     hasChildren(): bool;
 }
@@ -14890,8 +15101,8 @@ declare class RecursiveRegexIterator extends RegexIterator implements RecursiveI
      * 
      * Returns whether an iterator can be obtained for the current entry. This iterator
      * can be obtained via RecursiveRegexIterator::getChildren.
-     * @return Returns  if an iterator can be obtained for the current entry,
-     *         otherwise returns .
+     * @return Returns true if an iterator can be obtained for the current entry,
+     *         otherwise returns false.
      */
     hasChildren(): bool;
 }
@@ -15065,8 +15276,8 @@ declare class MultipleIterator implements Iterator {
      * Gets the registered iterator instances
      * 
      * Get the registered iterator instances current() result.
-     * @return An array containing the current values of each attached iterator, or 
-     *         if no iterators are attached.
+     * @return An array containing the current values of each attached iterator, or
+     *         false if no iterators are attached.
      */
     current(): any;
     
@@ -15074,8 +15285,8 @@ declare class MultipleIterator implements Iterator {
      * Gets the registered iterator instances
      * 
      * Get the registered iterator instances key() result.
-     * @return An array of all registered iterator instances, or  if no sub iterator
-     *         is attached.
+     * @return An array of all registered iterator instances, or false if no sub
+     *         iterator is attached.
      */
     key(): any;
     
@@ -15097,8 +15308,8 @@ declare class MultipleIterator implements Iterator {
      * Checks the validity of sub iterators
      * 
      * Checks the validity of sub iterators.
-     * @return Returns  if one or all sub iterators are valid depending on flags,
-     *         otherwise
+     * @return Returns true if one or all sub iterators are valid depending on flags,
+     *         otherwise false
      */
     valid(): bool;
 }
@@ -15162,7 +15373,7 @@ declare class RecursiveIteratorIterator implements OuterIterator {
      * Has children
      * 
      * Called for each element to test whether it has children.
-     * @return if the element has children, otherwise
+     * @return true if the element has children, otherwise false
      */
     callHasChildren(): bool;
     
@@ -15177,7 +15388,7 @@ declare class RecursiveIteratorIterator implements OuterIterator {
      * End Iteration
      * 
      * Called when the iteration ends (when RecursiveIteratorIterator::valid first
-     * returns .
+     * returns false.
      */
     endIteration();
     
@@ -15191,7 +15402,7 @@ declare class RecursiveIteratorIterator implements OuterIterator {
      * Get max depth
      * 
      * Gets the maximum allowable depth.
-     * @return The maximum accepted depth, or  if any depth is allowed.
+     * @return The maximum accepted depth, or false if any depth is allowed.
      */
     getMaxDepth(): number;
     
@@ -15242,7 +15453,7 @@ declare class RecursiveIteratorIterator implements OuterIterator {
     
     /**
      * Check whether the current position is valid
-     * @return if the current position is valid, otherwise
+     * @return true if the current position is valid, otherwise false
      */
     valid(): bool;
     
@@ -15541,7 +15752,7 @@ declare class SplFileInfo {
      * Tells if the file is a directory
      * 
      * This method can be used to determine if the file is a directory.
-     * @return Returns  if a directory,  otherwise.
+     * @return Returns true if a directory, false otherwise.
      */
     isDir(): bool;
     
@@ -15549,7 +15760,7 @@ declare class SplFileInfo {
      * Tells if the file is executable
      * 
      * Checks if the file is executable.
-     * @return Returns  if executable,  otherwise.
+     * @return Returns true if executable, false otherwise.
      */
     isExecutable(): bool;
     
@@ -15558,8 +15769,8 @@ declare class SplFileInfo {
      * 
      * Checks if the file referenced by this SplFileInfo object exists and is a regular
      * file.
-     * @return Returns  if the file exists and is a regular file (not a link), 
-     *         otherwise.
+     * @return Returns true if the file exists and is a regular file (not a link),
+     *         false otherwise.
      */
     isFile(): bool;
     
@@ -15568,7 +15779,7 @@ declare class SplFileInfo {
      * 
      * Use this method to check if the file referenced by the SplFileInfo object is a
      * link.
-     * @return Returns  if the file is a link,  otherwise.
+     * @return Returns true if the file is a link, false otherwise.
      */
     isLink(): bool;
     
@@ -15576,7 +15787,7 @@ declare class SplFileInfo {
      * Tells if file is readable
      * 
      * Check if the file is readable.
-     * @return Returns  if readable,  otherwise.
+     * @return Returns true if readable, false otherwise.
      */
     isReadable(): bool;
     
@@ -15584,7 +15795,7 @@ declare class SplFileInfo {
      * Tells if the entry is writable
      * 
      * Checks if the current entry is writable.
-     * @return Returns  if writable,  otherwise;
+     * @return Returns true if writable, false otherwise;
      */
     isWritable(): bool;
     
@@ -15672,7 +15883,7 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
      * Reached end of file
      * 
      * Determine whether the end of file has been reached
-     * @return Returns  if file is at EOF,  otherwise.
+     * @return Returns true if file is at EOF, false otherwise.
      */
     eof(): bool;
     
@@ -15687,8 +15898,8 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
      * Gets character from file
      * 
      * Gets a character from the file.
-     * @return Returns a string containing a single character read from the file or 
-     *         on EOF.
+     * @return Returns a string containing a single character read from the file or
+     *         false on EOF.
      */
     fgetc(): string;
     
@@ -15706,7 +15917,7 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
      * @param escape The escape character (one character only). Defaults as a
      *               backslash (\) or the value set using
      *               SplFileObject::setCsvControl.
-     * @return Returns an indexed array containing the fields read, or  on error.
+     * @return Returns an indexed array containing the fields read, or false on error.
      *         
      *         A blank line in a CSV file will be returned as an array comprising a
      *         single  field unless using SplFileObject::SKIP_EMPTY |
@@ -15718,7 +15929,8 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
      * Gets line from file
      * 
      * Gets a line from the file.
-     * @return Returns a string containing the next line from the file, or  on error.
+     * @return Returns a string containing the next line from the file, or false on
+     *         error.
      */
     fgets(): string;
     
@@ -15731,7 +15943,7 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
      * @param allowable_tags Optional parameter to specify tags which should not be
      *                       stripped.
      * @return Returns a string containing the next line of the file with HTML and PHP
-     *         code stripped, or  on error.
+     *         code stripped, or false on error.
      */
     fgetss(allowable_tags?: string): string;
     
@@ -15745,7 +15957,7 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
      *                  (writer).     LOCK_UN to release a lock (shared or exclusive).
      *                  LOCK_NB to not block while locking (not supported on Windows).
      *                  
-     * @param $wouldblock Set to  if the lock would block (EWOULDBLOCK errno
+     * @param $wouldblock Set to true if the lock would block (EWOULDBLOCK errno
      *                    condition).
      */
     flock(operation: number, $wouldblock?: number): bool;
@@ -15775,8 +15987,8 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
      *                  character only).
      * @return Returns the length of the written string.
      *         
-     *         Returns , and does not write the CSV line to the file, if the delimiter
-     *         or enclosure parameter is not a single character.
+     *         Returns false, and does not write the CSV line to the file, if the
+     *         delimiter or enclosure parameter is not a single character.
      */
     fputcsv(fields: any[], delimiter?: string, enclosure?: string): number;
     
@@ -15831,7 +16043,8 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
      * 
      * Returns the position of the file pointer which represents the current offset in
      * the file stream.
-     * @return Returns the position of the file pointer as an integer, or  on error.
+     * @return Returns the position of the file pointer as an integer, or false on
+     *         error.
      */
     ftell(): number;
     
@@ -15957,7 +16170,7 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
      * Not at EOF
      * 
      * Check whether EOF has been reached.
-     * @return Returns  if not reached EOF,  otherwise.
+     * @return Returns true if not reached EOF, false otherwise.
      */
     valid(): bool;
     
@@ -15971,8 +16184,8 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
     /**
      * SplFileObject does not have children
      * 
-     * An SplFileObject does not have children so this method always return .
-     * @return Returns
+     * An SplFileObject does not have children so this method always return false.
+     * @return Returns false
      */
     hasChildren(): bool;
     
@@ -16021,7 +16234,7 @@ declare class DirectoryIterator extends SplFileInfo implements SeekableIterator 
      * 
      * Determines if the current DirectoryIterator item is a directory and either . or
      * ...
-     * @return if the entry is . or .., otherwise
+     * @return true if the entry is . or .., otherwise false
      */
     isDot(): bool;
 
@@ -16060,7 +16273,7 @@ declare class DirectoryIterator extends SplFileInfo implements SeekableIterator 
      * Check whether current DirectoryIterator position is a valid file
      * 
      * Check whether current DirectoryIterator position is a valid file.
-     * @return Returns  if the position is valid, otherwise
+     * @return Returns true if the position is valid, otherwise false
      */
     valid(): bool;
     
@@ -16400,7 +16613,7 @@ declare class ArrayObject implements IteratorAggregate, ArrayAccess, Serializabl
      * Returns whether the requested index exists
      *
      * @param offset
-     * @return if the requested index exists, otherwise
+     * @return true if the requested index exists, otherwise false
      */
     offsetExists(offset: any): bool;
     
@@ -16471,7 +16684,7 @@ declare class ArrayObject implements IteratorAggregate, ArrayAccess, Serializabl
  * @param class_ An object (class instance) or a string (class name).
  * @param autoload Whether to allow this function to load the class automatically
  *                 through the __autoload magic method.
- * @return An array on success, or  on error.
+ * @return An array on success, or false on error.
  */
 declare function class_implements(class_: any, autoload?: bool): Pct.PhpAssocArray;
 
@@ -16484,7 +16697,7 @@ declare function class_implements(class_: any, autoload?: bool): Pct.PhpAssocArr
  * @param class_ An object (class instance) or a string (class name).
  * @param autoload Whether to allow this function to load the class automatically
  *                 through the __autoload magic method.
- * @return An array on success, or  on error.
+ * @return An array on success, or false on error.
  */
 declare function class_parents(class_: any, autoload?: bool): Pct.PhpAssocArray;
 
@@ -16497,7 +16710,7 @@ declare function class_parents(class_: any, autoload?: bool): Pct.PhpAssocArray;
  * @param class_ An object (class instance) or a string (class name).
  * @param autoload Whether to allow this function to load the class automatically
  *                 through the __autoload magic method.
- * @return An array on success, or  on error.
+ * @return An array on success, or false on error.
  */
 declare function class_uses(class_: any, autoload?: bool): Pct.PhpAssocArray;
 
@@ -16508,8 +16721,8 @@ declare function class_uses(class_: any, autoload?: bool): Pct.PhpAssocArray;
  *
  * @param iterator The class to iterate over.
  * @param function_ The callback function to call on every element.   The function
- *                  must return  in order to continue iterating over the iterator.
- *                  
+ *                  must return true in order to continue iterating over the
+ *                  iterator.
  * @param args Arguments to pass to the callback function.
  * @return Returns the iteration count.
  */
@@ -16592,7 +16805,7 @@ declare function spl_autoload_extensions(file_extensions?: string): string;
  * 
  * Get all registered __autoload() functions.
  * @return An array of all registered __autoload functions. If the autoload stack
- *         is not activated then the return value is . If no function is
+ *         is not activated then the return value is false. If no function is
  *         registered the return value will be an empty array.
  */
 declare function spl_autoload_functions(): any[];
@@ -16973,7 +17186,7 @@ declare function stream_filter_prepend(stream: Pct.PhpResource, filtername: stri
  *                  stream) so that the data may be modified as desired. You must
  *                  implement the methods exactly as described in php_user_filter
  *                  - doing otherwise will lead to undefined behaviour.
- * @return stream_filter_register will return  if the filtername is already
+ * @return stream_filter_register will return false if the filtername is already
  *         defined.
  */
 declare function stream_filter_register(filtername: string, classname: string): bool;
@@ -17032,7 +17245,7 @@ declare function stream_get_filters(): string[];
  * @return Returns a string of up to length bytes read from the file pointed to by
  *         handle.
  *         
- *         If an error occurs, returns .
+ *         If an error occurs, returns false.
  */
 declare function stream_get_line(handle: Pct.PhpResource, length: number, ending?: string): string;
 
@@ -17045,16 +17258,16 @@ declare function stream_get_line(handle: Pct.PhpResource, length: number, ending
  *               pfsockopen.
  * @return The result array contains the following items:
  *         
- *         timed_out (bool) -  if the stream timed out while waiting for data on
- *         the last call to fread or fgets.
+ *         timed_out (bool) - true if the stream timed out while waiting for data
+ *         on the last call to fread or fgets.
  *         
- *         blocked (bool) -  if the stream is in blocking IO mode. See
+ *         blocked (bool) - true if the stream is in blocking IO mode. See
  *         stream_set_blocking.
  *         
- *         eof (bool) -  if the stream has reached end-of-file.  Note that for
- *         socket streams this member can be even when unread_bytes is non-zero. 
- *         To determine if there is more data to be read, use feof instead of
- *         reading this item.
+ *         eof (bool) - true if the stream has reached end-of-file.  Note that for
+ *         socket streams this member can be true even when unread_bytes is
+ *         non-zero.  To determine if there is more data to be read, use feof
+ *         instead of reading this item.
  *         
  *         unread_bytes (int) - the number of bytes currently contained in the
  *         PHP's own internal buffer.
@@ -17175,9 +17388,9 @@ declare function stream_resolve_include_path(filename: string): string;
  * @param tv_usec See tv_sec description.
  * @return On success stream_select returns the number of stream resources
  *         contained in the modified arrays, which may be zero if the timeout
- *         expires before anything interesting happens. On error is returned and a
- *         warning raised (this can happen if the system call is interrupted by an
- *         incoming signal).
+ *         expires before anything interesting happens. On error false is returned
+ *         and a warning raised (this can happen if the system call is interrupted
+ *         by an incoming signal).
  */
 declare function stream_select($read: Pct.PhpResource[], $write: Pct.PhpResource[], $except: Pct.PhpResource[], tv_sec: number, tv_usec?: number): number;
 
@@ -17208,7 +17421,8 @@ declare function stream_set_blocking(stream: Pct.PhpResource, mode: number): boo
  * @param chunk_size The desired new chunk size.
  * @return Returns the previous chunk size on success.
  *         
- *         Will return  if chunk_size is less than 1 or greater than PHP_INT_MAX.
+ *         Will return false if chunk_size is less than 1 or greater than
+ *         PHP_INT_MAX.
  */
 declare function stream_set_chunk_size(fp: Pct.PhpResource, chunk_size: number): number;
 
@@ -17234,7 +17448,7 @@ declare function stream_set_read_buffer(stream: Pct.PhpResource, buffer: number)
  * microseconds.
  * 
  * When the stream times out, the 'timed_out' key of the array returned by
- * stream_get_meta_data is set to , although no error/warning is generated.
+ * stream_get_meta_data is set to true, although no error/warning is generated.
  *
  * @param stream The target stream.
  * @param seconds The seconds part of the timeout to be set.
@@ -17308,7 +17522,7 @@ declare function stream_socket_accept(server_socket: Pct.PhpResource, timeout?: 
  * @param context A valid context resource created with stream_context_create.
  * @return On success a stream resource is returned which may be used together
  *         with the other file functions (such as fgets, fgetss, fwrite, fclose,
- *         and feof),  on failure.
+ *         and feof), false on failure.
  */
 declare function stream_socket_client(remote_socket: string, $errno?: number, $errstr?: string, timeout?: number, flags?: number, context?: Pct.PhpResource): Pct.PhpResource;
 
@@ -17327,8 +17541,9 @@ declare function stream_socket_client(remote_socket: string, $errno?: number, $e
  *                    STREAM_CRYPTO_METHOD_SSLv23_SERVER
  *                    STREAM_CRYPTO_METHOD_TLS_SERVER
  * @param session_stream Seed the stream with settings from session_stream.
- * @return Returns  on success,  if negotiation has failed or 0 if there isn't
- *         enough data and you should try again (only for non-blocking sockets).
+ * @return Returns true on success, false if negotiation has failed or 0 if there
+ *         isn't enough data and you should try again (only for non-blocking
+ *         sockets).
  */
 declare function stream_socket_enable_crypto(stream: Pct.PhpResource, enable: bool, crypto_type?: number, session_stream?: Pct.PhpResource): any;
 
@@ -17338,8 +17553,8 @@ declare function stream_socket_enable_crypto(stream: Pct.PhpResource, enable: bo
  * Returns the local or remote name of a given socket connection.
  *
  * @param handle The socket to get the name of.
- * @param want_peer If set to  the remote socket name will be returned, if set to 
- *                  the local socket name will be returned.
+ * @param want_peer If set to true the remote socket name will be returned, if set
+ *                  to false the local socket name will be returned.
  * @return The name of the socket.
  */
 declare function stream_socket_get_name(handle: Pct.PhpResource, want_peer: bool): string;
@@ -17358,7 +17573,7 @@ declare function stream_socket_get_name(handle: Pct.PhpResource, want_peer: bool
  * @param protocol The protocol to be used: STREAM_IPPROTO_ICMP,
  *                 STREAM_IPPROTO_IP, STREAM_IPPROTO_RAW, STREAM_IPPROTO_TCP or
  *                 STREAM_IPPROTO_UDP
- * @return Returns an array with the two socket resources on success, or on
+ * @return Returns an array with the two socket resources on success, or false on
  *         failure.
  */
 declare function stream_socket_pair(domain: number, type: number, protocol: number): Pct.PhpResource[];
@@ -17424,10 +17639,10 @@ declare function stream_socket_sendto(socket: Pct.PhpResource, data: string, fla
  * @param $errno If the optional errno and errstr arguments are present they will
  *               be set to indicate the actual system level error that occurred in
  *               the system-level socket(), bind(), and listen() calls. If the
- *               value returned in errno is 0 and the function returned , it is an
- *               indication that the error occurred before the bind() call. This
- *               is most likely due to a problem initializing the socket. Note
- *               that the errno and errstr arguments will always be passed by
+ *               value returned in errno is 0 and the function returned false, it
+ *               is an indication that the error occurred before the bind() call.
+ *               This is most likely due to a problem initializing the socket.
+ *               Note that the errno and errstr arguments will always be passed by
  *               reference.
  * @param $errstr See errno description.
  * @param flags A bitmask field which may be set to any combination of socket
@@ -17436,7 +17651,7 @@ declare function stream_socket_sendto(socket: Pct.PhpResource, data: string, fla
  *              For UDP sockets, you must use STREAM_SERVER_BIND as the flags
  *              parameter.
  * @param context 
- * @return Returns the created stream, or  on error.
+ * @return Returns the created stream, or false on error.
  */
 declare function stream_socket_server(local_socket: string, $errno?: number, $errstr?: string, flags?: number, context?: Pct.PhpResource): Pct.PhpResource;
 
@@ -17471,7 +17686,7 @@ declare function stream_supports_lock(stream: Pct.PhpResource): bool;
  * @param classname The classname which implements the protocol.
  * @param flags Should be set to STREAM_IS_URL if protocol is a URL protocol.
  *              Default is 0, local stream.
- * @return stream_wrapper_register will return  if the protocol already has a
+ * @return stream_wrapper_register will return false if the protocol already has a
  *         handler.
  */
 declare function stream_wrapper_register(protocol: string, classname: string, flags?: number): bool;
@@ -17765,7 +17980,7 @@ declare function echo(...str: any[]): string;
  * @return Returns an array of strings created by splitting the string parameter
  *         on boundaries formed by the delimiter.
  *         
- *         If delimiter is an empty string (""), explode will return . If
+ *         If delimiter is an empty string (""), explode will return false. If
  *         delimiter contains a value that is not contained in string and a
  *         negative limit is used, then an empty array will be returned, otherwise
  *         an array containing string will be returned.
@@ -18143,8 +18358,9 @@ declare function ltrim(str: string, charlist?: string): string;
  * Message-Digest Algorithm, and returns that hash.
  *
  * @param str The string.
- * @param raw_output If the optional raw_output is set to , then the md5 digest is
- *                   instead returned in raw binary format with a length of 16.
+ * @param raw_output If the optional raw_output is set to true, then the md5
+ *                   digest is instead returned in raw binary format with a length
+ *                   of 16.
  * @return Returns the hash as a 32-character hexadecimal number.
  */
 declare function md5(str: string, raw_output?: bool): string;
@@ -18157,9 +18373,9 @@ declare function md5(str: string, raw_output?: bool): string;
  * The hash is a 32-character hexadecimal number.
  *
  * @param filename The filename
- * @param raw_output When , returns the digest in raw binary format with a length
- *                   of 16.
- * @return Returns a string on success,  otherwise.
+ * @param raw_output When true, returns the digest in raw binary format with a
+ *                   length of 16.
+ * @return Returns a string on success, false otherwise.
  */
 declare function md5_file(filename: string, raw_output?: bool): string;
 
@@ -18368,7 +18584,7 @@ declare function money_format(format: string, number: number): string;
  *             YESSTR Output string for "yes".   NOSTR Output string for "no".  
  *             LC_CTYPE Category Constants   CODESET Return a string with the name
  *             of the character encoding.
- * @return Returns the element as a string, or  if item is not valid.
+ * @return Returns the element as a string, or false if item is not valid.
  */
 declare function nl_langinfo(item: number): string; //TODO enum for last param
 
@@ -18496,8 +18712,8 @@ declare function quoted_printable_encode(str: string): string;
  * that is among these: . \ + * ? [ ^ ] ( $ )
  *
  * @param str The input string.
- * @return Returns the string with meta characters quoted, or  if an empty string
- *         is given as str.
+ * @return Returns the string with meta characters quoted, or false if an empty
+ *         string is given as str.
  */
 declare function quotemeta(str: string): string;
 
@@ -18549,9 +18765,9 @@ declare function rtrim(str: string, charlist?: string): string;
  *               for a possibly not available locale.
  * @param settings (Optional string or array parameters to try as locale settings
  *                 until success.)
- * @return Returns the new current locale, or  if the locale functionality is not
- *         implemented on your platform, the specified locale does not exist or
- *         the category name is invalid.
+ * @return Returns the new current locale, or false if the locale functionality is
+ *         not implemented on your platform, the specified locale does not exist
+ *         or the category name is invalid.
  *         
  *         An invalid category name also causes a warning message. Category/locale
  *         names can be found in RFC 1766 and ISO 639. Different systems have
@@ -18589,9 +18805,9 @@ declare function setlocale(category: number, locale: string, ...settings: string
  *               until success. This is useful if a locale is known under
  *               different names on different systems or for providing a fallback
  *               for a possibly not available locale.
- * @return Returns the new current locale, or  if the locale functionality is not
- *         implemented on your platform, the specified locale does not exist or
- *         the category name is invalid.
+ * @return Returns the new current locale, or false if the locale functionality is
+ *         not implemented on your platform, the specified locale does not exist
+ *         or the category name is invalid.
  *         
  *         An invalid category name also causes a warning message. Category/locale
  *         names can be found in RFC 1766 and ISO 639. Different systems have
@@ -18607,10 +18823,10 @@ declare function setlocale(category: number, locale: Array): string;
  * Calculate the sha1 hash of a string
  *
  * @param str The input string.
- * @param raw_output If the optional raw_output is set to , then the sha1 digest
- *                   is instead returned in raw binary format with a length of 20,
- *                   otherwise the returned value is a 40-character hexadecimal
- *                   number.
+ * @param raw_output If the optional raw_output is set to true, then the sha1
+ *                   digest is instead returned in raw binary format with a length
+ *                   of 20, otherwise the returned value is a 40-character
+ *                   hexadecimal number.
  * @return Returns the sha1 hash as a string.
  */
 declare function sha1(str: string, raw_output?: bool): string;
@@ -18619,9 +18835,9 @@ declare function sha1(str: string, raw_output?: bool): string;
  * Calculate the sha1 hash of a file
  *
  * @param filename The filename of the file to hash.
- * @param raw_output When , returns the digest in raw binary format with a length
- *                   of 20.
- * @return Returns a string on success,  otherwise.
+ * @param raw_output When true, returns the digest in raw binary format with a
+ *                   length of 20.
+ * @return Returns a string on success, false otherwise.
  */
 declare function sha1_file(filename: string, raw_output?: bool): string;
 
@@ -19224,9 +19440,9 @@ declare function str_shuffle(str: string): string;
  *         will be broken down into chunks with each being split_length in length,
  *         otherwise each chunk will be one character in length.
  *         
- *         is returned if split_length is less than 1. If the split_length length
- *         exceeds the length of string, the entire string is returned as the
- *         first (and only) array element.
+ *         false is returned if split_length is less than 1. If the split_length
+ *         length exceeds the length of string, the entire string is returned as
+ *         the first (and only) array element.
  */
 declare function str_split(str: string, split_length?: number): string[];
 
@@ -19362,7 +19578,7 @@ declare function stripcslashes(str: string): string;
  *         beginnning of the haystack string (independent of offset). Also note
  *         that string positions start at 0, and not 1.
  *         
- *         Returns  if the needle was not found.
+ *         Returns false if the needle was not found.
  */
 declare function stripos(haystack: string, needle: string, offset?: number): number;
 
@@ -19387,7 +19603,7 @@ declare function stripos(haystack: string, needle: string, offset?: number): num
  *         beginnning of the haystack string (independent of offset). Also note
  *         that string positions start at 0, and not 1.
  *         
- *         Returns  if the needle was not found.
+ *         Returns false if the needle was not found.
  */
 declare function stripos(haystack: string, needle: number, offset?: number): number;
 
@@ -19419,9 +19635,9 @@ declare function stripslashes(str: string): string;
  * @param haystack The string to search in
  * @param needle If needle is not a string, it is converted to an integer and
  *               applied as the ordinal value of a character.
- * @param before_needle If , stristr returns the part of the haystack before the
- *                      first occurrence of the needle (excluding needle).
- * @return Returns the matched substring. If needle is not found, returns .
+ * @param before_needle If true, stristr returns the part of the haystack before
+ *                      the first occurrence of the needle (excluding needle).
+ * @return Returns the matched substring. If needle is not found, returns false.
  */
 declare function stristr(haystack: string, needle: string, before_needle?: bool): string;
 
@@ -19434,9 +19650,9 @@ declare function stristr(haystack: string, needle: string, before_needle?: bool)
  * @param haystack The string to search in
  * @param needle If needle is not a string, it is converted to an integer and
  *               applied as the ordinal value of a character.
- * @param before_needle If , stristr returns the part of the haystack before the
- *                      first occurrence of the needle (excluding needle).
- * @return Returns the matched substring. If needle is not found, returns .
+ * @param before_needle If true, stristr returns the part of the haystack before
+ *                      the first occurrence of the needle (excluding needle).
+ * @return Returns the matched substring. If needle is not found, returns false.
  */
 declare function stristr(haystack: string, needle: number, before_needle?: bool): string;
 
@@ -19520,8 +19736,8 @@ declare function strncmp(str1: string, str2: string, len: number): number;
  *
  * @param haystack The string where char_list is looked for.
  * @param char_list This parameter is case sensitive.
- * @return Returns a string starting from the character found, or  if it is not
- *         found.
+ * @return Returns a string starting from the character found, or false if it is
+ *         not found.
  */
 declare function strpbrk(haystack: string, char_list: string): string;
 
@@ -19541,7 +19757,7 @@ declare function strpbrk(haystack: string, char_list: string): string;
  *         beginning of the haystack string (independent of offset). Also note
  *         that string positions start at 0, and not 1.
  *         
- *         Returns  if the needle was not found.
+ *         Returns false if the needle was not found.
  */
 declare function strpos(haystack: string, needle: string, offset?: number): number;
 
@@ -19561,7 +19777,7 @@ declare function strpos(haystack: string, needle: string, offset?: number): numb
  *         beginning of the haystack string (independent of offset). Also note
  *         that string positions start at 0, and not 1.
  *         
- *         Returns  if the needle was not found.
+ *         Returns false if the needle was not found.
  */
 declare function strpos(haystack: string, needle: number, offset?: number): number;
 
@@ -19577,7 +19793,7 @@ declare function strpos(haystack: string, needle: number, offset?: number): numb
  *               
  *               If needle is not a string, it is converted to an integer and
  *               applied as the ordinal value of a character.
- * @return This function returns the portion of string, or  if needle is not
+ * @return This function returns the portion of string, or false if needle is not
  *         found.
  */
 declare function strrchr(haystack: string, needle: string): string;
@@ -19594,7 +19810,7 @@ declare function strrchr(haystack: string, needle: string): string;
  *               
  *               If needle is not a string, it is converted to an integer and
  *               applied as the ordinal value of a character.
- * @return This function returns the portion of string, or  if needle is not
+ * @return This function returns the portion of string, or false if needle is not
  *         found.
  */
 declare function strrchr(haystack: string, needle: number): string;
@@ -19629,7 +19845,7 @@ declare function strrev(string: string): string;
  *         of the haystack string (independent of search direction or offset).
  *         Also note that string positions start at 0, and not 1.
  *         
- *         Returns  if the needle was not found.
+ *         Returns false if the needle was not found.
  */
 declare function strripos(haystack: string, needle: string, offset?: number): number;
 
@@ -19653,7 +19869,7 @@ declare function strripos(haystack: string, needle: string, offset?: number): nu
  *         of the haystack string (independent of search direction or offset).
  *         Also note that string positions start at 0, and not 1.
  *         
- *         Returns  if the needle was not found.
+ *         Returns false if the needle was not found.
  */
 declare function strripos(haystack: string, needle: number, offset?: number): number;
 
@@ -19674,7 +19890,7 @@ declare function strripos(haystack: string, needle: number, offset?: number): nu
  *         of the haystack string (independent of search direction or offset).
  *         Also note that string positions start at 0, and not 1.
  *         
- *         Returns  if the needle was not found.
+ *         Returns false if the needle was not found.
  */
 declare function strrpos(haystack: string, needle: string, offset?: number): number;
 
@@ -19695,7 +19911,7 @@ declare function strrpos(haystack: string, needle: string, offset?: number): num
  *         of the haystack string (independent of search direction or offset).
  *         Also note that string positions start at 0, and not 1.
  *         
- *         Returns  if the needle was not found.
+ *         Returns false if the needle was not found.
  */
 declare function strrpos(haystack: string, needle: number, offset?: number): number;
 
@@ -19753,9 +19969,10 @@ declare function strspn(subject: string, mask: string, start?: number, length?: 
  * @param haystack The input string.
  * @param needle If needle is not a string, it is converted to an integer and
  *               applied as the ordinal value of a character.
- * @param before_needle If , strstr returns the part of the haystack before the
- *                      first occurrence of the needle (excluding the needle).
- * @return Returns the portion of string, or  if needle is not found.
+ * @param before_needle If true, strstr returns the part of the haystack before
+ *                      the first occurrence of the needle (excluding the needle).
+ *                      
+ * @return Returns the portion of string, or false if needle is not found.
  */
 declare function strstr(haystack: string, needle: string, before_needle?: bool): string;
 
@@ -19773,9 +19990,10 @@ declare function strstr(haystack: string, needle: string, before_needle?: bool):
  * @param haystack The input string.
  * @param needle If needle is not a string, it is converted to an integer and
  *               applied as the ordinal value of a character.
- * @param before_needle If , strstr returns the part of the haystack before the
- *                      first occurrence of the needle (excluding the needle).
- * @return Returns the portion of string, or  if needle is not found.
+ * @param before_needle If true, strstr returns the part of the haystack before
+ *                      the first occurrence of the needle (excluding the needle).
+ *                      
+ * @return Returns the portion of string, or false if needle is not found.
  */
 declare function strstr(haystack: string, needle: number, before_needle?: bool): string;
 
@@ -19874,8 +20092,8 @@ declare function strtoupper(string: string): string;
  * @param to The string replacing from.
  * @return Returns the translated string.
  *         
- *         If replace_pairs contains a key which is an empty string (""), will be
- *         returned.
+ *         If replace_pairs contains a key which is an empty string (""), false
+ *         will be returned.
  */
 declare function strtr(str: string, from: string, to: string): string;
 
@@ -19907,8 +20125,8 @@ declare function strtr(str: string, from: string, to: string): string;
  *                      =&gt; 'to', ...).
  * @return Returns the translated string.
  *         
- *         If replace_pairs contains a key which is an empty string (""), will be
- *         returned.
+ *         If replace_pairs contains a key which is an empty string (""), false
+ *         will be returned.
  */
 declare function strtr(str: string, replace_pairs: Pct.PhpAssocArray): string;
 
@@ -19926,8 +20144,8 @@ declare function strtr(str: string, replace_pairs: Pct.PhpAssocArray): string;
  *              If start is negative, the returned string will start at the
  *              start'th character from the end of string.
  *              
- *              If string is less than or equal to start characters long,  will be
- *              returned.
+ *              If string is less than or equal to start characters long, false
+ *              will be returned.
  *              
  *              Using a negative start   ]]>
  * @param length If length is given and is positive, the string returned will
@@ -19940,7 +20158,7 @@ declare function strtr(str: string, replace_pairs: Pct.PhpAssocArray): string;
  *               the position of this truncation or beyond, false will be
  *               returned.
  *               
- *               If length is given and is 0, or  an empty string will be
+ *               If length is given and is 0, false or  an empty string will be
  *               returned.
  *               
  *               If length is omitted, the substring starting from start until the
@@ -19966,7 +20184,7 @@ declare function substr(string: string, start: number, length?: number): string;
  * @return Returns  0 if main_str from position offset is less than str, 0 if it
  *         is greater than str, and 0 if they are equal. If offset is equal to or
  *         greater than the length of main_str or length is set and is less than
- *         1, substr_compare prints a warning and returns .
+ *         1, substr_compare prints a warning and returns false.
  */
 declare function substr_compare(main_str: string, str: string, offset: number, length?: number, case_sensitivity?: bool): number;
 
@@ -20385,8 +20603,8 @@ declare function vsprintf(format: string, args: Array): string;
  * @param str The input string.
  * @param width The number of characters at which the string will be wrapped.
  * @param break_ The line is broken using the optional break parameter.
- * @param cut If the cut is set to , the string is always wrapped at or before the
- *            specified width.  So if you have a word that is larger than the
+ * @param cut If the cut is set to true, the string is always wrapped at or before
+ *            the specified width.  So if you have a word that is larger than the
  *            given width, it is broken apart. (See second example).
  * @return Returns the given string wrapped at the specified length.
  */
@@ -20589,7 +20807,7 @@ declare var PHP_URL_USER: number;
  * Decodes a base64 encoded data.
  *
  * @param data The encoded data.
- * @param strict Returns  if input contains character from outside the base64
+ * @param strict Returns false if input contains character from outside the base64
  *               alphabet.
  * @return Returns the original data. The returned data may be binary.
  */
@@ -20619,7 +20837,7 @@ declare function base64_encode(data: string): string;
  * @param url The target URL.
  * @param format If the optional format parameter is set to non-zero, get_headers
  *               parses the response and sets the array's keys.
- * @return Returns an indexed or associative array with the headers, or  on
+ * @return Returns an indexed or associative array with the headers, or false on
  *         failure.
  */
 declare function get_headers(url: string, format?: number): Array;
@@ -20636,10 +20854,10 @@ declare function get_headers(url: string, format?: number): Array;
  *                 What get_meta_tags parses        ]]>   (pay attention to line
  *                 endings - PHP uses a native function to parse the input, so a
  *                 Mac file won't work on Unix).
- * @param use_include_path Setting use_include_path to  will result in PHP trying
- *                         to open the file along the standard include path as per
- *                         the include_path directive. This is used for local
- *                         files, not URLs.
+ * @param use_include_path Setting use_include_path to true will result in PHP
+ *                         trying to open the file along the standard include path
+ *                         as per the include_path directive. This is used for
+ *                         local files, not URLs.
  * @return Returns an array with all the parsed meta tags.
  *         
  *         The value of the name property becomes the key, the value of the
@@ -20698,7 +20916,7 @@ declare function http_build_query(query_data: any, numeric_prefix?: string, arg_
  * to parse them correctly.
  *
  * @param url The URL to parse. Invalid characters are replaced by _.
- * @return On seriously malformed URLs, parse_url may return .
+ * @return On seriously malformed URLs, parse_url may return false.
  *         
  *         If the component parameter is omitted, an associative array is
  *         returned. At least one element will be present within the array.
@@ -20729,7 +20947,7 @@ declare function parse_url(url: string): Pct.PhpAssocArray;
  *                  PHP_URL_FRAGMENT to retrieve just a specific URL component as
  *                  a string (except when PHP_URL_PORT is given, in which case the
  *                  return value will be an integer).
- * @return On seriously malformed URLs, parse_url may return .
+ * @return On seriously malformed URLs, parse_url may return false.
  *         
  *         If the component parameter is omitted, an associative array is
  *         returned. At least one element will be present within the array.
@@ -20833,8 +21051,8 @@ declare function debug_zval_dump(variable: any);
  * Determine whether a variable is empty
  * 
  * Determine whether a variable is considered to be empty. A variable is considered
- * empty if it does not exist or if its value equals . empty does not generate a
- * warning if the variable does not exist.
+ * empty if it does not exist or if its value equals false. empty does not generate
+ * a warning if the variable does not exist.
  *
  * @param var_ Variable to be checked
  *             
@@ -20845,12 +21063,13 @@ declare function debug_zval_dump(variable: any);
  *             No warning is generated if the variable does not exist. That means
  *             empty is essentially the concise equivalent to !isset($var) || $var
  *             == false.
- * @return Returns  if var exists and has a non-empty, non-zero value. Otherwise
- *         returns .
+ * @return Returns false if var exists and has a non-empty, non-zero value.
+ *         Otherwise returns true.
  *         
  *         The following things are considered to be empty:  "" (an empty string)
- *         0 (0 as an integer) 0.0 (0 as a float) "0" (0 as a string)   array()
- *         (an empty array) $var; (a variable declared, but without a value)
+ *         0 (0 as an integer) 0.0 (0 as a float) "0" (0 as a string)  false
+ *         array() (an empty array) $var; (a variable declared, but without a
+ *         value)
  */
 declare function empty(var_: any): bool;
 
@@ -20889,8 +21108,8 @@ declare function get_defined_vars(): Pct.PhpAssocArray;
  *         representing its type. If the type is not identified by this function,
  *         the return value will be the string Unknown.
  *         
- *         This function will return  and generate an error if handle is not a
- *         resource.
+ *         This function will return false and generate an error if handle is not
+ *         a resource.
  */
 declare function get_resource_type(handle: Pct.PhpResource): string;
 
@@ -20937,7 +21156,7 @@ declare function intval(var_: any, base?: number): number;
  * Finds whether the given variable is an array.
  *
  * @param var_ The variable being evaluated.
- * @return Returns  if var is an array, otherwise.
+ * @return Returns true if var is an array, false otherwise.
  */
 declare function is_array(var_: any): bool;
 
@@ -20947,7 +21166,7 @@ declare function is_array(var_: any): bool;
  * Finds whether the given variable is a boolean.
  *
  * @param var_ The variable being evaluated.
- * @return Returns  if var is a boolean, otherwise.
+ * @return Returns true if var is a boolean, false otherwise.
  */
 declare function is_bool(var_: any): bool;
 
@@ -20959,8 +21178,8 @@ declare function is_bool(var_: any): bool;
  * array contains a properly encoded object and function name.
  *
  * @param name The callback function to check
- * @param syntax_only If set to  the function only verifies that name might be a
- *                    function or method. It will only reject simple variables
+ * @param syntax_only If set to true the function only verifies that name might be
+ *                    a function or method. It will only reject simple variables
  *                    that are not strings, or an array that does not have a valid
  *                    structure to be used as a callback. The valid ones are
  *                    supposed to have only 2 entries, the first of which is an
@@ -20969,7 +21188,7 @@ declare function is_bool(var_: any): bool;
  *                       "someClass::someMethod".  Note, however, that despite the
  *                       implication that someClass::SomeMethod() is a callable
  *                       static method, this is not the case.
- * @return Returns  if name is callable, otherwise.
+ * @return Returns true if name is callable, false otherwise.
  */
 declare function is_callable(name: any, syntax_only?: bool, $callable_name?: string): bool;
 
@@ -20982,7 +21201,7 @@ declare function is_callable(name: any, syntax_only?: bool, $callable_name?: str
  * is always a string), you must use is_numeric.
  *
  * @param var_ The variable being evaluated.
- * @return Returns  if var is a float, otherwise.
+ * @return Returns true if var is a float, false otherwise.
  */
 declare function is_float(var_: any): bool;
 
@@ -20995,7 +21214,7 @@ declare function is_float(var_: any): bool;
  * is always a string), you must use is_numeric.
  *
  * @param var_ The variable being evaluated.
- * @return Returns  if var is an integer, otherwise.
+ * @return Returns true if var is an integer, false otherwise.
  */
 declare function is_int(var_: any): bool;
 
@@ -21005,7 +21224,7 @@ declare function is_int(var_: any): bool;
  * Finds whether the given variable is .
  *
  * @param var_ The variable being evaluated.
- * @return Returns  if var is null, otherwise.
+ * @return Returns true if var is null, false otherwise.
  */
 declare function is_null(var_: any): bool;
 
@@ -21018,7 +21237,7 @@ declare function is_null(var_: any): bool;
  * too but only without sign, decimal and exponential part.
  *
  * @param var_ The variable being evaluated.
- * @return Returns  if var is a number or a numeric string,  otherwise.
+ * @return Returns true if var is a number or a numeric string, false otherwise.
  */
 declare function is_numeric(var_: any): bool;
 
@@ -21028,7 +21247,7 @@ declare function is_numeric(var_: any): bool;
  * Finds whether the given variable is an object.
  *
  * @param var_ The variable being evaluated.
- * @return Returns  if var is an object, otherwise.
+ * @return Returns true if var is an object, false otherwise.
  */
 declare function is_object(var_: any): bool;
 
@@ -21038,7 +21257,7 @@ declare function is_object(var_: any): bool;
  * Finds whether the given variable is a resource.
  *
  * @param var_ The variable being evaluated.
- * @return Returns  if var is a resource, otherwise.
+ * @return Returns true if var is a resource, false otherwise.
  */
 declare function is_resource(var_: any): bool;
 
@@ -21057,7 +21276,7 @@ declare function is_resource(var_: any): bool;
  * is_scalar does not consider NULL to be scalar.
  *
  * @param var_ The variable being evaluated.
- * @return Returns  if var is a scalar otherwise.
+ * @return Returns true if var is a scalar false otherwise.
  */
 declare function is_scalar(var_: any): bool;
 
@@ -21067,7 +21286,7 @@ declare function is_scalar(var_: any): bool;
  * Finds whether the type given variable is string.
  *
  * @param var_ The variable being evaluated.
- * @return Returns  if var is of type string, otherwise.
+ * @return Returns true if var is of type string, false otherwise.
  */
 declare function is_string(var_: any): bool;
 
@@ -21077,15 +21296,15 @@ declare function is_string(var_: any): bool;
  * Determine if a variable is set and is not .
  * 
  * If a variable has been unset with unset, it will no longer be set. isset will
- * return  if testing a variable that has been set to . Also note that a  byte
+ * return false if testing a variable that has been set to . Also note that a  byte
  * ("\0") is not equivalent to the PHP  constant.
  * 
- * If multiple parameters are supplied then isset will return  only if all of the
- * parameters are set. Evaluation goes from left to right and stops as soon as an
- * unset variable is encountered.
+ * If multiple parameters are supplied then isset will return true only if all of
+ * the parameters are set. Evaluation goes from left to right and stops as soon as
+ * an unset variable is encountered.
  *
  * @param var_ The variable to be checked.
- * @return Returns  if var exists and has value other than ,  otherwise.
+ * @return Returns true if var exists and has value other than , false otherwise.
  */
 declare function isset(...var_: any[]): bool;
 
@@ -21103,8 +21322,8 @@ declare function isset(...var_: any[]): bool;
  *         If given an array, values will be presented in a format that shows keys
  *         and elements.  Similar notation is used for objects.
  *         
- *         When the return parameter is , this function will return a string.
- *         Otherwise, the return value is .
+ *         When the return parameter is true, this function will return a string.
+ *         Otherwise, the return value is true.
  */
 declare function print_r(expression: any);
 
@@ -21119,14 +21338,14 @@ declare function print_r(expression: any);
  *
  * @param expression The expression to be printed.
  * @param return_ If you would like to capture the output of print_r, use the
- *                return parameter.  When this parameter is set to , print_r will
- *                return the information rather than print it.
+ *                return parameter.  When this parameter is set to true, print_r
+ *                will return the information rather than print it.
  * @return If given a string, integer or float, the value itself will be printed. 
  *         If given an array, values will be presented in a format that shows keys
  *         and elements.  Similar notation is used for objects.
  *         
- *         When the return parameter is , this function will return a string.
- *         Otherwise, the return value is .
+ *         When the return parameter is true, this function will return a string.
+ *         Otherwise, the return value is true.
  */
 declare function print_r(expression: any, return_: bool): string;
 
@@ -21217,7 +21436,7 @@ declare function strval(var_: any): string;
  * @return The converted value is returned, and can be a boolean, integer, float,
  *         string, array or object.
  *         
- *         In case the passed string is not unserializeable,  is returned and
+ *         In case the passed string is not unserializeable, false is returned and
  *         E_NOTICE is issued.
  */
 declare function unserialize(str: string): any;
@@ -21261,7 +21480,7 @@ declare function var_dump(...var_: any[]);
  *
  * @param expression The variable you want to export.
  * @return Returns the variable representation when the return parameter is used
- *         and evaluates to . Otherwise, this function will return .
+ *         and evaluates to true. Otherwise, this function will return .
  */
 declare function var_export(expression: any);
 
@@ -21269,9 +21488,9 @@ declare function var_export(expression: any);
  * Outputs or returns a parsable string representation of a variable
  *
  * @param expression The variable you want to export.
- * @param return_ If used and set to , var_export will return the variable
+ * @param return_ If used and set to true, var_export will return the variable
  *                representation instead of outputing it.
  * @return Returns the variable representation when the return parameter is used
- *         and evaluates to . Otherwise, this function will return .
+ *         and evaluates to true. Otherwise, this function will return .
  */
 declare function var_export(expression: any, return_: bool): string;

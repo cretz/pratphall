@@ -13,17 +13,23 @@ module Pratphall {
         //Preserve comments?
         comments = true;
 
-        //When true, any identifier that's all caps is assumed a const
-        allCapsConsts = false;
-
         //When true, type hints are emitted
         typeHint = true;
 
         //When true, elseif is used instead of "else if"
-        useElseif = false;
+        useElseif = true;
 
         //When require references is true, this emits a require_once
         requireReferences = false;
+
+        //When true, control structures are considered blocks
+        forceBlockOnControlStructures = false;
+
+        //When true, type braces are on next line
+        openingTypeBraceOnNextLine = false;
+
+        //When true, function braces are on next line
+        openingFunctionBraceNextLine = false;
     }
 
     export interface AstMatcher {
@@ -78,8 +84,8 @@ module Pratphall {
 
     export class PhpEmitter {
 
-        static superGlobals = ['$GLOBALS', '$_SERVER', '$_GET', '$_POST',
-            '$_FILES', '$_COOKIE', '$_SESSION', '$_REQUEST', '$_ENV'];
+        static superGlobals = ['GLOBALS', '_SERVER', '_GET', '_POST',
+            '_FILES', '_COOKIE', '_SESSION', '_REQUEST', '_ENV'];
 
         static extensionsByNodeType: EmitterExtension[][] = [];
 
@@ -94,7 +100,7 @@ module Pratphall {
                 arr.push(extension);
                 //re-sort
                 arr.sort((a: EmitterExtension, b: EmitterExtension) => {
-                    if (a.matcher.priority < b.matcher.priority) return -1;
+                    if (a.matcher.priority > b.matcher.priority) return -1;
                     else if (a.matcher.priority == b.matcher.priority) return 0;
                     else return 1;
                 });
@@ -646,7 +652,9 @@ module Pratphall {
                     }
                 });
             }
-            this.write(' {').increaseIndent();
+            if (this.options.openingTypeBraceOnNextLine) this.newline();
+            else this.write(' ');
+            this.write('{').increaseIndent();
             var staticExtraInitVars: TypeScript.VarDecl[] = [];
             //members
             if (ast.members != null) {
@@ -772,7 +780,12 @@ module Pratphall {
             this.write('foreach (array_keys(').emit(ast.obj).write(') as ');
             if (ast.lval instanceof TypeScript.VarDecl) this.emit((<TypeScript.VarDecl>ast.lval).id);
             else this.emit(ast.lval);
-            this.write(') ').emit(ast.body).semicolon(ast.body);
+            this.write(') ');
+            var body = ast.body;
+            if (this.options.forceBlockOnControlStructures) {
+                body = this.forceBlockWrap(body);
+            }
+            this.emit(body).semicolon(body);
         }
 
         emitForStatement(ast: TypeScript.ForStatement) {
@@ -782,7 +795,12 @@ module Pratphall {
             if (ast.cond != null) this.emit(ast.cond);
             this.write('; ');
             if (ast.incr != null) this.emit(ast.incr);
-            this.write(') ').emit(ast.body).semicolon(ast.body);
+            this.write(') ');
+            var body = ast.body;
+            if (this.options.forceBlockOnControlStructures) {
+                body = this.forceBlockWrap(body);
+            }
+            this.emit(body).semicolon(body);
         }
 
         emitFuncDecl(ast: TypeScript.FuncDecl) {
@@ -812,7 +830,8 @@ module Pratphall {
             if (ast.isStatic()) this.write('static ');
             this.write('function ');
             //we don't do newlines if they didn't
-            var newlines = !this.isAllOnOneLine(ast);
+            var newlines = !this.isAllOnOneLine(ast) || (this.options.openingFunctionBraceNextLine &&
+                !ast.isAnonymousFn() && ast.enclosingFnc == null);
             //closure?
             if (ast.isAnonymousFn() || ast.enclosingFnc != null) this.write('(');
             else if (ast.isConstructor) this.write('__construct(');
@@ -836,7 +855,11 @@ module Pratphall {
             //sig?
             if (ast.isSignature()) this.write(';');
             else {
-                this.write(' {');
+                if (this.options.openingFunctionBraceNextLine && !ast.isAnonymousFn() &&
+                        ast.enclosingFnc == null) {
+                    this.newline();
+                } else this.write(' ');
+                this.write('{');
                 if (newlines) this.increaseIndent();
                 //any globals?
                 var globCount = 0;
@@ -965,9 +988,10 @@ module Pratphall {
             var hasDollar = ast.sym != null && ast.sym.isVariable() && (!ast.sym.isInstanceProperty() ||
                 TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Static)) &&
                 !TypeScript.hasFlag(ast.sym.flags, TypeScript.SymbolFlags.Constant);
-            //can't be all caps with setting set
-            if (hasDollar && this.options.allCapsConsts && this.getIdentifierText(ast).toUpperCase() ==
-                    this.getIdentifierText(ast)) {
+            //get the text
+            var text = this.getIdentifierText(ast);
+            //all caps means const
+            if (hasDollar && text == text.toUpperCase() && PhpEmitter.superGlobals.indexOf(text) == -1) {
                 hasDollar = false;
             }
             //nested functions which we make anon are ok to have dollar signs
@@ -1009,22 +1033,32 @@ module Pratphall {
                 }
             }
             //write
-            if (shouldWrite) this.write(this.getIdentifierText(ast));
+            if (shouldWrite) this.write(text);
         }
 
         emitIfStatement(ast: TypeScript.IfStatement) {
-            this.write('if (').emit(ast.cond).write(') ').emit(ast.thenBod).semicolon(ast.thenBod);
+            this.write('if (').emit(ast.cond).write(') ');
+            var thenBod = ast.thenBod;
+            if (this.options.forceBlockOnControlStructures) {
+                thenBod = this.forceBlockWrap(thenBod);
+            }
+            this.emit(thenBod).semicolon(thenBod);
+            //else
             if (ast.elseBod != null) {
                 //do we need a newline?
-                if (this.hasSemicolonAfterStatement(ast.thenBod) ||
-                        this.getEndLine(ast.thenBod).line != this.getStartLine(ast.elseBod).line) {
+                if (!this.options.forceBlockOnControlStructures &&
+                        (this.hasSemicolonAfterStatement(thenBod) || this.isAllOnOneLine(thenBod))) {
                     this.newline();
                 } else this.write(' ');
                 this.write('else');
                 if (!(ast.elseBod instanceof TypeScript.IfStatement) || !this.options.useElseif) {
                     this.write(' ');
                 }
-                this.emit(ast.elseBod).semicolon(ast.elseBod);
+                var elseBod = ast.elseBod;
+                if (this.options.forceBlockOnControlStructures && !(ast.elseBod instanceof TypeScript.IfStatement)) {
+                    elseBod = this.forceBlockWrap(elseBod);
+                }
+                this.emit(elseBod).semicolon(elseBod);
             }
         }
 
@@ -1054,7 +1088,9 @@ module Pratphall {
                     }
                 });
             }
-            this.write(' {').increaseIndent();
+            if (this.options.openingTypeBraceOnNextLine) this.newline();
+            else this.write(' ');
+            this.write('{').increaseIndent();
             //members
             if (ast.members != null) {
                 ast.members.members.forEach((member: TypeScript.AST) => {
@@ -1239,8 +1275,7 @@ module Pratphall {
         }
 
         emitVarDecl(ast: TypeScript.VarDecl) {
-            var isConst = this.options.allCapsConsts && this.getIdentifierText(ast.id).toUpperCase() ==
-                this.getIdentifierText(ast.id);
+            var isConst = this.getIdentifierText(ast.id).toUpperCase() == this.getIdentifierText(ast.id);
             //the init better be a literal
             if (isConst) {
                 if (ast.init == null) {
@@ -1271,11 +1306,16 @@ module Pratphall {
         }
 
         emitWhileStatement(ast: TypeScript.WhileStatement) {
-            this.write('while (').emit(ast.cond).write(') ').emit(ast.body).semicolon(ast.body);
+            this.write('while (').emit(ast.cond).write(') ');
+            var body = ast.body;
+            if (this.options.forceBlockOnControlStructures) {
+                body = this.forceBlockWrap(body);
+            }
+            this.emit(body).semicolon(body);
         }
 
         isAllOnOneLine(ast: TypeScript.AST) {
-            return this.getStartLine(ast).line == this.getEndLine(ast).line;
+            return ast.minChar >= 0 && this.getStartLine(ast).line == this.getEndLine(ast).line;
         }
 
         getStartLine(ast: TypeScript.AST) {
@@ -1394,6 +1434,11 @@ module Pratphall {
         removeParentheses(ast: TypeScript.AST) {
             //(<type>anything) doesn't need parentheses
             return ast.nodeType == TypeScript.NodeType.TypeAssertion;
+        }
+
+        forceBlockWrap(ast: TypeScript.AST) {
+            if (ast instanceof TypeScript.Block) return ast;
+            return new TypeScript.Block((new TypeScript.ASTList()).append(ast), true);
         }
 
         addModuleReference(ast: TypeScript.ModuleDeclaration, alias?: string) {

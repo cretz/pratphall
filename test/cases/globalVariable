@@ -3,7 +3,7 @@
 var a = 'hello';
 function b() {
 	var b = ' world';
-    return a + $GLOBALS['hey'] + b;
+    return a + GLOBALS['hey'] + b;
 }
 -----
 $a = 'hello';

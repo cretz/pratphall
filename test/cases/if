@@ -12,11 +12,11 @@ else if (true) {
 }
 -----
 if (1 == 2) $a = 5;
-else if (2 == 3) $a = 6;
+elseif (2 == 3) $a = 6;
 if (true) {
     $b = 7;
-} else if (false) $b = 8;
+} elseif (false) $b = 8;
 if (false) $c = 9;
-else if (true) {
+elseif (true) {
     $c = 10;
 }

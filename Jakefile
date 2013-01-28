@@ -70,7 +70,7 @@ task('phpdocbuild', {async: true}, function(path) {
     }
     console.log('Compiling doc extractor php and running');
     var cmds = [
-        'node ./bin/ppc.js --no-php-lib --all-caps-const --no-composer --single -o ./phpdocbuild/phpDocExtractor.php ./src/utils/phpDocExtractor.ts',
+        'node ./bin/ppc.js --no-php-lib --single -o ./phpdocbuild/phpDocExtractor.php ./src/utils/phpDocExtractor.ts',
         'php phpdocbuild/phpDocExtractor.php ' + path + ' ./phpdocbuild/phpdoc.json',
         'node ./node_modules/typescript/bin/tsc.js --out ./phpdocbuild/phpDefinitionBuilder.js ./src/utils/phpDefinitionBuilder.ts',
         'node ./phpdocbuild/phpDefinitionBuilder.js ./src/php.d.ts'

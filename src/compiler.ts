@@ -2,10 +2,8 @@
 
 module Pratphall {
     export class CompilerOptions {
-        allCapsConst = false;
         extensions: string[] = [];
         comments = true;
-        composer = true;
         jsLib = true;
         organize = true;
         phpLib = true;
@@ -14,14 +12,22 @@ module Pratphall {
         preferSingleQuotes = false;
         requireReferences = false;
         single = false;
-        useElseif = false;
+        useElseif = true;
         verbose = false;
         lint = false;
         excludeOutside = false;
+        indentSpaces = true;
+        indentCount = 4;
+        forceBlock = false;
+        typeBraceNewline = false;
+        functionBraceNewline = false;
+        watch = false;
+        watchDebounceMs = 1500;
     }
 
     export class Compiler {
         io = loadIo();
+        hashes = {};
 
         constructor(public options: CompilerOptions) {
         }
@@ -30,7 +36,7 @@ module Pratphall {
             if (this.options.verbose) this.io.writeLine(str);
         }
 
-        compile(files: string[], err: StringWriter) {
+        compile(files: string[], err: StringWriter, allFilesRef: { files: string[]; }) {
             this.debug('Beginning compile');
             //validate options
             if (files == null || files.length == 0) throw new Error('No files given to compile');
@@ -142,6 +148,8 @@ module Pratphall {
             compiler.typeCheck();
             //errors means null
             if (err.contents.length > 0) return null;
+            //update all files ref
+            allFilesRef.files = knownFullPaths;
             //return
             return compiler;
         }
@@ -149,12 +157,16 @@ module Pratphall {
         buildEmitter(compiler: TypeScript.TypeScriptCompiler) {
             //create PHP emitter
             var options = new PhpEmitOptions();
-            options.allCapsConsts = this.options.allCapsConst;
             options.alwaysPreferSingleQuotes = this.options.preferSingleQuotes;
             options.comments = this.options.comments;
             options.requireReferences = this.options.requireReferences;
             options.typeHint = this.options.typeHint;
             options.useElseif = this.options.useElseif;
+            options.indent = Array(this.options.indentCount + 1).join(
+                this.options.indentSpaces ? ' ' : '\t');
+            options.forceBlockOnControlStructures = this.options.forceBlock;
+            options.openingTypeBraceOnNextLine = this.options.typeBraceNewline;
+            options.openingFunctionBraceNextLine = this.options.functionBraceNewline;
             return new PhpEmitter(compiler.typeChecker, options);
         }
 
@@ -190,7 +202,6 @@ module Pratphall {
                 file.path = file.path.slice(0, -3) + '.php';
                 this.debug('Emitting top namespace code at ' + file.path);
                 file.contents += this.emitUseDeclarations(emitter.topNamespace);
-                if (this.options.composer) file.contents += "require('vendor/autoload.php');\n";
                 file.contents += emitter.topNamespace.code.trim();
                 results.files.push(file);
             }
@@ -275,10 +286,6 @@ module Pratphall {
                 if (wrap) file.contents += 'namespace ' + ns.getPhpName() + ' {\n';
                 //write use decls
                 file.contents += this.emitUseDeclarations(ns, wrap ? emitter.options.indent : null);
-                //composer require
-                if (bootstrap && first && this.options.composer) {
-                    file.contents += emitter.options.indent + "require('vendor/autoload.php');\n";
-                }
                 //type decls before code
                 ns.types.forEach((value: TypeDecl, index: number) => {
                     if (wrap) value.code = this.getIndentedCode(value.code, emitter.options.indent);
@@ -360,32 +367,133 @@ module Pratphall {
                 });
             });
             //we don't write with errors or just linting
-            if (results.errors.length > 0 || this.options.lint) return;
+            if (results.errors.length > 0 || this.options.lint) return null;
             var isOutFile = this.options.out.indexOf('.php') != -1;
             var dir = isOutFile ? this.io.dirPath(this.options.out) : this.options.out;
+            var localHashes = {};
             results.files.forEach((value: OutputFile, index: number) => {
                 //first file can be specified by out
                 var file = isOutFile && index == 0 ? this.options.out : this.io.joinPaths(dir, value.path);
                 var fileDir = this.io.dirPath(file);
+                //handle hashes
+                if (this.options.watch) {
+                    var hash = this.io.hashString(value.contents);
+                    localHashes[file] = hash;
+                    if (file in this.hashes && this.hashes[file] == hash) return;
+                }
                 if (!this.io.exists(fileDir)) {
-                    this.debug('Creating directory: ' + fileDir);
+                    this.io.writeLine('Creating directory: ' + fileDir);
                     this.io.mkdirs(fileDir);
                 }
-                this.debug('Writing file: ' + file);
+                this.io.writeLine('Writing file: ' + file);
                 this.io.writeFile(file, '<?php\n' + value.contents);
             });
+            return localHashes;
+        }
+
+        removeStaleAndUpdateHashes(localHashes: any) {
+            //directory we are not allowed to delete or go above:
+            var topDir = this.options.out.indexOf('.php') != -1 ?
+                this.io.dirPath(this.options.out) : this.options.out;
+            topDir = this.io.resolvePath(topDir);
+            var dirsToCheck: string[] = [];
+            for (var file in this.hashes) {
+                if (!(file in localHashes)) {
+                    this.io.writeLine('Deleting file: ' + file);
+                    this.io.deleteFile(file);
+                    //walk up the path finding what dirs to delete
+                    var dir = this.io.resolvePath(this.io.dirPath(file));
+                    while (dir != topDir && dirsToCheck.indexOf(dir) != -1) {
+                        dirsToCheck.push(dir);
+                        dir = this.io.dirPath(dir);
+                    }
+                }
+            }
+            //sort the directories, then reverse them so we can make sure we do children first
+            dirsToCheck = dirsToCheck.sort().reverse();
+            //now just delete all empty directories we find
+            dirsToCheck.forEach((value: string) => {
+                if (this.io.isDirEmpty(value)) {
+                    this.io.writeLine('Deleting directory: ' + value);
+                    this.io.deleteDir(value);
+                }
+            });
+            //update hashes
+            this.hashes = localHashes;
         }
 
         run(files: string[]) {
             var err = new StringWriter();
-            var compiler = this.compile(files, err);
+            var allFilesRef: { files?: string[]; } = {};
+            var compiler = this.compile(files, err, allFilesRef);
             if (err.contents.length > 0) {
                 this.io.writeErr(err.contents);
                 return;
             }
             var emitter = this.buildEmitter(compiler);
             var results = this.emit(compiler, emitter);
-            this.outputResults(results);
+            var localHashes = this.outputResults(results);
+            //if we are handling hashes, we may have to delete some stuff
+            if (this.options.watch && localHashes != null) {
+                this.removeStaleAndUpdateHashes(localHashes);
+            }
+            //return full files
+            return allFilesRef.files;
+        }
+
+        //straight up stolen (then typed) from underscore.js
+        debounce(func: (...args: any[]) => any, wait: number, immediate = false) {
+            var timeout, result;
+            return function () {
+                var context = this, args = arguments;
+                var later = function () {
+                    timeout = null;
+                    if (!immediate) result = func.apply(context, args);
+                };
+                var callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) result = func.apply(context, args);
+                return result;
+            };
+        }
+
+        runAndWatch(files: string[]) {
+            //holder for full file set
+            var fullFileSet: string[];
+            //holder for watch callback
+            var watch: () => void;
+            //runner callback
+            var runner = () => {
+                //log that we're running
+                this.io.writeLine('Compile started at: ' + (new Date()).toString());
+                //run it
+                fullFileSet = this.run(files);
+                //call watch again to cleanup
+                watch();
+            };
+            //debounce to default of 1.5 seconds
+            var debouncedRunner = this.debounce(runner, this.options.watchDebounceMs);
+            //hold on to file watchers
+            var fileWatchers = {};
+            //watcher callback
+            watch = () => {
+                //first close all existing ones that aren't in the set
+                for (var file in fileWatchers) {
+                    if (fullFileSet.indexOf(file) == -1) {
+                        fileWatchers[file].close();
+                        delete fileWatchers[file];
+                    }
+                }
+                //now start watching what we don't have a watcher for
+                fullFileSet.forEach((value: string) => {
+                    if (!(value in fileWatchers)) {
+                        fileWatchers[file] = this.io.watchFile(value, debouncedRunner);
+                    }
+                });
+            }
+            //go ahead and run
+            runner();
         }
     }
 

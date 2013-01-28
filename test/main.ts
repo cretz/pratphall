@@ -2,5 +2,5 @@
 
 var harness = new Pratphall.TestHarness();
 harness.run();
-//harness.runTest('references');
+//harness.runTest('openingFunctionBraceNextLine');
 //harness.runTest('classProperty');

@@ -1,0 +1,22 @@
+﻿Force block on control structures test
+SET-OPTION-TRUE:forceBlockOnControlStructures
+-----
+if (true) var a = 1;
+else if (true) var b = 2;
+else var c = 3;
+while (true) var d = 4;
+for (var e = 0; e < 10; e++) var f = 5;
+-----
+if (true) {
+    $a = 1;
+} elseif (true) {
+    $b = 2;
+} else {
+    $c = 3;
+}
+while (true) {
+    $d = 4;
+}
+for ($e = 0; $e < 10; $e++) {
+    $f = 5;
+}

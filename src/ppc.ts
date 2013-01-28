@@ -16,9 +16,19 @@ module Pratphall {
             var showHelp = false;
             var argOpts: Option[] = [
                 {
-                    names: ['--all-caps-const'],
-                    desc: 'Assume all capitalized vars are consts',
-                    set: () => { options.allCapsConst = true; }
+                    names: ['-c', '--config'],
+                    title: '-c, --config FILE',
+                    needsValue: true,
+                    desc: 'Configuration JSON file',
+                    set: (value: string) => {
+                        var io = loadIo();
+                        //better be a file
+                        if (!io.isFile(value)) throw new Error('File not found: ' + value);
+                        var conf = JSON.parse(io.readFile(value));
+                        for (var prop in conf) {
+                            options[prop] = conf[prop];
+                        }
+                    }
                 },
                 {
                     names: ['--exclude-outside'],
@@ -33,9 +43,37 @@ module Pratphall {
                     set: (value: string) => { options.extensions.push(value); }
                 },
                 {
+                    names: ['--force-block'],
+                    desc: 'Force control structures to have a braced blocks',
+                    set: () => { options.forceBlock = true; }
+                },
+                {
+                    names: ['--function-brace-newline'],
+                    desc: 'All functions have braces put on next line',
+                    set: () => { options.functionBraceNewline = true; }
+                },
+                {
                     names: ['-h', '--help'],
                     desc: 'Display help',
                     set: () => { showHelp = true; }
+                },
+                {
+                    names: ['--indent-spaces'],
+                    title: '--indent-spaces COUNT',
+                    needsValue: true,
+                    desc: 'Indent using the given number of spaces',
+                    set: (value: string) => {
+                        options.indentSpaces = true;
+                        options.indentCount = parseInt(value);
+                    }
+                },
+                {
+                    names: ['--indent-tabs'],
+                    desc: 'Indent using a single tab',
+                    set: (value: string) => {
+                        options.indentSpaces = false;
+                        options.indentCount = 1;
+                    }
                 },
                 {
                     names: ['--lint'],
@@ -46,11 +84,6 @@ module Pratphall {
                     names: ['--no-comments'],
                     desc: 'Do not emit comments',
                     set: () => { options.comments = false; }
-                },
-                {
-                    names: ['--no-composer'],
-                    desc: 'Do not emit the composer autoloader',
-                    set: () => { options.composer = false; }
                 },
                 {
                     names: ['--no-js-lib'],
@@ -95,15 +128,32 @@ module Pratphall {
                     set: () => { options.single = true; }
                 },
                 {
-                    names: ['--use-elseif'],
-                    desc: 'Use single elseif word on output',
+                    names: ['--type-brace-newline'],
+                    desc: 'All classes/interfaces have braces put on next line',
+                    set: () => { options.typeBraceNewline = true; }
+                },
+                {
+                    names: ['--use-else-if'],
+                    desc: 'Use else if instead of single elseif on output',
                     set: () => { options.useElseif = true; }
                 },
                 {
                     names: ['--verbose'],
                     desc: 'Output lots of info',
                     set: () => { options.verbose = true; }
-                }
+                },
+                {
+                    names: ['-w', '--watch'],
+                    desc: 'Watch and re-compile on any file change',
+                    set: (value: string) => { options.watch = true; }
+                },
+                {
+                    names: ['--watch-debounce-ms'],
+                    title: '---watch-debounce-ms MS',
+                    needsValue: true,
+                    desc: 'Number of milliseconds before recompile',
+                    set: (value: string) => { options.watchDebounceMs = parseInt(value); }
+                },
             ];
             //let's parse
             var files: string[] = [];
@@ -137,13 +187,16 @@ module Pratphall {
                 ];
                 lines = lines.concat(argOpts.map((value: Option) => {
                     var begin = value.title != null ? value.title : value.names.join(', ');
-                    return '  ' + begin + Array(25 - begin.length).join(' ') + value.desc;
+                    return '  ' + begin + Array(27 - begin.length).join(' ') + value.desc;
                 }));
                 loadIo().writeLine(lines.join('\n'));
                 return;
             }
-            //run
-            new Compiler(options).run(files);
+            //create compiler
+            var compiler = new Compiler(options);
+            //run normal or watched
+            if (!options.watch) compiler.run(files);
+            else if (options.watch) compiler.runAndWatch(files);
         }
     }
 

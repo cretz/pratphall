@@ -1,14 +1,22 @@
 ﻿Const test
 -----
 declare var A_CONST: number;
+declare class Test {
+    static butIReallyAmAConst: number;
+    static REALLY_NOT_A_CONST: number;
+}
 var a = A_CONST;
-var b = Pct.const(A_CONST);
-var c = Pct.const(__LINE__);
-var d = Pct.const(__FILE__);
-var e = Pct.const(__DIR__);
+var b = Pct.asVar(A_CONST);
+var c = __LINE__;
+var d = __FILE__;
+var e = __DIR__;
+var g = Pct.const(Test.butIReallyAmAConst);
+var h = Pct.asVar(Test.REALLY_NOT_A_CONST);
 -----
-$a = $A_CONST;
-$b = A_CONST;
+$a = A_CONST;
+$b = $A_CONST;
 $c = __LINE__;
 $d = __FILE__;
 $e = __DIR__;
+$g = Test::butIReallyAmAConst;
+$h = Test::$REALLY_NOT_A_CONST;

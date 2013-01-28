@@ -5,12 +5,16 @@ module Pratphall {
     export interface Io {
         basename(path: string): string;
         cwd(): string;
+        deleteDir(dir: string);
+        deleteFile(file: string);
         dirPath(path: string): string;
         evalGlobal(js: string, filename?: string);
         exists(path: string): bool;
         getArgs(): string[];
         getExecutingFilePath(): string;
+        hashString(str: string): string;
         isDir(path: string): bool;
+        isDirEmpty(path: string): bool;
         isFile(path: string): bool;
         joinPaths(...paths: string[]): string;
         mkdirs(dir: string);
@@ -18,6 +22,7 @@ module Pratphall {
         readFile(path: string): string;
         relativePath(from: string, to: string): string;
         resolvePath(...paths: string[]): string;
+        watchFile(file: string, callback: (event: string, filename: string) => void ): { close(); };
         writeErr(str: string);
         writeFile(path: string, contents: string);
         writeLine(str: string);

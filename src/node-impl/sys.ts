@@ -14,11 +14,14 @@ module Pratphall {
     export var fs = require('fs');
     export var vm = require('vm');
     export var path = require('path');
+    export var crypto = require('crypto');
 
     export function loadIo(): Io {
         return {
             basename: path.basename,
             cwd: () => { return <string><any>process.cwd(); },
+            deleteDir: fs.rmdirSync,
+            deleteFile: fs.unlinkSync,
             dirPath: path.dirname,
             evalGlobal: (js: string, filename?: string) => {
                 //vm.runInThisContext(js, filename);
@@ -27,9 +30,15 @@ module Pratphall {
             exists: fs.existsSync,
             getArgs: () => { return process.argv.slice(2); },
             getExecutingFilePath: () => { return __dirname + '/'; },
+            hashString: (str: string) => {
+                return crypto.createHash('md5').update(str).digest("hex");
+            },
             isDir: (path: string) => {
                 var stats = fs.statSync(path);
                 return stats != null && stats.isDirectory();
+            },
+            isDirEmpty: (path: string) => {
+                return fs.readdirSync(path).length == 0;
             },
             isFile: (path: string) => {
                 var stats = fs.statSync(path);
@@ -108,6 +117,9 @@ module Pratphall {
             },
             relativePath: path.relative,
             resolvePath: path.resolve,
+            watchFile: (file: string, callback: (event: string, filename: string) => void ) => {
+                return fs.watch(file, { persistent: true }, callback);
+            },
             writeErr: (str: string) => { process.stderr.write(str); },
             writeFile: fs.writeFileSync,
             writeLine: console.log

@@ -1,5 +1,5 @@
 ﻿Elseif test
-SET-OPTION-TRUE:useElseif
+SET-OPTION-FALSE:useElseif
 -----
 var a, b, c: number;
 if (1 == 2) a = 5;
@@ -13,11 +13,11 @@ else if (true) {
 }
 -----
 if (1 == 2) $a = 5;
-elseif (2 == 3) $a = 6;
+else if (2 == 3) $a = 6;
 if (true) {
     $b = 7;
-} elseif (false) $b = 8;
+} else if (false) $b = 8;
 if (false) $c = 9;
-elseif (true) {
+else if (true) {
     $c = 10;
 }

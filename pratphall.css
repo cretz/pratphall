@@ -109,15 +109,15 @@ div.code-nested pre code {
 }
 
 .dl-horizontal dt {
-    margin-top: 5px;
+    margin-top: 15px;
     text-align: left;
     font-weight: normal;
-    width: 175px;
+    width: 200px;
 }
 
 .dl-horizontal dd {
-    margin-top: 5px;
-    margin-left: 180px;
+    margin-top: 15px;
+    margin-left: 205px;
 }
 
 .para-link a {

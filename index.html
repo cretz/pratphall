@@ -47,7 +47,7 @@
             <li>IDE support</li>
             <li>Metaprogramming facilities</li>
             <li>PHP interoperability</li>
-            <li>Apache 2 licensed</li>
+            <li>MIT licensed</li>
           </ul>
         </div>
         <div style="float: left; width: 400px">
@@ -176,7 +176,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
 
       <h4>Who?</h4>
       <p>
-        Nobody really. It's a project that was started in <a href="http://github.com/cretz">my</a> spare time and only maintained in my <em>spare</em> time. There is no commercial support, no guarantee that anything will get fixed, and no guarantee that the project will be properly maintained. The only project known to  use Pratphall is <a href="http://github.com/cretz/dust-php">dust-php</a>. If it becomes popular, it is possible it could become a more professional language. Feel free to discuss the language or ask questions on the <a href="https://groups.google.com/d/forum/pratphall">mailing list</a>.
+        Nobody really. It's a project that was started in <a href="http://github.com/cretz">my</a> spare time and only maintained in my <em>spare</em> time. There is no commercial support, no guarantee that anything will get fixed, and no guarantee that the project will be properly maintained. The only project known to  use Pratphall is <a href="http://github.com/cretz/dust-php">dust-php</a>. If Pratphall becomes popular, it is possible it could become a more professional language. Feel free to discuss the language or ask questions on the <a href="https://groups.google.com/d/forum/pratphall">mailing list</a>.
       </p>
 
       <h4>What?</h4>
@@ -211,25 +211,35 @@ echo(sayHello(theSubject) + '\n');</code></pre>
       <h3 class="para-link">Usage <a href="#Manual-Usage">&nbsp;&para;</a></h3>
       <pre>ppc [options] FILE...</pre>
       <p>Options:</p>
-      <dl class="dl-horizontal">
-        <dt><code>--all-caps-consts</code></dt>
-        <dd>When set and any variable is all capital letters, it will assume it's a constant and not prefix it with a dollar sign in PHP</dd>
+      <dl>
+        <dt><code>-c</code>, <code>--config FILE</code></dt>
+        <dd>
+          Use a JSON file for configuration options. Note values in the config file override command line options before this option and are overridden by command line options after this option. Read about <a href="#Manual-Appendices-Configuration">Configuration files</a> below.
+        </dd>
+        <dt><code>--exclude-outside</code></dt>
+        <dd>Do not emit Pratphall files referenced in directories above and outside the given file. This is helpful for when you may only want to emit code from a test directory, not all the other code it references.</dd>
         <dt><code>--ext FILE</code></dt>
         <dd>Can be used as many times as necessary to include extensions</dd>
-        <dt><code>--exclude-outside</code></dt>
-        <dd>Do not emit Pratphall files referenced in directories above and outside the given file</dd>
+        <dt><code>--force-block</code></dt>
+        <dd>Forces if, else, while, etc to have blocks on output even if single statements are given on input</dd>
+        <dt><code>--function-brace-newline</code></dt>
+        <dd>Put the opening brace of functions (but not closures) on the next line</dd>
         <dt><code>-h</code>, <code>--help</code></dt>
         <dd>Display help</dd>
+        <dt><code>--indent-spaces COUNT</code></dt>
+        <dd>Indent using the number of given spaces. The default is 4 spaces.</dd>
+        <dt><code>--indent-tabs</code></dt>
+        <dd>Indent using a single tab. The default is 4 spaces.</dd>
+        <dt><code>--lint</code></dt>
+        <dd>Do not output files, just parse/compile</dd>
         <dt><code>--no-comments</code></dt>
         <dd>Do not emit comments</dd>
-        <dt><code>--no-composer</code></dt>
-        <dd>Do not emit the composer autoloader require statement</dd>
         <dt><code>--no-js-lib</code></dt>
         <dd>Do not automatically include the lib.d.ts JS definitions</dd>
         <dt><code>--no-organize</code></dt>
         <dd>When set, this will not organize source files into the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0</a> autoloader-acceptable filesystem structure</dd>
         <dt><code>--no-php-lib</code></dt>
-        <dd>Exclude the runtime/all.ts PHP definitions and exclude the ext/all.ts PHP extensions</dd>
+        <dd>Exclude the php.d.ts PHP definitions and exclude the ext/all.ts PHP extensions</dd>
         <dt><code>--no-type-hint</code></dt>
         <dd>Do not type hint emitted functions in any way</dd>
         <dt><code>-o</code>, <code>--out PATH</code></dt>
@@ -240,8 +250,16 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         <dd>When set, all <code>///&lt;reference /></code> will become <code>require_once</code>. This is only allowed when <code>--no-organize</code> is set.</dd>
         <dt><code>--single</code></dt>
         <dd>Compile all files to a single PHP file. This is basically also setting <code>--no-organize</code> also, so both cannot be present.</dd>
-        <dt><code>--use-elseif</code></dt>
-        <dd>When an "else if" is encountered in Pratphall, translate to "elseif" instead of the default "else if"</dd>
+        <dt><code>--type-brace-newline</code></dt>
+        <dd>Put the opening brace of classes and interfaces on the next line</dd>
+        <dt><code>--use-else-if</code></dt>
+        <dd>When an "else if" is encountered in Pratphall, translate to "else if" instead of the default "elseif"</dd>
+        <dt><code>--verbose</code></dt>
+        <dd>Log extra information on compile</dd>
+        <dt><code>-w</code>, <code>--watch</code></dt>
+        <dd>Re-compile all files on any file changes (including referenced files). Note, if not using <code>--single</code> this means files and directories created during compilation may be deleted on later compilation. Files are not overwritten if their output contents didn't change. Finally note this does not always work over remotely mounted filesystems.</dd>
+        <dt><code>--watch-debounce-ms</code></dt>
+        <dd>The number of milliseconds to wait for file change events to stop before re-compilation. The default is 1500 (1.5 seconds).</dd>
       </dl>
 
       <span class="bookmark" id="Manual-Types"></span>
@@ -525,10 +543,7 @@ echo('Grandchild val: ' . $obj->child->{'grand' . 'child'});</code></pre>
       <span class="bookmark" id="Manual-Syntax-Constants"></span>
       <h4 class="para-link">Constants <a href="#Manual-Syntax-Constants">&nbsp;&para;</a></h4>
       <p>
-        Constants cannot be defined in Pratphall by default. The closest you can get is creating a top-level var. Some existing libraries have constants though that need to be accessed when interoperating. You can avoid the dollar sign that is normally prefixed to PHP variables by using <code>Pct.const</code> to reference the constant.
-      </p>
-      <p>
-        If the <code>--all-caps-consts</code> compiler option is set, all variables that are in all capital letters will be considered constants when both defining and accessing. Note, a compiler warning will be issued for attempted const declarations that are not literal scalar values.
+        By default in Pratphall, variable names that are completely capitalized are assumed to be constant and variables that are not are assumed to be normally named. To override this behavior, use <code>Pct.const</code> or <code>Pct.asVar</code> when referencing the variable to change Pratphall's default. Note, the superglobals <code>GLOBALS</code>, <code>_SERVER</code>, <code>_GET</code>, <code>_POST</code>, <code>_FILES</code>, <code>_COOKIE</code>, <code>_SESSION</code>, <code>_REQUEST</code>, and <code>_ENV</code> are all automatically known by Pratphall to be prefixed with dollar signs.
       </p>
 
       <span class="bookmark" id="Manual-Syntax-Operators"></span>
@@ -608,7 +623,7 @@ $b = a instanceof 'Foo';</code></pre>
         <dl>
           <dt><code>elseif</code></dt>
           <dd>
-            Use <code>else if</code> in Pratphall which will translate to <code>else if</code> in PHP also. The <code>--use-elseif</code> compiler option can be used to emit <code>elseif</code> instead when <code>else if</code> is found.
+            Use <code>else if</code> in Pratphall which will translate to <code>elseif</code> in PHP by default. The <code>--use-else-if</code> compiler option can be used to emit <code>else if</code> instead.
           </dd>
           <dt>
             <code>if():</code>, <code>elseif:</code>, <code>else:</code>, <code>endif;</code>, <code>while:</code>, <code>endwhile;</code>, <code>for:</code>, <code>endfor;</code>, <code>foreach:</code>, <code>endforeach;</code>, <code>switch:</code>, <code>endswitch;</code>
@@ -684,7 +699,7 @@ for ($i = 0; $i &lt; count($lines); $i++) {
   for ($j = 0; $j &lt; count($words); $j++) {
       $word = $words[$j];
       if ($word == 'end') goto done;
-      else if ($word == 'nextfile') goto again;
+      elseif ($word == 'nextfile') goto again;
       else echo('Word: ' . $word . "\n");
   }
 }
@@ -936,7 +951,7 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
             <strong>abstract</strong> - No abstract members or classes are supported. There is no equivalent. (future possibility, see <a href="http://typescript.codeplex.com/workitem/395">TS-395</a> or maybe find some other way w/ function sigs in classes)
           </li>
           <li>
-            <strong>class constants</strong> - The closest you can get is public static properties. To interoperate with existing constants, you may use <code>Pct.const</code>. Also, you may use the <code>--all-caps-consts</code> compiler option to assume all uppercase references AND definitions of public static properties are constants. (future possibility, see <a href="http://typescript.codeplex.com/workitem/368">TS-368</a>)
+            <strong>class constants</strong> - By default in Pratphall, only completely capitalized properties are assumed constant. There is no way to create a property that is a constant that isn't completely capitalized and there is no way to create a property that is not a constant that is completely capitalized. For interoperating with existing code that violates the all-caps-are-consts rule, you must use <code>Pct.const</code> or <code>Pct.asVar</code> when referencing them. (future possibility, see <a href="http://typescript.codeplex.com/workitem/368">TS-368</a>)
           </li>
           <li>
             <strong>protected</strong> - There simply is no equivalent. When making ambient declarations to interoperate with existing PHP code, choose private or public depending on whether you plan to inherit. (future possibility, see <a href="http://typescript.codeplex.com/workitem/125">TS-125</a>)
@@ -1234,7 +1249,7 @@ printWeather((object)[
         External module references that use <code>import mod = module('modname')</code> format cause a compiler warning and are ignored for now. Use of the export feature to share items amongst modules is strictly a compile-time feature and is not emitted to PHP.
       </p>
       <p>
-        If you must reference code in another file, you can use <code>///&lt;reference path="PATH" /&gt;</code>. It is common practice to reference a file that might just be full of references to the other files in the project. This is just a compile-time reference unless both <code>--no-organize</code> and <code>--require-references</code> are set as compiler options. Note, unless <code>--no-composer</code> is present, the Composer autoloader will be loaded at the top.
+        If you must reference code in another file, you can use <code>///&lt;reference path="PATH" /&gt;</code>. It is common practice to reference a file that might just be full of references to the other files in the project. This is just a compile-time reference unless both <code>--no-organize</code> and <code>--require-references</code> are set as compiler options.
       </p>
       <p>
         Different compiler options affect how the files are outputted. Below are descriptions of the options and output PHP examples based on these two files:
@@ -1260,7 +1275,7 @@ a.causeErr();</code></pre>
         <dl>
           <dt>default</dt>
           <dd>
-            By default, all classes and interfaces are written into their own file according to <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0</a>. This means that except for the initial file passed to the compiler, no other files may have any top-level vars/functions or be in the global namespace. Also, unless <code>--no-composer</code> is present, the Composer autoloader will be loaded at the top.
+            By default, all classes and interfaces are written into their own file according to <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0</a>. This means that except for the initial file passed to the compiler, no other files may have any top-level vars/functions or be in the global namespace.
             <pre><code class="php">//MyModule/MyIface.php
 namespace MyModule;
 
@@ -1277,7 +1292,6 @@ class MyClass implements MyModule\MyIface
 }
 
 //file2.php
-require('vendor/autoload.php');
 use MyModule\Sub;
 $a = new Sub\MyClass();
 $a->causeErr();</code></pre>
@@ -1287,7 +1301,6 @@ $a->causeErr();</code></pre>
             When this option is set, all emitted PHP files are the same name as the Pratphall source files (.ts files) but with PHP extensions. This cannot be used with <code>--single</code> since that option basically includes this option. This option allows top-level code in any file and allows any file to operate in the global namespace. This option is best used in conjunction with <code>--require-references</code>. When that option is set, the <code>///&lt;reference path="PATH" /&gt;</code> references become <code>require_once</code> calls in PHP.
             <pre><code class="php">//file1.php
 namespace MyModule {
-    require('vendor/autoload.php');
 
     interface MyIface {
     }
@@ -1314,7 +1327,6 @@ $a->causeErr();</code></pre>
             When this option is set, all Pratphall code is emitted to a single PHP file. Like the default, this means that except for the initial file passed to the compiler, no other files may have any top-level vars/functions. However, any file can have contents in the global namespace. This cannot be used with <code>--no-organize</code>.
             <pre><code class="php">//file2.php
 namespace MyModule {
-    require('vendor/autoload.php');
 
     interface MyIface {
     }
@@ -1343,9 +1355,138 @@ namespace {
       <span class="bookmark" id="Manual-Metaprogramming"></span>
       <h3 class="para-link">Metaprogramming <a href="#Manual-Metaprogramming">&nbsp;&para;</a></h3>
 
-      TODO
+      <span class="bookmark" id="Manual-Metaprogramming-Overview"></span>
+      <h4 class="para-link">Overview <a href="#Manual-Metaprogramming-Overview">&nbsp;&para;</a></h3>
+      <p>
+        Pratphall includes the ability to write compile-time extensions that can emit PHP code, validate input, or do anything else. They are written in TypeScript (not Pratphall) and run during compilation in nodejs.
+      </p>
+      <p>
+        Extensions utilize the AST structure built in to the TypeScript code base. The most common use of extensions is to emit PHP that isn't available in Pratphall. In fact, all of the <code>Pct</code> features are implemented as extensions and can be seen in the Pratphall source in the src/ext folder. For example, here is the extension source that turns <code>toString</code> calls in Pratphall to <code>strval</code> calls in PHP:
+      </p>
+      <pre><code class="pratphall">///&lt;reference path='../pratphall.ts' />
 
-      <!-- TODO: more work -->
+module Pratphall {
+    import TS = TypeScript;
+
+    PhpEmitter.registerExtension({
+        name: 'Object.toString emitter',
+        description: 'Make it strval',
+        matcher: {
+            nodeType: [TS.NodeType.Call],
+            priority: 1,
+            propertyMatches: {
+                target: (value: TS.AST): bool => {
+                    return value instanceof TS.BinaryExpression &amp;&amp;
+                        value.nodeType == TS.NodeType.Dot &amp;&amp;
+                        (&lt;TS.BinaryExpression>value).operand2 instanceof TS.Identifier &amp;&amp;
+                        (&lt;TS.Identifier>(&lt;TS.BinaryExpression>value).operand2).text == 'toString';
+                }
+            }
+        },
+        emit: (ast: TS.CallExpression, emitter: PhpEmitter): bool => {
+            emitter.write('strval(').emit((&lt;TS.BinaryExpression>ast.target).operand1).write(')');
+            return true;
+        }
+    });
+}</code></pre>
+      <p>
+        There are several things to note here about the extension API. First, is the reference to pratphall.ts. This is just a directory above where this extension is. However, in your project where you may reference Pratphall locally in your package.json, it might be at node_modules/pratphall/src/pratphall.ts. Note, at the present extensions cannot reference other arbitrary TypeScript, it should all be self contained in the extension file.
+      </p>
+      <p>
+        Next, this extension happens to be in the Pratphall module, but yours can be in any. The PhpEmitter class has a static method called register extension that takes a single object. This object must have a name, a description, a matcher object, and an emit function. The name and description are unused currently, but provide metadata about the extension.
+      </p>
+      <p>
+        The matcher is an object that matches AST so the emitter knows when to invoke the extension. The nodeType property is an array of node types this extension accepts. You will have to reference the TypeScript source code to see what these node types are. The priority property is a numeric value which defines the order in which the extension is executed. The higher the priority, the earlier it will be executed. All Pratphall extensions use a priority of 1. Finally there is the propertyMatches property. This property is simply a collection of functions bound to names of properties on the AST object you are targeting. The function will be called with that property as the parameter and you must return true for it to be handled. In the above example, this checks that it is a dotted binary expression whose right hand side is to toString function (e.g. something.toString).
+      </p>
+      <p>
+        The emit function accepts the AST and the PHP emitter as parameters. Again, you may have to look at the TypeScript and Pratphall source to understand these. The emitter offers several functions to help emit PHP. If the function returns true, no more extensions for this AST node will be executed. If it returns false, other extensions down the priority chain will be executed. If no extensions match an AST node, it is emitted normally.
+      </p>
+      <p>
+
+      <span class="bookmark" id="Manual-Metaprogramming-Example"></span>
+      <h4 class="para-link">Example <a href="#Manual-Metaprogramming-Example">&nbsp;&para;</a></h3>
+
+      <p>
+        Let's say you wanted to make an extension that ran some code that was output buffered and then flushed the buffer at the end. In PHP you do this with <code>ob_start</code> and <code>ob_end_flush</code>. On the Pratphall side, you will want to create a compile-time function to help with this. Then you can use it in Pratphall:
+      </p>
+      <pre><code class="pratphall">//create a module with a declared (ambient) function
+//NOTE: this could also be a class w/ a static function or anything
+module Output {
+    declare function bufferThenFlush(code: () => void);
+}
+
+//now use it
+Output.bufferThenFlush(() => {
+    //buffer this!
+    echo('blah');
+});</code></pre>
+      <p>
+        So now we must make an extension in TypeScript. Let's assume our extension is at src/myext.ts. Here is what it might look like:
+      </p>
+      <pre><code class="pratphall">///&lt;reference path='../node_modules/pratphall/src/pratphall.ts' />
+
+module MyExt {
+    import TS = TypeScript;
+
+    PhpEmitter.registerExtension({
+        name: 'Buffer.outputThenFlush',
+        description: 'Handle output-then-flush handler',
+        matcher: {
+            nodeType: [TS.NodeType.Call],
+            priority: 5,
+            propertyMatches: {
+                target: (value: TS.AST) => {
+
+                    //isDottedBinEx is a helper available to you to check a dotted binary expression
+                    return isDottedBinEx(value, 'Buffer', 'outputThenFlush');
+                }
+            }
+        },
+        emit: (ast: TS.CallExpression, emitter: PhpEmitter): bool => {
+
+            //first grab the argument
+            var arg = ast.arguments.members[0];
+
+            //let's make sure it's an anonymous function declaration
+            if (!(arg instanceof TS.FuncDecl) || !(&lt;TS.FuncDecl>arg).isAnonymousFn()) {
+                emitter.addError(arg, 'Argument must be an anonymous function');
+                //return true saying we've handled this (will skip emit)
+                return true;
+            }
+
+            //let's start the output buffering
+            emitter.write('ob_start();').newline();
+
+            //now we need to take the body of the function and emit it directly
+            var func = &lt;FuncDecl>arg;
+            //emitBlockStatements is a helper...otherwise, a normal emit() can be used for AST's
+            //the true means we want newlines before each statement
+            emitter.emitBlockStatements(func.bod, true);
+
+            //now end and flush
+            //notice we omit the ending semi-colon...that is because this was originally
+            //  a statement and all statements receive a semi-colon already; so after this is
+            //  written a semicolon and newline is automatically added just like if this extension
+            //  was never executed
+            emitter.newline().newline().write('ob_end_flush()');
+
+            //return true to say we've handled it
+            return true;
+        }
+    });
+}</code></pre>
+      <p>
+        That's all there is to it. Now when running ppc, you can pass <code>--ext src/myext.ts</code> and the code that used the ambient function will look like this.
+      </p>
+      <pre><code class="pratphall">ob_start();
+
+//buffer this!
+echo('blah');
+
+ob_end_flush();</code></pre>
+      <p>
+        Extensions are also a good way to write validators. Simply do your checks and add errors or warnings in the emit function. You can return false on errors to skip emitting or true to continue. There are many examples of extensions in the Pratphall source at src/ext. Even <a href="http://github.com/cretz/dust-php">dust-php</a> uses an extension in the test/ folder that takes some JSON and makes test cases out of it. It is a complex subject, but working through a few will make it easier to understand.
+      </p>
 
       <span class="bookmark" id="Manual-Faq"></span>
       <h3 class="para-link">FAQ <a href="#Manual-Faq">&nbsp;&para;</a></h3>
@@ -1424,6 +1565,11 @@ namespace {
         <pre>node_modules/.bin/jake test</pre>
       </p>
 
+      <span class="bookmark" id="Manual-Appendices-Configuration"></span>
+      <h4 class="para-link">Configuration Files <a href="#Manual-Appendices-Configuration">&nbsp;&para;</a></h4>
+
+      <p>TODO</p>
+
       <span class="bookmark" id="Manual-Appendices-Gotchas"></span>
       <h4 class="para-link">Gotchas <a href="#Manual-Appendices-Gotchas">&nbsp;&para;</a></h4>
       <p>
@@ -1446,8 +1592,8 @@ namespace {
         <dd>
           Even though <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/charCodeAt">String.charCodeAt</a> supports unicode in JS, we only use <a href="http://php.net/manual/en/function.ord.php">ord</a>. Please handle unicode needs separately.
         </dd>
-        <dt><code>005: String.indexOf emits more than just strpos</code></dt>
-        <dd>Due to the fact the JS one returns -1, the emitter emulates that</dd>
+        <dt><code>005: String.indexOf emits more than just strpos.</code></dt>
+        <dd>Due to the fact the JS one returns -1, the emitter emulates that. To avoid this, just call strpos directly.</dd>
         <dt><code>006: Regular expressions are flat out unsupported</code></dt>
         <dd>JS and PHP's regular expression syntaxes differ too much to support right now</dd>
         <dt><code>007: String.replace doesn't support callback</code></dt>
@@ -1501,7 +1647,7 @@ namespace {
         These are some wishlist items that could be implemented in the future.
         <ul>
           <li>
-            Emit exact PHPDoc based on the <a href="https://github.com/phpDocumentor/phpDocumentor2/blob/master/docs/PSR.md">PSR</a>. Pending TypeScript 0.8.2 to formalize JSDoc-to-PHPDoc.
+            Emit exact PHPDoc based on the <a href="https://github.com/phpDocumentor/phpDocumentor2/blob/master/docs/PSR.md">PSR</a>.
           </li>
           <li>
             Optionally emit runtime type checks at the beginning of functions and/or results from functions.
@@ -1511,9 +1657,6 @@ namespace {
           </li>
           <li>
             Create a proxy to proxy Xdebug protocol to other debugging protocols used in common IDE's.
-          </li>
-          <li>
-            Add <code>--watch</code> option to watch for file changes and compile automatically when changed.
           </li>
           <li>
             A macro syntax that is inline.
@@ -1542,6 +1685,9 @@ namespace {
           <li>Need to stream output and stop using so much RAM</li>
           <li>
             In Pratphall, type-hinted parameters w/out default null can still accept null. This needs to be a compiler error since PHP does not support it.
+          </li>
+          <li>
+            Return inside forEach closure needs to become a continue. Also need a break construct.
           </li>
         </ul>
       </p>

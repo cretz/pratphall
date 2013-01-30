@@ -2,7 +2,7 @@
 <html>
   <head lang="en">
     <title>Pratphall</title>
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet" />
+    <link href="bootstrap.min.css" rel="stylesheet" />
     <link href="pratphall.css" rel="stylesheet" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   </head>
@@ -74,7 +74,7 @@
       <h3>Example</h3>
       Here is an example of Pratphall compiling to PHP
       <div class="code">
-        <pre><code class="pratphall">//normal array
+        <pre><code data-language="javascript">//normal array
 var arr = [1, 2, 3, 4, 5];
 
 //loop and print
@@ -98,7 +98,7 @@ printInfo(info: SampleContract) => {
 
 //type inferred matching
 printInfo({ requiredProperty: 'required val' });</code></pre>
-        <pre><code class="php">//normal array
+        <pre><code data-language="php">//normal array
 $arr = [1, 2, 3, 4, 5];
 
 //loop and print
@@ -139,7 +139,7 @@ printInfo((object)[ 'requiredProperty' => 'required val' ]);</code></pre>
       <span class="bookmark" id="GettingStarted-Compiling"></span>
       <h4 class="para-link">Compiling <a href="#GettingStarted-Compiling">&nbsp;&para;</a></h4>
       <p>Write the following simple script and save it as sayHello.ts:</p>
-      <pre><code class="pratphall">function sayHello(subject: string) {
+      <pre><code data-language="javascript">function sayHello(subject: string) {
     return 'Hello, ' + subject;
 }
 
@@ -149,7 +149,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
       <p>Now, to compile to PHP, run ppc like so:</p>
       <pre>ppc sayHello.ts</pre>
       <p>This will create a sayHello.php file that looks like this:</p>
-      <pre><code class="php">function sayHello($subject) {
+      <pre><code data-language="php">function sayHello($subject) {
     return 'Hello, ' . $subject;
 }
 
@@ -157,7 +157,7 @@ $theSubject = 'World';
 
 echo(sayHello(theSubject) . "\n");</code></pre>
       <p>Running this with PHP will output what you expect. However, if you tried to compile this:</p>
-      <pre><code class="pratphall">function sayHello(subject: string) {
+      <pre><code data-language="javascript">function sayHello(subject: string) {
     return 'Hello, ' + subject;
 }
 
@@ -211,7 +211,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
       <h3 class="para-link">Usage <a href="#Manual-Usage">&nbsp;&para;</a></h3>
       <pre>ppc [options] FILE...</pre>
       <p>Options:</p>
-      <dl>
+      <dl class="heading-list">
         <dt><code>-c</code>, <code>--config FILE</code></dt>
         <dd>
           Use a JSON file for configuration options. Note values in the config file override command line options before this option and are overridden by command line options after this option. Read about <a href="#Manual-Appendices-Configuration">Configuration files</a> below.
@@ -239,7 +239,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         <dt><code>--no-organize</code></dt>
         <dd>When set, this will not organize source files into the <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0</a> autoloader-acceptable filesystem structure</dd>
         <dt><code>--no-php-lib</code></dt>
-        <dd>Exclude the php.d.ts PHP definitions and exclude the ext/all.ts PHP extensions</dd>
+        <dd>Exclude the php.d.ts PHP definitions</dd>
         <dt><code>--no-type-hint</code></dt>
         <dd>Do not type hint emitted functions in any way</dd>
         <dt><code>-o</code>, <code>--out PATH</code></dt>
@@ -258,7 +258,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         <dd>Log extra information on compile</dd>
         <dt><code>-w</code>, <code>--watch</code></dt>
         <dd>Re-compile all files on any file changes (including referenced files). Note, if not using <code>--single</code> this means files and directories created during compilation may be deleted on later compilation. Files are not overwritten if their output contents didn't change. Finally note this does not always work over remotely mounted filesystems.</dd>
-        <dt><code>--watch-debounce-ms</code></dt>
+        <dt><code>--watch-debounce-ms MS</code></dt>
         <dd>The number of milliseconds to wait for file change events to stop before re-compilation. The default is 1500 (1.5 seconds).</dd>
       </dl>
 
@@ -279,7 +279,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
       </p>
       <p>Normal JavaScript string functions are translated to common PHP idioms with some <a href="#Manual-Appendices-Gotchas">gotchas</a>.</p>
       <div class="code">
-        <pre><code class="pratphall">//will be converted to double quotes
+        <pre><code data-language="javascript">//will be converted to double quotes
 var a = 'My\nNewline\nString$escaped{$interpolation}';
 
 //concatenation
@@ -293,7 +293,7 @@ var d = 12 + c;
 var_dump(b.length);
 var_dump(b.charAt(0));
 var_dump(b.split(' '));</code></pre>
-        <pre><code class="php">//will be converted to double quotes
+        <pre><code data-language="php">//will be converted to double quotes
 $a = "My\nNewline\nString\$escaped{\$interpolation}";
 
 //concatenation
@@ -327,7 +327,7 @@ var_dump(explode(' ', $b));</code></pre>
         Normal JavaScript array functions are translated to common PHP idioms with a few <a href="#Manual-Appendices-Gotchas">gotchas</a>.
       </p>
       <div class="code">
-        <pre><code class="pratphall">//regular array
+        <pre><code data-language="javascript">//regular array
 var a = [1, 2, 3];
 
 //some calls
@@ -349,7 +349,7 @@ var c = b.map((value: any) => {
 });
 c['prop3'] = 15;
 var_dump(c.length);</code></pre>
-        <pre><code class="php">//regular array
+        <pre><code data-language="php">//regular array
 $a = [1, 2, 3];
 
 //some calls
@@ -379,13 +379,13 @@ var_dump(count($c));</code></pre>
         Objects in Pratphall and PHP work very similarly. Anonymous object literals become an stdClass via cast. Note, if you have a closure as an object property, it cannot necessarily be invoked like a method in PHP, so Pratphall has to do special handling (see <a href="#Manual-Appendices-Gotchas">GOTCHA-001</a>). TypeScript property accessors are not currently supported.
       </p>
       <div class="code">
-        <pre><code class="pratphall">var obj = {
+        <pre><code data-language="javascript">var obj = {
     num: 12,
     arr: ['a', 'b', 'c'],
     obj: { innerNum: 12 },
     func: (value: string) => { echo('Value: ' + value); }
 };</code></pre>
-        <pre><code class="php">$obj = (object)[
+        <pre><code data-language="php">$obj = (object)[
     'num' => 12,
     'arr' => ['a', 'b', 'c'],
     'obj' => (object)[ 'innerNum' => 12 ],
@@ -407,14 +407,14 @@ var_dump(count($c));</code></pre>
         Functions isset and empty are used like any other PHP function in Pratphall. Since these are language constructs, the values don't necessarily have to exist like they do in JS.
       </p>
       <div class="code">
-        <pre><code class="pratphall">//normal null
+        <pre><code data-language="javascript">//normal null
 var a = { prop1: null };
 echo('a.prop1 null? ' + (a.prop1 == null));
 
 //undefined
 delete a.prop1;
 echo('a.prop1 set? ' + (typeof a.prop1 == 'undefined'));</code></pre>
-        <pre><code class="php">//normal null
+        <pre><code data-language="php">//normal null
 $a = (object)[ 'prop1' => null ];
 echo('a.prop1 null? ' . ($a->prop1 == null));
 
@@ -429,7 +429,7 @@ echo('a.prop1 set? ' . (!array_key_exists('prop1', $a)));</code></pre>
         Pratphall supports full typed closure type definitions instead of just the callable type hint in PHP. Even methods of objects can be passed around like normal.
       </p>
       <div class="code">
-        <pre><code class="pratphall">class Foo {
+        <pre><code data-language="javascript">class Foo {
     bar(value: string) { echo('Value: ' + value); }
 }
 
@@ -437,7 +437,7 @@ var foo = new Foo();
 var f = foo.bar;
 //call
 f('test');</code></pre>
-        <pre><code class="php">class Foo {
+        <pre><code data-language="php">class Foo {
     public function bar($value) { echo('Value: ' . $value); }
 }
 
@@ -465,7 +465,7 @@ $f('test');</code></pre>
         To cast a value at runtime, it is always preferred to use the built-in PHP methods such as `strval`, `intval`, etc. If you must have a literal cast, you can use the `Pct.cast*` functions.
       </p>
       <div class="code">
-        <pre><code class="pratphall">function printNumber(value: number) {
+        <pre><code data-language="javascript">function printNumber(value: number) {
     echo('Number: ' + value + '\n');
 }
 
@@ -485,7 +485,7 @@ if (&lt;bool>&lt;any>strpos('team', 'I') === false) {
 if (Pct.isFalse(strpos('team', 'I'))) {
     echo('There is no "I" in "team"\n');
 }</code></pre>
-        <pre><code class="php">function printNumber($value) {
+        <pre><code data-language="php">function printNumber($value) {
     echo('Number: ' . $value . "\n");
 }
 
@@ -517,13 +517,13 @@ if (strpos('team', 'I') === false) {
         All variables in Pratphall are defined somewhere. If they are declared globally and are used in a function, the <code>global</code> keyword is applied in the translated PHP. There is no Pratphall equivalent to the static variable in PHP (not to be confused with the static property/function of a class).
       </p>
       <div class="code">
-        <pre><code class="pratphall">var a = 'myGlobalString';
+        <pre><code data-language="javascript">var a = 'myGlobalString';
 
 function printGlobalString() {
     /*blank space here for clarity*/
     echo('Global string: ' + a);
 }</code></pre>
-        <pre><code class="php">$a = 'myGlobalString';
+        <pre><code data-language="php">$a = 'myGlobalString';
 
 function printGlobalString() {
     global $a;
@@ -534,9 +534,9 @@ function printGlobalString() {
         "Variable variables" are not supported in Pratphall in any way. The best you can do is access an object's property by its string-based name using the bracket syntax.
       </p>
       <div class="code">
-        <pre><code class="pratphall">var obj = { child: { grandchild: 5 }};
+        <pre><code data-language="javascript">var obj = { child: { grandchild: 5 }};
 echo('Grandchild val: ' + obj.child['grand' + 'child']);</code></pre>
-        <pre><code class="php">$obj = (object)[ 'child' => (object)[ 'grandchild' => 5 ]];
+        <pre><code data-language="php">$obj = (object)[ 'child' => (object)[ 'grandchild' => 5 ]];
 echo('Grandchild val: ' . $obj->child->{'grand' . 'child'});</code></pre>
       </div>
 
@@ -550,14 +550,14 @@ echo('Grandchild val: ' . $obj->child->{'grand' . 'child'});</code></pre>
       <h4 class="para-link">Operators <a href="#Manual-Syntax-Operators">&nbsp;&para;</a></h4>
       <p>
         All operators work the same in Pratphall and PHP with the following exceptions:
-        <dl>
+        <dl class="heading-list">
           <dt><code>clone</code></dt>
           <dd>
             The Pratphall language has no keyword for clone. You can get the same effect by using <code>Pct.clone</code>
             <div class="code-nested">
-              <pre><code class="pratphall">var obj = { foo: 'bar' };
+              <pre><code data-language="javascript">var obj = { foo: 'bar' };
 var copy = Pct.clone(obj);</code></pre>
-              <pre><code class="php">$obj = (object)[ 'foo' => 'bar' ];
+              <pre><code data-language="php">$obj = (object)[ 'foo' => 'bar' ];
 $copy = clone $obj;</code></pre>
             </div>
           </dd>
@@ -579,8 +579,8 @@ $copy = clone $obj;</code></pre>
           <dd>
             The <code>@</code> symbol may not be used to swallow errors in Pratphall. If you must swallow errors, use <code>Pct.swallowErrors</code> (unwieldy name on purpose) which will use the <code>@</code> sign.
             <div class="code-nested">
-              <pre><code class="pratphall">var f = Pct.swallowErrors(file('not-here.txt'));</code></pre>
-              <pre><code class="php">$f = @file('not-here.txt');</code></pre>
+              <pre><code data-language="javascript">var f = Pct.swallowErrors(file('not-here.txt'));</code></pre>
+              <pre><code data-language="php">$f = @file('not-here.txt');</code></pre>
             </div>
           </dd>
           <dt><code>`</code></dt>
@@ -589,8 +589,8 @@ $copy = clone $obj;</code></pre>
           <dd>
             Addition with numbers works normally. Unioning arrays, if you must, is done with <code>Pct.unionArray</code>. Note, this comes back with <code>any[]</code> if you are using an indexed array, so please cast immediately back to what you expect it to be.
             <div class="code-nested">
-              <pre><code class="pratphall">var a = &lt;number[]>Pct.unionArray([1, 2, 3], [4, 5, 6, 7]);</code></pre>
-              <pre><code class="php">$a = [1, 2, 3] + [4, 5, 6, 7];</code></pre>
+              <pre><code data-language="javascript">var a = &lt;number[]>Pct.unionArray([1, 2, 3], [4, 5, 6, 7]);</code></pre>
+              <pre><code data-language="php">$a = [1, 2, 3] + [4, 5, 6, 7];</code></pre>
             </div>
           </dd>
           <dt><code>==</code>, <code>!=</code>, <code>===</code></dt>
@@ -601,10 +601,10 @@ $copy = clone $obj;</code></pre>
           <dd>
             This check will work just fine in Pratphall when the right hand side is the literal name of a class. If the right hand side is a string, interface, or some other expression you must use <code>Pct.isInstance</code>. Of course, <code>is_a</code> may be also be used as part of the PHP standard library.
             <div class="code-nested">
-              <pre><code class="pratphall">class Foo { }
+              <pre><code data-language="javascript">class Foo { }
 var a = new Foo();
 var b = Pct.isInstance(a, 'Foo');</code></pre>
-              <pre><code class="php">class Foo { }
+              <pre><code data-language="php">class Foo { }
 $a = new Foo();
 $b = a instanceof 'Foo';</code></pre>
             </div>
@@ -620,7 +620,7 @@ $b = a instanceof 'Foo';</code></pre>
       <h4 class="para-link">Control Structures <a href="#Manual-Syntax-ControlStructures">&nbsp;&para;</a></h4>
       <p>
         All control structures work the same in Pratphall and PHP with the following exceptions:
-        <dl>
+        <dl class="heading-list">
           <dt><code>elseif</code></dt>
           <dd>
             Use <code>else if</code> in Pratphall which will translate to <code>elseif</code> in PHP by default. The <code>--use-else-if</code> compiler option can be used to emit <code>else if</code> instead.
@@ -633,11 +633,11 @@ $b = a instanceof 'Foo';</code></pre>
           <dd>
             This JS concept isn't present in any way in PHP and isn't worth the significant runtime code to support accurately. If this is seen, a compiler warning is issued and it's translated to a foreach of <code>array_keys</code> of an array cast which is not the exact same thing. These loops are discouraged.
             <div class="code-nested">
-              <pre><code class="pratphall">var a = { b: 1, c: 2 };
+              <pre><code data-language="javascript">var a = { b: 1, c: 2 };
 for (b in a) {
     echo('a[' + b + ']: ' + a[b] + '\n');
 }</code></pre>
-              <pre><code class="php">$a = (object)[ 'b' => 1, 'c' => 2 ];
+              <pre><code data-language="php">$a = (object)[ 'b' => 1, 'c' => 2 ];
 foreach (array_keys($a) as $b) {
     echo('a[' . $b . ']: ' . $a->{$b} . "\n");
 }</code></pre>
@@ -647,7 +647,7 @@ foreach (array_keys($a) as $b) {
           <dd>
             This is represented in Pratphall by the <code>forEach</code> function that can be called on an iterable object or an array. If the function passed to <code>forEach</code> is an inline closure, it will be translated directly. Otherwise, it will be translated to an <code>array_walk</code> call.
             <div class="code-nested">
-              <pre><code class="pratphall">var a = Pct.newAssocArray({ b: 1, c: 2 });
+              <pre><code data-language="javascript">var a = Pct.newAssocArray({ b: 1, c: 2 });
 
 //regular
 a.forEach((value: number, index: string) => {
@@ -659,7 +659,7 @@ var d = (value: number, index: string) => {
     echo('a[' + index + ']: ' + value + '\n');
 };
 a.forEach(d);</code></pre>
-              <pre><code class="php">$a = (object)[ 'b' => 1, 'c' => 2 ];
+              <pre><code data-language="php">$a = (object)[ 'b' => 1, 'c' => 2 ];
 
 //regular
 foreach ($a as $index => $value) {
@@ -677,7 +677,7 @@ array_walk($a, $d);</code></pre>
           <dd>
             In Pratphall, break and continue statements are optionally associated with labels instead of a number. Normal breaks and continues in Pratphall work as normal. When a label is defined though, the construct becomes a goto. There is no equivalent for PHP's numbered break and continue statements. For example, `outside: while (a) { while (b) { break outside; } }` translates to `outside: while ($a) { while ($b) { goto outside; } }`.
             <div class="code-nested">
-              <pre><code class="pratphall">var counter = 0;
+              <pre><code data-language="javascript">var counter = 0;
 again:
 var lines = file('file' + (++counter) + '.txt');
 for (var i = 0; i &lt; lines.length; i++) {
@@ -691,7 +691,7 @@ for (var i = 0; i &lt; lines.length; i++) {
 }
 done:
 echo('Done!\n');</code></pre>
-              <pre><code class="php">$counter = 0;
+              <pre><code data-language="php">$counter = 0;
 again:
 $lines = file('file' + (++$counter) + '.txt');
 for ($i = 0; $i &lt; count($lines); $i++) {
@@ -737,7 +737,7 @@ echo("Done!\n");</code></pre>
         To return by reference, the function name must start with a dollar sign. Also, to receive the returned result as a reference, you must call <code>Pct.byRef</code>.
       </p>
       <div class="code">
-        <pre><code class="pratphall">//assign
+        <pre><code data-language="javascript">//assign
 var a = 'hey';
 var b = Pct.byRef(a);
 //pass
@@ -754,7 +754,7 @@ function $getReference(val: { d: number; }) {
 var e = Pct.byRef($getReference(c));
 e = 20;
 echo('Changed? ' + (c.d == 20));</code></pre>
-        <pre><code class="php">//assign
+        <pre><code data-language="php">//assign
 $a = 'hey';
 $b = &amp;$a;
 //pass
@@ -797,7 +797,7 @@ echo('Changed? ' . ($c->d == 20));</code></pre>
         When the <code>arguments</code> array is referenced in a function, it is translated to PHP by using <code>func_get_args</code> (see <a href="#Manual-Appendices-Gotchas">GOTCHA-003</a> about re-defining arguments). When a rest parameter is used as a parameter in a function, it is derived from <code>func_get_args</code>
       </p>
       <div class="code">
-        <pre><code class="pratphall">function myprint(one: string, ...args: any[]) {
+        <pre><code data-language="javascript">function myprint(one: string, ...args: any[]) {
     /* left blank to make comparison easier */
 
     echo('First: ' + arguments[0] + '\n');
@@ -809,7 +809,7 @@ echo('Changed? ' . ($c->d == 20));</code></pre>
 }
 
 myprint('foo', true, 13.5, 'bar');</code></pre>
-        <pre><code class="php">function myprint($one) {
+        <pre><code data-language="php">function myprint($one) {
     $arguments = func_get_args();
     $args = array_slice(func_get_args(), 1);
     echo('First: ' . $arguments[0] + "\n");
@@ -832,7 +832,7 @@ myprint('foo', true, 13.5, 'bar');</code></pre>
         Optional parameters in Pratphall without a default value are assumed to be null. If the default parameter is specified and it is not a constant, scalar value, it will be set at the beginning of the function (this practice is usually discouraged).
       </p>
       <div class="code">
-        <pre><code class="pratphall">function words(prefix?: bool, file = file('default.txt')) {
+        <pre><code data-language="javascript">function words(prefix?: bool, file = file('default.txt')) {
     /* left blank to make comparison easier */
     file.forEach((line: string) => {
         line.split(' ').forEach((word: string) => {
@@ -844,9 +844,9 @@ myprint('foo', true, 13.5, 'bar');</code></pre>
 
 //reads default.txt and prints w/out prefix
 printWords();
-//reads myfile.txt and prints w/ prefix
+//uses array and prints w/ prefix
 printWords(true, ['foo bar', 'fu bar']);</code></pre>
-        <pre><code class="php">function words($prefix = false, $file = null) {
+        <pre><code data-language="php">function words($prefix = false, $file = null) {
     if ($file === null) $file = file('default.txt');
     foreach ($file as $line) {
         foreach (explode(' ', $line) as $word) {
@@ -870,12 +870,12 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
         PHP's parser supports nested functions, but it places them in the global scope. Pratphall does NOT support these nested functions. When Pratphall encounters a nested function, it treats it like an anonymous function assigned to the variable of the same name. This means the compiler will error if a variable and nested function appear in the same function with the same name.
       </p>
       <div class="code">
-        <pre><code class="pratphall">function func() {
+        <pre><code data-language="javascript">function func() {
     var anonFunc = (value: string) => { echo(value); }
     var anonFunc2 = function (value: string) { echo(value); }
     function nestedFunc(value: string) { echo(value); }
 }</code></pre>
-        <pre><code class="php">function func() {
+        <pre><code data-language="php">function func() {
     $anonFunc = function ($value) { echo($value); };
     $anonFunc2 = function ($value) { echo($value); };
     $nestedFunc = function ($value) { echo($value); };
@@ -888,7 +888,7 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
         Pratphall's (ahem, JS's) native try/catch syntax is much more limited than PHP's. It is supported and will even emit PHP 5.5 finally statements. You can compile-time cast the catch variable or do an instanceof check.
       </p>
       <div class="code">
-        <pre><code class="pratphall">try {
+        <pre><code data-language="javascript">try {
     new ReflectionClass('NonExistentClass');
 } catch (err) {
     if (err instanceof ReflectionException) {
@@ -899,7 +899,7 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
 } finally {
     echo('This runs always in PHP 5.5');
 }</code></pre>
-        <pre><code class="php">try {
+        <pre><code data-language="php">try {
     new ReflectionClass('NonExistentClass');
 } catch (Exception $err) {
     if ($err instanceof ReflectionException) {
@@ -915,7 +915,7 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
         Pratphall does include compile-time helpers to support the full try/catch syntax via <code>Pct.try</code>. It is an object literal w/ a try function, an optional catch function (or array of functions), and an optional finally function. If neither a catch nor finally is supplied, it assumes an empty catch statement.
       </p>
       <div class="code">
-        <pre><code class="pratphall">Pct.try({
+        <pre><code data-language="javascript">Pct.try({
     try: () => {
         new ReflectionClass('NonExistentClass');
     },
@@ -931,12 +931,12 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
         echo('This runs always in PHP 5.5');
     }
 });</code></pre>
-        <pre><code class="php">try {
+        <pre><code data-language="php">try {
     new ReflectionClass('NonExistentClass');
 } catch (ReflectionException $err) {
-    echo('Not found: ' . $err.getMessage());
+    echo('Not found: ' . $err->getMessage());
 } catch (Exception $err) {
-    echo('Other: ' . $err.getMessage());
+    echo('Other: ' . $err->getMessage());
 } finally {
     echo('This runs always in PHP 5.5');
 }</code></pre>
@@ -1004,12 +1004,12 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
         </ul>
       </p>
       <div class="code">
-        <pre><code class="pratphall">//spacing added below for clarity
+        <pre><code data-language="javascript">//spacing added below for clarity
 interface Iface {
 
     numberProperty: number;
 
-    print(param: string);
+    write(param: string);
 
     notRequired?(...params: any[]): bool;
 }
@@ -1041,7 +1041,7 @@ class MyClass extends BaseClass implements Iface {
 
     private secretFunction() { echo('Hello\n'); }
 
-    print(param: string) {
+    write(param: string) {
         echo('Value: ' + param + '\n');
     }
 
@@ -1064,7 +1064,7 @@ echo('Instance? ' + (myClass instanceof Iface) + '\n');
 //call static
 var a = MyClass.getFileContents();
 //call normal
-myClass.print('Hey');
+myClass.write('Hey');
 //invoke
 var b = myClass.__invoke(20);
 var c = myClass.__invoke('15');
@@ -1073,12 +1073,12 @@ var d = &lt;number&gt;(&lt;any&gt;myClass).someProp;
 (&lt;any&gt;myClass).someNewProp = 20;
 //string version
 var e = myClass.toString();</code></pre>
-        <pre><code class="php">//spacing added below for clarity
+        <pre><code data-language="php">//spacing added below for clarity
 interface Iface {
 
 
 
-    public function print($param);
+    public function write($param);
 
 
 }
@@ -1110,7 +1110,7 @@ class MyClass extends BaseClass implements Iface {
 
     private function secretFunction() { echo("Hello\n"); }
 
-    public function print($param) {
+    public function write($param) {
         echo('Value: ' . $param . "\n");
     }
 
@@ -1133,7 +1133,7 @@ echo('Instance? ' . ($myClass instanceof Iface) . "\n");
 //call static
 $a = MyClass::getFileContents();
 //call normal
-$myClass->print('Hey');
+$myClass->write('Hey');
 //invoke
 $b = $myClass(20);
 $c = $myClass('15');
@@ -1149,7 +1149,7 @@ $e = strval($myClass);</code></pre>
       <p>
         Ambient class, interface, variable, and function declarations are not emitted with the PHP output. They are best suited for describing external code. To make a variable, class, or function ambient, simple use the <code>declare</code> keyword before it. To make an interface ambient, make the interface explicitly extend <code>Pct.Ambient</code>. Another way to make all of these ambient is to simply place them in a declaration file (which is a file that has the <code>.d.ts</code> extension). For example, here are the contents of <code>json.d.ts</code> which describes the <a href="http://php.net/manual/en/book.json.php">JSON</a> library:
       </p>
-      <pre><code class="pratphall">var JSON_ERROR_CTRL_CHAR: number;
+      <pre><code data-language="javascript">var JSON_ERROR_CTRL_CHAR: number;
 var JSON_ERROR_DEPTH: number;
 var JSON_ERROR_NONE: number;
 var JSON_ERROR_STATE_MISMATCH: number;
@@ -1178,7 +1178,7 @@ function json_last_error(): number;</code></pre>
         Since ambient types are still seen at runtime, they will be emitted as type hints. Compile-time declarations do not suffer from this. They are only there to enforce a certain contract and that's it. Only interfaces and classes can be marked compile-time only, and this is done by explicitly extending or implementing the <code>Pct.CompileTimeOnly</code> interface. Just because a super class/interface implements <code>Pct.CompileTimeOnly</code> doesn't mean it's children do, it must be explicitly stated.
       </p>
       <div class="code">
-        <pre><code class="pratphall">interface Location extends Pct.CompileTimeOnly {
+        <pre><code data-language="javascript">interface Location extends Pct.CompileTimeOnly {
     zip: string;
     city?: string;
 }
@@ -1190,7 +1190,7 @@ interface Weather extends Pct.CompileTimeOnly {
 
 function printWeather(value: Weather) {
     echo('It is ' + weather.temperature + ' in ');
-    if (property_exists(value, 'city') echo(value.city);
+    if (property_exists(value, 'city')) echo(value.city);
     else echo(value.zip);
 }
 
@@ -1205,7 +1205,7 @@ printWeather({
     location: {zip: '76020'},
     temperature: 88
 });</code></pre>
-        <pre><code class="php">
+        <pre><code data-language="php">
 
 
 
@@ -1217,7 +1217,7 @@ printWeather({
 
 function printWeather($value) {
     echo('It is' . $value->temperature . ' in ');
-    if (property_exists($value, 'city') echo($value->city);
+    if (property_exists($value, 'city')) echo($value->city);
     else echo($value->zip);
 }
 
@@ -1253,7 +1253,7 @@ printWeather((object)[
       </p>
       <p>
         Different compiler options affect how the files are outputted. Below are descriptions of the options and output PHP examples based on these two files:
-        <pre><code class="pratphall">//file1.ts
+        <pre><code data-language="javascript">//file1.ts
 module MyModule {
     interface MyIface {
     }
@@ -1272,11 +1272,11 @@ module MyModule {
 import Sub = MyModule.Sub;
 var a = new Sub.MyClass();
 a.causeErr();</code></pre>
-        <dl>
+        <dl class="heading-list">
           <dt>default</dt>
           <dd>
             By default, all classes and interfaces are written into their own file according to <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md">PSR-0</a>. This means that except for the initial file passed to the compiler, no other files may have any top-level vars/functions or be in the global namespace.
-            <pre><code class="php">//MyModule/MyIface.php
+            <pre><code data-language="php">//MyModule/MyIface.php
 namespace MyModule;
 
 interface MyIface {
@@ -1299,7 +1299,7 @@ $a->causeErr();</code></pre>
           <dt>with <code>--no-organize</code></dt>
           <dd>
             When this option is set, all emitted PHP files are the same name as the Pratphall source files (.ts files) but with PHP extensions. This cannot be used with <code>--single</code> since that option basically includes this option. This option allows top-level code in any file and allows any file to operate in the global namespace. This option is best used in conjunction with <code>--require-references</code>. When that option is set, the <code>///&lt;reference path="PATH" /&gt;</code> references become <code>require_once</code> calls in PHP.
-            <pre><code class="php">//file1.php
+            <pre><code data-language="php">//file1.php
 namespace MyModule {
 
     interface MyIface {
@@ -1325,7 +1325,7 @@ $a->causeErr();</code></pre>
           <dt>with <code>--single</code></dt>
           <dd>
             When this option is set, all Pratphall code is emitted to a single PHP file. Like the default, this means that except for the initial file passed to the compiler, no other files may have any top-level vars/functions. However, any file can have contents in the global namespace. This cannot be used with <code>--no-organize</code>.
-            <pre><code class="php">//file2.php
+            <pre><code data-language="php">//file2.php
 namespace MyModule {
 
     interface MyIface {
@@ -1363,7 +1363,7 @@ namespace {
       <p>
         Extensions utilize the AST structure built in to the TypeScript code base. The most common use of extensions is to emit PHP that isn't available in Pratphall. In fact, all of the <code>Pct</code> features are implemented as extensions and can be seen in the Pratphall source in the src/ext folder. For example, here is the extension source that turns <code>toString</code> calls in Pratphall to <code>strval</code> calls in PHP:
       </p>
-      <pre><code class="pratphall">///&lt;reference path='../pratphall.ts' />
+      <pre><code data-language="javascript">///&lt;reference path='../pratphall.ts' />
 
 module Pratphall {
     import TS = TypeScript;
@@ -1409,7 +1409,7 @@ module Pratphall {
       <p>
         Let's say you wanted to make an extension that ran some code that was output buffered and then flushed the buffer at the end. In PHP you do this with <code>ob_start</code> and <code>ob_end_flush</code>. On the Pratphall side, you will want to create a compile-time function to help with this. Then you can use it in Pratphall:
       </p>
-      <pre><code class="pratphall">//create a module with a declared (ambient) function
+      <pre><code data-language="javascript">//create a module with a declared (ambient) function
 //NOTE: this could also be a class w/ a static function or anything
 module Output {
     declare function bufferThenFlush(code: () => void);
@@ -1423,7 +1423,7 @@ Output.bufferThenFlush(() => {
       <p>
         So now we must make an extension in TypeScript. Let's assume our extension is at src/myext.ts. Here is what it might look like:
       </p>
-      <pre><code class="pratphall">///&lt;reference path='../node_modules/pratphall/src/pratphall.ts' />
+      <pre><code data-language="javascript">///&lt;reference path='../node_modules/pratphall/src/pratphall.ts' />
 
 module MyExt {
     import TS = TypeScript;
@@ -1478,7 +1478,7 @@ module MyExt {
       <p>
         That's all there is to it. Now when running ppc, you can pass <code>--ext src/myext.ts</code> and the code that used the ambient function will look like this.
       </p>
-      <pre><code class="pratphall">ob_start();
+      <pre><code data-language="javascript">ob_start();
 
 //buffer this!
 echo('blah');
@@ -1491,7 +1491,7 @@ ob_end_flush();</code></pre>
       <span class="bookmark" id="Manual-Faq"></span>
       <h3 class="para-link">FAQ <a href="#Manual-Faq">&nbsp;&para;</a></h3>
 
-      <dl>
+      <dl class="heading-list">
         <dt>This is neat, so I can convert my PHP programs to JavaScript/TypeScript? Can I convert my JavaScript/TypeScript programs to PHP?</dt>
         <dd>
           No and no (basically). The goal of this project is to provide a new language that emits PHP. Pratphall intentionally doesn't convert existing code because it would put too many constraints on the language's freedom and would require a significant runtime layer which is unacceptable.
@@ -1551,6 +1551,10 @@ ob_end_flush();</code></pre>
           </li>
         </ul>
       </p>
+      <p>
+        Despite the above, using Visual Studio is well worth it. Besides the refactoring and search capabilities, you also get intellisense:
+      </p>
+      <img src="intellisense.png" />
 
       <span class="bookmark" id="Manual-Appendices-Building"></span>
       <h4 class="para-link">Building From Source <a href="#Manual-Appendices-Building">&nbsp;&para;</a></h4>
@@ -1567,15 +1571,101 @@ ob_end_flush();</code></pre>
 
       <span class="bookmark" id="Manual-Appendices-Configuration"></span>
       <h4 class="para-link">Configuration Files <a href="#Manual-Appendices-Configuration">&nbsp;&para;</a></h4>
+      <p>
+        A configuration file can be passed in to ppc using the <code>-c</code> or <code>--config</code> option. It contains all the same features as the command line options, but sometimes worded differently. When a configuration file is specified, it overwrites any command line parameters that may appear before it. If there are command line parameters after the configuration file parameter, they will override command line options. Here is the TypeScript class definition (with defaults) the JSON values are merged into:
+      </p>
+      <pre><code data-language="javascript">class CompilerOptions {
+    //whether or not to emit comments on output
+    comments = true;
 
-      <p>TODO</p>
+    //whether or not to exclude emitting files above/outside
+    //of the input file's directory
+    excludeOutside = false;
+
+    //array of extension .ts files to be loaded
+    extensions: string[] = [];
+
+    //if true, makes all single line if, while, etc
+    //statements have a block for their contents
+    forceBlock = false;
+
+    //if true, forces the opening brace of any function
+    //(non closure) declaration to start on the next line
+    // by itself
+    functionBraceNewline = false;
+
+    //the number of times to indent per depth, usually best at 1
+    //if indentSpaces is false (meaning using tabs)
+    indentCount = 4;
+
+    //if true, indent with spaces; if false, indent with tabs
+    indentSpaces = true;
+
+    //whether or not to include TypeScript's lib.d.ts
+    jsLib = true;
+
+    //if true, parse/compile only, do not emit output files
+    lint = false;
+
+    //if true, organize source into PSR-0-style type-per-file
+    organize = true;
+
+    //the individual file or directory to output to
+    out: string = null;
+
+    //whether or not to include the php.d.ts runtime lib automatically
+    phpLib = true;
+
+    //if true, will always use single quotes unless there is
+    //an escape character
+    preferSingleQuotes = false;
+
+    //if true, Pratphall reference's will become require_once statements
+    requireReferences = false;
+
+    //if true, emits a single PHP file with all source
+    single = false;
+
+    //if true, forces the opening brace of any class or interface
+    //declaration to start on the next line by itself
+    typeBraceNewline = false;
+
+    //if false, do not emit type hints on any functions in the output
+    typeHint = true;
+
+    //if false, use "else if" instead of "elseif"
+    useElseif = true;
+
+    //if true, output lots of extra information during compile
+    verbose = false;
+
+    //if true, run as daemon, watching for changes on any referenced
+    //files and triggering a smart recompile
+    watch = false;
+
+    //the number of milliseconds after the last file change event
+    //to start the smart recompile
+    watchDebounceMs = 1500;
+}</code></pre>
+      <p>
+        Here is an example of a configuration that complies mostly with <a href="https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md">PSR-2</a>:
+      </p>
+      <pre><code data-language="javascript">{
+    "forceBlock": true,
+    "functionBraceNewline": true,
+    "indentCount": 4,
+    "indentSpaces": true,
+    "organize": true,
+    "typeBraceNewline": true,
+    "useElseif": true
+}</pre></code>
 
       <span class="bookmark" id="Manual-Appendices-Gotchas"></span>
       <h4 class="para-link">Gotchas <a href="#Manual-Appendices-Gotchas">&nbsp;&para;</a></h4>
       <p>
         Below are gotchas that might not be expected during development
       </p>
-      <dl>
+      <dl class="heading-list">
         <dt><code>001: Pratphall can't tell whether it's invoking an object's method or object's property that's a closure</code></dt>
         <dd>
           Unfortunately if you have an object property that's a closure in PHP, you cannot invoke it like <code>$obj->property();</code>, you have to do something like <code>$obj->property->__invoke();</code>. Sometimes there isn't enough typing information to determine whether a method invocation is a closure on a property or a method on an object. Therefore, Pratphall has to emit something like <code>(method_exists($obj, 'property') ? $obj->property() : $obj->property->__invoke());</code>. In order to avoid this, make sure your types are strong so the engine can tell which is which.
@@ -1679,6 +1769,9 @@ ob_end_flush();</code></pre>
           <li>
             Optionally auto-use all needed references outside of the current namespace.
           </li>
+          <li>
+            Generics! They are coming...
+          </li>
         </ul>
         These are some items that need to be fixed.
         <ul>
@@ -1704,10 +1797,9 @@ ob_end_flush();</code></pre>
       </p>
 
     </div>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/7.3/highlight.min.js "></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="rainbow-custom.min.js "></script>
     <script type="text/javascript">
 
   var _gaq = _gaq || [];

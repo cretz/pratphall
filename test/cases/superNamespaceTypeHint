@@ -1,0 +1,32 @@
+﻿Super namespace type hint
+This was breaking because a super namespace wasn't fully qualified when it had a constructor
+-----
+module Foo {
+    class Foo {
+        constructor() {
+        }
+    }
+
+    module Bar {
+        class Blah {
+            constructor(foo: Foo) {
+            }
+        }
+    }
+}
+-----
+namespace Foo {
+    class Foo {
+        public function __construct() {
+        }
+        
+    }
+}
+
+namespace Foo\Bar {
+    class Blah {
+        public function __construct(\Foo\Foo $foo) {
+        }
+        
+    }
+}

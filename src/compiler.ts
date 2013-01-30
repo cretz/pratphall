@@ -2,26 +2,76 @@
 
 module Pratphall {
     export class CompilerOptions {
-        extensions: string[] = [];
+        //whether or not to emit comments on output
         comments = true;
-        jsLib = true;
-        organize = true;
-        phpLib = true;
-        typeHint = true;
-        out: string = null;
-        preferSingleQuotes = false;
-        requireReferences = false;
-        single = false;
-        useElseif = true;
-        verbose = false;
-        lint = false;
+
+        //whether or not to exclude emitting files above/outside
+        //of the input file's directory
         excludeOutside = false;
-        indentSpaces = true;
-        indentCount = 4;
+
+        //array of extension .ts files to be loaded
+        extensions: string[] = [];
+
+        //if true, makes all single line if, while, etc
+        //statements have a block for their contents
         forceBlock = false;
-        typeBraceNewline = false;
+
+        //if true, forces the opening brace of any function
+        //(non closure) declaration to start on the next line
+        // by itself
         functionBraceNewline = false;
+
+        //the number of times to indent per depth, usually best at 1
+        //if indentSpaces is false (meaning using tabs)
+        indentCount = 4;
+
+        //if true, indent with spaces; if false, indent with tabs
+        indentSpaces = true;
+
+        //whether or not to include TypeScript's lib.d.ts
+        jsLib = true;
+
+        //if true, parse/compile only, do not emit output files
+        lint = false;
+
+        //if true, organize source into PSR-0-style type-per-file
+        organize = true;
+
+        //the individual file or directory to output to
+        out: string = null;
+
+        //whether or not to include the php.d.ts runtime lib automatically
+        phpLib = true;
+
+        //if true, will always use single quotes unless there is
+        //an escape character
+        preferSingleQuotes = false;
+
+        //if true, Pratphall reference's will become require_once statements
+        requireReferences = false;
+
+        //if true, emits a single PHP file with all source
+        single = false;
+
+        //if true, forces the opening brace of any class or interface
+        //declaration to start on the next line by itself
+        typeBraceNewline = false;
+
+        //if false, do not emit type hints on any functions in the output
+        typeHint = true;
+
+        //if false, use "else if" instead of "elseif"
+        useElseif = true;
+
+        //if true, output lots of extra information during compile
+        verbose = false;
+
+        //if true, run as daemon, watching for changes on any referenced
+        //files and triggering a smart recompile
         watch = false;
+
+        //the number of milliseconds after the last file change event
+        //to start the smart recompile
         watchDebounceMs = 1500;
     }
 
@@ -272,7 +322,7 @@ module Pratphall {
             var file = new OutputFile(filename);
             //more than one namespace?
             emitter.topNamespace.code = emitter.topNamespace.code.trim();
-            var onlyNs: Namespace = null; 
+            var onlyNs: Namespace = null;
             if (emitter.topNamespace.code.length == 0 && emitter.topNamespace.children.length == 1 &&
                     emitter.topNamespace.types.length == 0 &&
                     emitter.topNamespace.children[0].children.length == 0) {
@@ -356,13 +406,13 @@ module Pratphall {
             //errors and warnings
             results.errors.forEach((error: FileError) => {
                 error.details.forEach((value: EmitterError) => {
-                    this.io.writeErr('ERROR: ' + error.filename + '(' + value.line + ',' + 
+                    this.io.writeErr('ERROR: ' + error.filename + '(' + value.line + ',' +
                         value.col + ') - ' + value.message + '\n');
                 });
             });
             results.warnings.forEach((warning: FileError) => {
                 warning.details.forEach((value: EmitterError) => {
-                    this.io.writeErr('WARN: ' + warning.filename + '(' + value.line + ',' + 
+                    this.io.writeErr('WARN: ' + warning.filename + '(' + value.line + ',' +
                         value.col + ') - ' + value.message + '\n');
                 });
             });

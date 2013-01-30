@@ -1,0 +1,37 @@
+﻿Constructor isnt closure
+-----
+class Foo {
+    constructor(public prop: string) {
+    }
+}
+
+class Bar {
+    constructor(public foo: Foo) {
+    }
+}
+
+function getFoo(bar: Bar) {
+    return bar.foo;
+}
+-----
+class Foo {
+    public $prop;
+    
+    public function __construct($prop) {
+        $this->prop = $prop;
+    }
+    
+}
+
+class Bar {
+    public $foo;
+    
+    public function __construct(Foo $foo) {
+        $this->foo = $foo;
+    }
+    
+}
+
+function getFoo(Bar $bar) {
+    return $bar->foo;
+}

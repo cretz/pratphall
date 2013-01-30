@@ -1,0 +1,16 @@
+﻿Closure use test
+-----
+function foo(a: string) {
+    var b = 'blah';
+    function bar() {
+        return a + b;
+    }
+}
+-----
+function foo($a) {
+    $b = 'blah';
+    $bar = function () use ($a, $b) {
+        return $a . $b;
+    };
+
+}

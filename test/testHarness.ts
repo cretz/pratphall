@@ -19,11 +19,14 @@ module Pratphall {
             var description = pieces[0].trim();
             var descPieces = description.split('\n');
             var expectedWarnings: string[] = [];
+            var expectedErrors: string[] = [];
             var emitOptions = new PhpEmitOptions();
             if (descPieces.length > 1) {
                 description = descPieces[0].trim();
                 for (var i = 1; i < descPieces.length; i++) {
-                    if (descPieces[i].indexOf('EXPECT-WARN:') == 0) {
+                    if (descPieces[i].indexOf('EXPECT-ERROR:') == 0) {
+                        expectedErrors.push(descPieces[i].substring(13));
+                    } else if (descPieces[i].indexOf('EXPECT-WARN:') == 0) {
                         expectedWarnings.push(descPieces[i].substring(12));
                     } else if (descPieces[i].indexOf('SET-OPTION-TRUE:') == 0) {
                         emitOptions[descPieces[i].substring(16)] = true;
@@ -91,7 +94,15 @@ module Pratphall {
                 }
             } else {
                 //check expected pieces
-                this.assert.equal(emitter.warnings.length, expectedWarnings.length);
+                this.assert.equal(emitter.errors.length, expectedErrors.length,
+                    emitter.errors.length == 0 ? 'No errors' : 'First error: ' +
+                    emitter.errors[0].message);
+                emitter.errors.forEach((value: EmitterError, index: number) => {
+                    this.assert.equal(value.message, expectedErrors[index]);
+                });
+                this.assert.equal(emitter.warnings.length, expectedWarnings.length,
+                    emitter.warnings.length == 0 ? 'No warnings' : 'First warning: ' +
+                    emitter.warnings[0].message);
                 emitter.warnings.forEach((value: EmitterError, index: number) => {
                     this.assert.equal(value.message, expectedWarnings[index]);
                 });

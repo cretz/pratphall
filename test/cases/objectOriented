@@ -3,7 +3,7 @@
 interface Iface {
     numberProperty: number;
 
-    print(param: string);
+    write(param: string);
 
     notRequired?(...params: any[]): bool;
 }
@@ -29,7 +29,7 @@ class MyClass extends BaseClass implements Iface {
 
     private secretFunction() { echo('Hello\n'); }
 
-    print(param: string) {
+    write(param: string) {
         echo('Value: ' + param + '\n');
     }
 
@@ -51,7 +51,7 @@ echo('Instance? ' + (myClass instanceof Iface) + '\n');
 //call static
 var a = MyClass.getFileContents();
 //call normal
-myClass.print('Hey');
+myClass.write('Hey');
 //invoke
 var b = myClass.__invoke(20);
 var c = myClass.__invoke('15');
@@ -62,7 +62,7 @@ var d = <number>(<any>myClass).someProp;
 var e = myClass.toString();
 -----
 interface Iface {
-    public function print($param);
+    public function write($param);
     
 }
 
@@ -92,7 +92,7 @@ class MyClass extends BaseClass implements Iface {
     
     private function secretFunction() { echo("Hello\n"); }
     
-    public function print($param) {
+    public function write($param) {
         echo('Value: ' . $param . "\n");
     }
     
@@ -116,7 +116,7 @@ echo('Instance? ' . ($myClass instanceof Iface) . "\n");
 //call static
 $a = MyClass::getFileContents();
 //call normal
-$myClass->print('Hey');
+$myClass->write('Hey');
 //invoke
 $b = $myClass(20);
 $c = $myClass('15');

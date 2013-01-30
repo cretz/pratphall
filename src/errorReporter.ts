@@ -29,7 +29,8 @@ module Pratphall {
             var swallowed = false;
             //http://typescript.codeplex.com/workitem/331 :-(
             if (msg == 'Supplied parameters do not match any signature of call target' &&
-                    ((<TypeScript.Identifier>ast).sym.declAST instanceof TypeScript.FuncDecl)) {
+                    (<TypeScript.Identifier>ast).sym != null &&
+                    (<TypeScript.Identifier>ast).sym.declAST instanceof TypeScript.FuncDecl) {
                 //well, we don't have enough info to see the params of the call because
                 //  the identifier is sent, not the call...I guess I could find the adjacent
                 //  ast or walk the tree, but I don't want to since this should be fixed 

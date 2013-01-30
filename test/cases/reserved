@@ -1,0 +1,34 @@
+﻿Reserved test
+EXPECT-ERROR:'Echo' is reserved and cannot be used as an identifier
+EXPECT-ERROR:'InsteadOf' is reserved and cannot be used as an identifier
+EXPECT-ERROR:'list' is reserved and cannot be used as an identifier
+EXPECT-ERROR:'elseif' is reserved and cannot be used as an identifier
+-----
+//not ok
+class Echo {
+}
+
+interface InsteadOf {
+    list();
+}
+
+function elseif() { }
+
+//ok
+var die = 5;
+isset('hey');
+-----
+//not ok
+class Echo {
+}
+
+interface InsteadOf {
+    public function list();
+    
+}
+
+function elseif() { }
+
+//ok
+$die = 5;
+isset('hey');

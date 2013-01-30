@@ -1,0 +1,14 @@
+Private static test
+-----
+class Foo {
+    private static myArr = Pct.newAssocArray({ a: 5, b: 6 });
+    
+}
+-----
+class Foo {
+    private static $myArr;
+    
+}
+$_tmp1 = (new ReflectionClass('Foo'))->getProperty('myArr');
+$_tmp1->setAccessible(true);
+$_tmp1->setValue(['a' => 5, 'b' => 6]);

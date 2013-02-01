@@ -3,6 +3,11 @@
   <head lang="en">
     <title>Pratphall</title>
     <link href="bootstrap.min.css" rel="stylesheet" />
+    <style type=text/css>
+      pre {
+          width: 900px;
+      }
+    </style>
     <link href="pratphall.css" rel="stylesheet" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
   </head>
@@ -31,6 +36,7 @@
           <li><a tabindex="-1" href="#Manual-Faq">FAQ</a></li>
           <li><a tabindex="-1" href="#Manual-Appendices">Appendices</a></li>
         </ul> |
+        <a href="try">Try</a> |
         <a href="https://github.com/cretz/pratphall">GitHub</a> |
         <a href="https://groups.google.com/d/forum/pratphall">Mailing List</a>
       </div>
@@ -83,13 +89,13 @@ arr.forEach((value: number) => {
 });
 
 //compile-time-only class
-class SampleContract implements Pct.CompileTimeOnly {
+interface SampleContract extends Pct.CompileTimeOnly {
     requiredProperty: string;
     optionalProperty?: bool;
 }
 
 //function using compile-time class
-printInfo(info: SampleContract) => {
+function printInfo(info: SampleContract) {
     echo('Required: ' + info.requiredProperty + '\n');
     if (typeof info.optionalProperty !== 'undefined') {
         echo('Optional: ' + info.optionalProperty + '\n');
@@ -843,9 +849,9 @@ myprint('foo', true, 13.5, 'bar');</code></pre>
 }
 
 //reads default.txt and prints w/out prefix
-printWords();
+words();
 //uses array and prints w/ prefix
-printWords(true, ['foo bar', 'fu bar']);</code></pre>
+words(true, ['foo bar', 'fu bar']);</code></pre>
         <pre><code data-language="php">function words($prefix = false, $file = null) {
     if ($file === null) $file = file('default.txt');
     foreach ($file as $line) {
@@ -1178,31 +1184,32 @@ function json_last_error(): number;</code></pre>
         Since ambient types are still seen at runtime, they will be emitted as type hints. Compile-time declarations do not suffer from this. They are only there to enforce a certain contract and that's it. Only interfaces and classes can be marked compile-time only, and this is done by explicitly extending or implementing the <code>Pct.CompileTimeOnly</code> interface. Just because a super class/interface implements <code>Pct.CompileTimeOnly</code> doesn't mean it's children do, it must be explicitly stated.
       </p>
       <div class="code">
-        <pre><code data-language="javascript">interface Location extends Pct.CompileTimeOnly {
+        <pre><code data-language="javascript">interface Place extends Pct.CompileTimeOnly {
     zip: string;
     city?: string;
 }
 
 interface Weather extends Pct.CompileTimeOnly {
-    location: Location;
+    place: Place;
     temperature: number;
 }
 
-function printWeather(value: Weather) {
+function printWeather(weather: Weather) {
     echo('It is ' + weather.temperature + ' in ');
-    if (property_exists(value, 'city')) echo(value.city);
-    else echo(value.zip);
+    if (property_exists(weather.place, 'city')) {
+        echo(weather.place.city);
+    } else echo(weather.place.zip);
 }
 
 printWeather({
-    location: {
+    place: {
         zip: '75001',
         city: 'Addison'
     },
     temperature: 85
 });
 printWeather({
-    location: {zip: '76020'},
+    place: {zip: '76020'},
     temperature: 88
 });</code></pre>
         <pre><code data-language="php">
@@ -1215,21 +1222,22 @@ printWeather({
 
 
 
-function printWeather($value) {
-    echo('It is' . $value->temperature . ' in ');
-    if (property_exists($value, 'city')) echo($value->city);
-    else echo($value->zip);
+function printWeather($weather) {
+    echo('It is ' . $weather->temperature . ' in ');
+    if (property_exists($weather->place, 'city')) {
+        echo($weather->place->city);
+    } else echo($weather->place->zip);
 }
 
 printWeather((object)[
-    'location' => (object)[
+    'place' => (object)[
         'zip' => '75001',
         'city' => 'Addison'
     ],
     'temperature' => 85
 ]);
 printWeather((object)[
-    'location' => (object)['zip' => '76020'],
+    'place' => (object)['zip' => '76020'],
     'temperature' => 88
 ]);</code></pre>
       </div>
@@ -1255,11 +1263,11 @@ printWeather((object)[
         Different compiler options affect how the files are outputted. Below are descriptions of the options and output PHP examples based on these two files:
         <pre><code data-language="javascript">//file1.ts
 module MyModule {
-    interface MyIface {
+    export interface MyIface {
     }
 
-    module Sub {
-        class MyClass implements MyModule.MyIface {
+    export module Sub {
+        export class MyClass implements MyModule.MyIface {
             causeErr() {
                 throw new Exception('Error');
             }
@@ -1799,7 +1807,7 @@ ob_end_flush();</code></pre>
     </div>
     <script src="jquery.min.js"></script>
     <script src="bootstrap.min.js"></script>
-    <script src="rainbow-custom.min.js "></script>
+    <script src="rainbow-custom.min.js"></script>
     <script type="text/javascript">
 
   var _gaq = _gaq || [];

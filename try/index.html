@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <title>Pratphall Playground</title>
+    <link href="../bootstrap.min.css" rel="stylesheet" />
+    <link href="../codemirror.css" rel="stylesheet" />
+    <link href="../pratphall.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <style type="text/css">
+      .CodeMirror {
+        border: 1px solid #aaa;
+        height: auto;
+      }
+      .CodeMirror-scroll {
+        overflow-y: hidden;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <h1 class="topbar-title">
+        <a class="title" href="#Top">Pratphall</a>
+        <small> - A typed language targeting <a href="http://php.net">PHP</a>*</small>
+      </h1>
+      <div style="text-align: right; position: relative; float: right; margin-top: 0px; right: 10px;">
+        <p class="muted">*Actually, it's just <a href="http://typescriptlang.org">TypeScript</a> cross-compiled.</p>
+        <a href="http://pratphall.org">Home</a> |
+        <a href="https://github.com/cretz/pratphall">GitHub</a> |
+        <a href="https://groups.google.com/d/forum/pratphall">Mailing List</a>
+      </div>
+    </div>
+    <div>
+      <div id="main" style="margin-top: 70px; padding-left: 10px; padding-right: 10px; bottom: 30px">
+        <div>
+          <div style="float: left; width: 50%">
+            <form class="form-inline" style="margin-bottom: 0px">
+            <h4 style="margin-left: 30px; margin-bottom: 0px">
+              Pratphall
+              <small>
+                <label class="radio inline" style="margin-left: 10px">
+                  <input type="radio" name="exampleOrGist" id="useExample" checked="checked">Example
+                </label>
+                <span id="exampleInfo" style="display: none">
+                  <select id="exampleItem">
+                    <option value="blank">Blank</option>
+                    <option value="overview" selected="selected">Overview</option>
+                    <option value="strings">Strings</option>
+                    <option value="arrays">Arrays</option>
+                    <option value="casting">Casting</option>
+                    <option value="references">References</option>
+                    <option value="variadic">Variadic functions</option>
+                    <option value="optional">Optional parameters</option>
+                    <option value="anonymous">Anonymous functions</option>
+                    <option value="try">Try/Catch</option>
+                    <option value="types">Classes/Interfaces</option>
+                    <option value="compileTime">Compile-Time</option>
+                    <option value="modules">Modules</option>
+                  </select>
+                </span>
+                <label class="radio inline">
+                  <input type="radio" name="exampleOrGist" id="useGist">Gist
+                </label>
+                <span id="gistInfo">
+                  <div class="input-append">
+                    <input class="input-mini" id="gistId" type="text" placeholder="ID">
+                    <button id="gistLoad" class="btn" type="button">Load</button>
+                  </div>
+                </span>
+              </small>
+            </h4>
+            </form>
+            <textarea id="pratphall-code"></textarea>
+          </div>
+          <div style="float: right; width: 50%">
+            <h4 style="margin-left: 30px">PHP <small>compiled entirely inside browser with the --single option</small></h4>
+            <textarea id="php-code"></textarea>
+          </div>
+        </div>
+        <br />
+        <div style="display: inline-block; width: 100%; margin-top: 10px">
+          <form class="form-inline" style="margin-bottom: 2px">
+            <label class="checkbox inline">
+              <input id="options-alwaysPreferSingleQuotes" class="changeableOption" type="checkbox" checked="checked"> Always Prefer Single Quotes
+            </label>
+            <label class="checkbox inline">
+              <input id="options-comments" type="checkbox" class="changeableOption" checked="checked"> Comments
+            </label>
+            <label class="checkbox inline">
+              <input id="options-typeHint" type="checkbox" class="changeableOption" checked="checked"> Type Hint
+            </label>
+            <label class="checkbox inline">
+              <input id="options-useElseif" type="checkbox" class="changeableOption" checked="checked"> Use "elseif"
+            </label>
+            <label class="checkbox inline">
+              <input id="options-forceBlockOnControlStructures" class="changeableOption" type="checkbox"> Force Statement Block
+            </label>
+            <label class="checkbox inline">
+              <input id="options-openingTypeBraceNextLine" class="changeableOption" type="checkbox"> Type Brace Newline
+            </label>
+            <label class="checkbox inline">
+              <input id="options-openingFunctionBraceNextLine" class="changeableOption" type="checkbox"> Function Brace Newline
+            </label>
+            <label class="radio inline" style="margin-left: 20px">
+              <input id="options-indentSpaces" class="changeableOption" name="options.indentType" type="radio" checked="checked">
+              Indent with<input id="options-spaceCount" class="input-mini changeableOption" style="width: 12px; height: 15px;" size="1" maxlength="1" type="text" value="4">spaces
+            </label>
+            <label class="radio inline">
+              <input id="options-indentTab" class="changeableOption" name="options.indentType" type="radio">or tab
+            </label>
+          </form>
+          <button id="compile" class="btn btn-large btn-block" type="button">
+            Compile<br />
+            <small>or Ctrl-Enter in Pratphall editor</small>
+          </button>
+        </div>
+        <div id="output">
+        </div>
+      </div>
+    </div>
+
+    <!-- EXAMPLES -->
+    <div style="display: none">
+      <pre id="example-overview">//normal array
+var arr = [1, 2, 3, 4, 5];
+
+//loop and print
+arr.forEach((value: number) => {
+    echo('My value: ' + value + '\n');
+});
+
+//compile-time-only class
+interface SampleContract extends Pct.CompileTimeOnly {
+    requiredProperty: string;
+    optionalProperty?: bool;
+}
+
+//function using compile-time class
+function printInfo(info: SampleContract) {
+    echo('Required: ' + info.requiredProperty + '\n');
+    if (typeof info.optionalProperty !== 'undefined') {
+        echo('Optional: ' + info.optionalProperty + '\n');
+    }
+}
+
+//type inferred matching
+printInfo({ requiredProperty: 'required val' });</pre>
+      <pre id="example-strings">//will be converted to double quotes
+var a = 'My\nNewline\nString$escaped{$interpolation}';
+
+//concatenation
+var b = 99 + ' bottles of beer on the wall';
+
+//compiler warning because type is any
+var c: any = 'test string';
+var d = 12 + c;
+
+//common JS functions
+var_dump(b.length);
+var_dump(b.charAt(0));
+var_dump(b.split(' '));</pre>
+      <pre id="example-arrays">//regular array
+var a = [1, 2, 3];
+
+//some calls
+a.forEach((value: number) {
+    var_dump(value);
+});
+a.push(4);
+
+//associative array
+var b = Pct.newAssocArray({
+    prop: 'propValue',
+    prop2: ['a', 'b', 'c'],
+    closure: function () { echo('Hey!\n'); }
+});
+
+//some calls
+var c = b.map((value: any) => {
+    return gettype(value);
+});
+c['prop3'] = 15;
+var_dump(c.length);</pre>
+      <pre id="example-casting">function printNumber(value: number) {
+    echo('Number: ' + value + '\n');
+}
+
+//compile-time cast only
+printNumber(&lt;number>&lt;any>'10');
+
+//runtime PHP function cast
+printNumber(intval('10'));
+
+//runtime PHP explicit cast
+printNumber(Pct.castInt('10'));
+
+//two ways to check a FALSE return
+if (&lt;bool>&lt;any>strpos('team', 'I') === false) {
+    echo('There is no "I" in "team"\n');
+}
+if (Pct.isFalse(strpos('team', 'I'))) {
+    echo('There is no "I" in "team"\n');
+}</pre>
+      <pre id="example-references">//assign
+var a = 'hey';
+var b = Pct.byRef(a);
+//pass
+function addWord($val: string) {
+    $val += ' word';
+}
+addWord(b);
+echo('Changed? ' + (a == 'hey word'));
+//return
+var c = { d: 15 };
+function $getReference(val: { d: number; }) {
+    return val.d;
+}
+var e = Pct.byRef($getReference(c));
+e = 20;
+echo('Changed? ' + (c.d == 20));</pre>
+      <pre id="example-variadic">function myprint(one: string, ...args: any[]) {
+    echo('First: ' + arguments[0] + '\n');
+    echo('Last: ' + arguments[arguments.length - 1] + '\n');
+    if (args.length > 0) {
+        echo('First args: ' + args[0] + '\n');
+        echo('Last args: ' + args[args.length - 1] + '\n');
+    }
+}
+
+myprint('foo', true, 13.5, 'bar');</pre>
+      <pre id="example-optional">function words(prefix?: bool, file = file('default.txt')) {
+    file.forEach((line: string) => {
+        line.split(' ').forEach((word: string) => {
+            if (prefix) echo('Word: ');
+            echo(word + '\n');
+        });
+    });
+}
+
+//reads default.txt and prints w/out prefix
+words();
+//uses array and prints w/ prefix
+words(true, ['foo bar', 'fu bar']);</pre>
+      <pre id="example-anonymous">function func() {
+    var anonFunc = (value: string) => { echo(value); }
+    var anonFunc2 = function (value: string) { echo(value); }
+    function nestedFunc(value: string) { echo(value); }
+}</pre>
+      <pre id="example-try">//simple
+try {
+    new ReflectionClass('NonExistentClass');
+} catch (err) {
+    if (err instanceof ReflectionException) {
+        echo('Not found: ' + (<Exception>err).getMessage());
+    } else {
+        echo('Other: ' + (<Exception>err).getMessage());
+    }
+} finally {
+    echo('This runs always in PHP 5.5');
+}
+
+//advanced
+Pct.try({
+    try: () => {
+        new ReflectionClass('NonExistentClass');
+    },
+    catch: [
+        (err: ReflectionException) => {
+            echo('Not found: ' + err.getMessage());
+        },
+        (err: Exception) => {
+            echo('Other: ' + err.getMessage());
+        }
+    ],
+    finally: () => {
+        echo('This runs always in PHP 5.5');
+    }
+});</pre>
+      <pre id="example-types">interface Iface {
+
+    numberProperty: number;
+
+    write(param: string);
+
+    notRequired?(...params: any[]): bool;
+}
+
+class BaseClass {
+
+    static fileContents = file_get_contents('myfile.txt');
+
+    constructor(public numberProperty: number) {
+        echo('Constructed!')
+    }
+}
+
+class MyClass extends BaseClass implements Iface {
+
+    static getFileContents() {
+        return BaseClass.fileContents;
+    }
+
+    constructor() {
+        super(12);
+    }
+
+    __destruct() { echo('Destructing!\n'); }
+
+    private secretFunction() { echo('Hello\n'); }
+
+    write(param: string) {
+        echo('Value: ' + param + '\n');
+    }
+
+    __invoke(someVal: any) {
+        echo('I have been invoked!\n');
+        return this.numberProperty + Pct.castInt(someVal);
+    }
+
+    __get(prop: string) { return 42; }
+
+    __set(prop: string, value: any) {
+        echo('Setting ' + prop + ' with ' + value);
+    }
+
+    toString() { return 'MyClass'; }
+}
+
+var myClass = new MyClass();
+echo('Instance? ' + (myClass instanceof Iface) + '\n');
+//call static
+var a = MyClass.getFileContents();
+//call normal
+myClass.write('Hey');
+//invoke
+var b = myClass.__invoke(20);
+var c = myClass.__invoke('15');
+//trigger getter/setter
+var d = &lt;number>(&lt;any>myClass).someProp;
+(&lt;any>myClass).someNewProp = 20;
+//string version
+var e = myClass.toString();</pre>
+      <pre id="example-compileTime">interface Place extends Pct.CompileTimeOnly {
+    zip: string;
+    city?: string;
+}
+
+interface Weather extends Pct.CompileTimeOnly {
+    place: Place;
+    temperature: number;
+}
+
+function printWeather(weather: Weather) {
+    echo('It is ' + weather.temperature + ' in ');
+    if (property_exists(weather.place, 'city')) {
+        echo(weather.place.city);
+    } else echo(weather.place.zip);
+}
+
+printWeather({
+    place: {
+        zip: '75001',
+        city: 'Addison'
+    },
+    temperature: 85
+});
+printWeather({
+    place: {zip: '76020'},
+    temperature: 88
+});</pre>
+      <pre id="example-modules">module MyModule {
+    export interface MyIface {
+    }
+
+    export module Sub {
+        export class MyClass implements MyModule.MyIface {
+            causeErr() {
+                throw new Exception('Error');
+            }
+        }
+    }
+}
+
+import Sub = MyModule.Sub;
+var a = new Sub.MyClass();
+a.causeErr();</pre>
+    </div>
+
+    <!-- CODE -->
+    <script src="../jquery.min.js"></script>
+    <script src="../codemirror-custom.min.js"></script>
+    <script src="pratphall-browser.js"></script>
+    <script type="text/javascript">
+      $(function () {
+        //setup code mirror
+        var pratphallEditor = CodeMirror.fromTextArea(document.getElementById("pratphall-code"), {
+          lineNumbers: true,
+          mode: "text/typescript"
+        });
+        var phpEditor = CodeMirror.fromTextArea(document.getElementById("php-code"), {
+          lineNumbers: true,
+          mode: "application/x-httpd-php",
+          readOnly: true
+        });
+
+        //setup change handlers...
+        var updateInfoVisibility = function () {
+          if ($('#useExample').is(':checked')) {
+            $('#exampleInfo').show();
+            $('#gistInfo').hide();
+            //trigger example info change
+            $('#exampleItem').trigger('change');
+          } else {
+            $('#exampleInfo').hide();
+            $('#gistInfo').show();
+            //trigger gist load
+            $('#gistLoad').trigger('click');
+          }
+        };
+
+        //update radio buttons
+        $('#useExample').change(updateInfoVisibility);
+        $('#useGist').change(updateInfoVisibility);
+
+        //compile function
+        var compiler = new Pratphall.BrowserCompiler();
+        var compile = function () {
+          //go ahead and build options
+          var options = new Pratphall.PhpEmitOptions();
+          options.alwaysPreferSingleQuotes = $('#options-alwaysPreferSingleQuotes').is(':checked');
+          options.comments = $('#options-comments').is(':checked');
+          options.typeHint = $('#options-typeHint').is(':checked');
+          options.useElseif = $('#options-useElseif').is(':checked');
+          options.forceBlockOnControlStructures = $('#options-forceBlockOnControlStructures').is(':checked');
+          options.openingTypeBraceOnNextLine = $('#options-openingTypeBraceNextLine').is(':checked');
+          options.openingFunctionBraceNextLine = $('#options-openingFunctionBraceNextLine').is(':checked');
+          if ($('#options-indentSpaces').is(':checked')) {
+            var count = parseInt($('#options-spaceCount').val());
+            options.indent = Array(!count ? 5 : count + 1).join(' ');
+          } else {
+            options.indent = '\t';
+          }
+
+          compiler.compile(options, pratphallEditor.getValue(), function(compiled, errors, warnings) {
+            phpEditor.setValue('<?php\n' + compiled.trim());
+            var html = '';
+            //for each errors/warnings, add html
+            warnings.forEach(function (warning) {
+              if (warning.trim().length > 0) html += '<div class="alert alert-error" style="margin-bottom: 2px">' + warning.trim() + '</div>';
+            });
+            errors.forEach(function (error) {
+              if (error.trim().length > 0) html += '<div class="alert alert-error" style="margin-bottom: 2px">' + error.trim() + '</div>';
+            });
+            $('#output').html(html);
+          });
+        };
+
+        //set and compile
+        var lastKnownPratphallCode = null;
+        var setPratphallAndCompile = function (code) {
+          lastKnownPratphallCode = code;
+          pratphallEditor.setValue(code);
+          compile();
+        };
+
+        //setup click
+        $('#compile').click(compile);
+
+        //setup ctrl-enter
+        pratphallEditor.addKeyMap({
+          'Ctrl-Enter': compile
+        });
+
+        //setup onchange
+        $('.changeableOption').change(compile);
+
+        //update the example url and load
+        var updateUrlAndLoadExample = function (example) {
+          if (example == 'blank') {
+            window.location.hash = '';
+            setPratphallAndCompile('');
+          } else {
+            window.location.hash = 'example:' + example;
+            setPratphallAndCompile($('#example-' + example).text());
+          }
+        };
+
+        //update the gist url and load
+        var updateUrlAndLoadGist = function (id) {
+          window.location.hash = 'gist:' + id;
+          $.ajax({
+            url: 'https://api.github.com/gists/' + id,
+            dataType: 'jsonp',
+            success: function (data) {
+              if (!data || !data.data || !data.data.files) {
+                console.log('Gist error: ', data);
+                if (data.data.message) $('#output').html('<div class="alert alert-error" style="margin-bottom: 2px">' + data.data.message + '</div>');
+                else $('#output').html('<div class="alert alert-error" style="margin-bottom: 2px">Internal error retrieving GIST</div>');
+              } else {
+                //just the first one is fine
+                for (file in data.data.files) {
+                  setPratphallAndCompile(data.data.files[file].content);
+                  break;
+                }
+              }
+            }
+          });
+        };
+
+        //setup example change
+        $('#exampleItem').change(function () {
+          updateUrlAndLoadExample($('#exampleItem').val());
+        });
+
+        //setup gist load click
+        $('#gistLoad').click(function () {
+          var id = parseInt($('#gistId').val());
+          if (id) updateUrlAndLoadGist(id);
+        });
+
+        //now handle the URL as it exists today
+        $('#useExample').attr('checked', true);
+        if (window.location.hash) {
+          //is it a gist?
+          if (window.location.hash.indexOf('#gist:') == 0) {
+            var id = parseInt(window.location.hash.substr(6));
+            if (id) {
+              $('#gistId').val(id);
+              $('#useGist').attr('checked', true);
+            }
+          } else if (window.location.hash.indexOf('#example:') == 0) {
+            var name = window.location.hash.substr(9);
+            if (name) $('#exampleItem').val(name);
+          }
+        }
+        //go ahead and do all the updates
+        updateInfoVisibility();
+      });
+    </script>
+    <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37431760-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+    </script>
+  </body>
+</html>

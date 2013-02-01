@@ -40,7 +40,7 @@ task('build', {async: true}, function () {
             console.log("Removing typescript's .npmignore");
             fs.removeSync('src/typescript/.npmignore');
         }
-    
+
         //copy over typescript and php runtime support
         console.log('Copying over runtime support');
         copyAll([
@@ -50,7 +50,7 @@ task('build', {async: true}, function () {
     }, {printStdout: true, printStderr: true});
 });
 
-desc('Test');
+desc('Test run');
 task('test', {async: true}, function () {
     //compile tests
     console.log('Compiling and running tests');
@@ -74,6 +74,29 @@ task('phpdocbuild', {async: true}, function(path) {
         'php phpdocbuild/phpDocExtractor.php ' + path + ' ./phpdocbuild/phpdoc.json',
         'node ./node_modules/typescript/bin/tsc.js --out ./phpdocbuild/phpDefinitionBuilder.js ./src/utils/phpDefinitionBuilder.ts',
         'node ./phpdocbuild/phpDefinitionBuilder.js ./src/php.d.ts'
+    ];
+    jake.exec(cmds, complete, {printStdout: true, printStderr: true});
+});
+
+desc('Browser build');
+task('browser', {async: true}, function (path) {
+    if (path == null) throw new Error('Path required');
+
+    //bring all the definitions together
+    console.log('Concatenating all definitions')
+    var definitionContents = fs.readFileSync('src/typescript/bin/lib.d.ts').toString().trim();
+    fs.readdirSync('src/runtime').forEach(function (value) {
+        if (value != 'all.ts' && value.slice(-3) == '.ts') {
+            definitionContents += '\n' + fs.readFileSync('src/runtime/' + value).toString().
+                replace("///<reference path='all.d.ts' />", '').trim();
+        }
+    });
+    fs.writeFileSync(path + '/all.d.ts', definitionContents.trim());
+
+    //compile browser code
+    console.log('Compiling pratphall-browser.js');
+    var cmds = [
+        'node ./node_modules/typescript/bin/tsc.js --out ' + path + '/pratphall-browser.js ./src/browser.ts'
     ];
     jake.exec(cmds, complete, {printStdout: true, printStderr: true});
 });

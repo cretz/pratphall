@@ -1,5 +1,4 @@
 ///<reference path='pratphall.ts' />
-///<reference path='node-impl/sys.ts' />
 
 module Pratphall {
     export interface Io {

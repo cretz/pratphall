@@ -1,4 +1,5 @@
 ///<reference path="pratphall.ts" />
+///<reference path="node-impl/sys.ts" />
 
 module Pratphall {
     interface Option {

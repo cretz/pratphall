@@ -452,6 +452,7 @@ module Pratphall {
                         if (curr instanceof TypeScript.Identifier && (!(ast.operand2 instanceof
                                 TypeScript.Identifier) || (<TypeScript.Identifier>ast.operand2).sym == null ||
                                 !(<TypeScript.Identifier>ast.operand2).sym.isVariable()) &&
+                                (<TypeScript.Identifier>curr).sym != null &&
                                 (<TypeScript.Identifier>curr).sym.isType() &&
                                 ((<TypeScript.Identifier>curr).sym.declAST instanceof TypeScript.ModuleDeclaration ||
                                 (<TypeScript.Identifier>curr).sym.declAST instanceof TypeScript.ImportDeclaration)) {
@@ -467,6 +468,7 @@ module Pratphall {
                                 }
                             }
                         } else if (curr instanceof TypeScript.Identifier &&
+                                (<TypeScript.Identifier>curr).sym != null &&
                                 (<TypeScript.Identifier>curr).sym.isType()) {
                             //must be a static ref
                             this.emit(ast.operand1).write('::').emit(ast.operand2);
@@ -882,10 +884,13 @@ module Pratphall {
                 if (newlines) this.increaseIndent();
                 //any globals?
                 var globCount = 0;
-                ast.freeVariables.some((value: TypeScript.Symbol, index: number) => {
+                ast.freeVariables.forEach((value: TypeScript.Symbol, index: number) => {
                     //is global but not super global?
                     if (value.declModule == null && value.declAST != null && value.isVariable() &&
                             PhpEmitter.superGlobals.indexOf(value.name) == -1) {
+                        if (ast.isMethod() || ast.isConstructor) {
+                            this.addWarning(ast, "Use of global variable '" + value.name + "' in class method");
+                        }
                         globCount++;
                         if (globCount == 1) {
                             if (newlines && !closure) this.newline();

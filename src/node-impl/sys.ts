@@ -10,7 +10,6 @@ module Pratphall {
     import vm = module('vm');
     import path = module('path');
     */
-    export var assert = require('assert');
     export var fs = require('fs');
     export var vm = require('vm');
     export var path = require('path');
@@ -127,6 +126,6 @@ module Pratphall {
     }
 
     export function loadAssert(): Assert {
-        return assert;
+        return <Assert>require('assert');
     }
 }

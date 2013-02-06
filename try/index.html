@@ -20,7 +20,7 @@
   <body>
     <div class="topbar">
       <h1 class="topbar-title">
-        <a class="title" href="#Top">Pratphall</a>
+        <a class="title" href="http://pratphall.org">Pratphall</a>
         <small> - A typed language targeting <a href="http://php.net">PHP</a>*</small>
       </h1>
       <div style="text-align: right; position: relative; float: right; margin-top: 0px; right: 10px;">
@@ -73,7 +73,14 @@
             <textarea id="pratphall-code"></textarea>
           </div>
           <div style="float: right; width: 50%">
-            <h4 style="margin-left: 30px">PHP <small>compiled entirely inside browser with the --single option</small></h4>
+            <h4 style="margin-left: 30px">PHP
+              <small>
+                compiled entirely inside browser with the --single option
+                <span style="float: right; margin-top: 10px">
+                  <a href="#" id="shareLink">Share</a>
+                </span>
+              </small>
+            </h4>
             <textarea id="php-code"></textarea>
           </div>
         </div>
@@ -163,7 +170,7 @@ var_dump(b.split(' '));</pre>
 var a = [1, 2, 3];
 
 //some calls
-a.forEach((value: number) {
+a.forEach((value: number) => {
     var_dump(value);
 });
 a.push(4);
@@ -404,17 +411,17 @@ a.causeErr();</pre>
         });
 
         //setup change handlers...
-        var updateInfoVisibility = function () {
+        var updateInfoVisibility = function (ignoreChange) {
           if ($('#useExample').is(':checked')) {
             $('#exampleInfo').show();
             $('#gistInfo').hide();
             //trigger example info change
-            $('#exampleItem').trigger('change');
+            if (!ignoreChange) $('#exampleItem').trigger('change');
           } else {
             $('#exampleInfo').hide();
             $('#gistInfo').show();
             //trigger gist load
-            $('#gistLoad').trigger('click');
+            if (!ignoreChange) $('#gistLoad').trigger('click');
           }
         };
 
@@ -518,8 +525,20 @@ a.causeErr();</pre>
           if (id) updateUrlAndLoadGist(id);
         });
 
+        //setup share link
+        $('#shareLink').click(function () {
+          var contents = pratphallEditor.getValue();
+          if (contents.length > 2050) {
+            $('#output').html('<div class="alert alert-error" style="margin-bottom: 2px">Content greater than 2000 characters</div>');
+          } else {
+            window.location.hash = 'src:' + contents;
+          }
+          return false;
+        });
+
         //now handle the URL as it exists today
         $('#useExample').attr('checked', true);
+        var ignoreChange = false;
         if (window.location.hash) {
           //is it a gist?
           if (window.location.hash.indexOf('#gist:') == 0) {
@@ -528,13 +547,17 @@ a.causeErr();</pre>
               $('#gistId').val(id);
               $('#useGist').attr('checked', true);
             }
+          } else if (window.location.hash.indexOf('#src:') == 0) {
+            //custom source
+            $('#exampleItem').val('blank');
+            setPratphallAndCompile(decodeURIComponent(window.location.hash.substr(5)));
+            ignoreChange = true;
           } else if (window.location.hash.indexOf('#example:') == 0) {
             var name = window.location.hash.substr(9);
             if (name) $('#exampleItem').val(name);
           }
         }
-        //go ahead and do all the updates
-        updateInfoVisibility();
+        updateInfoVisibility(ignoreChange);
       });
     </script>
     <script type="text/javascript">

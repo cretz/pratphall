@@ -337,7 +337,7 @@ var_dump(explode(' ', $b));</code></pre>
 var a = [1, 2, 3];
 
 //some calls
-a.forEach((value: number) {
+a.forEach((value: number) => {
     var_dump(value);
 });
 a.push(4);
@@ -1540,7 +1540,7 @@ ob_end_flush();</code></pre>
       <span class="bookmark" id="Manual-Appendices-VisualStudio"></span>
       <h4 class="para-link">Visual Studio Support <a href="#Manual-Appendices-VisualStudio">&nbsp;&para;</a></h4>
       <p>
-        Until the next version of TypeScript is available, Visual Studio support for Pratphall is lacking. This is because the platform is too closed to alter the implicit library definitions to include the PHP runtime definitions. Having said that, it is still the most complete IDE for Pratphall. It is recommended to use --no-php-lib when compiling and adding a reference to php.d.ts (in the bin directory of installation) to a commonly referenced base. This will give intellisense support and all normal Visual Studio features.
+        Stronger built-in Visual Studio support will be coming soon in Pratphall, but for now it's fairly limited. Having said that, it is still the most complete IDE for Pratphall. It is recommended to use --no-php-lib when compiling and add a reference to php.d.ts (in the bin directory of installation) to a commonly referenced base. This will give intellisense support and all normal Visual Studio features.
       </p>
       <p>
         There are a few reported errors from the TypeScript compiler that Pratphall suppresses. These will appear as errors in Visual Studio, but are not Pratphall errors. They are:

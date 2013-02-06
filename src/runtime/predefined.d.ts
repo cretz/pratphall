@@ -56,14 +56,11 @@ declare interface Serializable {
     unserialize(serialized: string);
 }
 
-declare interface Closure {
+declare class Closure {
+    static bind(closure: Closure, newthis: any, newscope?: any): Closure;
+
     constructor();
     bindTo(newthis: any, newscope?: any): Closure;
-}
-
-declare var Closure: {
-    bindTo: (closure: Closure, newthis: any, newscope?: any) => Closure;
-    prototype: Closure;
 }
 
 declare class stdClass {

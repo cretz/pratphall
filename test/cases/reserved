@@ -12,6 +12,11 @@ interface InsteadOf {
     list();
 }
 
+class Test {
+    final: string;
+}
+var a = new Test();
+var b = a.final;
 function elseif() { }
 
 //ok
@@ -27,6 +32,13 @@ interface InsteadOf {
     
 }
 
+class Test {
+    public $final;
+    
+}
+
+$a = new Test();
+$b = $a->final;
 function elseif() { }
 
 //ok

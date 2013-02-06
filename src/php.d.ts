@@ -423,7 +423,7 @@ declare function array_key_exists(key: string, search: Array): bool;
  *               search.
  * @return Returns an array of all the keys in input.
  */
-declare function array_keys(input: Array, search_value?: any, strict?: bool): Array;
+declare function array_keys(input: Array, search_value?: any, strict?: bool): any[];
 
 /**
  * Applies the callback to the elements of the given arrays
@@ -917,7 +917,7 @@ declare function array_unshift($array: Array, ...var_: any[]): number;
  * @param input The array.
  * @return Returns an indexed array of values.
  */
-declare function array_values(input: Array): Array;
+declare function array_values(input: Array): any[];
 
 /**
  * Apply a user function to every member of an array
@@ -11272,14 +11272,11 @@ declare interface Serializable {
     unserialize(serialized: string);
 }
 
-declare interface Closure {
+declare class Closure {
+    static bind(closure: Closure, newthis: any, newscope?: any): Closure;
+
     constructor();
     bindTo(newthis: any, newscope?: any): Closure;
-}
-
-declare var Closure: {
-    bindTo: (closure: Closure, newthis: any, newscope?: any) => Closure;
-    prototype: Closure;
 }
 
 declare class stdClass {

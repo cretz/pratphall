@@ -1,0 +1,28 @@
+﻿Static calling instance
+This was causing an error
+-----
+class Foo {
+    num = 5;
+}
+
+class Test {
+    static blah: Foo;
+
+    constructor() {
+        var_dump(Test.blah.num);
+    }
+}
+-----
+class Foo {
+    public $num = 5;
+    
+}
+
+class Test {
+    public static $blah;
+    
+    public function __construct() {
+        var_dump(Test::$blah->num);
+    }
+    
+}

@@ -36,7 +36,7 @@ declare function array_intersect_uassoc(array1: Array, array2: Array, key_compar
 declare function array_intersect_ukey(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 declare function array_key_exists(key: number, search: Array): bool;
 declare function array_key_exists(key: string, search: Array): bool;
-declare function array_keys(input: Array, search_value?: any, strict?: bool): Array;
+declare function array_keys(input: Array, search_value?: any, strict?: bool): any[];
 declare function array_map(callback: (value: any) => any, ...array: Array[]): Array;
 declare function array_map(callback: Function, ...array: Array[]): Array;
 declare function array_merge(array1: Array, ...arrays: Array[]): Array;
@@ -64,7 +64,7 @@ declare function array_uintersect_assoc(array1: Array, array2: Array, data_compa
 declare function array_uintersect_uassoc(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 declare function array_unique(array: Array, sort_flags?: number): Array;
 declare function array_unshift($array: Array, ...var_: any[]): number;
-declare function array_values(input: Array): Array;
+declare function array_values(input: Array): any[];
 declare function array_walk($array: Array, funcname: ($value: any, key: any) => any, userdata?: any): bool;
 declare function array_walk_recursive($array: Array, funcname: ($value: any, key: any) => any, userdata?: any): bool;
 declare function arsort($array: Array, sort_flags?: number): bool;

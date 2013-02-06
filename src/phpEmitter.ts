@@ -467,9 +467,11 @@ module Pratphall {
                                     this.addImportReference(ident, <TypeScript.ImportDeclaration>ident.sym.declAST);
                                 }
                             }
-                        } else if (curr instanceof TypeScript.Identifier &&
-                                (<TypeScript.Identifier>curr).sym != null &&
-                                (<TypeScript.Identifier>curr).sym.isType()) {
+                        } else if (ast.operand2 instanceof TypeScript.Identifier &&
+                                (<TypeScript.Identifier>ast.operand2).sym != null &&
+                                (<TypeScript.Identifier>ast.operand2).sym.declAST != null &&
+                                (<any>(<TypeScript.Identifier>ast.operand2).sym.declAST).isStatic &&
+                                (<any>(<TypeScript.Identifier>ast.operand2).sym.declAST).isStatic()) {
                             //must be a static ref
                             this.emit(ast.operand1).write('::').emit(ast.operand2);
                         } else {
@@ -885,9 +887,9 @@ module Pratphall {
                 //any globals?
                 var globCount = 0;
                 ast.freeVariables.forEach((value: TypeScript.Symbol, index: number) => {
-                    //is global but not super global?
+                    //is global but not super global? (can't be all caps, or that's a const)
                     if (value.declModule == null && value.declAST != null && value.isVariable() &&
-                            PhpEmitter.superGlobals.indexOf(value.name) == -1) {
+                            PhpEmitter.superGlobals.indexOf(value.name) == -1 && value.name != value.name.toUpperCase()) {
                         if (ast.isMethod() || ast.isConstructor) {
                             this.addWarning(ast, "Use of global variable '" + value.name + "' in class method");
                         }
@@ -1035,8 +1037,8 @@ module Pratphall {
                     (<TypeScript.BoundDecl>ast.sym.declAST).id === ast) {
                 hasDollar = true;
             }
-            //if it's not a dollar, it can't be reserved word regardless of case
-            if (!hasDollar) {
+            //if it's not a dollar, it can't be reserved word regardless of case (unless it's a property)
+            if (!hasDollar && (ast.sym == null || !ast.sym.isMember() || !ast.sym.isVariable())) {
                 var lowerCase = text.toLowerCase();
                 if (PhpEmitter.reservedWords.indexOf(lowerCase) != -1) {
                     this.addError(ast, "'" + text + "' is reserved and cannot be used as an identifier");

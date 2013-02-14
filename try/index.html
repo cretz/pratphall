@@ -258,9 +258,9 @@ try {
     new ReflectionClass('NonExistentClass');
 } catch (err) {
     if (err instanceof ReflectionException) {
-        echo('Not found: ' + (<Exception>err).getMessage());
+        echo('Not found: ' + (&lt;Exception>err).getMessage());
     } else {
-        echo('Other: ' + (<Exception>err).getMessage());
+        echo('Other: ' + (&lt;Exception>err).getMessage());
     }
 } finally {
     echo('This runs always in PHP 5.5');
@@ -396,7 +396,7 @@ a.causeErr();</pre>
     <!-- CODE -->
     <script src="../jquery.min.js"></script>
     <script src="../codemirror-custom.min.js"></script>
-    <script src="pratphall-browser.js"></script>
+    <script src="pratphall-browser.min.js"></script>
     <script type="text/javascript">
       $(function () {
         //setup code mirror

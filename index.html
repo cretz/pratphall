@@ -987,7 +987,7 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
             <strong>interface properties</strong> - Interfaces can define properties that the class needs to end up defining. Note, these are NOT emitted to PHP, they are a compile-time only feature.
           </li>
           <li>
-            <strong>super calls</strong> - To call a parent method inside an overload, use <code>super</code> which is translated to <code>parent</code> in PHP.
+            <strong>super calls</strong> - To call a parent method inside an override, use <code>super</code> which is translated to <code>parent</code> in PHP.
           </li>
           <li>
             <strong>overloads</strong> - Overloaded methods are supported in classes just like normal overloaded functions. This means there must be a single catch-all implementation and the overload signatures are not emitted.
@@ -1003,6 +1003,9 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
           </li>
           <li>
             <strong>optional members</strong> - In Pratphall, using a question mark after a function or property name in an interface means the implementer doesn't have to implement it. Optional members are NOT emitted to PHP, they are a compile-time only feature.
+          </li>
+          <li>
+            <strong>module/namespace visibility</strong> - In Pratphall, if <code>export</code> is not placed on an interface or class, it is not visible outside the module it was declared in. This is a compile-time only feature and does not affect PHP output.
           </li>
           <li>
             <strong>magic methods</strong> - All magic methods besides <code>__construct</code> and <code>__toString</code> are supported as normal methods. If they are not public, an error occurs. Be advised, the compile-time type system is unaware of runtime-derived members from things like <code>__get</code>, <code>__callStatic</code>, etc. Pratphall discourages the use of these magic methods, but if you must, cast to any first then cast the result back.
@@ -1254,7 +1257,7 @@ printWeather((object)[
         If a module is imported with an alias, it is translated to a use statement. If the alias is the same as the last module part, the <code>as</code> alias in the use statement is not emitted. Currently, Pratphall can only import and alias other modules, there is no importing or aliasing of other classes/interfaces. The <code>namespace</code> operator to access something in the same module is not present in Pratphall.
       </p>
       <p>
-        External module references that use <code>import mod = module('modname')</code> format cause a compiler warning and are ignored for now. Use of the export feature to share items amongst modules is strictly a compile-time feature and is not emitted to PHP.
+        External module references that use <code>import mod = module('modname')</code> format cause a compiler warning and are ignored for now. Use of the export feature to share items amongst modules/namespaces is strictly a compile-time feature and is not emitted to PHP.
       </p>
       <p>
         If you must reference code in another file, you can use <code>///&lt;reference path="PATH" /&gt;</code>. It is common practice to reference a file that might just be full of references to the other files in the project. This is just a compile-time reference unless both <code>--no-organize</code> and <code>--require-references</code> are set as compiler options.
@@ -1364,7 +1367,7 @@ namespace {
       <h3 class="para-link">Metaprogramming <a href="#Manual-Metaprogramming">&nbsp;&para;</a></h3>
 
       <span class="bookmark" id="Manual-Metaprogramming-Overview"></span>
-      <h4 class="para-link">Overview <a href="#Manual-Metaprogramming-Overview">&nbsp;&para;</a></h3>
+      <h4 class="para-link">Overview <a href="#Manual-Metaprogramming-Overview">&nbsp;&para;</a></h4>
       <p>
         Pratphall includes the ability to write compile-time extensions that can emit PHP code, validate input, or do anything else. They are written in TypeScript (not Pratphall) and run during compilation in nodejs.
       </p>
@@ -1412,7 +1415,7 @@ module Pratphall {
       <p>
 
       <span class="bookmark" id="Manual-Metaprogramming-Example"></span>
-      <h4 class="para-link">Example <a href="#Manual-Metaprogramming-Example">&nbsp;&para;</a></h3>
+      <h4 class="para-link">Example <a href="#Manual-Metaprogramming-Example">&nbsp;&para;</a></h4>
 
       <p>
         Let's say you wanted to make an extension that ran some code that was output buffered and then flushed the buffer at the end. In PHP you do this with <code>ob_start</code> and <code>ob_end_flush</code>. On the Pratphall side, you will want to create a compile-time function to help with this. Then you can use it in Pratphall:
@@ -1437,7 +1440,7 @@ module MyExt {
     import TS = TypeScript;
 
     PhpEmitter.registerExtension({
-        name: 'Buffer.outputThenFlush',
+        name: 'Output.outputThenFlush',
         description: 'Handle output-then-flush handler',
         matcher: {
             nodeType: [TS.NodeType.Call],
@@ -1446,7 +1449,7 @@ module MyExt {
                 target: (value: TS.AST) => {
 
                     //isDottedBinEx is a helper available to you to check a dotted binary expression
-                    return isDottedBinEx(value, 'Buffer', 'outputThenFlush');
+                    return Pratphall.isDottedBinEx(value, 'Output', 'outputThenFlush');
                 }
             }
         },
@@ -1493,7 +1496,7 @@ echo('blah');
 
 ob_end_flush();</code></pre>
       <p>
-        Extensions are also a good way to write validators. Simply do your checks and add errors or warnings in the emit function. You can return false on errors to skip emitting or true to continue. There are many examples of extensions in the Pratphall source at src/ext. Even <a href="http://github.com/cretz/dust-php">dust-php</a> uses an extension in the test/ folder that takes some JSON and makes test cases out of it. It is a complex subject, but working through a few will make it easier to understand.
+        Extensions are also a good way to write validators. Simply do your checks and add errors or warnings in the emit function. You can return true on errors to skip emitting or false to continue. There are many examples of extensions in the Pratphall source at src/ext. Even <a href="http://github.com/cretz/dust-php">dust-php</a> uses an extension in the test/ folder that takes some JSON and makes test cases out of it. It is a complex subject, but working through a few will make it easier to understand.
       </p>
 
       <span class="bookmark" id="Manual-Faq"></span>
@@ -1580,7 +1583,7 @@ ob_end_flush();</code></pre>
       <span class="bookmark" id="Manual-Appendices-Configuration"></span>
       <h4 class="para-link">Configuration Files <a href="#Manual-Appendices-Configuration">&nbsp;&para;</a></h4>
       <p>
-        A configuration file can be passed in to ppc using the <code>-c</code> or <code>--config</code> option. It contains all the same features as the command line options, but sometimes worded differently. When a configuration file is specified, it overwrites any command line parameters that may appear before it. If there are command line parameters after the configuration file parameter, they will override command line options. Here is the TypeScript class definition (with defaults) the JSON values are merged into:
+        A configuration file can be passed in to ppc using the <code>-c</code> or <code>--config</code> option. It contains all the same features as the command line options, but sometimes worded differently. When a configuration file is specified, it overwrites any command line parameters that may appear before it. If there are command line parameters after the configuration file parameter, they will override configuration options. Here is the TypeScript class definition (with defaults) the JSON values are merged into:
       </p>
       <pre><code data-language="javascript">class CompilerOptions {
     //whether or not to emit comments on output
@@ -1666,7 +1669,7 @@ ob_end_flush();</code></pre>
     "organize": true,
     "typeBraceNewline": true,
     "useElseif": true
-}</pre></code>
+}</code></pre>
 
       <span class="bookmark" id="Manual-Appendices-Gotchas"></span>
       <h4 class="para-link">Gotchas <a href="#Manual-Appendices-Gotchas">&nbsp;&para;</a></h4>
@@ -1767,9 +1770,6 @@ ob_end_flush();</code></pre>
           </li>
           <li>
             Support open classes/interfaces.
-          </li>
-          <li>
-            Add online playground. Should be very easy since it's all simple JavaScript. Could even leverage phpfiddle's API and the GitHub gist framework to execute the compiled code, save it for later use, etc.
           </li>
           <li>
             Get up and running on Travis CI.

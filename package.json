@@ -21,6 +21,7 @@
     "devDependencies": {
         "typescript": "0.8.2",
         "jake": "latest",
-        "fs-extra": "latest"
+        "fs-extra": "latest",
+        "node-minify": "latest"
     }
 }

@@ -19,6 +19,7 @@
 ///<reference path='object-toString.ts' />
 ///<reference path='pct-ambient.ts' />
 ///<reference path='pct-asVar.ts' />
+///<reference path='pct-breakContinue.ts' />
 ///<reference path='pct-byRef.ts' />
 ///<reference path='pct-cast.ts' />
 ///<reference path='pct-clone.ts' />

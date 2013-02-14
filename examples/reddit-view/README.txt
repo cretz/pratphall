@@ -1,1 +1,0 @@
-﻿This is the beginnings of a reddit client to show off Pratphall features.

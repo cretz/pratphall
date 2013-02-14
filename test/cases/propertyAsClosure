@@ -1,0 +1,20 @@
+Property as closure test
+-----
+class Foo {
+    bar: (str: string) => number;
+
+    test(name: string) {
+        if (this.bar != null) return this.bar(name);
+        return null;
+    }
+}
+-----
+class Foo {
+    public $bar;
+    
+    public function test($name) {
+        if ($this->bar != null) return $this->bar->__invoke($name);
+        return null;
+    }
+    
+}

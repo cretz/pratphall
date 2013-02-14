@@ -18,7 +18,8 @@ module Pratphall {
                     }, (s: TypeScript.Symbol) => {
                         return s.declAST != null && s.declAST instanceof TypeScript.InterfaceDeclaration;
                     });
-                if (scope.search(filter, text, false, true) == null) {
+                (<TypeScript.Identifier>ast).sym = scope.search(filter, text, false, true);
+                if ((<TypeScript.Identifier>ast).sym == null) {
                     oldUnresolvedSymbol.call(compiler.errorReporter, ast, name);
                 }
             }

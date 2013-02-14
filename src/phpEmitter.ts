@@ -430,12 +430,12 @@ module Pratphall {
                             if (this.getIdentifierText(<TypeScript.Identifier>ast.operand2) == '__invoke') {
                                 this.emit(ast.operand1);
                                 return;
-                            } else {
+                            } else if ((<TypeScript.FuncDecl>ast.type.symbol.declAST).isMethod()) {
                                 //can't have call parent
                                 if (!this.stack.some((value: TypeScript.AST) => {
                                     return value instanceof TypeScript.CallExpression;
                                 })) {
-                                    this.write('(new ReflectionMethod(').emit(ast.operand1).write(", '" +
+                                    this.write('(new \\ReflectionMethod(').emit(ast.operand1).write(", '" +
                                         this.getIdentifierText(<TypeScript.Identifier>ast.operand2) +
                                         "'))->getClosure(").emit(ast.operand1).write(')');
                                     return;
@@ -483,9 +483,7 @@ module Pratphall {
                             //must be a string literal in PHP
                             this.emit(new TypeScript.StringLiteral('"' +
                                 this.getIdentifierText(<TypeScript.Identifier>ast.operand1) + '"'));
-                        } else {
-                            this.emit(ast.operand1);
-                        }
+                        } else this.emit(ast.operand1);
                         this.write(' => ').emit(ast.operand2);
                         break;
                     case TypeScript.NodeType.Index:
@@ -589,8 +587,12 @@ module Pratphall {
                                 binex.operand1.type.symbol.declAST instanceof TypeScript.NamedDeclaration) {
                             classDecl = <TypeScript.NamedDeclaration>binex.operand1.type.symbol.declAST;
                         }
-                        //is class method or static?
-                        if (classDecl != null || binex.operand1.type.isClassInstance()) {
+                        var isClosureProperty = ast.target.type != null &&
+                            ast.target.type.symbol != null && ast.target.type.symbol.declAST != null &&
+                            ast.target.type.symbol.declAST instanceof TypeScript.FuncDecl &&
+                            !(<TypeScript.FuncDecl>ast.target.type.symbol.declAST).isMethod();
+                        //is class non-property or static?
+                        if ((classDecl != null || binex.operand1.type.isClassInstance()) && !isClosureProperty) {
                             //is compile time only?
                             if (classDecl != null && 'compileTimeOnly' in classDecl) {
                                 //unknown which, try either
@@ -740,7 +742,7 @@ module Pratphall {
             staticExtraInitVars.forEach((value: TypeScript.VarDecl) => {
                 if (value.isPrivate()) {
                     var tmpName = this.newTempVarName();
-                    this.newline().write('$' + tmpName + " = (new ReflectionClass('" +
+                    this.newline().write('$' + tmpName + " = (new \\ReflectionClass('" +
                         this.getIdentifierText(ast.name) + "'))->getProperty('" +
                         this.getIdentifierText(value.id) + "');").newline().
                         write('$' + tmpName + '->setAccessible(true);').newline().
@@ -888,7 +890,9 @@ module Pratphall {
                 var globCount = 0;
                 ast.freeVariables.forEach((value: TypeScript.Symbol, index: number) => {
                     //is global but not super global? (can't be all caps, or that's a const)
-                    if (value.declModule == null && value.declAST != null && value.isVariable() &&
+                    var isNestedFunc = value.declAST != null && value.declAST instanceof TypeScript.FuncDecl &&
+                        (<TypeScript.FuncDecl>value.declAST).enclosingFnc != null;
+                    if (value.declModule == null && value.declAST != null && (value.isVariable() || isNestedFunc) &&
                             PhpEmitter.superGlobals.indexOf(value.name) == -1 && value.name != value.name.toUpperCase()) {
                         if (ast.isMethod() || ast.isConstructor) {
                             this.addWarning(ast, "Use of global variable '" + value.name + "' in class method");
@@ -899,6 +903,12 @@ module Pratphall {
                             else this.write('use (');
                             if (!closure) this.write('global ');
                         } else this.write(', ');
+                        //if it's dollar-signed or self-referencing, gotta be a reference
+                        var variableAssignedToThisFunction = value.declAST instanceof TypeScript.VarDecl &&
+                            (<TypeScript.VarDecl>value.declAST).init == ast;
+                        if (value.name.charAt(0) == '$' || value.declAST == ast || variableAssignedToThisFunction) {
+                            this.write('&');
+                        }
                         if (value.name.charAt(0) != '$') this.write('$');
                         this.write(value.name);
                     }
@@ -1010,7 +1020,7 @@ module Pratphall {
                 if (!hasCallWithMeAsType && ast.sym.declAST instanceof TypeScript.FuncDecl &&
                         !(<TypeScript.FuncDecl>ast.sym.declAST).isConstructor) {
                     //(new ReflectionFunction('a'))->getClosure()
-                    this.write("(new ReflectionFunction('" + this.getIdentifierText(ast) + "'))->getClosure()");
+                    this.write("(new \\ReflectionFunction('" + this.getIdentifierText(ast) + "'))->getClosure()");
                     return;
                 }
             }
@@ -1055,6 +1065,10 @@ module Pratphall {
             if (hasDollar) this.write('$');
             var shouldWrite = true;
             //check namespaces and what not
+            if (ast.actualText == 'Traversable') {
+                //console.log(this.stack[this.stack.length - 2]);
+                //console.log(ast);
+            }
             if (ast.sym != null && (ast.sym.declAST instanceof TypeScript.NamedDeclaration ||
                     (ast.sym.declAST instanceof TypeScript.FuncDecl &&
                     (<TypeScript.FuncDecl>ast.sym.declAST).isConstructor))) {
@@ -1224,14 +1238,18 @@ module Pratphall {
         }
 
         emitStringLiteral(ast: TypeScript.StringLiteral) {
-            //is there a slash?
-            var isSlash = ast.text.indexOf('\\') != -1;
-            var isSingleQuote = !isSlash && (this.options.alwaysPreferSingleQuotes || ast.text.charAt(0) == "'");
-            if (isSingleQuote) {
-                this.write("'").write(ast.text.substr(1, ast.text.length - 2)).write("'");
-            } else {
-                //must escape $ (which becomes \$ so {\$ is also handled)
-                this.write('"').write(ast.text.substr(1, ast.text.length - 2).replace(/\$/g, '\\$')).write('"');
+            //sometimes it's just a number
+            if (ast.text.charAt(0) != '"' && ast.text.charAt(0) != "'") this.write(ast.text);
+            else {
+                //is there a slash?
+                var isSlash = ast.text.indexOf('\\') != -1;
+                var isSingleQuote = !isSlash && (this.options.alwaysPreferSingleQuotes || ast.text.charAt(0) == "'");
+                if (isSingleQuote) {
+                    this.write("'").write(ast.text.substr(1, ast.text.length - 2)).write("'");
+                } else {
+                    //must escape $ (which becomes \$ so {\$ is also handled)
+                    this.write('"').write(ast.text.substr(1, ast.text.length - 2).replace(/\$/g, '\\$')).write('"');
+                }
             }
         }
 

@@ -11079,6 +11079,16 @@ module Pct {
     function typeName(obj: any): string;
 
     /**
+     * Insert PHP break. This is helpful in forEach loop
+     */
+    function break();
+
+    /**
+     * Insert PHP continue. This is helpful in forEach loop
+     */
+    function continue();
+
+    /**
      * Create a new associative array. An empty array is created if no 
      * parameters are present. Otherwise, the parameter must be an object
      * literal which properly translates.

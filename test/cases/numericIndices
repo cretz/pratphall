@@ -1,0 +1,13 @@
+﻿Numeric indices test
+-----
+var a = Pct.newAssocArray({
+    foo: 'bar',
+    foo2: 12,
+    25: false
+});
+-----
+$a = [
+    'foo' => 'bar',
+    'foo2' => 12,
+    25 => false
+];

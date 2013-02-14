@@ -1,0 +1,37 @@
+Recursive closure test
+-----
+function foo() {
+    function bar(index: number) {
+        bar(index + 1);
+    }
+    
+    var bar2 = (index: number) => {
+        bar2(index + 1);
+    };
+    var bar3 = function (index: number) {
+        bar3(index + 1);
+    };
+    var bar4 = (index: number) => {
+        bar(index + 1);
+        bar2(index + 1);
+        bar3(index + 1);
+    };
+}
+-----
+function foo() {
+    $bar = function ($index) use (&$bar) {
+        $bar($index + 1);
+    };
+
+    $bar2 = function ($index) use (&$bar2) {
+        $bar2($index + 1);
+    };
+    $bar3 = function ($index) use (&$bar3) {
+        $bar3($index + 1);
+    };
+    $bar4 = function ($index) use ($bar, $bar2, $bar3) {
+        $bar($index + 1);
+        $bar2($index + 1);
+        $bar3($index + 1);
+    };
+}

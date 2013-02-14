@@ -1,0 +1,20 @@
+﻿Instance of traversable
+-----
+module NotTopLevel {
+    class Foo {
+        bar() {
+            var a = new ArrayObject([1, 2, 3]);
+            var c = a instanceof Traversable;
+        }
+    }
+}
+-----
+namespace NotTopLevel;
+
+class Foo {
+    public function bar() {
+        $a = new \ArrayObject([1, 2, 3]);
+        $c = $a instanceof \Traversable;
+    }
+    
+}

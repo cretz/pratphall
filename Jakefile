@@ -98,5 +98,22 @@ task('browser', {async: true}, function (path) {
     var cmds = [
         'node ./node_modules/typescript/bin/tsc.js --out ' + path + '/pratphall-browser.js ./src/browser.ts'
     ];
-    jake.exec(cmds, complete, {printStdout: true, printStderr: true});
+
+    jake.exec(cmds, function () {
+        //minify
+        console.log('Minifying to pratphall-browser.min.js');
+        var compressor = require('node-minify')
+        new compressor.minify({
+            type: 'uglifyjs',
+            fileIn: path + '/pratphall-browser.js',
+            fileOut: path + '/pratphall-browser.min.js',
+            callback: function (err) { 
+                if (err) console.log('Error: ', err);
+                //remove un-minified
+                console.log('Removing pratphall-browser.js');
+                fs.removeSync(path + '/pratphall-browser.js');
+                complete();
+            }
+        });
+    }, {printStdout: true, printStderr: true});
 });

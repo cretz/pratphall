@@ -1,0 +1,17 @@
+﻿Name ambiguity test
+-----
+var a = [1, 2, 3];
+a.forEach((value: number) => {
+    if (value == 2) Pct.break();
+});
+a.forEach((value: number) => {
+    if (value == 2) Pct.continue();
+});
+-----
+$a = [1, 2, 3];
+foreach ($a as $value) {
+    if ($value == 2) break;
+}
+foreach ($a as $value) {
+    if ($value == 2) continue;
+}

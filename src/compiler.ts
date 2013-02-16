@@ -418,12 +418,13 @@ module Pratphall {
             });
             //we don't write with errors or just linting
             if (results.errors.length > 0 || this.options.lint) return null;
-            var isOutFile = this.options.out.indexOf('.php') != -1;
-            var dir = isOutFile ? this.io.dirPath(this.options.out) : this.options.out;
+            var isOutFile = this.options.out == null || this.options.out.indexOf('.php') != -1;
+            var dir = isOutFile && this.options.out != null ? this.io.dirPath(this.options.out) : this.options.out;
             var localHashes = {};
             results.files.forEach((value: OutputFile, index: number) => {
                 //first file can be specified by out
-                var file = isOutFile && index == 0 ? this.options.out : this.io.joinPaths(dir, value.path);
+                var file = isOutFile && (index == 0 || dir == null) ? this.options.out : this.io.joinPaths(dir, value.path);
+                if (file == null) file = value.path.replace('.ts', '.php');
                 var fileDir = this.io.dirPath(file);
                 //handle hashes
                 if (this.options.watch) {

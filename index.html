@@ -69,7 +69,6 @@
         </div>
         <br class="clearfix" style="clear: left;" />
       </div>
-      <h1 style="color: red">Placeholder page...not ready yet!!!</h1>
       <h3>Overview</h3>
       <p>
         Pratphall is an optionally-typed language that compiles to readable PHP. PHP has a powerful engine and is very scalable since state is primarily per-request for PHP scripts. Unfortunately, due to the dynamic nature of PHP, it can be difficult to build large projects and retain the ability to refactor and manage the code. It can also be difficult to foresee errors with typing and unavailable variables. Almost all of these issues cause many problems that don't surface until runtime. Pratphall aims to solve this.
@@ -135,10 +134,10 @@ printInfo((object)[ 'requiredProperty' => 'required val' ]);</code></pre>
 
       <span class="bookmark" id="GettingStarted-Installation"></span>
       <h4 class="para-link">Installation <a href="#GettingStarted-Installation">&nbsp;&para;</a></h4>
-      <p>To use Pratphall from the command line, simply install via NPM:</p>
+      <p>To use Pratphall from the command line, simply install via NPM (it's a little large since it includes source for metaprogramming facilities):</p>
       <pre>npm install -g pratphall</pre>
       <p>
-        You may also want to install <a href="http://www.microsoft.com/en-us/download/details.aspx?id=34790">TypeScript for Visual Studio 2012</a> if you want to use Visual Studio as your editor. For more information about Visual Studio support, see <a href="#Manual-Appendices-VisualStudio">below</a>.
+        You may also want to install <a href="http://www.microsoft.com/en-us/download/details.aspx?id=34790">TypeScript for Visual Studio 2012</a> if you want to use Visual Studio as your editor. For more information about Visual Studio support, see <a href="#Manual-Appendices-VisualStudio">below</a>. If using Pratphall in an editor, you may not want to use the -g option which installs globally; this way you can directly reference node_modules/pratphall/bin/php.d.ts directly in your source.
       </p>
       <p>If you want to build Pratphall from source, see the <a href="#Manual-Appendices-Building">Building From Source</a> appendix.</p>
 
@@ -448,7 +447,7 @@ f('test');</code></pre>
 }
 
 $foo = new Foo();
-$f = (new ReflectionMethod('Foo', 'bar'))->getClosure($foo);
+$f = (new \ReflectionMethod('Foo', 'bar'))->getClosure($foo);
 //call
 $f('test');</code></pre>
       </div>
@@ -1570,11 +1569,11 @@ ob_end_flush();</code></pre>
       <span class="bookmark" id="Manual-Appendices-Building"></span>
       <h4 class="para-link">Building From Source <a href="#Manual-Appendices-Building">&nbsp;&para;</a></h4>
       <p>
-        Building from source is done very easily. You must have nodejs installed. Then, clone the <a href="https://github.com/cretz/pratphall.git">git repository</a>:
-        <pre>git clone https://github.com/cretz/pratphall.git</pre>
-        Run npm install to resolve the development dependencies:
+        Building from source is done very easily. You must have nodejs installed. Then, clone the <a href="https://github.com/cretz/pratphall.git">git repository</a> (using --recursive to get the TypeScript submodule):
+        <pre>git clone --recursive https://github.com/cretz/pratphall.git</pre>
+        Now navigate into the newly created pratphall directory and run npm install to resolve the development dependencies:
         <pre>npm install</pre>
-        This will install jake locally. Now run the build task with local Jake (or the global version if you already have Jake installed):
+        This will install Jake, TypeScript, and a few other items locally. Now run the build task with local Jake (or the global version if you already have Jake installed):
         <pre>node_modules/.bin/jake build</pre>
         This will compile everything into a single JS and move everything to the bin directory. You can also run the test cases very easily:
         <pre>node_modules/.bin/jake test</pre>
@@ -1807,7 +1806,9 @@ ob_end_flush();</code></pre>
     </div>
     <script src="jquery.min.js"></script>
     <script src="bootstrap.min.js"></script>
+    <!--[if gt IE 8]>-->
     <script src="rainbow-custom.min.js"></script>
+    <!--[endif]>-->
     <script type="text/javascript">
 
   var _gaq = _gaq || [];

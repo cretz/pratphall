@@ -33,7 +33,7 @@ task('build', {async: true}, function () {
     jake.exec(cmds, function() {
         //now make the ppc shell script
         console.log('Making ppc shell script');
-        fs.writeFileSync('bin/ppc', "#!/usr/bin/env node\nrequire('./tsc.js');");
+        fs.writeFileSync('bin/ppc', "#!/usr/bin/env node\nrequire('./ppc.js');");
 
         //remove typescript npmignore
         if (fs.existsSync('src/typescript/.npmignore')) {
@@ -107,7 +107,7 @@ task('browser', {async: true}, function (path) {
             type: 'uglifyjs',
             fileIn: path + '/pratphall-browser.js',
             fileOut: path + '/pratphall-browser.min.js',
-            callback: function (err) { 
+            callback: function (err) {
                 if (err) console.log('Error: ', err);
                 //remove un-minified
                 console.log('Removing pratphall-browser.js');

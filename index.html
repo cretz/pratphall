@@ -224,7 +224,7 @@ echo(sayHello(theSubject) + '\n');</code></pre>
         <dt><code>--exclude-outside</code></dt>
         <dd>Do not emit Pratphall files referenced in directories above and outside the given file. This is helpful for when you may only want to emit code from a test directory, not all the other code it references.</dd>
         <dt><code>--ext FILE</code></dt>
-        <dd>Can be used as many times as necessary to include extensions</dd>
+        <dd>Can be used as many times as necessary to include extensions (see metaprogramming below)</dd>
         <dt><code>--force-block</code></dt>
         <dd>Forces if, else, while, etc to have blocks on output even if single statements are given on input</dd>
         <dt><code>--function-brace-newline</code></dt>
@@ -577,7 +577,7 @@ $copy = clone $obj;</code></pre>
           <dt><code>?:</code></dt>
           <dd>Pratphall supports the normal PHP ternary, but does not support the shorthand form which uses the conditional as the first result.</dd>
           <dt><code>&amp;</code></dt>
-          <dd>References types and reference assignment are handled differently in Pratphall. See the References section.</dd>
+          <dd>Reference types and reference assignment are handled differently in Pratphall. See the References section.</dd>
           <dt><code>&lt;&gt;</code></dt>
           <dd>This is considered "not equal" in PHP. Pratphall does not support it.</dd>
           <dt><code>@</code></dt>
@@ -604,7 +604,7 @@ $copy = clone $obj;</code></pre>
           </dd>
           <dt><code>instanceof</code></dt>
           <dd>
-            This check will work just fine in Pratphall when the right hand side is the literal name of a class. If the right hand side is a string, interface, or some other expression you must use <code>Pct.isInstance</code>. Of course, <code>is_a</code> may be also be used as part of the PHP standard library.
+            This check will work just fine in Pratphall when the right hand side is the literal name of a type. If the right hand side is a string or some other expression you must use <code>Pct.isInstance</code>. Of course, <code>is_a</code> may be also be used as part of the PHP standard library.
             <div class="code-nested">
               <pre><code data-language="javascript">class Foo { }
 var a = new Foo();
@@ -851,7 +851,7 @@ myprint('foo', true, 13.5, 'bar');</code></pre>
 words();
 //uses array and prints w/ prefix
 words(true, ['foo bar', 'fu bar']);</code></pre>
-        <pre><code data-language="php">function words($prefix = false, $file = null) {
+        <pre><code data-language="php">function words($prefix = null, $file = null) {
     if ($file === null) $file = file('default.txt');
     foreach ($file as $line) {
         foreach (explode(' ', $line) as $word) {
@@ -977,7 +977,7 @@ printWords(true, ['foo bar', 'fu bar']);</code></pre>
         Despite these non-existent features, the Pratphall object-oriented system is very strong. Actually, in practice we've found the absence of some of these features leads to cleaner code. Here are some features that Pratphall does support:
         <ul>
           <li>
-            <strong>constructors</strong> - Use <code>constructor</code> in Pratphall which translates to <code>__construct</code>. A member named <code>__construct</code> in Pratphall is an error. Also, using public or private before variable declarations in a constructor automatically make them properties.
+            <strong>constructors</strong> - Use <code>constructor</code> in Pratphall which translates to <code>__construct</code>. A member named <code>__construct</code> in Pratphall is an error. Also, using public or private before parameter declarations in a constructor automatically make them properties.
           </li>
           <li>
             <strong>public by default</strong> - All members are public by default.
@@ -1155,7 +1155,7 @@ $e = strval($myClass);</code></pre>
       <span class="bookmark" id="Manual-Structure-AmbientCompileTime"></span>
       <h4 class="para-link">Ambient and Compile-Time Declarations <a href="#Manual-Structure-AmbientCompileTime">&nbsp;&para;</a></h4>
       <p>
-        Ambient class, interface, variable, and function declarations are not emitted with the PHP output. They are best suited for describing external code. To make a variable, class, or function ambient, simple use the <code>declare</code> keyword before it. To make an interface ambient, make the interface explicitly extend <code>Pct.Ambient</code>. Another way to make all of these ambient is to simply place them in a declaration file (which is a file that has the <code>.d.ts</code> extension). For example, here are the contents of <code>json.d.ts</code> which describes the <a href="http://php.net/manual/en/book.json.php">JSON</a> library:
+        Ambient class, interface, variable, and function declarations are not emitted with the PHP output. They are best suited for describing external code. To make a variable, class, or function ambient, simply use the <code>declare</code> keyword before it. To make an interface ambient, make the interface explicitly extend <code>Pct.Ambient</code>. Another way to make all of these ambient is to simply place them in a declaration file (which is a file that has the <code>.d.ts</code> extension). For example, here are the contents of <code>json.d.ts</code> which describes the <a href="http://php.net/manual/en/book.json.php">JSON</a> library:
       </p>
       <pre><code data-language="javascript">var JSON_ERROR_CTRL_CHAR: number;
 var JSON_ERROR_DEPTH: number;
@@ -1406,7 +1406,7 @@ module Pratphall {
         Next, this extension happens to be in the Pratphall module, but yours can be in any. The PhpEmitter class has a static method called register extension that takes a single object. This object must have a name, a description, a matcher object, and an emit function. The name and description are unused currently, but provide metadata about the extension.
       </p>
       <p>
-        The matcher is an object that matches AST so the emitter knows when to invoke the extension. The nodeType property is an array of node types this extension accepts. You will have to reference the TypeScript source code to see what these node types are. The priority property is a numeric value which defines the order in which the extension is executed. The higher the priority, the earlier it will be executed. All Pratphall extensions use a priority of 1. Finally there is the propertyMatches property. This property is simply a collection of functions bound to names of properties on the AST object you are targeting. The function will be called with that property as the parameter and you must return true for it to be handled. In the above example, this checks that it is a dotted binary expression whose right hand side is to toString function (e.g. something.toString).
+        The matcher is an object that matches AST so the emitter knows when to invoke the extension. The nodeType property is an array of node types this extension accepts. You will have to reference the TypeScript source code to see what these node types are. The priority property is a numeric value which defines the order in which the extension is executed. The higher the priority, the earlier it will be executed. All built-in Pratphall extensions use a priority of 1. Finally there is the propertyMatches property. This property is simply a collection of functions bound to names of properties on the AST object you are targeting. The function will be called with that property as the parameter and you must return true for it to be handled. In the above example, this checks that it is a dotted binary expression whose right hand side is the toString function (e.g. something.toString).
       </p>
       <p>
         The emit function accepts the AST and the PHP emitter as parameters. Again, you may have to look at the TypeScript and Pratphall source to understand these. The emitter offers several functions to help emit PHP. If the function returns true, no more extensions for this AST node will be executed. If it returns false, other extensions down the priority chain will be executed. If no extensions match an AST node, it is emitted normally.
@@ -1542,7 +1542,7 @@ ob_end_flush();</code></pre>
       <span class="bookmark" id="Manual-Appendices-VisualStudio"></span>
       <h4 class="para-link">Visual Studio Support <a href="#Manual-Appendices-VisualStudio">&nbsp;&para;</a></h4>
       <p>
-        Stronger built-in Visual Studio support will be coming soon in Pratphall, but for now it's fairly limited. Having said that, it is still the most complete IDE for Pratphall. It is recommended to use --no-php-lib when compiling and add a reference to php.d.ts (in the bin directory of installation) to a commonly referenced base. This will give intellisense support and all normal Visual Studio features.
+        Stronger built-in Visual Studio support will be coming soon in Pratphall, but for now it's fairly limited. Having said that, it is still the most complete IDE for Pratphall. Visual Studio Express 2012 for Web is free and it was the IDE used to create Pratphall. When using Visual Studio, it is recommended to use --no-php-lib when compiling and add a reference to php.d.ts (in the bin directory of installation) to a commonly referenced base. This will give intellisense support and all normal Visual Studio features.
       </p>
       <p>
         There are a few reported errors from the TypeScript compiler that Pratphall suppresses. These will appear as errors in Visual Studio, but are not Pratphall errors. They are:

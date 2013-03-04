@@ -1,6 +1,6 @@
 ///<reference path='all.d.ts' />
 
-declare interface SessionHandlerInterface {
+interface SessionHandlerInterface {
     close(): bool;
     destroy(session_id: string): bool;
     gc(maxlifetime: string): bool;
@@ -9,7 +9,7 @@ declare interface SessionHandlerInterface {
     write(session_id: string, session_data: string): bool;
 }
 
-declare class SessionHandler implements SessionHandlerInterface {
+class SessionHandler implements SessionHandlerInterface {
     close(): bool;
     destroy(session_id: string): bool;
     gc(maxlifetime: string): bool;

@@ -1,13 +1,13 @@
 ///<reference path='all.d.ts' />
 
-declare var DIRECTORY_SEPARATOR: string;
-declare var PATH_SEPARATOR: string;
+var DIRECTORY_SEPARATOR: string;
+var PATH_SEPARATOR: string;
 
-declare var SCANDIR_SORT_ASCENDING: number;
-declare var SCANDIR_SORT_DESCENDING: number;
-declare var SCANDIR_SORT_NONE: number;
+var SCANDIR_SORT_ASCENDING: number;
+var SCANDIR_SORT_DESCENDING: number;
+var SCANDIR_SORT_NONE: number;
 
-declare class Directory {
+class Directory {
     path: string;
     handle: Pct.PhpResource;
 
@@ -16,12 +16,12 @@ declare class Directory {
     rewind(dir_handle?: Pct.PhpResource);
 }
 
-declare function chdir(directory: string): bool;
-declare function chroot(directory: string): bool;
-declare function closedir(dir_handle?: Pct.PhpResource);
-declare function dir(directory: string, context?: Pct.PhpResource): Directory;
-declare function getcwd(): string;
-declare function opendir(path: string, context?: Pct.PhpResource): Pct.PhpResource;
-declare function readdir(dir_handle?: Pct.PhpResource): string;
-declare function rewinddir(dir_handle?: Pct.PhpResource);
-declare function scandir(directory?: string, sorting_order?: number, context?: Pct.PhpResource): string[];
+function chdir(directory: string): bool;
+function chroot(directory: string): bool;
+function closedir(dir_handle?: Pct.PhpResource);
+function dir(directory: string, context?: Pct.PhpResource): Directory;
+function getcwd(): string;
+function opendir(path: string, context?: Pct.PhpResource): Pct.PhpResource;
+function readdir(dir_handle?: Pct.PhpResource): string;
+function rewinddir(dir_handle?: Pct.PhpResource);
+function scandir(directory?: string, sorting_order?: number, context?: Pct.PhpResource): string[];

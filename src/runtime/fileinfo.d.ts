@@ -1,26 +1,26 @@
 ///<reference path='all.d.ts' />
 
-declare var FILEINFO_COMPRESS: number;
-declare var FILEINFO_CONTINUE: number;
-declare var FILEINFO_DEVICES: number;
-declare var FILEINFO_MIME: number;
-declare var FILEINFO_MIME_ENCODING: number;
-declare var FILEINFO_MIME_TYPE: number;
-declare var FILEINFO_NONE: number;
-declare var FILEINFO_PRESERVE_ATIME: number;
-declare var FILEINFO_RAW: number;
-declare var FILEINFO_SYMLINK: number;
+var FILEINFO_COMPRESS: number;
+var FILEINFO_CONTINUE: number;
+var FILEINFO_DEVICES: number;
+var FILEINFO_MIME: number;
+var FILEINFO_MIME_ENCODING: number;
+var FILEINFO_MIME_TYPE: number;
+var FILEINFO_NONE: number;
+var FILEINFO_PRESERVE_ATIME: number;
+var FILEINFO_RAW: number;
+var FILEINFO_SYMLINK: number;
 
-declare class finfo {
+class finfo {
     constructor(options?: number, magic_file?: string);
     buffer(string_?: string, options?: number, context?: Pct.PhpResource): string;
     file(file_name?: string, options?: number, context?: Pct.PhpResource): string;
     set_flags(options: number): bool;
 }
 
-declare function finfo_buffer(finfo: Pct.PhpResource, string_?: string, options?: number, context?: Pct.PhpResource): string;
-declare function finfo_close(finfo: Pct.PhpResource): bool;
-declare function finfo_file(finfo: Pct.PhpResource, file_name?: string, options?: number, context?: Pct.PhpResource): string;
-declare function finfo_open(options?: number, magic_file?: string): Pct.PhpResource;
-declare function finfo_set_flags(finfo: Pct.PhpResource, options: number): bool;
-declare function mime_content_type(filename: string): string;
+function finfo_buffer(finfo: Pct.PhpResource, string_?: string, options?: number, context?: Pct.PhpResource): string;
+function finfo_close(finfo: Pct.PhpResource): bool;
+function finfo_file(finfo: Pct.PhpResource, file_name?: string, options?: number, context?: Pct.PhpResource): string;
+function finfo_open(options?: number, magic_file?: string): Pct.PhpResource;
+function finfo_set_flags(finfo: Pct.PhpResource, options: number): bool;
+function mime_content_type(filename: string): string;

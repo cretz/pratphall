@@ -93,7 +93,7 @@ module Pct {
     function const(value: any): any;
 
     /**
-     * Handles PHP's declare construct
+     * Handles PHP's construct
      */
     function declare(directive: string, value: any, block?: () => void): bool;
 

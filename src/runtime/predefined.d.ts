@@ -9,30 +9,30 @@ var __TRAIT__: string;
 var __METHOD__: string;
 var __NAMESPACE__: string;
 
-declare var GLOBALS: Pct.PhpAssocArray;
-declare var _SERVER: Pct.PhpAssocArray;
-declare var _GET: Pct.PhpAssocArray;
-declare var _POST: Pct.PhpAssocArray;
-declare var _FILES: Pct.PhpAssocArray;
-declare var _REQUEST: Pct.PhpAssocArray;
-declare var _SESSION: Pct.PhpAssocArray;
-declare var _ENV: Pct.PhpAssocArray;
-declare var _COOKIE: Pct.PhpAssocArray;
-declare var php_errormsg: string;
-declare var http_response_header: string[];
-declare var argc: number;
-declare var argv: string[];
+var GLOBALS: Pct.PhpAssocArray;
+var _SERVER: Pct.PhpAssocArray;
+var _GET: Pct.PhpAssocArray;
+var _POST: Pct.PhpAssocArray;
+var _FILES: Pct.PhpAssocArray;
+var _REQUEST: Pct.PhpAssocArray;
+var _SESSION: Pct.PhpAssocArray;
+var _ENV: Pct.PhpAssocArray;
+var _COOKIE: Pct.PhpAssocArray;
+var php_errormsg: string;
+var http_response_header: string[];
+var argc: number;
+var argv: string[];
 
 function include(path: string): any;
 function include_once(path: string): any;
 function require(path: string): any;
 function require_once(path: string): any;
 
-declare interface Traversable {
+interface Traversable {
     forEach?(callbackfn: (value: any, index: any) => void);
 }
 
-declare interface Iterator extends Traversable {
+interface Iterator extends Traversable {
     current(): any;
     key(): any;
     next();
@@ -40,33 +40,33 @@ declare interface Iterator extends Traversable {
     valid(): bool;
 }
 
-declare interface IteratorAggregate extends Traversable {
+interface IteratorAggregate extends Traversable {
     getIterator(): Traversable;
 }
 
-declare interface ArrayAccess extends Pct.Indexable {
+interface ArrayAccess extends Pct.Indexable {
     offsetExists(offset: any): bool;
     offsetGet(offset: any): any;
     offsetSet(offset: any, value: any);
     offsetUnset(offset: any);
 }
 
-declare interface Serializable {
+interface Serializable {
     serialize(): string;
     unserialize(serialized: string);
 }
 
-declare class Closure {
+class Closure {
     static bind(closure: Closure, newthis: any, newscope?: any): Closure;
 
     constructor();
     bindTo(newthis: any, newscope?: any): Closure;
 }
 
-declare class stdClass {
+class stdClass {
 }
 
-declare class Exception implements Error {
+class Exception implements Error {
     name: string; //only here for compat
     message: string;
     code: number;
@@ -83,7 +83,7 @@ declare class Exception implements Error {
     getTraceAsString(): string;
 }
 
-declare class ErrorException extends Exception {
+class ErrorException extends Exception {
     severity: number;
 
     constructor(message?: string, code?: number, severity?: number, filename?: string, lineno?: number, previous?: Exception);

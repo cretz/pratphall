@@ -1,16 +1,16 @@
 ///<reference path='all.d.ts' />
 
-declare interface Reflector {
+interface Reflector {
     //static export(): string; http://typescript.codeplex.com/workitem/80
 
 }
 
-declare class Reflection {
+class Reflection {
     //static export(): string; http://typescript.codeplex.com/workitem/80
     static getModifierNames(modifiers: number): string[];
 }
 
-declare class ReflectionClass implements Reflector {
+class ReflectionClass implements Reflector {
     static IS_IMPLICIT_ABSTRACT: number;
     static IS_EXPLICIT_ABSTRACT: number;
     static IS_FINAL: number;
@@ -68,7 +68,7 @@ declare class ReflectionClass implements Reflector {
     setStaticPropertyValue(name: string, value: any);
 }
 
-declare class ReflectionZendExtension implements Reflector {
+class ReflectionZendExtension implements Reflector {
     name: string;
 
     constructor(name: string);
@@ -79,7 +79,7 @@ declare class ReflectionZendExtension implements Reflector {
     getVersion(): string;
 }
 
-declare class ReflectionExtension implements Reflector {
+class ReflectionExtension implements Reflector {
     name: string;
 
     constructor(name: string);
@@ -96,7 +96,7 @@ declare class ReflectionExtension implements Reflector {
     isTemporary(): bool;
 }
 
-declare class ReflectionFunctionAbstract implements Reflector {
+class ReflectionFunctionAbstract implements Reflector {
     name: string;
 
     getClosureThis(): any;
@@ -121,7 +121,7 @@ declare class ReflectionFunctionAbstract implements Reflector {
     returnsReference(): bool;
 }
 
-declare class ReflectionFunction extends ReflectionFunctionAbstract {
+class ReflectionFunction extends ReflectionFunctionAbstract {
     static IS_DEPRECATED: number;
 
     name: string;
@@ -133,7 +133,7 @@ declare class ReflectionFunction extends ReflectionFunctionAbstract {
     isDisabled(): bool;
 }
 
-declare class ReflectionMethod extends ReflectionFunctionAbstract {
+class ReflectionMethod extends ReflectionFunctionAbstract {
     static IS_STATIC: number;
     static IS_PUBLIC: number;
     static IS_PROTECTED: number;
@@ -163,10 +163,10 @@ declare class ReflectionMethod extends ReflectionFunctionAbstract {
     setAccessible(accessible: bool);
 }
 
-declare class ReflectionObject extends ReflectionClass {
+class ReflectionObject extends ReflectionClass {
 }
 
-declare class ReflectionParameter implements Reflector {
+class ReflectionParameter implements Reflector {
     name: string;
 
     constructor(function_: string, parameter: string);
@@ -184,7 +184,7 @@ declare class ReflectionParameter implements Reflector {
     isPassedByReference(): bool;
 }
 
-declare class ReflectionProperty implements Reflector {
+class ReflectionProperty implements Reflector {
     static IS_STATIC: number;
     static IS_PUBLIC: number;
     static IS_PROTECTED: number;
@@ -210,4 +210,4 @@ declare class ReflectionProperty implements Reflector {
     setValue(object: any, value: any);
 }
 
-declare class ReflectionException extends Exception { }
+class ReflectionException extends Exception { }

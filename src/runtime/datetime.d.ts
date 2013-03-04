@@ -1,10 +1,10 @@
 ///<reference path='all.d.ts' />
 
-declare var SUNFUNCS_RET_TIMESTAMP: number;
-declare var SUNFUNCS_RET_STRING: number;
-declare var SUNFUNCS_RET_DOUBLE: number;
+var SUNFUNCS_RET_TIMESTAMP: number;
+var SUNFUNCS_RET_STRING: number;
+var SUNFUNCS_RET_DOUBLE: number;
 
-declare class DateTime {
+class DateTime {
     static ATOM: string;
     static COOKIE: string;
     static ISO8601: string;
@@ -35,7 +35,7 @@ declare class DateTime {
     sub(interval: DateInterval): DateTime;
 }
 
-declare class DateTimeZone {
+class DateTimeZone {
     static AFRICA: number;
     static AMERICA: number;
     static ANTARTICA: number;
@@ -60,7 +60,7 @@ declare class DateTimeZone {
     static listIdentifiers(what?: number, country?: string): string[];
 }
 
-declare class DateInterval {
+class DateInterval {
     y: number;
     m: number;
     d: number;
@@ -75,7 +75,7 @@ declare class DateInterval {
     format(format: string): string;
 }
 
-declare class DatePeriod implements Traversable {
+class DatePeriod implements Traversable {
     static EXCLUDE_START_DATE: number;
 
     constructor(start: DateTime, interval: DateInterval, recurrences: number, options?: number);
@@ -83,30 +83,30 @@ declare class DatePeriod implements Traversable {
     constructor(isostr: string, options?: number);
 }
 
-declare function checkdate(month: number, day: number, year: number): bool;
-declare function date_default_timezone_get(): string;
-declare function date_default_timezone_set(timezone_identifier: string): bool;
-declare function date(format: string, timestamp?: number): string;
-declare function date_parse_from_format(format: string, date: string): Pct.PhpAssocArray;
-declare function date_parse(date: string): Pct.PhpAssocArray;
-declare function date_sun_info(time: number, latitude: number, longitude: number): Pct.PhpAssocArray;
-declare function date_sunrise(timestamp: number, format?: number, latitude?: number, longitude?: number, zenith?: number, gmt_offset?: number): any;
-declare function date_sunset(timestamp: number, format?: number, latitude?: number, longitude?: number, zenith?: number, gmt_offset?: number): any;
-declare function getdate(timestamp?: number): Pct.PhpAssocArray;
-declare function gettimeofday(): Pct.PhpAssocArray;
-declare function gettimeofday(return_float?: bool): any;
-declare function gmdate(format: string, timestamp?: number): string;
-declare function gmmktime(hour?: number, minute?: number, second?: number, month?: number, day?: number, year?: number, is_dst?: number): number;
-declare function gmstrftime(format: string, timestamp?: number): string;
-declare function idate(format: string, timestamp?: number): number;
-declare function localtime(timestamp?: number): number[];
-declare function localtime(timestamp?: number, is_associative?: bool): Array;
-declare function microtime(): string;
-declare function microtime(get_as_float: bool): any;
-declare function mktime(hour?: number, minute?: number, second?: number, month?: number, day?: number, year?: number, is_dst?: number): number;
-declare function strftime(format: string, timestamp?: number): string;
-declare function strptime(date: string, format: string): Pct.PhpAssocArray;
-declare function strtotime(time: string, now?: number): number;
-declare function time(): number;
-declare function timezone_name_from_abbr(abbr: string, gmtOffset?: number, isdst?: number): string;
-declare function timezone_version_get(): string;
+function checkdate(month: number, day: number, year: number): bool;
+function date_default_timezone_get(): string;
+function date_default_timezone_set(timezone_identifier: string): bool;
+function date(format: string, timestamp?: number): string;
+function date_parse_from_format(format: string, date: string): Pct.PhpAssocArray;
+function date_parse(date: string): Pct.PhpAssocArray;
+function date_sun_info(time: number, latitude: number, longitude: number): Pct.PhpAssocArray;
+function date_sunrise(timestamp: number, format?: number, latitude?: number, longitude?: number, zenith?: number, gmt_offset?: number): any;
+function date_sunset(timestamp: number, format?: number, latitude?: number, longitude?: number, zenith?: number, gmt_offset?: number): any;
+function getdate(timestamp?: number): Pct.PhpAssocArray;
+function gettimeofday(): Pct.PhpAssocArray;
+function gettimeofday(return_float?: bool): any;
+function gmdate(format: string, timestamp?: number): string;
+function gmmktime(hour?: number, minute?: number, second?: number, month?: number, day?: number, year?: number, is_dst?: number): number;
+function gmstrftime(format: string, timestamp?: number): string;
+function idate(format: string, timestamp?: number): number;
+function localtime(timestamp?: number): number[];
+function localtime(timestamp?: number, is_associative?: bool): Array;
+function microtime(): string;
+function microtime(get_as_float: bool): any;
+function mktime(hour?: number, minute?: number, second?: number, month?: number, day?: number, year?: number, is_dst?: number): number;
+function strftime(format: string, timestamp?: number): string;
+function strptime(date: string, format: string): Pct.PhpAssocArray;
+function strtotime(time: string, now?: number): number;
+function time(): number;
+function timezone_name_from_abbr(abbr: string, gmtOffset?: number, isdst?: number): string;
+function timezone_version_get(): string;

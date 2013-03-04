@@ -2,34 +2,34 @@
 
 //my god are the SPL docs bad...wrong return types, param types, etc...
 
-declare interface Countable {
+interface Countable {
     count(): number;
 }
 
-declare interface SeekableIterator extends Iterator {
+interface SeekableIterator extends Iterator {
     seek(position: number);
 }
 
-declare interface RecursiveIterator extends Iterator {
+interface RecursiveIterator extends Iterator {
     getChildren(): RecursiveIterator;
     hasChildren(): bool;
 }
 
-declare interface OuterIterator extends Iterator {
+interface OuterIterator extends Iterator {
     getInnerIterator(): Iterator;
 }
 
-declare interface SplObserver {
+interface SplObserver {
     update(subject: SplSubject);
 }
 
-declare interface SplSubject {
+interface SplSubject {
     attach(observer: SplObserver);
     detach(observer: SplObserver);
     notify();
 }
 
-declare class SplDoublyLinkedList implements Iterator, ArrayAccess, Countable {
+class SplDoublyLinkedList implements Iterator, ArrayAccess, Countable {
     static IT_MODE_DELETE: number;
     static IT_MODE_FIFO: number;
     static IT_MODE_KEEP: number;
@@ -60,16 +60,16 @@ declare class SplDoublyLinkedList implements Iterator, ArrayAccess, Countable {
     count(): number;
 }
 
-declare class SplStack extends SplDoublyLinkedList {
+class SplStack extends SplDoublyLinkedList {
 
 }
 
-declare class SplQueue extends SplDoublyLinkedList {
+class SplQueue extends SplDoublyLinkedList {
     dequeue(): any;
     enqueue(value: any);
 }
 
-declare class SplHeap implements Iterator, Countable {
+class SplHeap implements Iterator, Countable {
     compare(value1: any, value2: any): number;
     extract(): any;
     insert(value: any);
@@ -85,13 +85,13 @@ declare class SplHeap implements Iterator, Countable {
     count(): number;
 }
 
-declare class SplMaxHeap extends SplHeap {
+class SplMaxHeap extends SplHeap {
 }
 
-declare class SplMinHeap extends SplHeap {
+class SplMinHeap extends SplHeap {
 }
 
-declare class SplPriorityQueue implements Iterator, Countable {
+class SplPriorityQueue implements Iterator, Countable {
     static EXTR_BOTH: number;
     static EXTR_DATA: number;
     static EXTR_PRIORITY: number;
@@ -112,7 +112,7 @@ declare class SplPriorityQueue implements Iterator, Countable {
     count(): number;
 }
 
-declare class SplFixedArray implements Iterator, ArrayAccess, Countable {
+class SplFixedArray implements Iterator, ArrayAccess, Countable {
     static fromArray(array: Array, save_indexes?: bool): SplFixedArray;
 
     constructor(size?: number);
@@ -133,7 +133,7 @@ declare class SplFixedArray implements Iterator, ArrayAccess, Countable {
     count(): number;
 }
 
-declare class SplObjectStorage implements Countable, Iterator, Serializable, ArrayAccess {
+class SplObjectStorage implements Countable, Iterator, Serializable, ArrayAccess {
     addAll(storage: SplObjectStorage);
     attach(object: Object, data?: any);
     contains(object: Object): bool;
@@ -158,7 +158,7 @@ declare class SplObjectStorage implements Countable, Iterator, Serializable, Arr
     unserialize(serialized: string);
 }
 
-declare class ArrayIterator implements ArrayAccess, SeekableIterator, Countable, Serializable {
+class ArrayIterator implements ArrayAccess, SeekableIterator, Countable, Serializable {
     constructor(array?: any, flags?: number);
     append(value: any);
     asort();
@@ -186,12 +186,12 @@ declare class ArrayIterator implements ArrayAccess, SeekableIterator, Countable,
     unserialize(serialized: string);
 }
 
-declare class RecursiveArrayIterator extends ArrayIterator implements RecursiveIterator {
+class RecursiveArrayIterator extends ArrayIterator implements RecursiveIterator {
     getChildren(): RecursiveIterator;
     hasChildren(): bool;
 }
 
-declare class EmptyIterator implements Iterator {
+class EmptyIterator implements Iterator {
     current(): any;
     key(): any;
     next();
@@ -199,7 +199,7 @@ declare class EmptyIterator implements Iterator {
     valid(): bool;
 }
 
-declare class IteratorIterator implements OuterIterator {
+class IteratorIterator implements OuterIterator {
     constructor(iterator: Traversable);
 
     current(): any;
@@ -210,14 +210,14 @@ declare class IteratorIterator implements OuterIterator {
     getInnerIterator(): Iterator;
 }
 
-declare class AppendIterator extends IteratorIterator {
+class AppendIterator extends IteratorIterator {
     constructor();
     append(iterator: Iterator);
     getArrayIterator(): ArrayIterator;
     getIteratorIndex(): number;
 }
 
-declare class CachingIterator extends IteratorIterator implements ArrayAccess, Countable {
+class CachingIterator extends IteratorIterator implements ArrayAccess, Countable {
     static CALL_TOSTRING: number;
     static CATCH_GET_CHILD: number;
     static FULL_CACHE: number;
@@ -237,39 +237,39 @@ declare class CachingIterator extends IteratorIterator implements ArrayAccess, C
     count(): number;
 }
 
-declare class RecursiveCachingIterator extends CachingIterator implements RecursiveIterator {
+class RecursiveCachingIterator extends CachingIterator implements RecursiveIterator {
     getChildren(): RecursiveCachingIterator;
     hasChildren(): bool;
 }
 
-declare class FilterIterator extends IteratorIterator {
+class FilterIterator extends IteratorIterator {
     constructor(iterator: Iterator);
     accept(): bool;
 }
 
-declare class CallbackFilterIterator extends FilterIterator {
+class CallbackFilterIterator extends FilterIterator {
     constructor(iterator: Iterator, callback: (current: any, key: any, iterator: Iterator) => bool);
 }
 
-declare class RecursiveCallbackFilterIterator extends CallbackFilterIterator implements RecursiveIterator {
+class RecursiveCallbackFilterIterator extends CallbackFilterIterator implements RecursiveIterator {
     constructor(iterator: RecursiveIterator, callback: (current: any, key: any, iterator: Iterator) => bool);
 
     getChildren(): RecursiveCallbackFilterIterator;
     hasChildren(): bool;
 }
 
-declare class RecursiveFilterIterator extends FilterIterator implements RecursiveIterator {
+class RecursiveFilterIterator extends FilterIterator implements RecursiveIterator {
     constructor(iterator: RecursiveIterator);
 
     getChildren(): RecursiveFilterIterator;
     hasChildren(): bool;
 }
 
-declare class ParentIterator extends RecursiveFilterIterator {
+class ParentIterator extends RecursiveFilterIterator {
     getChildren(): ParentIterator;
 }
 
-declare class RegexIterator extends FilterIterator {
+class RegexIterator extends FilterIterator {
     static ALL_MATCHES: number;
     static GET_MATCH: number;
     static MATCH: number;
@@ -287,28 +287,28 @@ declare class RegexIterator extends FilterIterator {
     setPregFlags(pref_flags: number);
 }
 
-declare class RecursiveRegexIterator extends RegexIterator implements RecursiveIterator {
+class RecursiveRegexIterator extends RegexIterator implements RecursiveIterator {
     constructor(iterator: RecursiveIterator, regex: string, mode?: number, flags?: number, preg_flags?: number);
 
     getChildren(): RecursiveIterator;
     hasChildren(): bool;
 }
 
-declare class InfiniteIterator extends IteratorIterator {
+class InfiniteIterator extends IteratorIterator {
     constructor(iterator: Iterator);
 }
 
-declare class LimitIterator extends IteratorIterator {
+class LimitIterator extends IteratorIterator {
     constructor(iterator: Iterator, offset?: number, count?: number);
     getPosition(): number;
     seek(position: number): number;
 }
 
-declare class NoRewindIterator extends IteratorIterator {
+class NoRewindIterator extends IteratorIterator {
     constructor(iterator: Iterator);
 }
 
-declare class MultipleIterator implements Iterator {
+class MultipleIterator implements Iterator {
     static MIT_KEYS_ASSOC: number;
     static MIT_KEYS_NUMERIC: number;
     static MIT_NEED_ALL: number;
@@ -329,7 +329,7 @@ declare class MultipleIterator implements Iterator {
     valid(): bool;
 }
 
-declare class RecursiveIteratorIterator implements OuterIterator {
+class RecursiveIteratorIterator implements OuterIterator {
     static CATCH_GET_CHILD: number;
     static CHILD_FIRST: number;
     static LEAVES_ONLY: number;
@@ -356,7 +356,7 @@ declare class RecursiveIteratorIterator implements OuterIterator {
     getInnerIterator(): Iterator;
 }
 
-declare class RecursiveTreeIterator extends RecursiveIteratorIterator {
+class RecursiveTreeIterator extends RecursiveIteratorIterator {
     static BYPASS_CURRENT: number;
     static BYPASS_KEY: number;
     static PREFIX_END_LAST: number;
@@ -374,33 +374,33 @@ declare class RecursiveTreeIterator extends RecursiveIteratorIterator {
     setPrefixPart(part: number, value: string);
 }
 
-declare class LogicException extends Exception { }
+class LogicException extends Exception { }
 
-declare class BadFunctionCallException extends LogicException { }
+class BadFunctionCallException extends LogicException { }
 
-declare class BadMethodCallException extends BadFunctionCallException { }
+class BadMethodCallException extends BadFunctionCallException { }
 
-declare class DomainException extends LogicException { }
+class DomainException extends LogicException { }
 
-declare class InvalidArgumentException extends LogicException { }
+class InvalidArgumentException extends LogicException { }
 
-declare class LengthException extends LogicException { }
+class LengthException extends LogicException { }
 
-declare class OutOfRangeException extends LogicException { }
+class OutOfRangeException extends LogicException { }
 
-declare class RuntimeException extends Exception { }
+class RuntimeException extends Exception { }
 
-declare class OutOfBoundsException extends RuntimeException { }
+class OutOfBoundsException extends RuntimeException { }
 
-declare class OverflowException extends RuntimeException { }
+class OverflowException extends RuntimeException { }
 
-declare class RangeException extends RuntimeException { }
+class RangeException extends RuntimeException { }
 
-declare class UnderflowException extends RuntimeException { }
+class UnderflowException extends RuntimeException { }
 
-declare class UnexpectedValueException extends RuntimeException { }
+class UnexpectedValueException extends RuntimeException { }
 
-declare class SplFileInfo {
+class SplFileInfo {
     constructor(file_name: string);
     getATime(): number;
     getBasename(suffix?: string): string;
@@ -431,7 +431,7 @@ declare class SplFileInfo {
     setInfoClass(class_name?: string);
 }
 
-declare class SplFileObject extends SplFileInfo implements RecursiveIterator, SeekableIterator {
+class SplFileObject extends SplFileInfo implements RecursiveIterator, SeekableIterator {
     static DROP_NEW_LINE: number;
     static READ_AHEAD: number;
     static READ_CSV: number;
@@ -470,11 +470,11 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
     seek(position: number);
 }
 
-declare class SplTempFileObject extends SplFileObject {
+class SplTempFileObject extends SplFileObject {
     constructor(max_memory?: number);
 }
 
-declare class DirectoryIterator extends SplFileInfo implements SeekableIterator {
+class DirectoryIterator extends SplFileInfo implements SeekableIterator {
     isDot(): bool;
 
     current(): any;
@@ -485,7 +485,7 @@ declare class DirectoryIterator extends SplFileInfo implements SeekableIterator 
     seek(position: number);
 }
 
-declare class FilesystemIterator extends DirectoryIterator {
+class FilesystemIterator extends DirectoryIterator {
     static CURRENT_AS_FILEINFO: number;
     static CURRENT_AS_PATHNAME: number;
     static CURRENT_AS_SELF: number;
@@ -501,11 +501,11 @@ declare class FilesystemIterator extends DirectoryIterator {
     constructor(path: string, flags?: number);
 }
 
-declare class GlobIterator extends FilesystemIterator implements Countable {
+class GlobIterator extends FilesystemIterator implements Countable {
     count(): number;
 }
 
-declare class RecursiveDirectoryIterator extends FilesystemIterator implements RecursiveIterator {
+class RecursiveDirectoryIterator extends FilesystemIterator implements RecursiveIterator {
     getSubPath(): string;
     getSubPathname(): string;
 
@@ -513,7 +513,7 @@ declare class RecursiveDirectoryIterator extends FilesystemIterator implements R
     hasChildren(allow_links?: bool): bool;
 }
 
-declare class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Countable {
+class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Countable {
     static ARRAY_AS_PROPS: number;
     static STD_PROP_LIST: number;
 
@@ -542,18 +542,18 @@ declare class ArrayObject implements IteratorAggregate, ArrayAccess, Serializabl
     count(): number;
 }
 
-declare function class_implements(class_: any, autoload?: bool): Pct.PhpAssocArray;
-declare function class_parents(class_: any, autoload?: bool): Pct.PhpAssocArray;
-declare function class_uses(class_: any, autoload?: bool): Pct.PhpAssocArray;
-declare function iterator_apply(iterator: Traversable, function_: (iterator: Traversable) => any, args?: any[]): number;
-declare function iterator_count(iterator: Traversable): number;
-declare function iterator_to_array(iterator: Traversable): any[];
-declare function iterator_to_array(iterator: Traversable, use_keys: bool): Array;
-declare function spl_autoload(class_name: string, file_extensions?: string);
-declare function spl_autoload_call(class_name: string);
-declare function spl_autoload_extensions(file_extensions?: string): string;
-declare function spl_autoload_functions(): any[];
-declare function spl_autoload_register(autoload_function?: (class_: string) => void, throw_?: bool, prepend?: bool): bool;
-declare function spl_autoload_unregister(autoload_function: (class_: string) => void): bool;
-declare function spl_classes(): Pct.PhpAssocArray;
-declare function spl_object_hash(obj: any): string;
+function class_implements(class_: any, autoload?: bool): Pct.PhpAssocArray;
+function class_parents(class_: any, autoload?: bool): Pct.PhpAssocArray;
+function class_uses(class_: any, autoload?: bool): Pct.PhpAssocArray;
+function iterator_apply(iterator: Traversable, function_: (iterator: Traversable) => any, args?: any[]): number;
+function iterator_count(iterator: Traversable): number;
+function iterator_to_array(iterator: Traversable): any[];
+function iterator_to_array(iterator: Traversable, use_keys: bool): Array;
+function spl_autoload(class_name: string, file_extensions?: string);
+function spl_autoload_call(class_name: string);
+function spl_autoload_extensions(file_extensions?: string): string;
+function spl_autoload_functions(): any[];
+function spl_autoload_register(autoload_function?: (class_: string) => void, throw_?: bool, prepend?: bool): bool;
+function spl_autoload_unregister(autoload_function: (class_: string) => void): bool;
+function spl_classes(): Pct.PhpAssocArray;
+function spl_object_hash(obj: any): string;

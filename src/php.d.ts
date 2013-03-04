@@ -22,82 +22,61 @@
  * CASE_LOWER is used with array_change_key_case and is used to convert array keys
  * to lower case. This is also the default case for array_change_key_case.
  */
-declare var CASE_LOWER: number;
+var CASE_LOWER: number;
 
 /**
  * CASE_UPPER is used with array_change_key_case and is used to convert array keys
  * to upper case.
  */
-declare var CASE_UPPER: number;
+var CASE_UPPER: number;
 
 
 /**
  * SORT_ASC is used with array_multisort to sort in ascending order.
  */
-declare var SORT_ASC: number;
+var SORT_ASC: number;
 
 /**
  * SORT_DESC is used with array_multisort to sort in descending order.
  */
-declare var SORT_DESC: number;
+var SORT_DESC: number;
 
 /**
  * SORT_REGULAR is used to compare items normally.
  */
-declare var SORT_REGULAR: number;
+var SORT_REGULAR: number;
 
 /**
  * SORT_NUMERIC is used to compare items numerically.
  */
-declare var SORT_NUMERIC: number;
+var SORT_NUMERIC: number;
 
 /**
  * SORT_STRING is used to compare items as strings.
  */
-declare var SORT_STRING: number;
+var SORT_STRING: number;
 
 /**
  * SORT_LOCALE_STRING is used to compare items as strings, based on the current
  * locale. Added in PHP 4.4.0 and 5.0.2.
  */
-declare var SORT_LOCALE_STRING: number;
+var SORT_LOCALE_STRING: number;
 
 /**
  * SORT_NATURAL is used to compare items as strings using "natural ordering" like
  * natsort. Added in PHP 5.4.0.
  */
-declare var SORT_NATURAL: number;
+var SORT_NATURAL: number;
 
 /**
  * SORT_FLAG_CASE can be combined (bitwise OR) with SORT_STRING or SORT_NATURAL to
  * sort strings case-insensitively. Added in PHP 5.4.0.
  */
-declare var SORT_FLAG_CASE: number;
+var SORT_FLAG_CASE: number;
 
-declare var COUNT_NORMAL: number;
-declare var COUNT_RECURSIVE: number;
+var COUNT_NORMAL: number;
+var COUNT_RECURSIVE: number;
 
-
-/**
- * Create an array
- * 
- * Creates an array. Read the section on the array type for more information on
- * what an array is.
- *
- * @param contents Syntax "index = values", separated by commas, define index and
- *                 values. index may be of type string or integer. When index is
- *                 omitted, an integer index is automatically generated, starting
- *                 at 0. If index is an integer, next generated index will be the
- *                 biggest integer index + 1. Note that when two identical index
- *                 are defined, the last overwrite the first.
- *                 
- *                 Having a trailing comma after the last defined array entry,
- *                 while unusual, is a valid syntax.
- * @return Returns an array of the parameters.  The parameters can be given an
- *         index with the = operator.  Read the section on the array type for more
- *         information on what an array is.
- */
-declare function array(contents: any[]): Array;
 
 /**
  * Create an array
@@ -118,7 +97,28 @@ declare function array(contents: any[]): Array;
  *         index with the = operator.  Read the section on the array type for more
  *         information on what an array is.
  */
-declare function array(contents: Pct.PhpAssocArray): Array;
+function array(contents: any[]): Array;
+
+/**
+ * Create an array
+ * 
+ * Creates an array. Read the section on the array type for more information on
+ * what an array is.
+ *
+ * @param contents Syntax "index = values", separated by commas, define index and
+ *                 values. index may be of type string or integer. When index is
+ *                 omitted, an integer index is automatically generated, starting
+ *                 at 0. If index is an integer, next generated index will be the
+ *                 biggest integer index + 1. Note that when two identical index
+ *                 are defined, the last overwrite the first.
+ *                 
+ *                 Having a trailing comma after the last defined array entry,
+ *                 while unusual, is a valid syntax.
+ * @return Returns an array of the parameters.  The parameters can be given an
+ *         index with the = operator.  Read the section on the array type for more
+ *         information on what an array is.
+ */
+function array(contents: Pct.PhpAssocArray): Array;
 
 /**
  * Changes all keys in an array
@@ -131,7 +131,7 @@ declare function array(contents: Pct.PhpAssocArray): Array;
  * @return Returns an array with its keys lower or uppercased, or false if input
  *         is not an array.
  */
-declare function array_change_key_case(input: Array, case_?: number): Array;
+function array_change_key_case(input: Array, case_?: number): Array;
 
 /**
  * Split an array into chunks
@@ -146,7 +146,7 @@ declare function array_change_key_case(input: Array, case_?: number): Array;
  * @return Returns a multidimensional numerically indexed array, starting with
  *         zero, with each dimension containing size elements.
  */
-declare function array_chunk(input: Array, size: number, preserve_keys?: bool): Array;
+function array_chunk(input: Array, size: number, preserve_keys?: bool): Array;
 
 /**
  * Creates an array by using one array for keys and another for its values
@@ -160,7 +160,7 @@ declare function array_chunk(input: Array, size: number, preserve_keys?: bool): 
  * @return Returns the combined array, false if the number of elements for each
  *         array isn't equal.
  */
-declare function array_combine(keys: Array, values: Array): Array;
+function array_combine(keys: Array, values: Array): Array;
 
 /**
  * Counts all the values of an array
@@ -172,7 +172,7 @@ declare function array_combine(keys: Array, values: Array): Array;
  * @return Returns an associative array of values from input as keys and their
  *         count as value.
  */
-declare function array_count_values(input: Array): Array;
+function array_count_values(input: Array): Array;
 
 /**
  * Computes the difference of arrays
@@ -185,7 +185,7 @@ declare function array_count_values(input: Array): Array;
  * @return Returns an array containing all the entries from array1 that are not
  *         present in any of the other arrays.
  */
-declare function array_diff(array1: Array, array2: Array, ...arrays: Array[]): Array;
+function array_diff(array1: Array, array2: Array, ...arrays: Array[]): Array;
 
 /**
  * Computes the difference of arrays with additional index check
@@ -199,7 +199,7 @@ declare function array_diff(array1: Array, array2: Array, ...arrays: Array[]): A
  * @return Returns an array containing all the values from array1 that are not
  *         present in any of the other arrays.
  */
-declare function array_diff_assoc(array1: Array, array2: Array, ...arrays: Array[]): Array;
+function array_diff_assoc(array1: Array, array2: Array, ...arrays: Array[]): Array;
 
 /**
  * Computes the difference of arrays using keys for comparison
@@ -214,7 +214,7 @@ declare function array_diff_assoc(array1: Array, array2: Array, ...arrays: Array
  * @return Returns an array containing all the entries from array1 whose keys are
  *         not present in any of the other arrays.
  */
-declare function array_diff_key(array1: Array, array2: Array, ...arrays: Array[]): Array;
+function array_diff_key(array1: Array, array2: Array, ...arrays: Array[]): Array;
 
 /**
  * Computes the difference of arrays with additional index check which is performed
@@ -232,7 +232,7 @@ declare function array_diff_key(array1: Array, array2: Array, ...arrays: Array[]
  * @return Returns an array containing all the entries from array1 that are not
  *         present in any of the other arrays.
  */
-declare function array_diff_uassoc(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
+function array_diff_uassoc(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 
 /**
  * Computes the difference of arrays using a callback function on the keys for
@@ -251,7 +251,7 @@ declare function array_diff_uassoc(array1: Array, array2: Array, key_compare_fun
  * @return Returns an array containing all the entries from array1 that are not
  *         present in any of the other arrays.
  */
-declare function array_diff_ukey(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
+function array_diff_ukey(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 
 /**
  * Fill an array with values
@@ -268,7 +268,7 @@ declare function array_diff_ukey(array1: Array, array2: Array, key_compare_func:
  * @param value Value to use for filling
  * @return Returns the filled array
  */
-declare function array_fill(start_index: number, num: number, value: any): Array;
+function array_fill(start_index: number, num: number, value: any): Array;
 
 /**
  * Fill an array with values, specifying keys
@@ -281,7 +281,7 @@ declare function array_fill(start_index: number, num: number, value: any): Array
  * @param value Value to use for filling
  * @return Returns the filled array
  */
-declare function array_fill_keys(keys: Array, value: any): Array;
+function array_fill_keys(keys: Array, value: any): Array;
 
 /**
  * Filters elements of an array using a callback function
@@ -297,7 +297,7 @@ declare function array_fill_keys(keys: Array, value: any): Array;
  *                 (see converting to boolean) will be removed.
  * @return Returns the filtered array.
  */
-declare function array_filter(input: Array, callback?: (value: any) => bool): Array;
+function array_filter(input: Array, callback?: (value: any) => bool): Array;
 
 /**
  * Exchanges all keys with their associated values in an array
@@ -315,7 +315,7 @@ declare function array_filter(input: Array, callback?: (value: any) => bool): Ar
  * @param trans An array of key/value pairs to be flipped.
  * @return Returns the flipped array on success and  on failure.
  */
-declare function array_flip(trans: Array): Array;
+function array_flip(trans: Array): Array;
 
 /**
  * Computes the intersection of arrays
@@ -329,7 +329,7 @@ declare function array_flip(trans: Array): Array;
  * @return Returns an array containing all of the values in array1 whose values
  *         exist in all of the parameters.
  */
-declare function array_intersect(array1: Array, array2: Array, ...array: Array[]): Array;
+function array_intersect(array1: Array, array2: Array, ...array: Array[]): Array;
 
 /**
  * Computes the intersection of arrays with additional index check
@@ -340,7 +340,7 @@ declare function array_intersect(array1: Array, array2: Array, ...array: Array[]
  * @return Returns an associative array containing all the values in array1 that
  *         are present in all of the arguments.
  */
-declare function array_intersect_assoc(array1: Array, array2: Array, ...array: Array[]): Array;
+function array_intersect_assoc(array1: Array, array2: Array, ...array: Array[]): Array;
 
 /**
  * Computes the intersection of arrays using keys for comparison
@@ -354,7 +354,7 @@ declare function array_intersect_assoc(array1: Array, array2: Array, ...array: A
  * @return Returns an associative array containing all the entries of array1 which
  *         have keys that are present in all arguments.
  */
-declare function array_intersect_key(array1: Array, array2: Array, ...array: Array[]): Array;
+function array_intersect_key(array1: Array, array2: Array, ...array: Array[]): Array;
 
 /**
  * Computes the intersection of arrays with additional index check, compares
@@ -370,7 +370,7 @@ declare function array_intersect_key(array1: Array, array2: Array, ...array: Arr
  * @return Returns the values of array1 whose values exist in all of the
  *         arguments.
  */
-declare function array_intersect_uassoc(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
+function array_intersect_uassoc(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 
 /**
  * Computes the intersection of arrays using a callback function on the keys for
@@ -384,7 +384,7 @@ declare function array_intersect_uassoc(array1: Array, array2: Array, key_compar
  * @param key_compare_func 
  * @return Returns the values of array1 whose keys exist in all the arguments.
  */
-declare function array_intersect_ukey(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
+function array_intersect_ukey(array1: Array, array2: Array, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 
 /**
  * Checks if the given key or index exists in the array
@@ -395,7 +395,7 @@ declare function array_intersect_ukey(array1: Array, array2: Array, key_compare_
  * @param key Value to check.
  * @param search An array with keys to check.
  */
-declare function array_key_exists(key: number, search: Array): bool;
+function array_key_exists(key: number, search: Array): bool;
 
 /**
  * Checks if the given key or index exists in the array
@@ -406,7 +406,7 @@ declare function array_key_exists(key: number, search: Array): bool;
  * @param key Value to check.
  * @param search An array with keys to check.
  */
-declare function array_key_exists(key: string, search: Array): bool;
+function array_key_exists(key: string, search: Array): bool;
 
 /**
  * Return all the keys or a subset of the keys of an array
@@ -423,7 +423,7 @@ declare function array_key_exists(key: string, search: Array): bool;
  *               search.
  * @return Returns an array of all the keys in input.
  */
-declare function array_keys(input: Array, search_value?: any, strict?: bool): any[];
+function array_keys(input: Array, search_value?: any, strict?: bool): any[];
 
 /**
  * Applies the callback to the elements of the given arrays
@@ -437,7 +437,7 @@ declare function array_keys(input: Array, search_value?: any, strict?: bool): an
  * @return Returns an array containing all the elements of arr1 after applying the
  *         callback function to each one.
  */
-declare function array_map(callback: (value: any) => any, ...array: Array[]): Array;
+function array_map(callback: (value: any) => any, ...array: Array[]): Array;
 
 /**
  * Applies the callback to the elements of the given arrays
@@ -451,7 +451,7 @@ declare function array_map(callback: (value: any) => any, ...array: Array[]): Ar
  * @return Returns an array containing all the elements of arr1 after applying the
  *         callback function to each one.
  */
-declare function array_map(callback: Function, ...array: Array[]): Array;
+function array_map(callback: Function, ...array: Array[]): Array;
 
 /**
  * Merge one or more arrays
@@ -470,7 +470,7 @@ declare function array_map(callback: Function, ...array: Array[]): Array;
  * @param arrays Variable list of arrays to merge.
  * @return Returns the resulting array.
  */
-declare function array_merge(array1: Array, ...arrays: Array[]): Array;
+function array_merge(array1: Array, ...arrays: Array[]): Array;
 
 /**
  * Merge two or more arrays recursively
@@ -490,7 +490,7 @@ declare function array_merge(array1: Array, ...arrays: Array[]): Array;
  * @param arrays Variable list of arrays to recursively merge.
  * @return An array of values resulted from merging the arguments together.
  */
-declare function array_merge_recursive(array1: Array, ...arrays: Array[]): Array;
+function array_merge_recursive(array1: Array, ...arrays: Array[]): Array;
 
 /**
  * Sort multiple or multi-dimensional arrays
@@ -507,7 +507,7 @@ declare function array_merge_recursive(array1: Array, ...arrays: Array[]): Array
  *            SORT_STRING.
  * @param args Additional arg's.
  */
-declare function array_multisort($arr: Array, arg?: number, ...args: number[]): bool;
+function array_multisort($arr: Array, arg?: number, ...args: number[]): bool;
 
 /**
  * Pad array to the specified length with a value
@@ -527,7 +527,7 @@ declare function array_multisort($arr: Array, arg?: number, ...args: number[]): 
  *         pad_size is less than or equal to the length of the input then no
  *         padding takes place.
  */
-declare function array_pad(input: Array, pad_size: number, value: any): Array;
+function array_pad(input: Array, pad_size: number, value: any): Array;
 
 /**
  * Pop the element off the end of array
@@ -540,7 +540,7 @@ declare function array_pad(input: Array, pad_size: number, value: any): Array;
  * @return Returns the last value of array. If array is empty (or is not an
  *         array), will be returned.
  */
-declare function array_pop($array: Array): any;
+function array_pop($array: Array): any;
 
 /**
  * Calculate the product of values in an array
@@ -550,7 +550,7 @@ declare function array_pop($array: Array): any;
  * @param array The array.
  * @return Returns the product as an integer or float.
  */
-declare function array_product(array: Array): number;
+function array_product(array: Array): number;
 
 /**
  * Push one or more elements onto the end of array
@@ -563,7 +563,7 @@ declare function array_product(array: Array): number;
  * @param var_ The pushed value.
  * @return Returns the new number of elements in the array.
  */
-declare function array_push($array: Array, ...var_: any[]): number;
+function array_push($array: Array, ...var_: any[]): number;
 
 /**
  * Pick one or more random entries out of an array
@@ -580,7 +580,7 @@ declare function array_push($array: Array, ...var_: any[]): number;
  *         entries. This is done so that you can pick random keys as well as
  *         values out of the array.
  */
-declare function array_rand(input: Array, num_req?: number): any;
+function array_rand(input: Array, num_req?: number): any;
 
 /**
  * Iteratively reduce the array to a single value using a callback function
@@ -597,7 +597,7 @@ declare function array_rand(input: Array, num_req?: number): any;
  *         
  *         If the array is empty and initial is not passed, array_reduce returns .
  */
-declare function array_reduce(input: Array, callback: ($result: any, item: any) => any, initial?: any): any;
+function array_reduce(input: Array, callback: ($result: any, item: any) => any, initial?: any): any;
 
 /**
  * Replaces elements from passed arrays into the first array
@@ -619,7 +619,7 @@ declare function array_reduce(input: Array, callback: ($result: any, item: any) 
  *               later arrays overwrite the previous values.
  * @return Returns an array, or  if an error occurs.
  */
-declare function array_replace(array: Array, array1: Array, ...arrays: Array[]): Array;
+function array_replace(array: Array, array1: Array, ...arrays: Array[]): Array;
 
 /**
  * Replaces elements from passed arrays into the first array recursively
@@ -644,7 +644,7 @@ declare function array_replace(array: Array, array1: Array, ...arrays: Array[]):
  * @param arrays Optional. More arrays from which elements will be extracted.
  * @return Returns an array, or  if an error occurs.
  */
-declare function array_replace_recursive(array: Array, array1: Array, ...arrays: Array[]): Array;
+function array_replace_recursive(array: Array, array1: Array, ...arrays: Array[]): Array;
 
 /**
  * Return an array with elements in reverse order
@@ -658,7 +658,7 @@ declare function array_replace_recursive(array: Array, array1: Array, ...arrays:
  *                      preserved.
  * @return Returns the reversed array.
  */
-declare function array_reverse(array: Array, preserve_keys?: bool): Array;
+function array_reverse(array: Array, preserve_keys?: bool): Array;
 
 /**
  * Searches the array for a given value and returns the corresponding key if
@@ -682,7 +682,7 @@ declare function array_reverse(array: Array, preserve_keys?: bool): Array;
  *         is returned. To return the keys for all matching values, use array_keys
  *         with the optional search_value parameter instead.
  */
-declare function array_search(needle: any, haystack: Array, strict?: bool): any;
+function array_search(needle: any, haystack: Array, strict?: bool): any;
 
 /**
  * Shift an element off the beginning of array
@@ -695,7 +695,7 @@ declare function array_search(needle: any, haystack: Array, strict?: bool): any;
  * @param $array The input array.
  * @return Returns the shifted value, or  if array is empty or is not an array.
  */
-declare function array_shift($array: Array): any;
+function array_shift($array: Array): any;
 
 /**
  * Extract a slice of the array
@@ -719,7 +719,7 @@ declare function array_shift($array: Array): any;
  *                      setting preserve_keys to true.
  * @return Returns the slice.
  */
-declare function array_slice(array: Array, offset: number, length?: number, preserve_keys?: bool): Array;
+function array_slice(array: Array, offset: number, length?: number, preserve_keys?: bool): Array;
 
 /**
  * Remove a portion of the array and replace it with something else
@@ -754,7 +754,7 @@ declare function array_slice(array: Array, offset: number, length?: number, pres
  *                    itself, an object or .
  * @return Returns the array consisting of the extracted elements.
  */
-declare function array_splice($input: Array, offset: number, length?: number, replacement?: any): Array;
+function array_splice($input: Array, offset: number, length?: number, replacement?: any): Array;
 
 /**
  * Calculate the sum of values in an array
@@ -764,7 +764,7 @@ declare function array_splice($input: Array, offset: number, length?: number, re
  * @param array The input array.
  * @return Returns the sum of values as an integer or float.
  */
-declare function array_sum(array: Array): number;
+function array_sum(array: Array): number;
 
 /**
  * Computes the difference of arrays by using a callback function for data
@@ -780,7 +780,7 @@ declare function array_sum(array: Array): number;
  * @return Returns an array containing all the values of array1 that are not
  *         present in any of the other arguments.
  */
-declare function array_udiff(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
+function array_udiff(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 
 /**
  * Computes the difference of arrays with additional index check, compares data by
@@ -799,7 +799,7 @@ declare function array_udiff(array1: Array, array2: Array, data_compare_func: (a
  *         callback. In this aspect the behaviour is opposite to the behaviour of
  *         array_diff_assoc which uses internal function for comparison.
  */
-declare function array_udiff_assoc(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
+function array_udiff_assoc(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 
 /**
  * Computes the difference of arrays with additional index check, compares data and
@@ -820,7 +820,7 @@ declare function array_udiff_assoc(array1: Array, array2: Array, data_compare_fu
  * @return Returns an array containing all the values from array1 that are not
  *         present in any of the other arguments.
  */
-declare function array_udiff_uassoc(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
+function array_udiff_uassoc(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 
 /**
  * Computes the intersection of arrays, compares data by a callback function
@@ -833,7 +833,7 @@ declare function array_udiff_uassoc(array1: Array, array2: Array, data_compare_f
  * @return Returns an array containing all the values of array1 that are present
  *         in all the arguments.
  */
-declare function array_uintersect(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
+function array_uintersect(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 
 /**
  * Computes the intersection of arrays with additional index check, compares data
@@ -851,7 +851,7 @@ declare function array_uintersect(array1: Array, array2: Array, data_compare_fun
  * @return Returns an array containing all the values of array1 that are present
  *         in all the arguments.
  */
-declare function array_uintersect_assoc(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
+function array_uintersect_assoc(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 
 /**
  * Computes the intersection of arrays with additional index check, compares data
@@ -869,7 +869,7 @@ declare function array_uintersect_assoc(array1: Array, array2: Array, data_compa
  * @return Returns an array containing all the values of array1 that are present
  *         in all the arguments.
  */
-declare function array_uintersect_uassoc(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
+function array_uintersect_uassoc(array1: Array, array2: Array, data_compare_func: (a: any, b: any) => number, key_compare_func: (a: any, b: any) => number): Array; //TODO: rest in middle
 
 /**
  * Removes duplicate values from an array
@@ -892,7 +892,7 @@ declare function array_uintersect_uassoc(array1: Array, array2: Array, data_comp
  *                   current locale.
  * @return Returns the filtered array.
  */
-declare function array_unique(array: Array, sort_flags?: number): Array;
+function array_unique(array: Array, sort_flags?: number): Array;
 
 /**
  * Prepend one or more elements to the beginning of an array
@@ -906,7 +906,7 @@ declare function array_unique(array: Array, sort_flags?: number): Array;
  * @param var_ The prepended variable.
  * @return Returns the new number of elements in the array.
  */
-declare function array_unshift($array: Array, ...var_: any[]): number;
+function array_unshift($array: Array, ...var_: any[]): number;
 
 /**
  * Return all the values of an array
@@ -917,7 +917,7 @@ declare function array_unshift($array: Array, ...var_: any[]): number;
  * @param input The array.
  * @return Returns an indexed array of values.
  */
-declare function array_values(input: Array): any[];
+function array_values(input: Array): any[];
 
 /**
  * Apply a user function to every member of an array
@@ -946,7 +946,7 @@ declare function array_values(input: Array): any[];
  * @param userdata If the optional userdata parameter is supplied, it will be
  *                 passed as the third parameter to the callback funcname.
  */
-declare function array_walk($array: Array, funcname: ($value: any, key: any) => any, userdata?: any): bool;
+function array_walk($array: Array, funcname: ($value: any, key: any) => any, userdata?: any): bool;
 
 /**
  * Apply a user function recursively to every member of an array
@@ -965,7 +965,7 @@ declare function array_walk($array: Array, funcname: ($value: any, key: any) => 
  * @param userdata If the optional userdata parameter is supplied, it will be
  *                 passed as the third parameter to the callback funcname.
  */
-declare function array_walk_recursive($array: Array, funcname: ($value: any, key: any) => any, userdata?: any): bool;
+function array_walk_recursive($array: Array, funcname: ($value: any, key: any) => any, userdata?: any): bool;
 
 /**
  * Sort an array in reverse order and maintain index association
@@ -980,7 +980,7 @@ declare function array_walk_recursive($array: Array, funcname: ($value: any, key
  * @param sort_flags You may modify the behavior of the sort using the optional
  *                   parameter sort_flags, for details see sort.
  */
-declare function arsort($array: Array, sort_flags?: number): bool;
+function arsort($array: Array, sort_flags?: number): bool;
 
 /**
  * Sort an array and maintain index association
@@ -993,7 +993,7 @@ declare function arsort($array: Array, sort_flags?: number): bool;
  * @param sort_flags You may modify the behavior of the sort using the optional
  *                   parameter sort_flags, for details see sort.
  */
-declare function asort($array: Array, sort_flags?: number): bool;
+function asort($array: Array, sort_flags?: number): bool;
 
 /**
  * Create array containing variables and their values
@@ -1013,7 +1013,7 @@ declare function asort($array: Array, sort_flags?: number): bool;
  *                of variable names inside it; compact handles it recursively.
  * @return Returns the output array with all the variables added to it.
  */
-declare function compact(...varname: any[]): Array;
+function compact(...varname: any[]): Array;
 
 /**
  * Count all elements in an array, or something in an object
@@ -1043,7 +1043,7 @@ declare function compact(...varname: any[]): Array;
  *         return 0 for a variable that has been initialized with an empty array.
  *         Use isset to test if a variable is set.
  */
-declare function count(var_: Array, mode?: number): number;
+function count(var_: Array, mode?: number): number;
 
 /**
  * Count all elements in an array, or something in an object
@@ -1073,7 +1073,7 @@ declare function count(var_: Array, mode?: number): number;
  *         return 0 for a variable that has been initialized with an empty array.
  *         Use isset to test if a variable is set.
  */
-declare function count(var_: Countable, mode?: number): number;
+function count(var_: Countable, mode?: number): number;
 
 /**
  * Return the current element in an array
@@ -1087,7 +1087,7 @@ declare function count(var_: Countable, mode?: number): number;
  *         move the pointer in any way.  If the internal pointer points beyond the
  *         end of the elements list or the array is empty, current returns false.
  */
-declare function current($array: Array): any;
+function current($array: Array): any;
 
 /**
  * Return the current key and value pair from an array and advance the array cursor
@@ -1108,7 +1108,7 @@ declare function current($array: Array): any;
  *         If the internal pointer for the array points past the end of the array
  *         contents, each returns false.
  */
-declare function each($array: Array): Array;
+function each($array: Array): Array;
 
 /**
  * Set the internal pointer of an array to its last element
@@ -1122,7 +1122,7 @@ declare function each($array: Array): Array;
  *               actual variables may be passed by reference.
  * @return Returns the value of the last element or false for empty array.
  */
-declare function end($array: Array): any;
+function end($array: Array): any;
 //extract() TODO: extract no worky on purpose (and don't think I want it)
 
 /**
@@ -1140,7 +1140,7 @@ declare function end($array: Array): any;
  *               
  * @return Returns true if needle is found in the array, false otherwise.
  */
-declare function in_array(needle: any, haystack: Array, strict?: bool): bool;
+function in_array(needle: any, haystack: Array, strict?: bool): bool;
 
 /**
  * Fetch a key from an array
@@ -1153,7 +1153,7 @@ declare function in_array(needle: any, haystack: Array, strict?: bool): bool;
  *         the pointer in any way.  If the internal pointer points beyond the end
  *         of the elements list or the array is empty, key returns .
  */
-declare function key($array: Array): any;
+function key($array: Array): any;
 
 /**
  * Sort an array by key in reverse order
@@ -1165,7 +1165,7 @@ declare function key($array: Array): any;
  * @param sort_flags You may modify the behavior of the sort using the optional
  *                   parameter sort_flags, for details see sort.
  */
-declare function krsort($array: Array, sort_flags?: number): bool;
+function krsort($array: Array, sort_flags?: number): bool;
 
 /**
  * Sort an array by key
@@ -1177,7 +1177,7 @@ declare function krsort($array: Array, sort_flags?: number): bool;
  * @param sort_flags You may modify the behavior of the sort using the optional
  *                   parameter sort_flags, for details see sort.
  */
-declare function ksort($array: Array, sort_flags?: number): bool;
+function ksort($array: Array, sort_flags?: number): bool;
 //list() TODO: list not working...fine by me
 
 /**
@@ -1191,7 +1191,7 @@ declare function ksort($array: Array, sort_flags?: number): bool;
  *
  * @param $array The input array.
  */
-declare function natcasesort($array: Array): bool;
+function natcasesort($array: Array): bool;
 
 /**
  * Sort an array using a "natural order" algorithm
@@ -1204,7 +1204,7 @@ declare function natcasesort($array: Array): bool;
  *
  * @param $array The input array.
  */
-declare function natsort($array: Array): bool;
+function natsort($array: Array): bool;
 
 /**
  * Advance the internal array pointer of an array
@@ -1217,7 +1217,7 @@ declare function natsort($array: Array): bool;
  * @return Returns the array value in the next place that's pointed to by the
  *         internal array pointer, or false if there are no more elements.
  */
-declare function next($array: Array): any;
+function next($array: Array): any;
 
 /**
  * Rewind the internal array pointer
@@ -1231,7 +1231,7 @@ declare function next($array: Array): any;
  * @return Returns the array value in the previous place that's pointed to by the
  *         internal array pointer, or false if there are no more elements.
  */
-declare function prev($array: Array): any;
+function prev($array: Array): any;
 
 /**
  * Create an array containing a range of elements
@@ -1245,7 +1245,7 @@ declare function prev($array: Array): any;
  *             number.  If not specified, step will default to 1.
  * @return Returns an array of elements from start to end, inclusive.
  */
-declare function range(start: any, end: any, step?: number): Array;
+function range(start: any, end: any, step?: number): Array;
 
 /**
  * Set the internal pointer of an array to its first element
@@ -1257,7 +1257,7 @@ declare function range(start: any, end: any, step?: number): Array;
  * @return Returns the value of the first array element, or false if the array is
  *         empty.
  */
-declare function reset($array: Array): any;
+function reset($array: Array): any;
 
 /**
  * Sort an array in reverse order
@@ -1268,7 +1268,7 @@ declare function reset($array: Array): any;
  * @param sort_flags You may modify the behavior of the sort using the optional
  *                   parameter sort_flags, for details see sort.
  */
-declare function rsort($array: Array, sort_flags?: number): bool;
+function rsort($array: Array, sort_flags?: number): bool;
 
 /**
  * Shuffle an array
@@ -1277,7 +1277,7 @@ declare function rsort($array: Array, sort_flags?: number): bool;
  *
  * @param $array The array.
  */
-declare function shuffle($array: Array): bool;
+function shuffle($array: Array): bool;
 
 /**
  * Sort an array
@@ -1299,7 +1299,7 @@ declare function shuffle($array: Array): bool;
  *                   can be combined (bitwise OR) with SORT_STRING or SORT_NATURAL
  *                   to sort strings case-insensitively
  */
-declare function sort($array: Array, sort_flags?: number): bool;
+function sort($array: Array, sort_flags?: number): bool;
 
 /**
  * Sort an array with a user-defined comparison function and maintain index
@@ -1316,7 +1316,7 @@ declare function sort($array: Array, sort_flags?: number): bool;
  * @param cmp_function See usort and uksort for examples of user-defined
  *                     comparison functions.
  */
-declare function uasort($array: Array, cmp_function: (a: any, b: any) => number): bool;
+function uasort($array: Array, cmp_function: (a: any, b: any) => number): bool;
 
 /**
  * Sort an array by keys using a user-defined comparison function
@@ -1328,7 +1328,7 @@ declare function uasort($array: Array, cmp_function: (a: any, b: any) => number)
  * @param $array The input array.
  * @param cmp_function 
  */
-declare function uksort($array: Array, cmp_function: (a: any, b: any) => number): bool;
+function uksort($array: Array, cmp_function: (a: any, b: any) => number): bool;
 
 /**
  * Sort an array by values using a user-defined comparison function
@@ -1347,7 +1347,7 @@ declare function uksort($array: Array, cmp_function: (a: any, b: any) => number)
  *                     0.1 will both be cast to an integer value of 0, which will
  *                     compare such values as equal.
  */
-declare function usort($array: Array, cmp_function: (a: any, b: any) => number): bool;
+function usort($array: Array, cmp_function: (a: any, b: any) => number): bool;
 
 //--------------------------------------------------------------------------------
 // calendar
@@ -1363,26 +1363,26 @@ declare function usort($array: Array, cmp_function: (a: any, b: any) => number):
  * Julian Day Count, visit . For more information on calendar systems visit . 
  * Excerpts from this page are included in these instructions, and are in quotes.
  */
-declare var CAL_GREGORIAN: number;
-declare var CAL_JULIAN: number;
-declare var CAL_JEWISH: number;
-declare var CAL_FRENCH: number;
+var CAL_GREGORIAN: number;
+var CAL_JULIAN: number;
+var CAL_JEWISH: number;
+var CAL_FRENCH: number;
 
-declare var CAL_DOW_DAYNO: number;
-declare var CAL_DOW_SHORT: number;
-declare var CAL_DOW_LONG: number;
+var CAL_DOW_DAYNO: number;
+var CAL_DOW_SHORT: number;
+var CAL_DOW_LONG: number;
 
-declare var CAL_MONTH_GREGORIAN_SHORT: number;
-declare var CAL_MONTH_GREGORIAN_LONG: number;
-declare var CAL_MONTH_JULIAN_SHORT: number;
-declare var CAL_MONTH_JULIAN_LONG: number;
-declare var CAL_MONTH_JEWISH: number;
-declare var CAL_MONTH_FRENCH: number;
+var CAL_MONTH_GREGORIAN_SHORT: number;
+var CAL_MONTH_GREGORIAN_LONG: number;
+var CAL_MONTH_JULIAN_SHORT: number;
+var CAL_MONTH_JULIAN_LONG: number;
+var CAL_MONTH_JEWISH: number;
+var CAL_MONTH_FRENCH: number;
 
-declare var CAL_EASTER_DEFAULT: number;
-declare var CAL_EASTER_ROMAN: number;
-declare var CAL_EASTER_ALWAYS_GREGORIAN: number;
-declare var CAL_EASTER_ALWAYS_JULIAN: number;
+var CAL_EASTER_DEFAULT: number;
+var CAL_EASTER_ROMAN: number;
+var CAL_EASTER_ALWAYS_GREGORIAN: number;
+var CAL_EASTER_ALWAYS_JULIAN: number;
 
 
 /**
@@ -1396,7 +1396,7 @@ declare var CAL_EASTER_ALWAYS_JULIAN: number;
  * @param year Year in the selected calendar
  * @return The length in days of the selected month in the given calendar
  */
-declare function cal_days_in_month(calendar: number, month: number, year: number): number;
+function cal_days_in_month(calendar: number, month: number, year: number): number;
 
 /**
  * Converts from Julian Day Count to a supported calendar
@@ -1411,7 +1411,7 @@ declare function cal_days_in_month(calendar: number, month: number, year: number
  *         day of week, abbreviated and full names of weekday and month and the
  *         date in string form "month/day/year".
  */
-declare function cal_from_jd(jd: number, calendar: number): Pct.PhpAssocArray;
+function cal_from_jd(jd: number, calendar: number): Pct.PhpAssocArray;
 
 /**
  * Returns information about a particular calendar
@@ -1430,7 +1430,7 @@ declare function cal_from_jd(jd: number, calendar: number): Pct.PhpAssocArray;
  * @param calendar Calendar to return information for. If no calendar is specified
  *                 information about all calendars is returned.
  */
-declare function cal_info(calendar?: number): Pct.PhpAssocArray;
+function cal_info(calendar?: number): Pct.PhpAssocArray;
 
 /**
  * Converts from a supported calendar to Julian Day Count
@@ -1445,7 +1445,7 @@ declare function cal_info(calendar?: number): Pct.PhpAssocArray;
  * @param year The year as a number, the valid range depends on the calendar
  * @return A Julian Day number.
  */
-declare function cal_to_jd(calendar: number, month: number, day: number, year: number): number;
+function cal_to_jd(calendar: number, month: number, day: number, year: number): number;
 
 /**
  * Get Unix timestamp for midnight on Easter of a given year
@@ -1470,7 +1470,7 @@ declare function cal_to_jd(calendar: number, month: number, day: number, year: n
  * @param year The year as a number between 1970 an 2037
  * @return The easter date as a unix timestamp.
  */
-declare function easter_date(year?: number): number;
+function easter_date(year?: number): number;
 
 /**
  * Get number of days after March 21 on which Easter falls for a given year
@@ -1500,12 +1500,12 @@ declare function easter_date(year?: number): number;
  * @return The number of days after March 21st that the Easter Sunday is in the
  *         given year.
  */
-declare function easter_days(year?: number, method?: number): number;
-declare function frenchtojd(month: number, day: number, year: number): number;
-declare function gregoriantojd(month: number, day: number, year: number): number;
-declare function jddayofweek(julianday: number, mode?: number): any;
-declare function jdmonthname(julianday: number, mode: number): string;
-declare function jdtofrench(juliandaycount: number): string;
+function easter_days(year?: number, method?: number): number;
+function frenchtojd(month: number, day: number, year: number): number;
+function gregoriantojd(month: number, day: number, year: number): number;
+function jddayofweek(julianday: number, mode?: number): any;
+function jdmonthname(julianday: number, mode: number): string;
+function jdtofrench(juliandaycount: number): string;
 
 //--------------------------------------------------------------------------------
 // classobj
@@ -1532,7 +1532,7 @@ declare function jdtofrench(juliandaycount: number): string;
  * @param alias The alias name for the class.
  * @param autoload Whether do autoload if the original class is not found.
  */
-declare function class_alias(original: string, alias: string, autoload?: bool): bool; //TODO: inform users they have to declare the new one
+function class_alias(original: string, alias: string, autoload?: bool): bool; //TODO: inform users they have to the new one
 
 /**
  * Checks if the class has been defined
@@ -1544,7 +1544,7 @@ declare function class_alias(original: string, alias: string, autoload?: bool): 
  * @param autoload Whether or not to call  by default.
  * @return Returns true if class_name is a defined class, false otherwise.
  */
-declare function class_exists(class_name: string, autoload?: bool): bool;
+function class_exists(class_name: string, autoload?: bool): bool;
 
 /**
  * the "Late Static Binding" class name
@@ -1552,7 +1552,7 @@ declare function class_exists(class_name: string, autoload?: bool): bool;
  * Gets the name of the class the static method is called in.
  * @return Returns the class name.  Returns false if called from outside a class.
  */
-declare function get_called_class(): string;
+function get_called_class(): string;
 
 /**
  * Returns the name of the class of an object
@@ -1567,7 +1567,7 @@ declare function get_called_class(): string;
  *         If object is omitted when inside a class, the name of that class is
  *         returned.
  */
-declare function get_class(object?: any): string;
+function get_class(object?: any): string;
 
 /**
  * Gets the class methods' names
@@ -1578,7 +1578,7 @@ declare function get_class(object?: any): string;
  * @return Returns an array of method names defined for the class specified by
  *         class_name. In case of an error, it returns .
  */
-declare function get_class_methods(class_name: any): string[];
+function get_class_methods(class_name: any): string[];
 
 /**
  * Get the default properties of the class
@@ -1591,7 +1591,7 @@ declare function get_class_methods(class_name: any): string[];
  *         are in the form of varname =&gt; value. In case of an error, it returns
  *         false.
  */
-declare function get_class_vars(class_name: string): Pct.PhpAssocArray[];
+function get_class_vars(class_name: string): Pct.PhpAssocArray[];
 
 /**
  * Returns an array with the name of the defined classes
@@ -1606,7 +1606,7 @@ declare function get_class_vars(class_name: string): Pct.PhpAssocArray[];
  *         of predefined classes in the Predefined Classes section of the
  *         appendices.
  */
-declare function get_declared_classes(): string[];
+function get_declared_classes(): string[];
 
 /**
  * Returns an array of all declared interfaces
@@ -1615,14 +1615,14 @@ declare function get_declared_classes(): string[];
  * @return Returns an array of the names of the declared interfaces in the current
  *         script.
  */
-declare function get_declared_interfaces(): string[];
+function get_declared_interfaces(): string[];
 
 /**
  * Returns an array of all declared traits
  * @return Returns an array with names of all declared traits in values. Returns 
  *         in case of a failure.
  */
-declare function get_declared_traits(): string[];
+function get_declared_traits(): string[];
 
 /**
  * Gets the properties of the given object
@@ -1635,7 +1635,7 @@ declare function get_declared_traits(): string[];
  *         properties for the specified object in scope. If a property has not
  *         been assigned a value, it will be returned with a  value.
  */
-declare function get_object_vars(object: any): Pct.PhpAssocArray;
+function get_object_vars(object: any): Pct.PhpAssocArray;
 
 /**
  * Retrieves the parent class name for object or class
@@ -1652,7 +1652,7 @@ declare function get_object_vars(object: any): Pct.PhpAssocArray;
  *         If called without parameter outside object, this function returns
  *         false.
  */
-declare function get_parent_class(object?: any): string;
+function get_parent_class(object?: any): string;
 
 /**
  * Checks if the interface has been defined
@@ -1664,7 +1664,7 @@ declare function get_parent_class(object?: any): string;
  * @return Returns true if the interface given by interface_name has been defined,
  *         false otherwise.
  */
-declare function interface_exists(interface_name: string, autoload?: bool): bool;
+function interface_exists(interface_name: string, autoload?: bool): bool;
 
 /**
  * Checks if the object is of this class or has this class as one of its parents
@@ -1680,7 +1680,7 @@ declare function interface_exists(interface_name: string, autoload?: bool): bool
  * @return Returns true if the object is of this class or has this class as one of
  *         its parents, false otherwise.
  */
-declare function is_a(object: any, class_name: string, allow_string?: bool): bool;
+function is_a(object: any, class_name: string, allow_string?: bool): bool;
 
 /**
  * Checks if the object has this class as one of its parents
@@ -1695,7 +1695,7 @@ declare function is_a(object: any, class_name: string, allow_string?: bool): boo
  * @return This function returns true if the object object, belongs to a class
  *         which is a subclass of class_name, false otherwise.
  */
-declare function is_subclass_of(object: any, class_name: string, allow_string?: bool): bool;
+function is_subclass_of(object: any, class_name: string, allow_string?: bool): bool;
 
 /**
  * Checks if the class method exists
@@ -1707,7 +1707,7 @@ declare function is_subclass_of(object: any, class_name: string, allow_string?: 
  * @return Returns true if the method given by method_name has been defined for
  *         the given object, false otherwise.
  */
-declare function method_exists(object: any, method_name: string): bool;
+function method_exists(object: any, method_name: string): bool;
 
 /**
  * Checks if the object or class has a property
@@ -1722,7 +1722,7 @@ declare function method_exists(object: any, method_name: string): bool;
  * @return Returns true if the property exists, false if it doesn't exist or in
  *         case of an error.
  */
-declare function property_exists(object: any, property: string): bool;
+function property_exists(object: any, property: string): bool;
 
 /**
  * Checks if the trait exists
@@ -1731,7 +1731,7 @@ declare function property_exists(object: any, property: string): bool;
  * @param autoload Whether to autoload if not already loaded.
  * @return Returns true if trait exists, false if not,  in case of an error.
  */
-declare function trait_exists(traitname: string, autoload?: bool): bool;
+function trait_exists(traitname: string, autoload?: bool): bool;
 
 //--------------------------------------------------------------------------------
 // ctype
@@ -1770,7 +1770,7 @@ declare function trait_exists(traitname: string, autoload?: bool): bool;
  * @return Returns true if every character in text is either a letter or a digit,
  *         false otherwise.
  */
-declare function ctype_alnum(text: string): bool;
+function ctype_alnum(text: string): bool;
 
 /**
  * Check for alphabetic character(s)
@@ -1785,7 +1785,7 @@ declare function ctype_alnum(text: string): bool;
  * @return Returns true if every character in text is a letter from the current
  *         locale, false otherwise.
  */
-declare function ctype_alpha(text: string): bool;
+function ctype_alpha(text: string): bool;
 
 /**
  * Check for control character(s)
@@ -1797,7 +1797,7 @@ declare function ctype_alpha(text: string): bool;
  * @return Returns true if every character in text is a control character from the
  *         current locale, false otherwise.
  */
-declare function ctype_cntrl(text: string): bool;
+function ctype_cntrl(text: string): bool;
 
 /**
  * Check for numeric character(s)
@@ -1808,7 +1808,7 @@ declare function ctype_cntrl(text: string): bool;
  * @return Returns true if every character in the string text is a decimal digit,
  *         false otherwise.
  */
-declare function ctype_digit(text: string): bool;
+function ctype_digit(text: string): bool;
 
 /**
  * Check for any printable character(s) except space
@@ -1820,7 +1820,7 @@ declare function ctype_digit(text: string): bool;
  * @return Returns true if every character in text is printable and actually
  *         creates visible output (no white space), false otherwise.
  */
-declare function ctype_graph(text: string): bool;
+function ctype_graph(text: string): bool;
 
 /**
  * Check for lowercase character(s)
@@ -1832,7 +1832,7 @@ declare function ctype_graph(text: string): bool;
  * @return Returns true if every character in text is a lowercase letter in the
  *         current locale.
  */
-declare function ctype_lower(text: string): bool;
+function ctype_lower(text: string): bool;
 
 /**
  * Check for printable character(s)
@@ -1844,7 +1844,7 @@ declare function ctype_lower(text: string): bool;
  *         (including blanks). Returns false if text contains control characters
  *         or characters that do not have any output or control function at all.
  */
-declare function ctype_print(text: string): bool;
+function ctype_print(text: string): bool;
 
 /**
  * Check for any printable character which is not whitespace or an alphanumeric
@@ -1857,7 +1857,7 @@ declare function ctype_print(text: string): bool;
  * @return Returns true if every character in text is printable, but neither
  *         letter, digit or blank, false otherwise.
  */
-declare function ctype_punct(text: string): bool;
+function ctype_punct(text: string): bool;
 
 /**
  * Check for whitespace character(s)
@@ -1871,7 +1871,7 @@ declare function ctype_punct(text: string): bool;
  *         tab, vertical tab, line feed, carriage return and form feed characters.
  *         
  */
-declare function ctype_space(text: string): bool;
+function ctype_space(text: string): bool;
 
 /**
  * Check for uppercase character(s)
@@ -1883,7 +1883,7 @@ declare function ctype_space(text: string): bool;
  * @return Returns true if every character in text is an uppercase letter in the
  *         current locale.
  */
-declare function ctype_upper(text: string): bool;
+function ctype_upper(text: string): bool;
 
 /**
  * Check for character(s) representing a hexadecimal digit
@@ -1895,7 +1895,7 @@ declare function ctype_upper(text: string): bool;
  * @return Returns true if every character in text is a hexadecimal 'digit', that
  *         is a decimal digit or a character from [A-Fa-f] , false otherwise.
  */
-declare function ctype_xdigit(text: string): bool;
+function ctype_xdigit(text: string): bool;
 
 //--------------------------------------------------------------------------------
 // datetime
@@ -1914,23 +1914,23 @@ declare function ctype_xdigit(text: string): bool;
 /**
  * Timestamp
  */
-declare var SUNFUNCS_RET_TIMESTAMP: number;
+var SUNFUNCS_RET_TIMESTAMP: number;
 
 /**
  * Hours:minutes (example: 08:02)
  */
-declare var SUNFUNCS_RET_STRING: number;
+var SUNFUNCS_RET_STRING: number;
 
 /**
  * Hours as floating point number (example 8.75)
  */
-declare var SUNFUNCS_RET_DOUBLE: number;
+var SUNFUNCS_RET_DOUBLE: number;
 
 
 /**
  * Representation of date and time.
  */
-declare class DateTime {
+class DateTime {
     
     /**
      * Atom (example: 2005-08-15T15:52:01+00:00)
@@ -2229,7 +2229,7 @@ declare class DateTime {
 /**
  * Representation of time zone.
  */
-declare class DateTimeZone {
+class DateTimeZone {
     
     /**
      * Africa time zones.
@@ -2372,7 +2372,7 @@ declare class DateTimeZone {
  * hours etc) or a relative time string in the format that DateTime's constructor
  * supports.
  */
-declare class DateInterval {
+class DateInterval {
     
     /**
      * Number of years.
@@ -2471,7 +2471,7 @@ declare class DateInterval {
  * A date period allows iteration over a set of dates and times, recurring at
  * regular intervals, over a given period.
  */
-declare class DatePeriod implements Traversable {
+class DatePeriod implements Traversable {
     
     /**
      * Exclude start date, used in DatePeriod::__construct.
@@ -2527,7 +2527,7 @@ declare class DatePeriod implements Traversable {
  * @param year The year is between 1 and 32767 inclusive.
  * @return Returns true if the date given is valid; otherwise returns false.
  */
-declare function checkdate(month: number, day: number, year: number): bool;
+function checkdate(month: number, day: number, year: number): bool;
 
 /**
  * Gets the default timezone used by all date/time functions in a script
@@ -2558,7 +2558,7 @@ declare function checkdate(month: number, day: number, year: number): bool;
  * timezone of UTC.
  * @return Returns a string.
  */
-declare function date_default_timezone_get(): string;
+function date_default_timezone_get(): string;
 
 /**
  * Sets the default timezone used by all date/time functions in a script
@@ -2579,7 +2579,7 @@ declare function date_default_timezone_get(): string;
  * @return This function returns false if the timezone_identifier isn't valid, or
  *         true otherwise.
  */
-declare function date_default_timezone_set(timezone_identifier: string): bool;
+function date_default_timezone_set(timezone_identifier: string): bool;
 
 /**
  * Format a local time/date
@@ -2655,7 +2655,7 @@ declare function date_default_timezone_set(timezone_identifier: string): bool;
  * @return Returns a formatted date string. If a non-numeric value is used for
  *         timestamp, false is returned and an E_WARNING level error is emitted.
  */
-declare function date(format: string, timestamp?: number): string;
+function date(format: string, timestamp?: number): string;
 
 /**
  * Get info about given date formatted according to the specified format
@@ -2666,7 +2666,7 @@ declare function date(format: string, timestamp?: number): string;
  * @param date String representing the date.
  * @return Returns associative array with detailed info about given date.
  */
-declare function date_parse_from_format(format: string, date: string): Pct.PhpAssocArray;
+function date_parse_from_format(format: string, date: string): Pct.PhpAssocArray;
 
 /**
  * Returns associative array with detailed info about given date
@@ -2674,7 +2674,7 @@ declare function date_parse_from_format(format: string, date: string): Pct.PhpAs
  * @param date Date in format accepted by strtotime.
  * @return Returns array with information about the parsed date on success.
  */
-declare function date_parse(date: string): Pct.PhpAssocArray;
+function date_parse(date: string): Pct.PhpAssocArray;
 
 /**
  * Returns an array with information about sunset/sunrise and twilight begin/end
@@ -2684,7 +2684,7 @@ declare function date_parse(date: string): Pct.PhpAssocArray;
  * @param longitude Longitude in degrees.
  * @return Returns array on success.
  */
-declare function date_sun_info(time: number, latitude: number, longitude: number): Pct.PhpAssocArray;
+function date_sun_info(time: number, latitude: number, longitude: number): Pct.PhpAssocArray;
 
 /**
  * Returns time of sunrise for a given day and location
@@ -2706,7 +2706,7 @@ declare function date_sun_info(time: number, latitude: number, longitude: number
  * @param gmt_offset 
  * @return Returns the sunrise time in a specified format on success.
  */
-declare function date_sunrise(timestamp: number, format?: number, latitude?: number, longitude?: number, zenith?: number, gmt_offset?: number): any;
+function date_sunrise(timestamp: number, format?: number, latitude?: number, longitude?: number, zenith?: number, gmt_offset?: number): any;
 
 /**
  * Returns time of sunset for a given day and location
@@ -2728,7 +2728,7 @@ declare function date_sunrise(timestamp: number, format?: number, latitude?: num
  * @param gmt_offset 
  * @return Returns the sunset time in a specified format on success.
  */
-declare function date_sunset(timestamp: number, format?: number, latitude?: number, longitude?: number, zenith?: number, gmt_offset?: number): any;
+function date_sunset(timestamp: number, format?: number, latitude?: number, longitude?: number, zenith?: number, gmt_offset?: number): any;
 
 /**
  * Get date/time information
@@ -2755,7 +2755,7 @@ declare function date_sunset(timestamp: number, format?: number, latitude?: numb
  *         Epoch, similar to the values returned by time and used by date.  
  *         System Dependent, typically -2147483648 through 2147483647.
  */
-declare function getdate(timestamp?: number): Pct.PhpAssocArray;
+function getdate(timestamp?: number): Pct.PhpAssocArray;
 
 /**
  * Get current time
@@ -2769,7 +2769,7 @@ declare function getdate(timestamp?: number): Pct.PhpAssocArray;
  *         microseconds     "minuteswest" - minutes west of Greenwich    
  *         "dsttime" - type of dst correction
  */
-declare function gettimeofday(): Pct.PhpAssocArray;
+function gettimeofday(): Pct.PhpAssocArray;
 
 /**
  * Get current time
@@ -2785,7 +2785,7 @@ declare function gettimeofday(): Pct.PhpAssocArray;
  *         microseconds     "minuteswest" - minutes west of Greenwich    
  *         "dsttime" - type of dst correction
  */
-declare function gettimeofday(return_float?: bool): any;
+function gettimeofday(return_float?: bool): any;
 
 /**
  * Format a GMT/UTC date/time
@@ -2799,7 +2799,7 @@ declare function gettimeofday(return_float?: bool): any;
  * @return Returns a formatted date string. If a non-numeric value is used for
  *         timestamp, false is returned and an E_WARNING level error is emitted.
  */
-declare function gmdate(format: string, timestamp?: number): string;
+function gmdate(format: string, timestamp?: number): string;
 
 /**
  * Get Unix timestamp for a GMT date
@@ -2840,7 +2840,7 @@ declare function gmdate(format: string, timestamp?: number): string;
  *               influence the result.
  * @return Returns a integer Unix timestamp.
  */
-declare function gmmktime(hour?: number, minute?: number, second?: number, month?: number, day?: number, year?: number, is_dst?: number): number;
+function gmmktime(hour?: number, minute?: number, second?: number, month?: number, day?: number, year?: number, is_dst?: number): number;
 
 /**
  * Format a GMT/UTC time/date according to locale settings
@@ -2857,7 +2857,7 @@ declare function gmmktime(hour?: number, minute?: number, second?: number, month
  *         Month and weekday names and other language dependent strings respect
  *         the current locale set with setlocale.
  */
-declare function gmstrftime(format: string, timestamp?: number): string;
+function gmstrftime(format: string, timestamp?: number): string;
 
 /**
  * Format a local time/date as integer
@@ -2886,7 +2886,7 @@ declare function gmstrftime(format: string, timestamp?: number): string;
  *         idate may return fewer digits than you would expect. See the example
  *         below.
  */
-declare function idate(format: string, timestamp?: number): number;
+function idate(format: string, timestamp?: number): number;
 
 /**
  * Get the local time
@@ -2896,7 +2896,7 @@ declare function idate(format: string, timestamp?: number): number;
  *
  * @param timestamp 
  */
-declare function localtime(timestamp?: number): number[];
+function localtime(timestamp?: number): number[];
 
 /**
  * Get the local time
@@ -2922,7 +2922,7 @@ declare function localtime(timestamp?: number): number[];
  *                       daylight savings time in effect?   Positive if yes, 0 if
  *                       not, negative if unknown.
  */
-declare function localtime(timestamp?: number, is_associative?: bool): Array;
+function localtime(timestamp?: number, is_associative?: bool): Array;
 
 /**
  * Return current Unix timestamp with microseconds
@@ -2939,7 +2939,7 @@ declare function localtime(timestamp?: number, is_associative?: bool): Array;
  *         represents the current time in seconds since the Unix epoch accurate to
  *         the nearest microsecond.
  */
-declare function microtime(): string;
+function microtime(): string;
 
 /**
  * Return current Unix timestamp with microseconds
@@ -2960,7 +2960,7 @@ declare function microtime(): string;
  *         represents the current time in seconds since the Unix epoch accurate to
  *         the nearest microsecond.
  */
-declare function microtime(get_as_float: bool): any;
+function microtime(get_as_float: bool): any;
 
 /**
  * Get Unix timestamp for a date
@@ -3021,7 +3021,7 @@ declare function microtime(get_as_float: bool): any;
  *         arguments are invalid, the function returns false (before PHP 5.1 it
  *         returned -1).
  */
-declare function mktime(hour?: number, minute?: number, second?: number, month?: number, day?: number, year?: number, is_dst?: number): number;
+function mktime(hour?: number, minute?: number, second?: number, month?: number, day?: number, year?: number, is_dst?: number): number;
 
 /**
  * Format a local time/date according to locale settings
@@ -3119,7 +3119,7 @@ declare function mktime(hour?: number, minute?: number, second?: number, month?:
  *         names and other language-dependent strings respect the current locale
  *         set with setlocale.
  */
-declare function strftime(format: string, timestamp?: number): string;
+function strftime(format: string, timestamp?: number): string;
 
 /**
  * Parse a time/date generated with strftime
@@ -3148,7 +3148,7 @@ declare function strftime(format: string, timestamp?: number): string;
  *         "tm_yday" Days since January 1 (0-365)   "unparsed" the date part which
  *         was not recognized using the specified format
  */
-declare function strptime(date: string, format: string): Pct.PhpAssocArray;
+function strptime(date: string, format: string): Pct.PhpAssocArray;
 
 /**
  * Parse about any English textual datetime description into a Unix timestamp
@@ -3164,7 +3164,7 @@ declare function strptime(date: string, format: string): Pct.PhpAssocArray;
  * @return Returns a timestamp on success, false otherwise. Previous to PHP 5.1.0,
  *         this function would return -1 on failure.
  */
-declare function strtotime(time: string, now?: number): number;
+function strtotime(time: string, now?: number): number;
 
 /**
  * Return current Unix timestamp
@@ -3172,7 +3172,7 @@ declare function strtotime(time: string, now?: number): number;
  * Returns the current time measured in the number of seconds since the Unix Epoch
  * (January 1 1970 00:00:00 GMT).
  */
-declare function time(): number;
+function time(): number;
 
 /**
  * Returns the timezone name from abbreviation
@@ -3191,7 +3191,7 @@ declare function time(): number;
  *              zone is searched solely by the gmtOffset and isdst.
  * @return Returns time zone name on success.
  */
-declare function timezone_name_from_abbr(abbr: string, gmtOffset?: number, isdst?: number): string;
+function timezone_name_from_abbr(abbr: string, gmtOffset?: number, isdst?: number): string;
 
 /**
  * Gets the version of the timezonedb
@@ -3199,7 +3199,7 @@ declare function timezone_name_from_abbr(abbr: string, gmtOffset?: number, isdst
  * Returns the current version of the timezonedb.
  * @return Returns a string.
  */
-declare function timezone_version_get(): string;
+function timezone_version_get(): string;
 
 //--------------------------------------------------------------------------------
 // dir
@@ -3208,35 +3208,35 @@ declare function timezone_version_get(): string;
 /*
  * 
  */
-declare var DIRECTORY_SEPARATOR: string;
+var DIRECTORY_SEPARATOR: string;
 
 /**
  * Available since PHP 4.3.0. Semicolon on Windows, colon otherwise.
  */
-declare var PATH_SEPARATOR: string;
+var PATH_SEPARATOR: string;
 
 
 /**
  * Available since PHP 5.4.0.
  */
-declare var SCANDIR_SORT_ASCENDING: number;
+var SCANDIR_SORT_ASCENDING: number;
 
 /**
  * Available since PHP 5.4.0.
  */
-declare var SCANDIR_SORT_DESCENDING: number;
+var SCANDIR_SORT_DESCENDING: number;
 
 /**
  * Available since PHP 5.4.0.
  */
-declare var SCANDIR_SORT_NONE: number;
+var SCANDIR_SORT_NONE: number;
 
 
 /**
  * Instances of Directory are created by calling the dir function, not by the new
  * operator.
  */
-declare class Directory {
+class Directory {
     
     /**
      * The directory that was opened.
@@ -3286,7 +3286,7 @@ declare class Directory {
  *
  * @param directory The new current directory
  */
-declare function chdir(directory: string): bool;
+function chdir(directory: string): bool;
 
 /**
  * Change the root directory
@@ -3299,7 +3299,7 @@ declare function chdir(directory: string): bool;
  *
  * @param directory The path to change the root directory to.
  */
-declare function chroot(directory: string): bool;
+function chroot(directory: string): bool;
 
 /**
  * Close directory handle
@@ -3311,7 +3311,7 @@ declare function chroot(directory: string): bool;
  *                   If the directory handle is not specified, the last link
  *                   opened by opendir is assumed.
  */
-declare function closedir(dir_handle?: Pct.PhpResource);
+function closedir(dir_handle?: Pct.PhpResource);
 
 /**
  * Return an instance of the Directory class
@@ -3324,7 +3324,7 @@ declare function closedir(dir_handle?: Pct.PhpResource);
  * @return Returns an instance of Directory, or  with wrong parameters, or false
  *         in case of another error.
  */
-declare function dir(directory: string, context?: Pct.PhpResource): Directory;
+function dir(directory: string, context?: Pct.PhpResource): Directory;
 
 /**
  * Gets the current working directory
@@ -3337,7 +3337,7 @@ declare function dir(directory: string, context?: Pct.PhpResource): Directory;
  *         if the current directory does. See chmod for more information on modes
  *         and permissions.
  */
-declare function getcwd(): string;
+function getcwd(): string;
 
 /**
  * Open directory handle
@@ -3356,7 +3356,7 @@ declare function getcwd(): string;
  *         error output of opendir by prepending '@' to the front of the function
  *         name.
  */
-declare function opendir(path: string, context?: Pct.PhpResource): Pct.PhpResource;
+function opendir(path: string, context?: Pct.PhpResource): Pct.PhpResource;
 
 /**
  * Read entry from directory handle
@@ -3369,7 +3369,7 @@ declare function opendir(path: string, context?: Pct.PhpResource): Pct.PhpResour
  *                   opened by opendir is assumed.
  * @return Returns the entry name on success.
  */
-declare function readdir(dir_handle?: Pct.PhpResource): string;
+function readdir(dir_handle?: Pct.PhpResource): string;
 
 /**
  * Rewind directory handle
@@ -3381,7 +3381,7 @@ declare function readdir(dir_handle?: Pct.PhpResource): string;
  *                   If the directory handle is not specified, the last link
  *                   opened by opendir is assumed.
  */
-declare function rewinddir(dir_handle?: Pct.PhpResource);
+function rewinddir(dir_handle?: Pct.PhpResource);
 
 /**
  * List files and directories inside the specified path
@@ -3400,7 +3400,7 @@ declare function rewinddir(dir_handle?: Pct.PhpResource);
  *         directory is not a directory, then boolean false is returned, and an
  *         error of level E_WARNING is generated.
  */
-declare function scandir(directory?: string, sorting_order?: number, context?: Pct.PhpResource): string[];
+function scandir(directory?: string, sorting_order?: number, context?: Pct.PhpResource): string[];
 
 //--------------------------------------------------------------------------------
 // dom
@@ -5353,7 +5353,7 @@ function trigger_error(error_msg: string, error_type?: number): bool;
  * @param arg The argument that will be escaped.
  * @return The escaped string.
  */
-declare function escapeshellarg(arg: string): string;
+function escapeshellarg(arg: string): string;
 
 /**
  * Escape shell metacharacters
@@ -5370,7 +5370,7 @@ declare function escapeshellarg(arg: string): string;
  * @param command The command that will be escaped.
  * @return The escaped string.
  */
-declare function escapeshellcmd(command: string): string;
+function escapeshellcmd(command: string): string;
 
 /**
  * Execute an external program
@@ -5395,7 +5395,7 @@ declare function escapeshellcmd(command: string): string;
  *         To get the output of the executed command, be sure to set and use the
  *         output parameter.
  */
-declare function exec(command: string, $output?: string[], $return_var?: number): string;
+function exec(command: string, $output?: string[], $return_var?: number): string;
 
 /**
  * Execute an external program and display raw output
@@ -5412,7 +5412,7 @@ declare function exec(command: string, $output?: string[], $return_var?: number)
  * @param $return_var If the return_var argument is present, the return status of
  *                    the Unix command will be placed here.
  */
-declare function passthru(command: string, $return_var?: number);
+function passthru(command: string, $return_var?: number);
 
 /**
  * Close a process opened by proc_open and return the exit code of that process
@@ -5427,7 +5427,7 @@ declare function passthru(command: string, $return_var?: number);
  * @return Returns the termination status of the process that was run. In case of
  *         an error then -1 is returned.
  */
-declare function proc_close(process: Pct.PhpResource): number;
+function proc_close(process: Pct.PhpResource): number;
 
 /**
  * Get information about a process opened by proc_open
@@ -5452,7 +5452,7 @@ declare function proc_close(process: Pct.PhpResource): number;
  *         the signal that caused the child process to stop its execution (only
  *         meaningful if stopped is true).
  */
-declare function proc_get_status(process: Pct.PhpResource): Pct.PhpAssocArray;
+function proc_get_status(process: Pct.PhpResource): Pct.PhpAssocArray;
 
 /**
  * Change the priority of the current process
@@ -5467,7 +5467,7 @@ declare function proc_get_status(process: Pct.PhpResource): Pct.PhpAssocArray;
  * @return If an error occurs, like the user lacks permission to change the
  *         priority, an error of level E_WARNING is also generated.
  */
-declare function proc_nice(increment: number): bool;
+function proc_nice(increment: number): bool;
 
 /**
  * Execute a command and open file pointers for input/output
@@ -5515,7 +5515,7 @@ declare function proc_nice(increment: number): bool;
  *         using proc_close when you are finished with it. On failure returns
  *         false.
  */
-declare function proc_open(cmd: string, descriptorspec: Array, $pipes: number[], cwd?: string, env?: Pct.PhpAssocArray, other_options?: Pct.PhpAssocArray): Pct.PhpResource;
+function proc_open(cmd: string, descriptorspec: Array, $pipes: number[], cwd?: string, env?: Pct.PhpAssocArray, other_options?: Pct.PhpAssocArray): Pct.PhpResource;
 
 /**
  * Kills a process opened by proc_open
@@ -5534,7 +5534,7 @@ declare function proc_open(cmd: string, descriptorspec: Array, $pipes: number[],
  *               the kill(2) system call.  The default is SIGTERM.
  * @return Returns the termination status of the process that was run.
  */
-declare function proc_terminate(process: Pct.PhpResource, signal?: number): bool;
+function proc_terminate(process: Pct.PhpResource, signal?: number): bool;
 
 /**
  * Execute command via shell and return the complete output as a string
@@ -5544,7 +5544,7 @@ declare function proc_terminate(process: Pct.PhpResource, signal?: number): bool
  * @param cmd The command that will be executed.
  * @return The output from the executed command or  if an error occurred.
  */
-declare function shell_exec(cmd: string): string;
+function shell_exec(cmd: string): string;
 
 /**
  * Execute an external program and display the output
@@ -5565,7 +5565,7 @@ declare function shell_exec(cmd: string): string;
  * @return Returns the last line of the command output on success, and false on
  *         failure.
  */
-declare function system(command: string, $return_var?: number): string;
+function system(command: string, $return_var?: number): string;
 
 //--------------------------------------------------------------------------------
 // fileinfo
@@ -5582,54 +5582,54 @@ declare function system(command: string, $return_var?: number): string;
  * Decompress compressed files. Disabled since PHP 5.3.0 due to thread safety
  * issues.
  */
-declare var FILEINFO_COMPRESS: number;
+var FILEINFO_COMPRESS: number;
 
 /**
  * Return all matches, not just the first.
  */
-declare var FILEINFO_CONTINUE: number;
+var FILEINFO_CONTINUE: number;
 
 /**
  * Look at the contents of blocks or character special devices.
  */
-declare var FILEINFO_DEVICES: number;
+var FILEINFO_DEVICES: number;
 
 /**
  * Return the mime type and mime encoding as defined by RFC 2045.
  */
-declare var FILEINFO_MIME: number;
+var FILEINFO_MIME: number;
 
 /**
  * Return the mime encoding of the file. Available since PHP 5.3.0.
  */
-declare var FILEINFO_MIME_ENCODING: number;
+var FILEINFO_MIME_ENCODING: number;
 
 /**
  * Return the mime type. Available since PHP 5.3.0.
  */
-declare var FILEINFO_MIME_TYPE: number;
+var FILEINFO_MIME_TYPE: number;
 
 /**
  * No special handling.
  */
-declare var FILEINFO_NONE: number;
+var FILEINFO_NONE: number;
 
 /**
  * If possible preserve the original access time.
  */
-declare var FILEINFO_PRESERVE_ATIME: number;
+var FILEINFO_PRESERVE_ATIME: number;
 
 /**
  * Don't translate unprintable characters to a \ooo octal representation.
  */
-declare var FILEINFO_RAW: number;
+var FILEINFO_RAW: number;
 
 /**
  * Follow symlinks.
  */
-declare var FILEINFO_SYMLINK: number;
+var FILEINFO_SYMLINK: number;
 
-declare class finfo {
+class finfo {
     constructor(options?: number, magic_file?: string);
     buffer(string_?: string, options?: number, context?: Pct.PhpResource): string;
     file(file_name?: string, options?: number, context?: Pct.PhpResource): string;
@@ -5649,7 +5649,7 @@ declare class finfo {
  * @return Returns a textual description of the string argument, or false if an
  *         error occurred.
  */
-declare function finfo_buffer(finfo: Pct.PhpResource, string_?: string, options?: number, context?: Pct.PhpResource): string;
+function finfo_buffer(finfo: Pct.PhpResource, string_?: string, options?: number, context?: Pct.PhpResource): string;
 
 /**
  * Close fileinfo resource
@@ -5658,7 +5658,7 @@ declare function finfo_buffer(finfo: Pct.PhpResource, string_?: string, options?
  *
  * @param finfo Fileinfo resource returned by finfo_open.
  */
-declare function finfo_close(finfo: Pct.PhpResource): bool;
+function finfo_close(finfo: Pct.PhpResource): bool;
 
 /**
  * Return information about a file
@@ -5672,7 +5672,7 @@ declare function finfo_close(finfo: Pct.PhpResource): bool;
  * @return Returns a textual description of the contents of the filename argument,
  *         or false if an error occurred.
  */
-declare function finfo_file(finfo: Pct.PhpResource, file_name?: string, options?: number, context?: Pct.PhpResource): string;
+function finfo_file(finfo: Pct.PhpResource, file_name?: string, options?: number, context?: Pct.PhpResource): string;
 
 /**
  * Create a new fileinfo resource
@@ -5692,7 +5692,7 @@ declare function finfo_file(finfo: Pct.PhpResource, file_name?: string, options?
  *                   default value.
  * @return (Procedural style only) Returns a magic database resource on success.
  */
-declare function finfo_open(options?: number, magic_file?: string): Pct.PhpResource;
+function finfo_open(options?: number, magic_file?: string): Pct.PhpResource;
 
 /**
  * Set libmagic configuration options
@@ -5703,7 +5703,7 @@ declare function finfo_open(options?: number, magic_file?: string): Pct.PhpResou
  * @param finfo Fileinfo resource returned by finfo_open.
  * @param options One or disjunction of more Fileinfo constants.
  */
-declare function finfo_set_flags(finfo: Pct.PhpResource, options: number): bool;
+function finfo_set_flags(finfo: Pct.PhpResource, options: number): bool;
 
 /**
  * Detect MIME Content-type for a file (deprecated)
@@ -5715,7 +5715,7 @@ declare function finfo_set_flags(finfo: Pct.PhpResource, options: number): bool;
  * @return Returns the content type in MIME format, like text/plain or
  *         application/octet-stream.
  */
-declare function mime_content_type(filename: string): string;
+function mime_content_type(filename: string): string;
 
 //--------------------------------------------------------------------------------
 // filesystem
@@ -5731,50 +5731,50 @@ declare function mime_content_type(filename: string): string;
 /**
  * Append content to existing file.
  */
-declare var FILE_APPEND: number;
-declare var FILE_BINARY: number;
+var FILE_APPEND: number;
+var FILE_BINARY: number;
 
 /**
  * Strip EOL characters (since PHP 5).
  */
-declare var FILE_IGNORE_NEW_LINES: number;
-declare var FILE_NO_DEFAULT_CONTEXT: number;
+var FILE_IGNORE_NEW_LINES: number;
+var FILE_NO_DEFAULT_CONTEXT: number;
 
 /**
  * Skip empty lines (since PHP 5).
  */
-declare var FILE_SKIP_EMPTY_LINES: number;
+var FILE_SKIP_EMPTY_LINES: number;
 
 /**
  * Search for filename in include_path (since PHP 5).
  */
-declare var FILE_USE_INCLUDE_PATH: number;
+var FILE_USE_INCLUDE_PATH: number;
 
-declare var GLOB_AVAILABLE_FLAGS: number;
-declare var GLOB_BRACE: number;
-declare var GLOB_MARK: number;
-declare var GLOB_NOCHECK: number;
-declare var GLOB_NOESCAPE: number;
-declare var GLOB_NOSORT: number;
-declare var GLOB_ONLYDIR: number;
+var GLOB_AVAILABLE_FLAGS: number;
+var GLOB_BRACE: number;
+var GLOB_MARK: number;
+var GLOB_NOCHECK: number;
+var GLOB_NOESCAPE: number;
+var GLOB_NOSORT: number;
+var GLOB_ONLYDIR: number;
 
-declare var LOCK_EX: number;
-declare var LOCK_NB: number;
-declare var LOCK_SH: number;
-declare var LOCK_UN: number;
+var LOCK_EX: number;
+var LOCK_NB: number;
+var LOCK_SH: number;
+var LOCK_UN: number;
 
-declare var PATHINFO_BASENAME: number;
-declare var PATHINFO_DIRNAME: number;
-declare var PATHINFO_EXTENSION: number;
+var PATHINFO_BASENAME: number;
+var PATHINFO_DIRNAME: number;
+var PATHINFO_EXTENSION: number;
 
 /**
  * Since PHP 5.2.0.
  */
-declare var PATHINFO_FILENAME: number;
+var PATHINFO_FILENAME: number;
 
-declare var SEEK_CUR: number;
-declare var SEEK_END: number;
-declare var SEEK_SET: number;
+var SEEK_CUR: number;
+var SEEK_END: number;
+var SEEK_SET: number;
 
 
 /**
@@ -5791,7 +5791,7 @@ declare var SEEK_SET: number;
  * @param suffix If the name component ends in suffix this will also be cut off.
  * @return Returns the base name of the given path.
  */
-declare function basename(path: string, suffix?: string): string;
+function basename(path: string, suffix?: string): string;
 
 /**
  * Changes file group
@@ -5804,7 +5804,7 @@ declare function basename(path: string, suffix?: string): string;
  * @param filename Path to the file.
  * @param group A group name or number.
  */
-declare function chgrp(filename: string, group: string): bool;
+function chgrp(filename: string, group: string): bool;
 
 /**
  * Changes file group
@@ -5817,7 +5817,7 @@ declare function chgrp(filename: string, group: string): bool;
  * @param filename Path to the file.
  * @param group A group name or number.
  */
-declare function chgrp(filename: string, group: number): bool;
+function chgrp(filename: string, group: number): bool;
 
 /**
  * Changes file mode
@@ -5841,7 +5841,7 @@ declare function chgrp(filename: string, group: number): bool;
  *             specify needed rights. You can also read more about modes on Unix
  *             systems with 'man 1 chmod' and 'man 2 chmod'.
  */
-declare function chmod(filename: string, mode: number): bool;
+function chmod(filename: string, mode: number): bool;
 
 /**
  * Changes file owner
@@ -5852,7 +5852,7 @@ declare function chmod(filename: string, mode: number): bool;
  * @param filename Path to the file.
  * @param user A user name or number.
  */
-declare function chown(filename: string, user: string): bool;
+function chown(filename: string, user: string): bool;
 
 /**
  * Changes file owner
@@ -5863,7 +5863,7 @@ declare function chown(filename: string, user: string): bool;
  * @param filename Path to the file.
  * @param user A user name or number.
  */
-declare function chown(filename: string, user: number): bool;
+function chown(filename: string, user: number): bool;
 
 /**
  * Clears file status cache
@@ -5896,7 +5896,7 @@ declare function chown(filename: string, user: number): bool;
  * @param filename Clear the realpath and the stat cache for a specific filename
  *                 only; only used if clear_realpath_cache is true.
  */
-declare function clearstatcache(clear_realpath_cache?: bool, filename?: string);
+function clearstatcache(clear_realpath_cache?: bool, filename?: string);
 
 /**
  * Copies file
@@ -5912,7 +5912,7 @@ declare function clearstatcache(clear_realpath_cache?: bool, filename?: string);
  *             If the destination file already exists, it will be overwritten.
  * @param context A valid context resource created with stream_context_create.
  */
-declare function copy(source: string, dest: string, context?: Pct.PhpResource): bool;
+function copy(source: string, dest: string, context?: Pct.PhpResource): bool;
 
 /**
  * Returns parent directory's path
@@ -5930,7 +5930,7 @@ declare function copy(source: string, dest: string, context?: Pct.PhpResource): 
  *         Otherwise, the returned string is path with any trailing /component
  *         removed.
  */
-declare function dirname(path: string): string;
+function dirname(path: string): string;
 
 /**
  * Returns available space on filesystem or disk partition
@@ -5945,7 +5945,7 @@ declare function dirname(path: string): string;
  *                  systems and PHP versions.
  * @return Returns the number of available bytes as a float .
  */
-declare function disk_free_space(directory: string): number;
+function disk_free_space(directory: string): number;
 
 /**
  * Returns the total size of a filesystem or disk partition
@@ -5956,7 +5956,7 @@ declare function disk_free_space(directory: string): number;
  * @param directory A directory of the filesystem or disk partition.
  * @return Returns the total number of bytes as a float .
  */
-declare function disk_total_space(directory: string): number;
+function disk_total_space(directory: string): number;
 
 /**
  * Closes an open file pointer
@@ -5966,7 +5966,7 @@ declare function disk_total_space(directory: string): number;
  * @param handle The file pointer must be valid, and must point to a file
  *               successfully opened by fopen or fsockopen.
  */
-declare function fclose(handle: Pct.PhpResource): bool;
+function fclose(handle: Pct.PhpResource): bool;
 
 /**
  * Tests for end-of-file on a file pointer
@@ -5977,7 +5977,7 @@ declare function fclose(handle: Pct.PhpResource): bool;
  * @return Returns true if the file pointer is at EOF or an error occurs
  *         (including socket timeout); otherwise returns false.
  */
-declare function feof(handle: Pct.PhpResource): bool;
+function feof(handle: Pct.PhpResource): bool;
 
 /**
  * Flushes the output to a file
@@ -5987,7 +5987,7 @@ declare function feof(handle: Pct.PhpResource): bool;
  *
  * @param handle 
  */
-declare function fflush(handle: Pct.PhpResource): bool;
+function fflush(handle: Pct.PhpResource): bool;
 
 /**
  * Gets character from file pointer
@@ -5998,7 +5998,7 @@ declare function fflush(handle: Pct.PhpResource): bool;
  * @return Returns a string containing a single character read from the file
  *         pointed to by handle. Returns false on EOF.
  */
-declare function fgetc(handle: Pct.PhpResource): string;
+function fgetc(handle: Pct.PhpResource): string;
 
 /**
  * Gets line from file pointer and parse for CSV fields
@@ -6025,7 +6025,7 @@ declare function fgetc(handle: Pct.PhpResource): string;
  *         fgetcsv returns  if an invalid handle is supplied or false on other
  *         errors, including end of file.
  */
-declare function fgetcsv(handle: Pct.PhpResource, length?: number, delimter?: string, enclosure?: string, escape?: string): any[];
+function fgetcsv(handle: Pct.PhpResource, length?: number, delimter?: string, enclosure?: string, escape?: string): any[];
 
 /**
  * Gets line from file pointer
@@ -6048,7 +6048,7 @@ declare function fgetcsv(handle: Pct.PhpResource, length?: number, delimter?: st
  *         
  *         If an error occurs, false is returned.
  */
-declare function fgets(handle: Pct.PhpResource, length?: number): string;
+function fgets(handle: Pct.PhpResource, length?: number): string;
 
 /**
  * Gets line from file pointer and strip HTML tags
@@ -6065,7 +6065,7 @@ declare function fgets(handle: Pct.PhpResource, length?: number): string;
  *         
  *         If an error occurs, returns false.
  */
-declare function fgetss(handle: Pct.PhpResource, length?: number, allowable_tags?: string): string;
+function fgetss(handle: Pct.PhpResource, length?: number, allowable_tags?: string): string;
 
 /**
  * Reads entire file into an array
@@ -6090,7 +6090,7 @@ declare function fgetss(handle: Pct.PhpResource, length?: number, allowable_tags
  *         FILE_IGNORE_NEW_LINES is used, so you still need to use rtrim if you do
  *         not want the line ending present.
  */
-declare function file(filename: string, flags?: number, context?: Pct.PhpResource): string[];
+function file(filename: string, flags?: number, context?: Pct.PhpResource): string[];
 
 /**
  * Checks whether a file or directory exists
@@ -6114,7 +6114,7 @@ declare function file(filename: string, flags?: number, context?: Pct.PhpResourc
  *         
  *         The check is done using the real UID/GID instead of the effective one.
  */
-declare function file_exists(filename: string): bool;
+function file_exists(filename: string): bool;
 
 /**
  * Reads entire file into a string
@@ -6146,7 +6146,7 @@ declare function file_exists(filename: string): bool;
  *               stream processed by the filters.
  * @return The function returns the read data.
  */
-declare function file_get_contents(filename: string, use_include_path?: bool, context?: Pct.PhpResource, offset?: number, maxlen?: number): string;
+function file_get_contents(filename: string, use_include_path?: bool, context?: Pct.PhpResource, offset?: number, maxlen?: number): string;
 
 /**
  * Write a string to a file
@@ -6181,7 +6181,7 @@ declare function file_get_contents(filename: string, use_include_path?: bool, co
  * @return This function returns the number of bytes that were written to the
  *         file, or false on failure.
  */
-declare function file_put_contents(filename: string, data: string, flags?: number, context?: Pct.PhpResource): number;
+function file_put_contents(filename: string, data: string, flags?: number, context?: Pct.PhpResource): number;
 
 /**
  * Write a string to a file
@@ -6216,7 +6216,7 @@ declare function file_put_contents(filename: string, data: string, flags?: numbe
  * @return This function returns the number of bytes that were written to the
  *         file, or false on failure.
  */
-declare function file_put_contents(filename: string, data: any[], flags?: number, context?: Pct.PhpResource): number;
+function file_put_contents(filename: string, data: any[], flags?: number, context?: Pct.PhpResource): number;
 
 /**
  * Write a string to a file
@@ -6251,7 +6251,7 @@ declare function file_put_contents(filename: string, data: any[], flags?: number
  * @return This function returns the number of bytes that were written to the
  *         file, or false on failure.
  */
-declare function file_put_contents(filename: string, data: Pct.PhpResource, flags?: number, context?: Pct.PhpResource): number;
+function file_put_contents(filename: string, data: Pct.PhpResource, flags?: number, context?: Pct.PhpResource): number;
 
 /**
  * Gets last access time of file
@@ -6260,7 +6260,7 @@ declare function file_put_contents(filename: string, data: Pct.PhpResource, flag
  * @return Returns the time the file was last accessed, . The time is returned as
  *         a Unix timestamp.
  */
-declare function fileatime(filename: string): number;
+function fileatime(filename: string): number;
 
 /**
  * Gets inode change time of file
@@ -6271,7 +6271,7 @@ declare function fileatime(filename: string): number;
  * @return Returns the time the file was last changed, . The time is returned as a
  *         Unix timestamp.
  */
-declare function filectime(filename: string): number;
+function filectime(filename: string): number;
 
 /**
  * Gets file group
@@ -6284,7 +6284,7 @@ declare function filectime(filename: string): number;
  *         group ID is returned in numerical format, use posix_getgrgid to resolve
  *         it to a group name. Upon failure, false is returned.
  */
-declare function filegroup(filename: string): number;
+function filegroup(filename: string): number;
 
 /**
  * Gets file inode
@@ -6294,7 +6294,7 @@ declare function filegroup(filename: string): number;
  * @param filename Path to the file.
  * @return Returns the inode number of the file, .
  */
-declare function fileinode(filename: string): number;
+function fileinode(filename: string): number;
 
 /**
  * Gets file modification time
@@ -6306,7 +6306,7 @@ declare function fileinode(filename: string): number;
  * @return Returns the time the file was last modified, . The time is returned as
  *         a Unix timestamp, which is suitable for the date function.
  */
-declare function filemtime(filename: string): number;
+function filemtime(filename: string): number;
 
 /**
  * Gets file owner
@@ -6317,7 +6317,7 @@ declare function filemtime(filename: string): number;
  * @return Returns the user ID of the owner of the file, . The user ID is returned
  *         in numerical format, use posix_getpwuid to resolve it to a username.
  */
-declare function fileowner(filename: string): number;
+function fileowner(filename: string): number;
 
 /**
  * Gets file permissions
@@ -6338,7 +6338,7 @@ declare function fileowner(filename: string): number;
  *         looking up your specific platform's documentation is recommended if
  *         parsing the non-permission bits of the return value is required.
  */
-declare function fileperms(filename: string): number;
+function fileperms(filename: string): number;
 
 /**
  * Gets file size
@@ -6349,7 +6349,7 @@ declare function fileperms(filename: string): number;
  * @return Returns the size of the file in bytes, or false (and generates an error
  *         of level E_WARNING) in case of an error.
  */
-declare function filesize(filename: string): number;
+function filesize(filename: string): number;
 
 /**
  * Gets file type
@@ -6364,7 +6364,7 @@ declare function filesize(filename: string): number;
  *         E_NOTICE message if the stat call fails or if the file type is unknown.
  *         
  */
-declare function filetype(filename: string): string;
+function filetype(filename: string): string;
 
 /**
  * Portable advisory file locking
@@ -6394,7 +6394,7 @@ declare function filetype(filename: string): string;
  *                    block (EWOULDBLOCK errno condition). (not supported on
  *                    Windows)
  */
-declare function flock(handle: Pct.PhpResource, operation: number, $wouldblock?: number): bool;
+function flock(handle: Pct.PhpResource, operation: number, $wouldblock?: number): bool;
 
 /**
  * Match filename against a pattern
@@ -6419,7 +6419,7 @@ declare function flock(handle: Pct.PhpResource, operation: number, $wouldblock?:
  *              FNM_CASEFOLD  Caseless match. Part of the GNU extension.
  * @return Returns true if there is a match, false otherwise.
  */
-declare function fnmatch(pattern: string, string_: string, flags?: number): bool;
+function fnmatch(pattern: string, string_: string, flags?: number): bool;
 
 /**
  * Opens file or URL
@@ -6527,7 +6527,7 @@ declare function fnmatch(pattern: string, string_: string, flags?: number): bool
  * @param context 
  * @return Returns a file pointer resource on success, or false on error.
  */
-declare function fopen(filename: string, mode: string, use_include_path?: bool, context?: Pct.PhpResource): Pct.PhpResource;
+function fopen(filename: string, mode: string, use_include_path?: bool, context?: Pct.PhpResource): Pct.PhpResource;
 
 /**
  * Output all remaining data on a file pointer
@@ -6547,7 +6547,7 @@ declare function fopen(filename: string, mode: string, use_include_path?: bool, 
  *         returns the number of characters read from handle and passed through to
  *         the output.
  */
-declare function fpassthru(handle: Pct.PhpResource): number;
+function fpassthru(handle: Pct.PhpResource): number;
 
 /**
  * Format line as CSV and write to file pointer
@@ -6563,7 +6563,7 @@ declare function fpassthru(handle: Pct.PhpResource): number;
  *                  character only).
  * @return Returns the length of the written string.
  */
-declare function fputcsv(handle: Pct.PhpResource, fields: any[], delimiter?: string, enclosure?: string): number;
+function fputcsv(handle: Pct.PhpResource, fields: any[], delimiter?: string, enclosure?: string): number;
 
 /**
  * Binary-safe file read
@@ -6581,7 +6581,7 @@ declare function fputcsv(handle: Pct.PhpResource, fields: any[], delimiter?: str
  * @param length Up to length number of bytes read.
  * @return Returns the read string .
  */
-declare function fread(handle: Pct.PhpResource, length: number): string;
+function fread(handle: Pct.PhpResource, length: number): string;
 
 /**
  * Parses input from a file according to a format
@@ -6603,7 +6603,7 @@ declare function fread(handle: Pct.PhpResource, length: number): string;
  *         passed, the function will return the number of assigned values. The
  *         optional parameters must be passed by reference.
  */
-declare function fscanf(handle: Pct.PhpResource, format: string): any[]; //NOTE: auto-assignment not available
+function fscanf(handle: Pct.PhpResource, format: string): any[]; //NOTE: auto-assignment not available
 
 /**
  * Seeks on a file pointer
@@ -6627,7 +6627,7 @@ declare function fscanf(handle: Pct.PhpResource, format: string): any[]; //NOTE:
  *               SEEK_END - Set position to end-of-file plus offset.
  * @return Upon success, returns 0; otherwise, returns -1.
  */
-declare function fseek(handle: Pct.PhpResource, offset: number, whence?: number): number;
+function fseek(handle: Pct.PhpResource, offset: number, whence?: number): number;
 
 /**
  * Gets information about a file using an open file pointer
@@ -6640,7 +6640,7 @@ declare function fseek(handle: Pct.PhpResource, offset: number, whence?: number)
  * @return Returns an array with the statistics of the file; the format of the
  *         array is described in detail on the stat manual page.
  */
-declare function fstat(handle: Pct.PhpResource): Pct.PhpAssocArray;
+function fstat(handle: Pct.PhpResource): Pct.PhpAssocArray;
 
 /**
  * Returns the current position of the file read/write pointer
@@ -6655,7 +6655,7 @@ declare function fstat(handle: Pct.PhpResource): Pct.PhpAssocArray;
  *         
  *         If an error occurs, returns false.
  */
-declare function ftell(handle: Pct.PhpResource): number;
+function ftell(handle: Pct.PhpResource): number;
 
 /**
  * Truncates a file to a given length
@@ -6673,7 +6673,7 @@ declare function ftell(handle: Pct.PhpResource): number;
  *             If size is smaller than the file then the file is truncated to that
  *             size.
  */
-declare function ftruncate(handle: Pct.PhpResource, size: number): bool;
+function ftruncate(handle: Pct.PhpResource, size: number): bool;
 
 /**
  * Binary-safe file write
@@ -6688,7 +6688,7 @@ declare function ftruncate(handle: Pct.PhpResource, size: number): bool;
  *               magic_quotes_runtime configuration option will be ignored and no
  *               slashes will be stripped from string.
  */
-declare function fwrite(handle: Pct.PhpResource, string_: string, length?: number): number;
+function fwrite(handle: Pct.PhpResource, string_: string, length?: number): number;
 
 /**
  * Find pathnames matching a pattern
@@ -6714,7 +6714,7 @@ declare function fwrite(handle: Pct.PhpResource, string_: string, length?: numbe
  *         On some systems it is impossible to distinguish between empty match and
  *         an error.
  */
-declare function glob(pattern: string, flags?: number): string[];
+function glob(pattern: string, flags?: number): string[];
 
 /**
  * Tells whether the filename is a directory
@@ -6729,7 +6729,7 @@ declare function glob(pattern: string, flags?: number): string[];
  * @return Returns true if the filename exists and is a directory, false
  *         otherwise.
  */
-declare function is_dir(filename: string): bool;
+function is_dir(filename: string): bool;
 
 /**
  * Tells whether the filename is executable
@@ -6740,7 +6740,7 @@ declare function is_dir(filename: string): bool;
  * @return Returns true if the filename exists and is executable, or false on
  *         error.
  */
-declare function is_executable(filename: string): bool;
+function is_executable(filename: string): bool;
 
 /**
  * Tells whether the filename is a regular file
@@ -6751,7 +6751,7 @@ declare function is_executable(filename: string): bool;
  * @return Returns true if the filename exists and is a regular file, false
  *         otherwise.
  */
-declare function is_file(filename: string): bool;
+function is_file(filename: string): bool;
 
 /**
  * Tells whether the filename is a symbolic link
@@ -6762,7 +6762,7 @@ declare function is_file(filename: string): bool;
  * @return Returns true if the filename exists and is a symbolic link, false
  *         otherwise.
  */
-declare function is_link(filename: string): bool;
+function is_link(filename: string): bool;
 
 /**
  * Tells whether a file exists and is readable
@@ -6773,7 +6773,7 @@ declare function is_link(filename: string): bool;
  * @return Returns true if the file or directory specified by filename exists and
  *         is readable, false otherwise.
  */
-declare function is_readable(filename: string): bool;
+function is_readable(filename: string): bool;
 
 /**
  * Tells whether the file was uploaded via HTTP POST
@@ -6793,7 +6793,7 @@ declare function is_readable(filename: string): bool;
  *
  * @param filename The filename being checked.
  */
-declare function is_uploaded_file(filename: string): bool;
+function is_uploaded_file(filename: string): bool;
 
 /**
  * Tells whether the filename is writable
@@ -6808,7 +6808,7 @@ declare function is_uploaded_file(filename: string): bool;
  * @param filename The filename being checked.
  * @return Returns true if the filename exists and is writable.
  */
-declare function is_writable(filename: string): bool;
+function is_writable(filename: string): bool;
 
 /**
  * Changes group ownership of symlink
@@ -6821,7 +6821,7 @@ declare function is_writable(filename: string): bool;
  * @param filename Path to the symlink.
  * @param group The group specified by name or number.
  */
-declare function lchgrp(filename: string, group: string): bool;
+function lchgrp(filename: string, group: string): bool;
 
 /**
  * Changes group ownership of symlink
@@ -6834,7 +6834,7 @@ declare function lchgrp(filename: string, group: string): bool;
  * @param filename Path to the symlink.
  * @param group The group specified by name or number.
  */
-declare function lchgrp(filename: string, group: number): bool;
+function lchgrp(filename: string, group: number): bool;
 
 /**
  * Changes user ownership of symlink
@@ -6846,7 +6846,7 @@ declare function lchgrp(filename: string, group: number): bool;
  * @param filename Path to the file.
  * @param user User name or number.
  */
-declare function lchown(filename: string, user: string): bool;
+function lchown(filename: string, user: string): bool;
 
 /**
  * Changes user ownership of symlink
@@ -6858,7 +6858,7 @@ declare function lchown(filename: string, user: string): bool;
  * @param filename Path to the file.
  * @param user User name or number.
  */
-declare function lchown(filename: string, user: number): bool;
+function lchown(filename: string, user: number): bool;
 
 /**
  * Create a hard link
@@ -6868,7 +6868,7 @@ declare function lchown(filename: string, user: number): bool;
  * @param target Target of the link.
  * @param link The link name.
  */
-declare function link(target: string, link: string): bool;
+function link(target: string, link: string): bool;
 
 /**
  * Gets information about a link
@@ -6882,7 +6882,7 @@ declare function link(target: string, link: string): bool;
  * @return linkinfo returns the st_dev field of the Unix C stat structure returned
  *         by the lstat system call. Returns 0 or false in case of error.
  */
-declare function linkinfo(path: string): number;
+function linkinfo(path: string): number;
 
 /**
  * Gives information about a file or symbolic link
@@ -6896,7 +6896,7 @@ declare function linkinfo(path: string): number;
  *         status of the symbolic link is returned, not the status of the file
  *         pointed to by the symbolic link.
  */
-declare function lstat(filename: string): Pct.PhpAssocArray;
+function lstat(filename: string): Pct.PhpAssocArray;
 
 /**
  * Makes directory
@@ -6917,7 +6917,7 @@ declare function lstat(filename: string): Pct.PhpAssocArray;
  *                  pathname.
  * @param context 
  */
-declare function mkdir(pathname: string, mode?: number, recursive?: bool, context?: Pct.PhpResource): bool;
+function mkdir(pathname: string, mode?: number, recursive?: bool, context?: Pct.PhpResource): bool;
 
 /**
  * Moves an uploaded file to a new location
@@ -6941,7 +6941,7 @@ declare function mkdir(pathname: string, mode?: number, recursive?: bool, contex
  *         reason, no action will occur, and move_uploaded_file will return false.
  *         Additionally, a warning will be issued.
  */
-declare function move_uploaded_file(filename: string, destination: string): bool;
+function move_uploaded_file(filename: string, destination: string): bool;
 
 /**
  * Parse a configuration file
@@ -6962,7 +6962,7 @@ declare function move_uploaded_file(filename: string, destination: string): bool
  * @return The settings are returned as an associative array on success, and false
  *         on failure.
  */
-declare function parse_ini_file(filename: string, process_sections?: bool, scanner_mode?: number): Pct.PhpAssocArray;
+function parse_ini_file(filename: string, process_sections?: bool, scanner_mode?: number): Pct.PhpAssocArray;
 
 /**
  * Parse a configuration string
@@ -6982,7 +6982,7 @@ declare function parse_ini_file(filename: string, process_sections?: bool, scann
  * @return The settings are returned as an associative array on success, and false
  *         on failure.
  */
-declare function parse_ini_string(ini: string, process_sections?: bool, scanner_mode?: number): Pct.PhpAssocArray;
+function parse_ini_string(ini: string, process_sections?: bool, scanner_mode?: number): Pct.PhpAssocArray;
 
 /**
  * Returns information about a file path
@@ -7001,7 +7001,7 @@ declare function parse_ini_string(ini: string, process_sections?: bool, scanner_
  *         If options is present, returns a string containing the requested
  *         element.
  */
-declare function pathinfo(path: string): Pct.PhpAssocArray;
+function pathinfo(path: string): Pct.PhpAssocArray;
 
 /**
  * Returns information about a file path
@@ -7025,7 +7025,7 @@ declare function pathinfo(path: string): Pct.PhpAssocArray;
  *         If options is present, returns a string containing the requested
  *         element.
  */
-declare function pathinfo(path: string, options: number): any;
+function pathinfo(path: string, options: number): any;
 
 /**
  * Closes process file pointer
@@ -7037,7 +7037,7 @@ declare function pathinfo(path: string, options: number): any;
  * @return Returns the termination status of the process that was run. In case of
  *         an error then -1 is returned.
  */
-declare function pclose(handle: Pct.PhpResource): number;
+function pclose(handle: Pct.PhpResource): number;
 
 /**
  * Opens process file pointer
@@ -7055,7 +7055,7 @@ declare function pclose(handle: Pct.PhpResource): number;
  *         
  *         If an error occurs, returns false.
  */
-declare function popen(command: string, mode: string): Pct.PhpResource;
+function popen(command: string, mode: string): Pct.PhpResource;
 
 /**
  * Outputs a file
@@ -7071,7 +7071,7 @@ declare function popen(command: string, mode: string): Pct.PhpResource;
  *         false is returned and unless the function was called as @readfile, an
  *         error message is printed.
  */
-declare function readfile(filename: string, use_include_path?: bool, context?: Pct.PhpResource): number;
+function readfile(filename: string, use_include_path?: bool, context?: Pct.PhpResource): number;
 
 /**
  * Returns the target of a symbolic link
@@ -7081,7 +7081,7 @@ declare function readfile(filename: string, use_include_path?: bool, context?: P
  * @param path The symbolic link path.
  * @return Returns the contents of the symbolic link path or false on error.
  */
-declare function readlink(path: string): string;
+function readlink(path: string): string;
 
 /**
  * Returns canonicalized absolute pathname
@@ -7104,7 +7104,7 @@ declare function readlink(path: string): string;
  *         The running script must have executable permissions on all directories
  *         in the hierarchy, otherwise realpath will return false.
  */
-declare function realpath(path: string): string;
+function realpath(path: string): string;
 
 /**
  * Get realpath cache entries
@@ -7114,7 +7114,7 @@ declare function realpath(path: string): string;
  *         entries, and the values are arrays of data items, containing the
  *         resolved path, expiration date, and other options kept in the cache.
  */
-declare function realpath_cache_get(): Pct.PhpAssocArray;
+function realpath_cache_get(): Pct.PhpAssocArray;
 
 /**
  * Get realpath cache size
@@ -7122,7 +7122,7 @@ declare function realpath_cache_get(): Pct.PhpAssocArray;
  * Get the amount of memory used by the realpath cache.
  * @return Returns how much memory realpath cache is using.
  */
-declare function realpath_cache_size(): number;
+function realpath_cache_size(): number;
 
 /**
  * Renames a file or directory
@@ -7135,7 +7135,7 @@ declare function realpath_cache_size(): number;
  * @param newname The new name.
  * @param context 
  */
-declare function rename(oldname: string, newname: string, context?: Pct.PhpResource): bool;
+function rename(oldname: string, newname: string, context?: Pct.PhpResource): bool;
 
 /**
  * Rewind the position of a file pointer
@@ -7148,7 +7148,7 @@ declare function rename(oldname: string, newname: string, context?: Pct.PhpResou
  * @param handle The file pointer must be valid, and must point to a file
  *               successfully opened by fopen.
  */
-declare function rewind(handle: Pct.PhpResource): bool;
+function rewind(handle: Pct.PhpResource): bool;
 
 /**
  * Removes directory
@@ -7160,7 +7160,7 @@ declare function rewind(handle: Pct.PhpResource): bool;
  * @param dirname Path to the directory.
  * @param context 
  */
-declare function rmdir(dirname: string, context?: Pct.PhpResource): bool;
+function rmdir(dirname: string, context?: Pct.PhpResource): bool;
 
 /**
  * Gives information about a file
@@ -7187,7 +7187,7 @@ declare function rmdir(dirname: string, context?: Pct.PhpResource): bool;
  *         
  *         In case of error, stat returns false.
  */
-declare function stat(filename: string): Pct.PhpAssocArray;
+function stat(filename: string): Pct.PhpAssocArray;
 
 /**
  * Creates a symbolic link
@@ -7198,7 +7198,7 @@ declare function stat(filename: string): Pct.PhpAssocArray;
  * @param target Target of the link.
  * @param link The link name.
  */
-declare function symlink(target: string, link: string): bool;
+function symlink(target: string, link: string): bool;
 
 /**
  * Create file with unique file name
@@ -7211,7 +7211,7 @@ declare function symlink(target: string, link: string): bool;
  * @param prefix The prefix of the generated temporary filename.
  * @return Returns the new temporary filename, or false on failure.
  */
-declare function tempnam(dir: string, prefix: string): string;
+function tempnam(dir: string, prefix: string): string;
 
 /**
  * Creates a temporary file
@@ -7227,7 +7227,7 @@ declare function tempnam(dir: string, prefix: string): string;
  * @return Returns a file handle, similar to the one returned by fopen, for the
  *         new file.
  */
-declare function tmpfile(): Pct.PhpResource;
+function tmpfile(): Pct.PhpResource;
 
 /**
  * Sets access and modification time of file
@@ -7246,7 +7246,7 @@ declare function tmpfile(): Pct.PhpResource;
  *              time parameter. If neither are present, the current system time is
  *              used.
  */
-declare function touch(filename: string, time?: number, atime?: number): bool;
+function touch(filename: string, time?: number, atime?: number): bool;
 
 /**
  * Changes the current umask
@@ -7259,7 +7259,7 @@ declare function touch(filename: string, time?: number, atime?: number): bool;
  * @return umask without arguments simply returns the current umask otherwise the
  *         old umask is returned.
  */
-declare function umask(umask?: number): number;
+function umask(umask?: number): number;
 
 /**
  * Deletes a file
@@ -7270,7 +7270,7 @@ declare function umask(umask?: number): number;
  * @param filename Path to the file.
  * @param context 
  */
-declare function unlink(filename: string, context?: Pct.PhpResource): bool;
+function unlink(filename: string, context?: Pct.PhpResource): bool;
 
 //--------------------------------------------------------------------------------
 // filter
@@ -7301,256 +7301,256 @@ declare function unlink(filename: string, context?: Pct.PhpResource): bool;
 /**
  * ID of "callback" filter.
  */
-declare var FILTER_CALLBACK: number;
+var FILTER_CALLBACK: number;
 
 
 /**
  * ID of default ("string") filter.
  */
-declare var FILTER_DEFAULT: number;
+var FILTER_DEFAULT: number;
 
 
 /**
  * Allow fractional part in "number_float" filter.
  */
-declare var FILTER_FLAG_ALLOW_FRACTION: number;
+var FILTER_FLAG_ALLOW_FRACTION: number;
 
 /**
  * Allow hex notation (0x[0-9a-fA-F]+) in "int" filter.
  */
-declare var FILTER_FLAG_ALLOW_HEX: number;
+var FILTER_FLAG_ALLOW_HEX: number;
 
 /**
  * Allow octal notation (0[0-7]+) in "int" filter.
  */
-declare var FILTER_FLAG_ALLOW_OCTAL: number;
+var FILTER_FLAG_ALLOW_OCTAL: number;
 
 /**
  * Allow scientific notation (e, E) in "number_float" filter.
  */
-declare var FILTER_FLAG_ALLOW_SCIENTIFIC: number;
+var FILTER_FLAG_ALLOW_SCIENTIFIC: number;
 
 /**
  * Allow thousand separator (,) in "number_float" filter.
  */
-declare var FILTER_FLAG_ALLOW_THOUSAND: number;
+var FILTER_FLAG_ALLOW_THOUSAND: number;
 
 /**
  * (No use for now.)
  */
-declare var FILTER_FLAG_EMPTY_STRING_NULL: number;
+var FILTER_FLAG_EMPTY_STRING_NULL: number;
 
 /**
  * Encode .
  */
-declare var FILTER_FLAG_ENCODE_AMP: number;
+var FILTER_FLAG_ENCODE_AMP: number;
 
 /**
  * Encode characters with ASCII value greater than 127.
  */
-declare var FILTER_FLAG_ENCODE_HIGH: number;
+var FILTER_FLAG_ENCODE_HIGH: number;
 
 /**
  * Encode characters with ASCII value less than 32.
  */
-declare var FILTER_FLAG_ENCODE_LOW: number;
+var FILTER_FLAG_ENCODE_LOW: number;
 
 /**
  * Allow only IPv4 address in "validate_ip" filter.
  */
-declare var FILTER_FLAG_IPV4: number;
+var FILTER_FLAG_IPV4: number;
 
 /**
  * Allow only IPv6 address in "validate_ip" filter.
  */
-declare var FILTER_FLAG_IPV6: number;
+var FILTER_FLAG_IPV6: number;
 
 /**
  * Don't encode ' and ".
  */
-declare var FILTER_FLAG_NO_ENCODE_QUOTES: number;
+var FILTER_FLAG_NO_ENCODE_QUOTES: number;
 
 /**
  * Deny private addresses in "validate_ip" filter.
  */
-declare var FILTER_FLAG_NO_PRIV_RANGE: number;
+var FILTER_FLAG_NO_PRIV_RANGE: number;
 
 /**
  * Deny reserved addresses in "validate_ip" filter.
  */
-declare var FILTER_FLAG_NO_RES_RANGE: number;
+var FILTER_FLAG_NO_RES_RANGE: number;
 
 /**
  * No flags.
  */
-declare var FILTER_FLAG_NONE: number;
+var FILTER_FLAG_NONE: number;
 
 /**
  * Require path in "validate_url" filter.
  */
-declare var FILTER_FLAG_PATH_REQUIRED: number;
+var FILTER_FLAG_PATH_REQUIRED: number;
 
 /**
  * Require query in "validate_url" filter.
  */
-declare var FILTER_FLAG_QUERY_REQUIRED: number;
+var FILTER_FLAG_QUERY_REQUIRED: number;
 
 /**
  * Strip characters with ASCII value greater than 127.
  */
-declare var FILTER_FLAG_STRIP_HIGH: number;
+var FILTER_FLAG_STRIP_HIGH: number;
 
 /**
  * Strip characters with ASCII value less than 32.
  */
-declare var FILTER_FLAG_STRIP_LOW: number;
+var FILTER_FLAG_STRIP_LOW: number;
 
 
 /**
  * Always returns an array.
  */
-declare var FILTER_FORCE_ARRAY: number;
+var FILTER_FORCE_ARRAY: number;
 
 
 /**
  * Use NULL instead of FALSE on failure.
  */
-declare var FILTER_NULL_ON_FAILURE: number;
+var FILTER_NULL_ON_FAILURE: number;
 
 
 /**
  * Require an array as input.
  */
-declare var FILTER_REQUIRE_ARRAY: number;
+var FILTER_REQUIRE_ARRAY: number;
 
 /**
  * Flag used to require scalar as input
  */
-declare var FILTER_REQUIRE_SCALAR: number;
+var FILTER_REQUIRE_SCALAR: number;
 
 
 /**
  * ID of "email" filter.
  */
-declare var FILTER_SANITIZE_EMAIL: number;
+var FILTER_SANITIZE_EMAIL: number;
 
 /**
  * ID of "encoded" filter.
  */
-declare var FILTER_SANITIZE_ENCODED: number;
+var FILTER_SANITIZE_ENCODED: number;
 
 /**
  * ID of "magic_quotes" filter.
  */
-declare var FILTER_SANITIZE_MAGIC_QUOTES: number;
+var FILTER_SANITIZE_MAGIC_QUOTES: number;
 
 /**
  * ID of "number_float" filter.
  */
-declare var FILTER_SANITIZE_NUMBER_FLOAT: number;
+var FILTER_SANITIZE_NUMBER_FLOAT: number;
 
 /**
  * ID of "number_int" filter.
  */
-declare var FILTER_SANITIZE_NUMBER_INT: number;
+var FILTER_SANITIZE_NUMBER_INT: number;
 
 /**
  * ID of "special_chars" filter.
  */
-declare var FILTER_SANITIZE_SPECIAL_CHARS: number;
+var FILTER_SANITIZE_SPECIAL_CHARS: number;
 
 /**
  * ID of "string" filter.
  */
-declare var FILTER_SANITIZE_STRING: number;
+var FILTER_SANITIZE_STRING: number;
 
 /**
  * ID of "stripped" filter.
  */
-declare var FILTER_SANITIZE_STRIPPED: number;
+var FILTER_SANITIZE_STRIPPED: number;
 
 /**
  * ID of "url" filter.
  */
-declare var FILTER_SANITIZE_URL: number;
+var FILTER_SANITIZE_URL: number;
 
 
 /**
  * ID of "unsafe_raw" filter.
  */
-declare var FILTER_UNSAFE_RAW: number;
+var FILTER_UNSAFE_RAW: number;
 
 
 /**
  * ID of "boolean" filter.
  */
-declare var FILTER_VALIDATE_BOOLEAN: number;
+var FILTER_VALIDATE_BOOLEAN: number;
 
 /**
  * ID of "validate_email" filter.
  */
-declare var FILTER_VALIDATE_EMAIL: number;
+var FILTER_VALIDATE_EMAIL: number;
 
 /**
  * ID of "float" filter.
  */
-declare var FILTER_VALIDATE_FLOAT: number;
+var FILTER_VALIDATE_FLOAT: number;
 
 /**
  * ID of "int" filter.
  */
-declare var FILTER_VALIDATE_INT: number;
+var FILTER_VALIDATE_INT: number;
 
 /**
  * ID of "validate_ip" filter.
  */
-declare var FILTER_VALIDATE_IP: number;
+var FILTER_VALIDATE_IP: number;
 
 /**
  * ID of "validate_regexp" filter.
  */
-declare var FILTER_VALIDATE_REGEXP: number;
+var FILTER_VALIDATE_REGEXP: number;
 
 /**
  * ID of "validate_url" filter.
  */
-declare var FILTER_VALIDATE_URL: number;
+var FILTER_VALIDATE_URL: number;
 
 
 /**
  * COOKIE variables.
  */
-declare var INPUT_COOKIE: number;
+var INPUT_COOKIE: number;
 
 /**
  * ENV variables.
  */
-declare var INPUT_ENV: number;
+var INPUT_ENV: number;
 
 /**
  * GET variables.
  */
-declare var INPUT_GET: number;
+var INPUT_GET: number;
 
 /**
  * POST variables.
  */
-declare var INPUT_POST: number;
+var INPUT_POST: number;
 
 /**
  * REQUEST variables. (not implemented yet)
  */
-declare var INPUT_REQUEST: number;
+var INPUT_REQUEST: number;
 
 /**
  * SERVER variables.
  */
-declare var INPUT_SERVER: number;
+var INPUT_SERVER: number;
 
 /**
  * SESSION variables. (not implemented yet)
  */
-declare var INPUT_SESSION: number;
+var INPUT_SESSION: number;
 
 
 /**
@@ -7560,7 +7560,7 @@ declare var INPUT_SESSION: number;
  *             INPUT_ENV.
  * @param variable_name Name of a variable to check.
  */
-declare function filter_has_var(type: number, variable_name: string): bool;
+function filter_has_var(type: number, variable_name: string): bool;
 
 /**
  * Returns the filter ID belonging to a named filter
@@ -7568,7 +7568,7 @@ declare function filter_has_var(type: number, variable_name: string): bool;
  * @param filtername Name of a filter to get.
  * @return ID of a filter on success or false if filter doesn't exist.
  */
-declare function filter_id(filtername: string): number;
+function filter_id(filtername: string): number;
 
 /**
  * Gets a specific external variable by name and optionally filters it
@@ -7586,7 +7586,7 @@ declare function filter_id(filtername: string): number;
  *         FILTER_NULL_ON_FAILURE is used, it returns false if the variable is not
  *         set and  if the filter fails.
  */
-declare function filter_input(type: number, variable_name: string, filter?: number, options?: any): any;
+function filter_input(type: number, variable_name: string, filter?: number, options?: any): any;
 
 /**
  * Gets external variables and optionally filters them
@@ -7614,7 +7614,7 @@ declare function filter_input(type: number, variable_name: string, filter?: numb
  *         is used, it returns false if the variable is not set and  if the filter
  *         fails.
  */
-declare function filter_input_array(type: number, definition?: any): any;
+function filter_input_array(type: number, definition?: any): any;
 
 /**
  * Returns a list of all supported filters
@@ -7622,7 +7622,7 @@ declare function filter_input_array(type: number, definition?: any): any;
  *         there are no such filters. Indexes of this array are not filter IDs,
  *         they can be obtained with filter_id from a name instead.
  */
-declare function filter_list(): string[];
+function filter_list(): string[];
 
 /**
  * Filters a variable with a specified filter
@@ -7655,7 +7655,7 @@ declare function filter_list(): string[];
  *                'foo')); ?> ]]>
  * @return Returns the filtered data, or false if the filter fails.
  */
-declare function filter_var(variable: any, filter?: number, options?: any): any;
+function filter_var(variable: any, filter?: number, options?: any): any;
 
 /**
  * Gets multiple variables and optionally filters them
@@ -7680,7 +7680,7 @@ declare function filter_var(variable: any, filter?: number, options?: any): any;
  *         or false on failure. An array value will be false if the filter fails,
  *         or  if the variable is not set.
  */
-declare function filter_var_array(data: Pct.PhpAssocArray, definition?: any): any;
+function filter_var_array(data: Pct.PhpAssocArray, definition?: any): any;
 
 //--------------------------------------------------------------------------------
 // funchand
@@ -7704,7 +7704,7 @@ declare function filter_var_array(data: Pct.PhpAssocArray, definition?: any): an
  *                  reference.  call_user_func example and references   ]]>
  * @return Returns the return value of the callback, or false on error.
  */
-declare function call_user_func(callback: string, ...parameter: any[]): any;
+function call_user_func(callback: string, ...parameter: any[]): any;
 
 /**
  * Call the callback given by the first parameter
@@ -7719,7 +7719,7 @@ declare function call_user_func(callback: string, ...parameter: any[]): any;
  *                  reference.  call_user_func example and references   ]]>
  * @return Returns the return value of the callback, or false on error.
  */
-declare function call_user_func(callback: Function, ...parameter: any[]): any;
+function call_user_func(callback: Function, ...parameter: any[]): any;
 
 /**
  * Call a callback with an array of parameters
@@ -7732,7 +7732,7 @@ declare function call_user_func(callback: Function, ...parameter: any[]): any;
  *                  array.
  * @return Returns the return value of the callback, or false on error.
  */
-declare function call_user_func_array(callback: string, param_arr: any[]): any;
+function call_user_func_array(callback: string, param_arr: any[]): any;
 
 /**
  * Call a callback with an array of parameters
@@ -7745,7 +7745,7 @@ declare function call_user_func_array(callback: string, param_arr: any[]): any;
  *                  array.
  * @return Returns the return value of the callback, or false on error.
  */
-declare function call_user_func_array(callback: Function, param_arr: any[]): any;
+function call_user_func_array(callback: Function, param_arr: any[]): any;
 
 /**
  * Create an anonymous (lambda-style) function
@@ -7757,7 +7757,7 @@ declare function call_user_func_array(callback: Function, param_arr: any[]): any
  * @param code The function code.
  * @return Returns a unique function name as a string, or false on error.
  */
-declare function create_function(args: string, code: string): string;
+function create_function(args: string, code: string): string;
 
 /**
  * Call a static method
@@ -7770,7 +7770,7 @@ declare function create_function(args: string, code: string): string;
  * @param parameter Zero or more parameters to be passed to the function.
  * @return Returns the function result, or false on error.
  */
-declare function forward_static_call(callback: string, ...parameter: any[]): any;
+function forward_static_call(callback: string, ...parameter: any[]): any;
 
 /**
  * Call a static method
@@ -7783,7 +7783,7 @@ declare function forward_static_call(callback: string, ...parameter: any[]): any
  * @param parameter Zero or more parameters to be passed to the function.
  * @return Returns the function result, or false on error.
  */
-declare function forward_static_call(callback: Function, ...parameter: any[]): any;
+function forward_static_call(callback: Function, ...parameter: any[]): any;
 
 /**
  * Call a static method and pass the arguments as array
@@ -7797,7 +7797,7 @@ declare function forward_static_call(callback: Function, ...parameter: any[]): a
  * @param parameters 
  * @return Returns the function result, or false on error.
  */
-declare function forward_static_call_array(callback: string, parameters: any[]): any;
+function forward_static_call_array(callback: string, parameters: any[]): any;
 
 /**
  * Call a static method and pass the arguments as array
@@ -7811,7 +7811,7 @@ declare function forward_static_call_array(callback: string, parameters: any[]):
  * @param parameters 
  * @return Returns the function result, or false on error.
  */
-declare function forward_static_call_array(callback: Function, parameters: any[]): any;
+function forward_static_call_array(callback: Function, parameters: any[]): any;
 
 /**
  * Return an item from the argument list
@@ -7825,7 +7825,7 @@ declare function forward_static_call_array(callback: Function, parameters: any[]
  *                from zero.
  * @return Returns the specified argument, or false on error.
  */
-declare function func_get_arg(arg_num: number): any;
+function func_get_arg(arg_num: number): any;
 
 /**
  * Returns an array comprising a function's argument list
@@ -7837,7 +7837,7 @@ declare function func_get_arg(arg_num: number): any;
  * @return Returns an array in which each element is a copy of the corresponding
  *         member of the current user-defined function's argument list.
  */
-declare function func_get_args(): any[];
+function func_get_args(): any[];
 
 /**
  * Returns the number of arguments passed to the function
@@ -7849,7 +7849,7 @@ declare function func_get_args(): any[];
  * @return Returns the number of arguments passed into the current user-defined
  *         function.
  */
-declare function func_num_args(): number;
+function func_num_args(): number;
 
 /**
  * Return true if the given function has been defined
@@ -7864,7 +7864,7 @@ declare function func_num_args(): number;
  *         This function will return false for constructs, such as include_once
  *         and echo.
  */
-declare function function_exists(function_name: string): bool;
+function function_exists(function_name: string): bool;
 
 /**
  * Returns an array of all defined functions
@@ -7875,7 +7875,7 @@ declare function function_exists(function_name: string): bool;
  *         functions will be accessible via $arr["internal"], and the user defined
  *         ones using $arr["user"] (see example below).
  */
-declare function get_defined_functions(): Pct.PhpAssocArray;
+function get_defined_functions(): Pct.PhpAssocArray;
 
 /**
  * Register a function for execution on shutdown
@@ -7896,7 +7896,7 @@ declare function get_defined_functions(): Pct.PhpAssocArray;
  * @param parameter It is possible to pass parameters to the shutdown function by
  *                  passing additional parameters.
  */
-declare function register_shutdown_function(callback: string, ...parameter: any[]);
+function register_shutdown_function(callback: string, ...parameter: any[]);
 
 /**
  * Register a function for execution on shutdown
@@ -7917,7 +7917,7 @@ declare function register_shutdown_function(callback: string, ...parameter: any[
  * @param parameter It is possible to pass parameters to the shutdown function by
  *                  passing additional parameters.
  */
-declare function register_shutdown_function(callback: Function, ...parameter: any[]);
+function register_shutdown_function(callback: Function, ...parameter: any[]);
 
 /**
  * Register a function for execution on each tick
@@ -7925,7 +7925,7 @@ declare function register_shutdown_function(callback: Function, ...parameter: an
  * @param callback
  * @param arg 
  */
-declare function register_tick_function(callback: string, ...arg: any[]): bool;
+function register_tick_function(callback: string, ...arg: any[]): bool;
 
 /**
  * Register a function for execution on each tick
@@ -7933,14 +7933,14 @@ declare function register_tick_function(callback: string, ...arg: any[]): bool;
  * @param callback
  * @param arg 
  */
-declare function register_tick_function(callback: Function, ...arg: any[]): bool;
+function register_tick_function(callback: Function, ...arg: any[]): bool;
 
 /**
  * De-register a function for execution on each tick
  *
  * @param function_name The function name, as a string.
  */
-declare function unregister_tick_function(function_name: string);
+function unregister_tick_function(function_name: string);
 
 //--------------------------------------------------------------------------------
 // info
@@ -7952,28 +7952,28 @@ declare function unregister_tick_function(function_name: string);
  * find functions to set options for your running PHP. The probably best known
  * function of PHP - phpinfo - can be found here.
  */
-declare var ASSERT_ACTIVE: number;
-declare var ASSERT_WARNING: number;
-declare var ASSERT_BAIL: number;
-declare var ASSERT_QUIET_EVAL: number;
-declare var ASSERT_CALLBACK: number;
+var ASSERT_ACTIVE: number;
+var ASSERT_WARNING: number;
+var ASSERT_BAIL: number;
+var ASSERT_QUIET_EVAL: number;
+var ASSERT_CALLBACK: number;
 
-declare var CREDITS_ALL: number;
-declare var CREDITS_DOC: number;
-declare var CREDITS_FULLPAGE: number;
-declare var CREDITS_GENERAL: number;
-declare var CREDITS_GROUP: number;
-declare var CREDITS_MODULES: number;
-declare var CREDITS_SAPI: number;
+var CREDITS_ALL: number;
+var CREDITS_DOC: number;
+var CREDITS_FULLPAGE: number;
+var CREDITS_GENERAL: number;
+var CREDITS_GROUP: number;
+var CREDITS_MODULES: number;
+var CREDITS_SAPI: number;
 
-declare var INFO_GENERAL: number;
-declare var INFO_CREDITS: number;
-declare var INFO_CONFIGURATION: number;
-declare var INFO_MODULES: number;
-declare var INFO_ENVIRONMENT: number;
-declare var INFO_VARIABLES: number;
-declare var INFO_LICENSE: number;
-declare var INFO_ALL: number;
+var INFO_GENERAL: number;
+var INFO_CREDITS: number;
+var INFO_CONFIGURATION: number;
+var INFO_MODULES: number;
+var INFO_ENVIRONMENT: number;
+var INFO_VARIABLES: number;
+var INFO_LICENSE: number;
+var INFO_ALL: number;
 
 
 /**
@@ -7992,7 +7992,7 @@ declare var INFO_ALL: number;
  * @param value An optional new value for the option.
  * @return Returns the original setting of any option or false on errors.
  */
-declare function assert_options(what: number, value?: any): any;
+function assert_options(what: number, value?: any): any;
 
 /**
  * Checks if assertion is false
@@ -8041,7 +8041,7 @@ declare function assert_options(what: number, value?: any): any;
  *                    message if the assertion fails.
  * @return false if the assertion is false, true otherwise.
  */
-declare function assert(assertion: bool, description?: string): bool;
+function assert(assertion: bool, description?: string): bool;
 
 /**
  * Checks if assertion is false
@@ -8090,7 +8090,7 @@ declare function assert(assertion: bool, description?: string): bool;
  *                    message if the assertion fails.
  * @return false if the assertion is false, true otherwise.
  */
-declare function assert(assertion: string, description?: string): bool;
+function assert(assertion: string, description?: string): bool;
 
 /**
  * Loads a PHP extension at runtime
@@ -8132,7 +8132,7 @@ declare function assert(assertion: string, description?: string): bool;
  *         specified library couldn't be loaded, in addition to false an E_WARNING
  *         message is emitted.
  */
-declare function dl(library: string): bool;
+function dl(library: string): bool;
 
 /**
  * Find out whether an extension is loaded
@@ -8147,7 +8147,7 @@ declare function dl(library: string): bool;
  * @return Returns true if the extension identified by name is loaded, false
  *         otherwise.
  */
-declare function extension_loaded(name: string): bool;
+function extension_loaded(name: string): bool;
 
 /**
  * Forces collection of any existing garbage cycles
@@ -8155,21 +8155,21 @@ declare function extension_loaded(name: string): bool;
  * Forces collection of any existing garbage cycles.
  * @return Returns number of collected cycles.
  */
-declare function gc_collect_cycles(): number;
+function gc_collect_cycles(): number;
 
 /**
  * Deactivates the circular reference collector
  * 
  * Deactivates the circular reference collector, setting zend.enable_gc to 0.
  */
-declare function gc_disable();
+function gc_disable();
 
 /**
  * Activates the circular reference collector
  * 
  * Activates the circular reference collector, setting zend.enable_gc to 1.
  */
-declare function gc_enable();
+function gc_enable();
 
 /**
  * Returns status of the circular reference collector
@@ -8177,7 +8177,7 @@ declare function gc_enable();
  * Returns status of the circular reference collector.
  * @return Returns true if the garbage collector is enabled, false otherwise.
  */
-declare function gc_enabled(): bool;
+function gc_enabled(): bool;
 
 /**
  * Gets the value of a PHP configuration option
@@ -8195,13 +8195,13 @@ declare function gc_enabled(): bool;
  * @return Returns the current value of the PHP configuration variable specified
  *         by option, or false if an error occurs.
  */
-declare function get_cfg_var(option: string): string;
+function get_cfg_var(option: string): string;
 
 /**
  * Gets the name of the owner of the current PHP script
  * @return Returns the username as a string.
  */
-declare function get_current_user(): string;
+function get_current_user(): string;
 
 /**
  * Returns an associative array with the names of all the constants and their
@@ -8225,7 +8225,7 @@ declare function get_current_user(): string;
  *                   => 4 [PREG_GREP_INVERT] => 1 )  [user] => Array (
  *                   [MY_CONSTANT] => 1 )  ) ]]>
  */
-declare function get_defined_constants(categorize?: bool): Pct.PhpAssocArray;
+function get_defined_constants(categorize?: bool): Pct.PhpAssocArray;
 
 /**
  * Returns an array with the names of the functions of a module
@@ -8239,13 +8239,13 @@ declare function get_defined_constants(categorize?: bool): Pct.PhpAssocArray;
  * @return Returns an array with all the functions, or false if module_name is not
  *         a valid extension.
  */
-declare function get_extension_funcs(module_name: string): string[];
+function get_extension_funcs(module_name: string): string[];
 
 /**
  * Gets the current include_path configuration option
  * @return Returns the path, as a string.
  */
-declare function get_include_path(): string;
+function get_include_path(): string;
 
 /**
  * Returns an array with the names of included or required files
@@ -8261,7 +8261,7 @@ declare function get_include_path(): string;
  *         Files that are included or required multiple times only show up once in
  *         the returned array.
  */
-declare function get_included_files(): string[];
+function get_included_files(): string[];
 
 /**
  * Returns an array with the names of all modules compiled and loaded
@@ -8274,7 +8274,7 @@ declare function get_included_files(): string[];
  *                        (return regular extensions).
  * @return Returns an indexed array of all the modules names.
  */
-declare function get_loaded_extensions(zend_extensions?: bool): string[];
+function get_loaded_extensions(zend_extensions?: bool): string[];
 
 /**
  * Gets the value of an environment variable
@@ -8289,7 +8289,7 @@ declare function get_loaded_extensions(zend_extensions?: bool): string[];
  * @return Returns the value of the environment variable varname, or false if the
  *         environment variable varname does not exist.
  */
-declare function getenv(varname: string): string;
+function getenv(varname: string): string;
 
 /**
  * Gets time of last page modification
@@ -8302,13 +8302,13 @@ declare function getenv(varname: string): string;
  *         value returned is a Unix timestamp, suitable for feeding to date.
  *         Returns false on error.
  */
-declare function getlastmod(): number;
+function getlastmod(): number;
 
 /**
  * Get PHP script owner's GID
  * @return Returns the group ID of the current script, or false on error.
  */
-declare function getmygid(): number;
+function getmygid(): number;
 
 /**
  * Gets the inode of the current script
@@ -8316,7 +8316,7 @@ declare function getmygid(): number;
  * Gets the inode of the current script.
  * @return Returns the current script's inode as an integer, or false on error.
  */
-declare function getmyinode(): number;
+function getmyinode(): number;
 
 /**
  * Gets PHP's process ID
@@ -8324,13 +8324,13 @@ declare function getmyinode(): number;
  * Gets the current PHP process ID.
  * @return Returns the current PHP process ID, or false on error.
  */
-declare function getmypid(): number;
+function getmypid(): number;
 
 /**
  * Gets PHP script owner's UID
  * @return Returns the user ID of the current script, or false on error.
  */
-declare function getmyuid(): number;
+function getmyuid(): number;
 
 /**
  * Gets options from the command line argument list
@@ -8345,7 +8345,7 @@ declare function getmyuid(): number;
  *         The parsing of options will end at the first non-option found, anything
  *         that follows is discarded.
  */
-declare function getopt(options: string, longopts?: Array): Pct.PhpAssocArray;
+function getopt(options: string, longopts?: Array): Pct.PhpAssocArray;
 
 /**
  * Gets the current resource usages
@@ -8358,7 +8358,7 @@ declare function getopt(options: string, longopts?: Array): Pct.PhpAssocArray;
  *         system call. All entries are accessible by using their documented field
  *         names.
  */
-declare function getrusage(who?: number): Pct.PhpAssocArray;
+function getrusage(who?: number): Pct.PhpAssocArray;
 
 /**
  * Gets the value of a configuration option
@@ -8370,7 +8370,7 @@ declare function getrusage(who?: number): Pct.PhpAssocArray;
  *         or an empty string for null values. Returns false if the configuration
  *         option doesn't exist.
  */
-declare function ini_get(varname: string): string;
+function ini_get(varname: string): string;
 
 /**
  * Gets all configuration options
@@ -8395,7 +8395,7 @@ declare function ini_get(varname: string): string;
  *         It's possible for a directive to have multiple access levels, which is
  *         why access shows the appropriate bitmask values.
  */
-declare function ini_get_all(extension?: string, details?: bool): Pct.PhpAssocArray;
+function ini_get_all(extension?: string, details?: bool): Pct.PhpAssocArray;
 
 /**
  * Restores the value of a configuration option
@@ -8404,7 +8404,7 @@ declare function ini_get_all(extension?: string, details?: bool): Pct.PhpAssocAr
  *
  * @param varname The configuration option name.
  */
-declare function ini_restore(varname: string);
+function ini_restore(varname: string);
 
 /**
  * Sets the value of a configuration option
@@ -8418,7 +8418,7 @@ declare function ini_restore(varname: string);
  * @param newvalue The new value for the option.
  * @return Returns the old value on success, false on failure.
  */
-declare function ini_set(varname: string, newvalue: string): string;
+function ini_set(varname: string, newvalue: string): string;
 
 /**
  * Returns the peak of memory allocated by PHP
@@ -8430,7 +8430,7 @@ declare function ini_set(varname: string, newvalue: string): string;
  *                   emalloc() is reported.
  * @return Returns the memory peak in bytes.
  */
-declare function memory_get_peak_usage(real_usage?: bool): number;
+function memory_get_peak_usage(real_usage?: bool): number;
 
 /**
  * Returns the amount of memory allocated to PHP
@@ -8443,7 +8443,7 @@ declare function memory_get_peak_usage(real_usage?: bool): number;
  *                   emalloc() is reported.
  * @return Returns the memory amount in bytes.
  */
-declare function memory_get_usage(real_usage?: bool): number;
+function memory_get_usage(real_usage?: bool): number;
 
 /**
  * Retrieve a path to the loaded php.ini file
@@ -8451,7 +8451,7 @@ declare function memory_get_usage(real_usage?: bool): number;
  * Check if a  file is loaded, and retrieve its path.
  * @return The loaded  path, or false if one is not loaded.
  */
-declare function php_ini_loaded_file(): string;
+function php_ini_loaded_file(): string;
 
 /**
  * Return a list of .ini files parsed from the additional ini dir
@@ -8470,7 +8470,7 @@ declare function php_ini_loaded_file(): string;
  *         also result. This PHP error will be seen both at compile time and while
  *         using php_ini_scanned_files.
  */
-declare function php_ini_scanned_files(): string;
+function php_ini_scanned_files(): string;
 
 /**
  * Gets the logo guid
@@ -8479,7 +8479,7 @@ declare function php_ini_scanned_files(): string;
  * built-in image. Logo is displayed only if expose_php is On.
  * @return Returns PHPE9568F34-D428-11d2-A769-00AA001ACF42.
  */
-declare function php_logo_guid(): string;
+function php_logo_guid(): string;
 
 /**
  * Returns the type of interface between web server and PHP
@@ -8490,7 +8490,7 @@ declare function php_logo_guid(): string;
  *         cgi-fcgi, cli, continuity, embed, isapi, litespeed, milter, nsapi,
  *         phttpd, pi3web, roxen, thttpd, tux, and webjames.
  */
-declare function php_sapi_name(): string;
+function php_sapi_name(): string;
 
 /**
  * Returns information about the operating system PHP is running on
@@ -8513,7 +8513,7 @@ declare function php_sapi_name(): string;
  *             between operating systems.     'm': Machine type. eg. i386.
  * @return Returns the description, as a string.
  */
-declare function php_uname(mode?: string): string;
+function php_uname(mode?: string): string;
 
 /**
  * Prints out the credits for PHP
@@ -8538,7 +8538,7 @@ declare function php_uname(mode?: string): string;
  *             modules for PHP, and their authors    CREDITS_SAPI  A list of the
  *             server API modules for PHP, and their authors
  */
-declare function phpcredits(flag?: number): bool;
+function phpcredits(flag?: number): bool;
 
 /**
  * Outputs information about PHP's configuration
@@ -8573,7 +8573,7 @@ declare function phpcredits(flag?: number): bool;
  *             Cookie, Server).    INFO_LICENSE 64  PHP License information.  See
  *             also the license FAQ.    INFO_ALL -1  Shows all of the above.
  */
-declare function phpinfo(what?: number): bool;
+function phpinfo(what?: number): bool;
 
 /**
  * Gets the current PHP version
@@ -8586,7 +8586,7 @@ declare function phpinfo(what?: number): bool;
  *         the version of that extension, or false if there is no version
  *         information associated or the extension isn't enabled.
  */
-declare function phpversion(extension?: string): string;
+function phpversion(extension?: string): string;
 
 /**
  * Sets the value of an environment variable
@@ -8610,12 +8610,12 @@ declare function phpversion(extension?: string): string;
  *
  * @param setting The setting, like "FOO=BAR"
  */
-declare function putenv(setting: string): bool;
+function putenv(setting: string): bool;
 
 /**
  * Restores the value of the include_path configuration option
  */
-declare function restore_include_path();
+function restore_include_path();
 
 /**
  * Sets the include_path configuration option
@@ -8625,7 +8625,7 @@ declare function restore_include_path();
  * @param new_include_path The new value for the include_path
  * @return Returns the old include_path on success.
  */
-declare function set_include_path(new_include_path: string): string;
+function set_include_path(new_include_path: string): string;
 
 /**
  * Limits the maximum execution time
@@ -8642,7 +8642,7 @@ declare function set_include_path(new_include_path: string): string;
  * @param seconds The maximum execution time, in seconds. If set to zero, no time
  *                limit is imposed.
  */
-declare function set_time_limit(seconds: number);
+function set_time_limit(seconds: number);
 
 /**
  * Returns directory path used for temporary files
@@ -8650,7 +8650,7 @@ declare function set_time_limit(seconds: number);
  * Returns the path of the directory PHP stores temporary files in by default.
  * @return Returns the path of the temporary directory.
  */
-declare function sys_get_temp_dir(): string;
+function sys_get_temp_dir(): string;
 
 /**
  * Compares two "PHP-standardized" version number strings
@@ -8678,7 +8678,7 @@ declare function sys_get_temp_dir(): string;
  *         true if the relationship is the one specified by the operator, false
  *         otherwise.
  */
-declare function version_compare(version1: string, version2: string): number;
+function version_compare(version1: string, version2: string): number;
 
 /**
  * Compares two "PHP-standardized" version number strings
@@ -8712,7 +8712,7 @@ declare function version_compare(version1: string, version2: string): number;
  *         true if the relationship is the one specified by the operator, false
  *         otherwise.
  */
-declare function version_compare(version1: string, version2: string, operator: string): bool;
+function version_compare(version1: string, version2: string, operator: string): bool;
 
 /**
  * Gets the Zend guid
@@ -8721,7 +8721,7 @@ declare function version_compare(version1: string, version2: string, operator: s
  * the built-in image.
  * @return Returns PHPE9568F35-D428-11d2-A769-00AA001ACF42.
  */
-declare function zend_logo_guid(): string;
+function zend_logo_guid(): string;
 
 /**
  * Returns a unique identifier for the current thread
@@ -8729,7 +8729,7 @@ declare function zend_logo_guid(): string;
  * This function returns a unique identifier for the current thread.
  * @return Returns the thread id as an integer.
  */
-declare function zend_thread_id(): number;
+function zend_thread_id(): number;
 
 /**
  * Gets the version of the current Zend engine
@@ -8737,7 +8737,7 @@ declare function zend_thread_id(): number;
  * Returns a string containing the version of the currently running Zend Engine.
  * @return Returns the Zend Engine version number, as a string.
  */
-declare function zend_version(): string;
+function zend_version(): string;
 
 //--------------------------------------------------------------------------------
 // json
@@ -8753,95 +8753,95 @@ declare function zend_version(): string;
  * Control character error, possibly incorrectly encoded. Available since PHP
  * 5.3.0.
  */
-declare var JSON_ERROR_CTRL_CHAR: number;
+var JSON_ERROR_CTRL_CHAR: number;
 
 /**
  * The maximum stack depth has been exceeded. Available since PHP 5.3.0.
  */
-declare var JSON_ERROR_DEPTH: number;
+var JSON_ERROR_DEPTH: number;
 
 /**
  * No error has occurred. Available since PHP 5.3.0.
  */
-declare var JSON_ERROR_NONE: number;
+var JSON_ERROR_NONE: number;
 
 /**
  * Occurs with underflow or with the modes mismatch. Available since PHP 5.3.0.
  */
-declare var JSON_ERROR_STATE_MISMATCH: number;
+var JSON_ERROR_STATE_MISMATCH: number;
 
 /**
  * Syntax error. Available since PHP 5.3.0.
  */
-declare var JSON_ERROR_SYNTAX: number;
+var JSON_ERROR_SYNTAX: number;
 
 /**
  * Malformed UTF-8 characters, possibly incorrectly encoded. This constant is
  * available as of PHP 5.3.3.
  */
-declare var JSON_ERROR_UTF8: number;
+var JSON_ERROR_UTF8: number;
 
 
 /**
  * Encodes large integers as their original string value. Available since PHP
  * 5.4.0.
  */
-declare var JSON_BIGINT_AS_STRING: number;
+var JSON_BIGINT_AS_STRING: number;
 
 /**
  * Outputs an object rather than an array when a non-associative array is used.
  * Especially useful when the recipient of the output is expecting an object and
  * the array is empty. Available since PHP 5.3.0.
  */
-declare var JSON_FORCE_OBJECT: number;
+var JSON_FORCE_OBJECT: number;
 
 /**
  * All s are converted to \u0026. Available since PHP 5.3.0.
  */
-declare var JSON_HEX_AMP: number;
+var JSON_HEX_AMP: number;
 
 /**
  * All ' are converted to \u0027. Available since PHP 5.3.0.
  */
-declare var JSON_HEX_APOS: number;
+var JSON_HEX_APOS: number;
 
 /**
  * All " are converted to \u0022. Available since PHP 5.3.0.
  */
-declare var JSON_HEX_QUOT: number;
+var JSON_HEX_QUOT: number;
 
 /**
  * All  and  are converted to \u003C and \u003E. Available since PHP 5.3.0.
  */
-declare var JSON_HEX_TAG: number;
+var JSON_HEX_TAG: number;
 
 /**
  * Encodes numeric strings as numbers. Available since PHP 5.3.3.
  */
-declare var JSON_NUMERIC_CHECK: number;
+var JSON_NUMERIC_CHECK: number;
 
 /**
  * Use whitespace in returned data to format it. Available since PHP 5.4.0.
  */
-declare var JSON_PRETTY_PRINT: number;
+var JSON_PRETTY_PRINT: number;
 
 /**
  * Don't escape /. Available since PHP 5.4.0.
  */
-declare var JSON_UNESCAPED_SLASHES: number;
+var JSON_UNESCAPED_SLASHES: number;
 
 /**
  * Encode multibyte Unicode characters literally (default is to escape as \uXXXX).
  * Available since PHP 5.4.0.
  */
-declare var JSON_UNESCAPED_UNICODE: number;
+var JSON_UNESCAPED_UNICODE: number;
 
 
 /**
  * Objects implementing JsonSerializable can customize their JSON representation
  * when encoded with json_encode.
  */
-declare interface JsonSerializable {
+interface JsonSerializable {
     
     /**
      * Specify data which should be serialized to JSON
@@ -8873,7 +8873,7 @@ declare interface JsonSerializable {
  *         respectively.  is returned if the json cannot be decoded or if the
  *         encoded data is deeper than the recursion limit.
  */
-declare function json_decode(json: string, assoc?: bool, depth?: number, options?: number): any;
+function json_decode(json: string, assoc?: bool, depth?: number, options?: number): any;
 
 /**
  * Returns the JSON representation of a value
@@ -8890,7 +8890,7 @@ declare function json_decode(json: string, assoc?: bool, depth?: number, options
  *                described on the JSON constants page.
  * @return Returns a JSON encoded string on success .
  */
-declare function json_encode(value: any, options?: number): string;
+function json_encode(value: any, options?: number): string;
 
 /**
  * Returns the last error occurred
@@ -8898,7 +8898,7 @@ declare function json_encode(value: any, options?: number): string;
  * Returns the last error (if any) occurred during the last JSON encoding/decoding.
  * @return Returns an integer, the value can be one of the following constants:
  */
-declare function json_last_error(): number;
+function json_last_error(): number;
 
 //--------------------------------------------------------------------------------
 // libxml
@@ -9114,7 +9114,7 @@ function libxml_use_internal_errors(use_errors?: bool): bool;
  * @param addr The email address that's being hashed.
  * @return The hash value of addr.
  */
-declare function ezmlm_hash(addr: string): number;
+function ezmlm_hash(addr: string): number;
 
 /**
  * Send mail
@@ -9180,7 +9180,7 @@ declare function ezmlm_hash(addr: string): number;
  *         delivery, it does NOT mean the mail will actually reach the intended
  *         destination.
  */
-declare function mail(to: string, subject: string, message: string, additional_headers?: string, additional_parameters?: string): bool;
+function mail(to: string, subject: string, message: string, additional_headers?: string, additional_parameters?: string): bool;
 
 //--------------------------------------------------------------------------------
 // math
@@ -9192,31 +9192,31 @@ declare function mail(to: string, subject: string, message: string, additional_h
  * resp. double). If you need to handle bigger numbers, take a look at the
  * arbitrary precision math functions.
  */
-declare var INF: number;
-declare var NAN: number;
+var INF: number;
+var NAN: number;
 
-declare var M_1_PI: number;
-declare var M_2_PI: number;
-declare var M_2_SQRTPI: number;
-declare var M_E: number;
-declare var M_EULER: number;
-declare var M_LN10: number;
-declare var M_LN2: number;
-declare var M_LNPI: number;
-declare var M_LOG10E: number;
-declare var M_LOG2E: number;
-declare var M_PI: number;
-declare var M_PI_2: number;
-declare var M_PI_4: number;
-declare var M_SQRT1_2: number;
-declare var M_SQRT2: number;
-declare var M_SQRT3: number;
-declare var M_SQRTPI: number;
+var M_1_PI: number;
+var M_2_PI: number;
+var M_2_SQRTPI: number;
+var M_E: number;
+var M_EULER: number;
+var M_LN10: number;
+var M_LN2: number;
+var M_LNPI: number;
+var M_LOG10E: number;
+var M_LOG2E: number;
+var M_PI: number;
+var M_PI_2: number;
+var M_PI_4: number;
+var M_SQRT1_2: number;
+var M_SQRT2: number;
+var M_SQRT3: number;
+var M_SQRTPI: number;
 
-declare var PHP_ROUND_HALF_DOWN: number;
-declare var PHP_ROUND_HALF_EVEN: number;
-declare var PHP_ROUND_HALF_ODD: number;
-declare var PHP_ROUND_HALF_UP: number;
+var PHP_ROUND_HALF_DOWN: number;
+var PHP_ROUND_HALF_EVEN: number;
+var PHP_ROUND_HALF_ODD: number;
+var PHP_ROUND_HALF_UP: number;
 
 
 /**
@@ -9229,7 +9229,7 @@ declare var PHP_ROUND_HALF_UP: number;
  *         the return type is also float, otherwise it is integer (as float
  *         usually has a bigger value range than integer).
  */
-declare function abs(number_: number): number;
+function abs(number_: number): number;
 
 /**
  * Arc cosine
@@ -9241,7 +9241,7 @@ declare function abs(number_: number): number;
  * @param arg The argument to process
  * @return The arc cosine of arg in radians.
  */
-declare function acos(arg: number): number;
+function acos(arg: number): number;
 
 /**
  * Inverse hyperbolic cosine
@@ -9252,7 +9252,7 @@ declare function acos(arg: number): number;
  * @param arg The value to process
  * @return The inverse hyperbolic cosine of arg
  */
-declare function acosh(arg: number): number;
+function acosh(arg: number): number;
 
 /**
  * Arc sine
@@ -9264,7 +9264,7 @@ declare function acosh(arg: number): number;
  * @param arg The argument to process
  * @return The arc sine of arg in radians
  */
-declare function asin(arg: number): number;
+function asin(arg: number): number;
 
 /**
  * Inverse hyperbolic sine
@@ -9275,7 +9275,7 @@ declare function asin(arg: number): number;
  * @param arg The argument to process
  * @return The inverse hyperbolic sine of arg
  */
-declare function asinh(arg: number): number;
+function asinh(arg: number): number;
 
 /**
  * Arc tangent
@@ -9287,7 +9287,7 @@ declare function asinh(arg: number): number;
  * @param arg The argument to process
  * @return The arc tangent of arg in radians.
  */
-declare function atan(arg: number): number;
+function atan(arg: number): number;
 
 /**
  * Arc tangent of two variables
@@ -9296,7 +9296,7 @@ declare function atan(arg: number): number;
  * @param x Divisor parameter
  * @return The arc tangent of y/x in radians.
  */
-declare function atan2(y: number, x: number): number;
+function atan2(y: number, x: number): number;
 
 /**
  * Inverse hyperbolic tangent
@@ -9307,7 +9307,7 @@ declare function atan2(y: number, x: number): number;
  * @param arg The argument to process
  * @return Inverse hyperbolic tangent of arg
  */
-declare function atanh(arg: number): number;
+function atanh(arg: number): number;
 
 /**
  * Convert a number between arbitrary bases
@@ -9323,7 +9323,7 @@ declare function atanh(arg: number): number;
  * @param tobase The base to convert number to
  * @return number converted to base tobase
  */
-declare function base_convert(number: string, frombase: number, tobase: number): string;
+function base_convert(number: string, frombase: number, tobase: number): string;
 
 /**
  * Binary to decimal
@@ -9341,7 +9341,7 @@ declare function base_convert(number: string, frombase: number, tobase: number):
  * @param binary_string The binary string to convert
  * @return The decimal value of binary_string
  */
-declare function bindec(binary_string: string): number;
+function bindec(binary_string: string): number;
 
 /**
  * Round fractions up
@@ -9351,7 +9351,7 @@ declare function bindec(binary_string: string): number;
  *         is still of type float as the value range of float is usually bigger
  *         than that of integer.
  */
-declare function ceil(value: number): number;
+function ceil(value: number): number;
 
 /**
  * Cosine
@@ -9361,7 +9361,7 @@ declare function ceil(value: number): number;
  * @param arg An angle in radians
  * @return The cosine of arg
  */
-declare function cos(arg: number): number;
+function cos(arg: number): number;
 
 /**
  * Hyperbolic cosine
@@ -9371,7 +9371,7 @@ declare function cos(arg: number): number;
  * @param arg The argument to process
  * @return The hyperbolic cosine of arg
  */
-declare function cosh(arg: number): number;
+function cosh(arg: number): number;
 
 /**
  * Decimal to binary
@@ -9382,7 +9382,7 @@ declare function cosh(arg: number): number;
  * @param number_ Decimal value to convert
  * @return Binary string representation of number
  */
-declare function decbin(number_: number): string;
+function decbin(number_: number): string;
 
 /**
  * Decimal to hexadecimal
@@ -9401,7 +9401,7 @@ declare function decbin(number_: number): string;
  *                unsigned.
  * @return Hexadecimal string representation of number.
  */
-declare function dechex(number_: number): string;
+function dechex(number_: number): string;
 
 /**
  * Decimal to octal
@@ -9413,7 +9413,7 @@ declare function dechex(number_: number): string;
  * @param number_ Decimal value to convert
  * @return Octal string representation of number
  */
-declare function decoct(number_: number): string;
+function decoct(number_: number): string;
 
 /**
  * Converts the number in degrees to the radian equivalent
@@ -9423,7 +9423,7 @@ declare function decoct(number_: number): string;
  * @param number_ Angular value in degrees
  * @return The radian equivalent of number
  */
-declare function deg2rad(number_: number): number;
+function deg2rad(number_: number): number;
 
 /**
  * Calculates the exponent of e
@@ -9435,7 +9435,7 @@ declare function deg2rad(number_: number): number;
  * @param arg The argument to process
  * @return 'e' raised to the power of arg
  */
-declare function exp(arg: number): number;
+function exp(arg: number): number;
 
 /**
  * Returns exp(number) - 1, computed in a way that is accurate even when the value
@@ -9448,7 +9448,7 @@ declare function exp(arg: number): number;
  * @param arg The argument to process
  * @return 'e' to the power of arg minus one
  */
-declare function expm1(arg: number): number;
+function expm1(arg: number): number;
 
 /**
  * Round fractions down
@@ -9458,7 +9458,7 @@ declare function expm1(arg: number): number;
  *         still of type float because the value range of float is usually bigger
  *         than that of integer.
  */
-declare function floor(value: number): number;
+function floor(value: number): number;
 
 /**
  * Returns the floating point remainder (modulo) of the division of the arguments
@@ -9472,13 +9472,13 @@ declare function floor(value: number): number;
  * @param y The divisor
  * @return The floating point remainder of x/y
  */
-declare function fmod(x: number, y: number): number;
+function fmod(x: number, y: number): number;
 
 /**
  * Show largest possible random value
  * @return The largest possible random value returned by rand
  */
-declare function getrandmax(): number;
+function getrandmax(): number;
 
 /**
  * Hexadecimal to decimal
@@ -9491,7 +9491,7 @@ declare function getrandmax(): number;
  * @param hex_string The hexadecimal string to convert
  * @return The decimal representation of hex_string
  */
-declare function hexdec(hex_string: string): number;
+function hexdec(hex_string: string): number;
 
 /**
  * Calculate the length of the hypotenuse of a right-angle triangle
@@ -9504,7 +9504,7 @@ declare function hexdec(hex_string: string): number;
  * @param y Length of second side
  * @return Calculated length of the hypotenuse
  */
-declare function hypot(x: number, y: number): number;
+function hypot(x: number, y: number): number;
 
 /**
  * Finds whether a value is a legal finite number
@@ -9515,7 +9515,7 @@ declare function hypot(x: number, y: number): number;
  * @return true if val is a legal finite number within the allowed range for a PHP
  *         float on this platform, else false.
  */
-declare function is_finite(val: number): bool;
+function is_finite(val: number): bool;
 
 /**
  * Finds whether a value is infinite
@@ -9526,7 +9526,7 @@ declare function is_finite(val: number): bool;
  * @param val The value to check
  * @return true if val is infinite, else false.
  */
-declare function is_infinite(val: number): bool;
+function is_infinite(val: number): bool;
 
 /**
  * Finds whether a value is not a number
@@ -9536,7 +9536,7 @@ declare function is_infinite(val: number): bool;
  * @param val The value to check
  * @return Returns true if val is 'not a number', else false.
  */
-declare function is_nan(val: number): bool;
+function is_nan(val: number): bool;
 
 /**
  * Combined linear congruential generator
@@ -9546,7 +9546,7 @@ declare function is_nan(val: number): bool;
  * function is equal to the product of both primes.
  * @return A pseudo random float value in the range of (0, 1)
  */
-declare function lcg_value(): number;
+function lcg_value(): number;
 
 /**
  * Natural logarithm
@@ -9559,7 +9559,7 @@ declare function lcg_value(): number;
  *             natural logarithm).
  * @return The logarithm of arg to base, if given, or the natural logarithm.
  */
-declare function log(arg: number, base?: number): number;
+function log(arg: number, base?: number): number;
 
 /**
  * Base-10 logarithm
@@ -9569,7 +9569,7 @@ declare function log(arg: number, base?: number): number;
  * @param arg The argument to process
  * @return The base-10 logarithm of arg
  */
-declare function log10(arg: number): number;
+function log10(arg: number): number;
 
 /**
  * Returns log(1 + number), computed in a way that is accurate even when the value
@@ -9582,7 +9582,7 @@ declare function log10(arg: number): number;
  * @param arg
  * @return log(1 + number)
  */
-declare function log1p(arg: number): number;
+function log1p(arg: number): number;
 
 /**
  * Find highest value
@@ -9607,7 +9607,7 @@ declare function log1p(arg: number): number;
  *         
  *         When given a string it will be cast as an integer when comparing.
  */
-declare function max(values: any[]): any;
+function max(values: any[]): any;
 
 /**
  * Find highest value
@@ -9634,7 +9634,7 @@ declare function max(values: any[]): any;
  *         
  *         When given a string it will be cast as an integer when comparing.
  */
-declare function max(value1: any, value2: any, ...values: any[]): any;
+function max(value1: any, value2: any, ...values: any[]): any;
 
 /**
  * Find lowest value
@@ -9651,7 +9651,7 @@ declare function max(value1: any, value2: any, ...values: any[]): any;
  * @param values An array containing the values.
  * @return min returns the numerically lowest of the parameter values.
  */
-declare function min(values: any[]): any;
+function min(values: any[]): any;
 
 /**
  * Find lowest value
@@ -9670,20 +9670,20 @@ declare function min(values: any[]): any;
  * @param values An array containing the values.
  * @return min returns the numerically lowest of the parameter values.
  */
-declare function min(value1: any, value2: any, ...values: any[]): any;
+function min(value1: any, value2: any, ...values: any[]): any;
 
 /**
  * Show largest possible random value
  * @return Returns the maximum random value returned by mt_rand
  */
-declare function mt_getrandmax(): number;
+function mt_getrandmax(): number;
 
 /**
  * Generate a better random value
  * @return A random integer value between min (or 0) and max (or mt_getrandmax,
  *         inclusive), or false if max is less than min.
  */
-declare function mt_rand(): number;
+function mt_rand(): number;
 
 /**
  * Generate a better random value
@@ -9693,7 +9693,7 @@ declare function mt_rand(): number;
  * @return A random integer value between min (or 0) and max (or mt_getrandmax,
  *         inclusive), or false if max is less than min.
  */
-declare function mt_rand(min: number, max: number): number;
+function mt_rand(min: number, max: number): number;
 
 /**
  * Seed the better random number generator
@@ -9703,7 +9703,7 @@ declare function mt_rand(min: number, max: number): number;
  *
  * @param seed An optional seed value
  */
-declare function mt_srand(seed?: number);
+function mt_srand(seed?: number);
 
 /**
  * Octal to decimal
@@ -9714,13 +9714,13 @@ declare function mt_srand(seed?: number);
  * @param octal_string The octal string to convert
  * @return The decimal representation of octal_string
  */
-declare function octdec(octal_string: string): number;
+function octdec(octal_string: string): number;
 
 /**
  * Get value of pi
  * @return The value of pi as float.
  */
-declare function pi(): number;
+function pi(): number;
 
 /**
  * Exponential expression
@@ -9734,7 +9734,7 @@ declare function pi(): number;
  *         will be returned with integer type, otherwise it will be returned as a
  *         float.
  */
-declare function pow(base: number, exp: number): number;
+function pow(base: number, exp: number): number;
 
 /**
  * Converts the radian number to the equivalent number in degrees
@@ -9744,14 +9744,14 @@ declare function pow(base: number, exp: number): number;
  * @param number_ A radian value
  * @return The equivalent of number in degrees
  */
-declare function rad2deg(number_: number): number;
+function rad2deg(number_: number): number;
 
 /**
  * Generate a random integer
  * @return A pseudo random value between min (or 0) and max (or getrandmax,
  *         inclusive).
  */
-declare function rand(): number;
+function rand(): number;
 
 /**
  * Generate a random integer
@@ -9761,7 +9761,7 @@ declare function rand(): number;
  * @return A pseudo random value between min (or 0) and max (or getrandmax,
  *         inclusive).
  */
-declare function rand(min: number, max: number): number;
+function rand(min: number, max: number): number;
 
 /**
  * Rounds a float
@@ -9785,7 +9785,7 @@ declare function rand(min: number, max: number): number;
  *             decimal places towards the next odd value.
  * @return The rounded value
  */
-declare function round(val: number, precision?: number, mode?: number): number;
+function round(val: number, precision?: number, mode?: number): number;
 
 /**
  * Sine
@@ -9795,7 +9795,7 @@ declare function round(val: number, precision?: number, mode?: number): number;
  * @param arg A value in radians
  * @return The sine of arg
  */
-declare function sin(arg: number): number;
+function sin(arg: number): number;
 
 /**
  * Hyperbolic sine
@@ -9805,7 +9805,7 @@ declare function sin(arg: number): number;
  * @param arg The argument to process
  * @return The hyperbolic sine of arg
  */
-declare function sinh(arg: number): number;
+function sinh(arg: number): number;
 
 /**
  * Square root
@@ -9815,7 +9815,7 @@ declare function sinh(arg: number): number;
  * @param arg The argument to process
  * @return The square root of arg or the special value NAN for negative numbers.
  */
-declare function sqrt(arg: number): number;
+function sqrt(arg: number): number;
 
 /**
  * Seed the random number generator
@@ -9825,7 +9825,7 @@ declare function sqrt(arg: number): number;
  *
  * @param seed Optional seed value
  */
-declare function srand(seed?: number);
+function srand(seed?: number);
 
 /**
  * Tangent
@@ -9835,7 +9835,7 @@ declare function srand(seed?: number);
  * @param arg The argument to process in radians
  * @return The tangent of arg
  */
-declare function tan(arg: number): number;
+function tan(arg: number): number;
 
 /**
  * Hyperbolic tangent
@@ -9845,7 +9845,7 @@ declare function tan(arg: number): number;
  * @param arg The argument to process
  * @return The hyperbolic tangent of arg
  */
-declare function tanh(arg: number): number;
+function tanh(arg: number): number;
 
 //--------------------------------------------------------------------------------
 // misc
@@ -9859,11 +9859,11 @@ declare function tanh(arg: number): number;
 /**
  * Added in PHP 5.1.
  */
-declare var __COMPILER_HALT_OFFSET__: number;
+var __COMPILER_HALT_OFFSET__: number;
 
-declare var CONNECTION_ABORTED: number;
-declare var CONNECTION_NORMAL: number;
-declare var CONNECTION_TIMEOUT: number;
+var CONNECTION_ABORTED: number;
+var CONNECTION_NORMAL: number;
+var CONNECTION_TIMEOUT: number;
 
 
 /**
@@ -9872,7 +9872,7 @@ declare var CONNECTION_TIMEOUT: number;
  * Checks whether the client disconnected.
  * @return Returns 1 if client disconnected, 0 otherwise.
  */
-declare function connection_aborted(): number;
+function connection_aborted(): number;
 
 /**
  * Returns connection status bitfield
@@ -9881,7 +9881,7 @@ declare function connection_aborted(): number;
  * @return Returns the connection status bitfield, which can be used against the
  *         CONNECTION_XXX constants to determine the connection status.
  */
-declare function connection_status(): number;
+function connection_status(): number;
 
 /**
  * Check if the script timed out
@@ -9889,7 +9889,7 @@ declare function connection_status(): number;
  * Determines whether the script timed out.
  * @return Returns 1 if the script timed out, 0 otherwise.
  */
-declare function connection_timeout(): number;
+function connection_timeout(): number;
 
 /**
  * Returns the value of a constant
@@ -9897,7 +9897,7 @@ declare function connection_timeout(): number;
  * @param name The constant name.
  * @return Returns the value of the constant, or  if the constant is not defined.
  */
-declare function constant(name: string): any;
+function constant(name: string): any;
 
 /**
  * Defines a named constant
@@ -9916,7 +9916,7 @@ declare function constant(name: string): any;
  *                         
  *                         Case-insensitive constants are stored as lower-case.
  */
-declare function define(name: string, value: any, case_insensitive?: bool): bool; //TODO: explain how you also have to use declare in Pratphall
+function define(name: string, value: any, case_insensitive?: bool): bool; //TODO: explain how you also have to use in Pratphall
 
 /**
  * Checks whether a given named constant exists
@@ -9930,7 +9930,7 @@ declare function define(name: string, value: any, case_insensitive?: bool): bool
  * @return Returns true if the named constant given by name has been defined,
  *         false otherwise.
  */
-declare function defined(name: string): bool;
+function defined(name: string): bool;
 //NOTE: eval is already part of JS...but I'm gonna gripe in the compiler when I see it just out of principal (just a warning)
 //NOTE: I don't like die, so I ain't putting it in...
 
@@ -9952,7 +9952,7 @@ declare function defined(name: string): bool;
  *               used. The status 0 is used to terminate the program successfully.
  *               
  */
-declare function exit(status?: string);
+function exit(status?: string);
 
 /**
  * Output a message and terminate the current script
@@ -9972,7 +9972,7 @@ declare function exit(status?: string);
  *               used. The status 0 is used to terminate the program successfully.
  *               
  */
-declare function exit(status: number);
+function exit(status: number);
 
 /**
  * Tells what the user's browser is capable of
@@ -9997,7 +9997,7 @@ declare function exit(status: number);
  *         accept cookies or not. The only way to test if cookies are accepted is
  *         to set one with setcookie, reload, and check for the value.
  */
-declare function get_browser(user_agent?: string, return_array?: bool): Pct.PhpAssocArray;
+function get_browser(user_agent?: string, return_array?: bool): Pct.PhpAssocArray;
 
 /**
  * Halts the compiler execution
@@ -10009,7 +10009,7 @@ declare function get_browser(user_agent?: string, return_array?: bool): Pct.PhpA
  * __COMPILER_HALT_OFFSET__ constant which is defined only if there is a
  * __halt_compiler presented in the file.
  */
-declare function __halt_compiler(); //TODO: explain how I am going to handle this when loading files in Pratphall
+function __halt_compiler(); //TODO: explain how I am going to handle this when loading files in Pratphall
 
 /**
  * Syntax highlighting of a file
@@ -10026,7 +10026,7 @@ declare function __halt_compiler(); //TODO: explain how I am going to handle thi
  *         instead of printing it out. Otherwise, it will return true on success,
  *         false on failure.
  */
-declare function highlight_file(filename: string): bool;
+function highlight_file(filename: string): bool;
 
 /**
  * Syntax highlighting of a file
@@ -10045,7 +10045,7 @@ declare function highlight_file(filename: string): bool;
  *         instead of printing it out. Otherwise, it will return true on success,
  *         false on failure.
  */
-declare function highlight_file(filename: string, return_: bool): any;
+function highlight_file(filename: string, return_: bool): any;
 
 /**
  * Syntax highlighting of a string
@@ -10055,7 +10055,7 @@ declare function highlight_file(filename: string, return_: bool): any;
  *         instead of printing it out. Otherwise, it will return true on success,
  *         false on failure.
  */
-declare function highlight_string(str: string): bool;
+function highlight_string(str: string): bool;
 
 /**
  * Syntax highlighting of a string
@@ -10067,7 +10067,7 @@ declare function highlight_string(str: string): bool;
  *         instead of printing it out. Otherwise, it will return true on success,
  *         false on failure.
  */
-declare function highlight_string(str: string, return_: bool): any;
+function highlight_string(str: string, return_: bool): any;
 
 /**
  * Set whether a client disconnect should abort script execution
@@ -10083,7 +10083,7 @@ declare function highlight_string(str: string, return_: bool): any;
  *              previous setting without changing it.
  * @return Returns the previous setting, as an integer.
  */
-declare function ignore_user_abort(value?: string): number;
+function ignore_user_abort(value?: string): number;
 
 /**
  * Pack data into binary string
@@ -10126,7 +10126,7 @@ declare function ignore_user_abort(value?: string): number;
  * @param args 
  * @return Returns a binary string containing data.
  */
-declare function pack(format: string, ...args: any[]): string;
+function pack(format: string, ...args: any[]): string;
 
 /**
  * Check the PHP syntax of (and execute) the specified file
@@ -10151,7 +10151,7 @@ declare function pack(format: string, ...args: any[]): string;
  * @return Returns true if the lint check passed, and false if the link check
  *         failed or if filename cannot be opened.
  */
-declare function php_check_syntax(filename: string, $error_message?: string): bool;
+function php_check_syntax(filename: string, $error_message?: string): bool;
 
 /**
  * Return source with stripped comments and whitespace
@@ -10169,7 +10169,7 @@ declare function php_check_syntax(filename: string, $error_message?: string): bo
  *         only return an empty string. For more information on this bug and its
  *         prior behavior, see bug report #29606.
  */
-declare function php_strip_whitespace(filename: string): string;
+function php_strip_whitespace(filename: string): string;
 
 /**
  * Delay execution
@@ -10183,7 +10183,7 @@ declare function php_strip_whitespace(filename: string): string;
  *         platforms, the return value will be the number of seconds left to
  *         sleep.
  */
-declare function sleep(seconds: number): number;
+function sleep(seconds: number): number;
 
 /**
  * Gets system load average
@@ -10193,7 +10193,7 @@ declare function sleep(seconds: number): number;
  * respectively.
  * @return Returns an array with three samples (last 1, 5 and 15 minutes).
  */
-declare function sys_getloadavg(): number[];
+function sys_getloadavg(): number[];
 
 /**
  * Delay for a number of seconds and nanoseconds
@@ -10207,7 +10207,7 @@ declare function sys_getloadavg(): number[];
  *         in the delay     nanoseconds - number of nanoseconds remaining in the
  *         delay
  */
-declare function time_nanosleep(seconds: number, nanoseconds: number): any;
+function time_nanosleep(seconds: number, nanoseconds: number): any;
 
 /**
  * Make the script sleep until the specified time
@@ -10216,7 +10216,7 @@ declare function time_nanosleep(seconds: number, nanoseconds: number): any;
  *
  * @param timestamp The timestamp when the script should wake.
  */
-declare function time_sleep_until(timestamp: number): bool;
+function time_sleep_until(timestamp: number): bool;
 
 /**
  * Generate a unique ID
@@ -10235,7 +10235,7 @@ declare function time_sleep_until(timestamp: number): bool;
  *                     result will be unique.
  * @return Returns the unique identifier, as a string.
  */
-declare function uniqid(prefix?: string, more_entropy?: bool): string;
+function uniqid(prefix?: string, more_entropy?: bool): string;
 
 /**
  * Unpack data from binary string
@@ -10252,7 +10252,7 @@ declare function uniqid(prefix?: string, more_entropy?: bool): string;
  * @return Returns an associative array containing unpacked elements of binary
  *         string.
  */
-declare function unpack(format: string, data: string): Pct.PhpAssocArray;
+function unpack(format: string, data: string): Pct.PhpAssocArray;
 
 /**
  * Delay execution in microseconds
@@ -10262,7 +10262,7 @@ declare function unpack(format: string, data: string): Pct.PhpAssocArray;
  * @param micro_seconds Halt time in micro seconds. A micro second is one
  *                      millionth of a second.
  */
-declare function usleep(micro_seconds: number);
+function usleep(micro_seconds: number);
 
 //--------------------------------------------------------------------------------
 // pcre
@@ -10287,19 +10287,19 @@ declare function usleep(micro_seconds: number);
  * matching using the same syntax and semantics as Perl 5, with just a few
  * differences (see below).  The current implementation corresponds to Perl 5.005.
  */
-declare var PCRE_VERSION: number;
-declare var PREG_BACKTRACK_LIMIT_ERROR: number;
-declare var PREG_BAD_UTF8_ERROR: number;
-declare var PREG_BAD_UTF8_OFFSET_ERROR: number;
-declare var PREG_INTERNAL_ERROR: number;
-declare var PREG_NO_ERROR: number;
-declare var PREG_OFFSET_CAPTURE: number;
-declare var PREG_PATTERN_ORDER: number;
-declare var PREG_RECURSION_LIMIT_ERROR: number;
-declare var PREG_SET_ORDER: number;
-declare var PREG_SPLIT_DELIM_CAPTURE: number;
-declare var PREG_SPLIT_NO_EMPTY: number;
-declare var PREG_SPLIT_OFFSET_CAPTURE: number;
+var PCRE_VERSION: number;
+var PREG_BACKTRACK_LIMIT_ERROR: number;
+var PREG_BAD_UTF8_ERROR: number;
+var PREG_BAD_UTF8_OFFSET_ERROR: number;
+var PREG_INTERNAL_ERROR: number;
+var PREG_NO_ERROR: number;
+var PREG_OFFSET_CAPTURE: number;
+var PREG_PATTERN_ORDER: number;
+var PREG_RECURSION_LIMIT_ERROR: number;
+var PREG_SET_ORDER: number;
+var PREG_SPLIT_DELIM_CAPTURE: number;
+var PREG_SPLIT_NO_EMPTY: number;
+var PREG_SPLIT_OFFSET_CAPTURE: number;
 
 
 /**
@@ -10320,7 +10320,7 @@ declare var PREG_SPLIT_OFFSET_CAPTURE: number;
  *         If no matches are found or an error occurred, an empty array is
  *         returned when subject is an array or  otherwise.
  */
-declare function preg_filter(pattern: string, replacement: string, subject: string, limit?: number, $count?: number): string;
+function preg_filter(pattern: string, replacement: string, subject: string, limit?: number, $count?: number): string;
 
 /**
  * Perform a regular expression search and replace
@@ -10340,7 +10340,7 @@ declare function preg_filter(pattern: string, replacement: string, subject: stri
  *         If no matches are found or an error occurred, an empty array is
  *         returned when subject is an array or  otherwise.
  */
-declare function preg_filter(pattern: string[], replacement: string, subject: string, limit?: number, $count?: number): string;
+function preg_filter(pattern: string[], replacement: string, subject: string, limit?: number, $count?: number): string;
 
 /**
  * Perform a regular expression search and replace
@@ -10360,7 +10360,7 @@ declare function preg_filter(pattern: string[], replacement: string, subject: st
  *         If no matches are found or an error occurred, an empty array is
  *         returned when subject is an array or  otherwise.
  */
-declare function preg_filter(pattern: string, replacement: string[], subject: string, limit?: number, $count?: number): string;
+function preg_filter(pattern: string, replacement: string[], subject: string, limit?: number, $count?: number): string;
 
 /**
  * Perform a regular expression search and replace
@@ -10380,7 +10380,7 @@ declare function preg_filter(pattern: string, replacement: string[], subject: st
  *         If no matches are found or an error occurred, an empty array is
  *         returned when subject is an array or  otherwise.
  */
-declare function preg_filter(pattern: string[], replacement: string[], subject: string, limit?: number, $count?: number): string;
+function preg_filter(pattern: string[], replacement: string[], subject: string, limit?: number, $count?: number): string;
 
 /**
  * Perform a regular expression search and replace
@@ -10400,7 +10400,7 @@ declare function preg_filter(pattern: string[], replacement: string[], subject: 
  *         If no matches are found or an error occurred, an empty array is
  *         returned when subject is an array or  otherwise.
  */
-declare function preg_filter(pattern: string, replacement: string, subject: string[], limit?: number, $count?: number): string[];
+function preg_filter(pattern: string, replacement: string, subject: string[], limit?: number, $count?: number): string[];
 
 /**
  * Perform a regular expression search and replace
@@ -10420,7 +10420,7 @@ declare function preg_filter(pattern: string, replacement: string, subject: stri
  *         If no matches are found or an error occurred, an empty array is
  *         returned when subject is an array or  otherwise.
  */
-declare function preg_filter(pattern: string, replacement: string[], subject: string[], limit?: number, $count?: number): string[];
+function preg_filter(pattern: string, replacement: string[], subject: string[], limit?: number, $count?: number): string[];
 
 /**
  * Perform a regular expression search and replace
@@ -10440,7 +10440,7 @@ declare function preg_filter(pattern: string, replacement: string[], subject: st
  *         If no matches are found or an error occurred, an empty array is
  *         returned when subject is an array or  otherwise.
  */
-declare function preg_filter(pattern: string[], replacement: string, subject: string[], limit?: number, $count?: number): string[];
+function preg_filter(pattern: string[], replacement: string, subject: string[], limit?: number, $count?: number): string[];
 
 /**
  * Perform a regular expression search and replace
@@ -10460,7 +10460,7 @@ declare function preg_filter(pattern: string[], replacement: string, subject: st
  *         If no matches are found or an error occurred, an empty array is
  *         returned when subject is an array or  otherwise.
  */
-declare function preg_filter(pattern: string[], replacement: string[], subject: string[], limit?: number, $count?: number): string[];
+function preg_filter(pattern: string[], replacement: string[], subject: string[], limit?: number, $count?: number): string[];
 
 /**
  * Return array entries that match the pattern
@@ -10474,7 +10474,7 @@ declare function preg_filter(pattern: string[], replacement: string[], subject: 
  *              the input array that do not match the given pattern.
  * @return Returns an array indexed using the keys from the input array.
  */
-declare function preg_grep(pattern: string, input: Array, flags?: number): Array;
+function preg_grep(pattern: string, input: Array, flags?: number): Array;
 
 /**
  * Returns the error code of the last PCRE regex execution
@@ -10488,7 +10488,7 @@ declare function preg_grep(pattern: string, input: Array, flags?: number): Array
  *         pcre.recursion_limit) PREG_BAD_UTF8_ERROR PREG_BAD_UTF8_OFFSET_ERROR
  *         (since PHP 5.3.0)
  */
-declare function preg_last_error(): number;
+function preg_last_error(): number;
 
 /**
  * Perform a regular expression match
@@ -10523,7 +10523,7 @@ declare function preg_last_error(): number;
  * @return preg_match returns 1 if the pattern matches given subject, 0 if it does
  *         not, or false if an error occurred.
  */
-declare function preg_match(pattern: string, subject: string, $matches?: Array, flags?: number, offset?: number): number;
+function preg_match(pattern: string, subject: string, $matches?: Array, flags?: number, offset?: number): number;
 
 /**
  * Perform a global regular expression match
@@ -10590,7 +10590,7 @@ declare function preg_match(pattern: string, subject: string, $matches?: Array, 
  * @return Returns the number of full pattern matches (which might be zero), or
  *         false if an error occurred.
  */
-declare function preg_match_all(pattern: string, subject: string, $matches?: Array, flags?: number, offset?: number): number;
+function preg_match_all(pattern: string, subject: string, $matches?: Array, flags?: number, offset?: number): number;
 
 /**
  * Quote regular expression characters
@@ -10610,7 +10610,7 @@ declare function preg_match_all(pattern: string, subject: string, $matches?: Arr
  *                  used delimiter.
  * @return Returns the quoted string.
  */
-declare function preg_quote(str: string, delimiter?: string): string;
+function preg_quote(str: string, delimiter?: string): string;
 
 /**
  * Perform a regular expression search and replace
@@ -10675,7 +10675,7 @@ declare function preg_quote(str: string, delimiter?: string): string;
  *         If matches are found, the new subject will be returned, otherwise
  *         subject will be returned unchanged or  if an error occurred.
  */
-declare function preg_replace(pattern: string, replacement: string, subject: string, limit?: number, $count?: number): string;
+function preg_replace(pattern: string, replacement: string, subject: string, limit?: number, $count?: number): string;
 
 /**
  * Perform a regular expression search and replace
@@ -10740,7 +10740,7 @@ declare function preg_replace(pattern: string, replacement: string, subject: str
  *         If matches are found, the new subject will be returned, otherwise
  *         subject will be returned unchanged or  if an error occurred.
  */
-declare function preg_replace(pattern: string[], replacement: string, subject: string, limit?: number, $count?: number): string;
+function preg_replace(pattern: string[], replacement: string, subject: string, limit?: number, $count?: number): string;
 
 /**
  * Perform a regular expression search and replace
@@ -10805,7 +10805,7 @@ declare function preg_replace(pattern: string[], replacement: string, subject: s
  *         If matches are found, the new subject will be returned, otherwise
  *         subject will be returned unchanged or  if an error occurred.
  */
-declare function preg_replace(pattern: string, replacement: string[], subject: string, limit?: number, $count?: number): string;
+function preg_replace(pattern: string, replacement: string[], subject: string, limit?: number, $count?: number): string;
 
 /**
  * Perform a regular expression search and replace
@@ -10870,7 +10870,7 @@ declare function preg_replace(pattern: string, replacement: string[], subject: s
  *         If matches are found, the new subject will be returned, otherwise
  *         subject will be returned unchanged or  if an error occurred.
  */
-declare function preg_replace(pattern: string[], replacement: string[], subject: string, limit?: number, $count?: number): string;
+function preg_replace(pattern: string[], replacement: string[], subject: string, limit?: number, $count?: number): string;
 
 /**
  * Perform a regular expression search and replace
@@ -10935,7 +10935,7 @@ declare function preg_replace(pattern: string[], replacement: string[], subject:
  *         If matches are found, the new subject will be returned, otherwise
  *         subject will be returned unchanged or  if an error occurred.
  */
-declare function preg_replace(pattern: string, replacement: string, subject: string[], limit?: number, $count?: number): string[];
+function preg_replace(pattern: string, replacement: string, subject: string[], limit?: number, $count?: number): string[];
 
 /**
  * Perform a regular expression search and replace
@@ -11000,7 +11000,7 @@ declare function preg_replace(pattern: string, replacement: string, subject: str
  *         If matches are found, the new subject will be returned, otherwise
  *         subject will be returned unchanged or  if an error occurred.
  */
-declare function preg_replace(pattern: string, replacement: string[], subject: string[], limit?: number, $count?: number): string[];
+function preg_replace(pattern: string, replacement: string[], subject: string[], limit?: number, $count?: number): string[];
 
 /**
  * Perform a regular expression search and replace
@@ -11065,7 +11065,7 @@ declare function preg_replace(pattern: string, replacement: string[], subject: s
  *         If matches are found, the new subject will be returned, otherwise
  *         subject will be returned unchanged or  if an error occurred.
  */
-declare function preg_replace(pattern: string[], replacement: string, subject: string[], limit?: number, $count?: number): string[];
+function preg_replace(pattern: string[], replacement: string, subject: string[], limit?: number, $count?: number): string[];
 
 /**
  * Perform a regular expression search and replace
@@ -11130,7 +11130,7 @@ declare function preg_replace(pattern: string[], replacement: string, subject: s
  *         If matches are found, the new subject will be returned, otherwise
  *         subject will be returned unchanged or  if an error occurred.
  */
-declare function preg_replace(pattern: string[], replacement: string[], subject: string[], limit?: number, $count?: number): string[];
+function preg_replace(pattern: string[], replacement: string[], subject: string[], limit?: number, $count?: number): string[];
 
 /**
  * Perform a regular expression search and replace using a callback
@@ -11152,7 +11152,7 @@ declare function preg_replace(pattern: string[], replacement: string[], subject:
  *         If matches are found, the new subject will be returned, otherwise
  *         subject will be returned unchanged.
  */
-declare function preg_replace_callback(pattern: string, replacement: (matches: string[]) => string, subject: string, limit?: number, $count?: number): string;
+function preg_replace_callback(pattern: string, replacement: (matches: string[]) => string, subject: string, limit?: number, $count?: number): string;
 
 /**
  * Perform a regular expression search and replace using a callback
@@ -11174,7 +11174,7 @@ declare function preg_replace_callback(pattern: string, replacement: (matches: s
  *         If matches are found, the new subject will be returned, otherwise
  *         subject will be returned unchanged.
  */
-declare function preg_replace_callback(pattern: string[], replacement: (matches: string[]) => string, subject: string, limit?: number, $count?: number): string;
+function preg_replace_callback(pattern: string[], replacement: (matches: string[]) => string, subject: string, limit?: number, $count?: number): string;
 
 /**
  * Perform a regular expression search and replace using a callback
@@ -11196,7 +11196,7 @@ declare function preg_replace_callback(pattern: string[], replacement: (matches:
  *         If matches are found, the new subject will be returned, otherwise
  *         subject will be returned unchanged.
  */
-declare function preg_replace_callback(pattern: string, replacement: (matches: string[]) => string, subject: string[], limit?: number, $count?: number): string[];
+function preg_replace_callback(pattern: string, replacement: (matches: string[]) => string, subject: string[], limit?: number, $count?: number): string[];
 
 /**
  * Perform a regular expression search and replace using a callback
@@ -11218,7 +11218,7 @@ declare function preg_replace_callback(pattern: string, replacement: (matches: s
  *         If matches are found, the new subject will be returned, otherwise
  *         subject will be returned unchanged.
  */
-declare function preg_replace_callback(pattern: string[], replacement: (matches: string[]) => string, subject: string[], limit?: number, $count?: number): string[];
+function preg_replace_callback(pattern: string[], replacement: (matches: string[]) => string, subject: string[], limit?: number, $count?: number): string[];
 
 /**
  * Split string by a regular expression
@@ -11250,7 +11250,7 @@ declare function preg_replace_callback(pattern: string[], replacement: (matches:
  * @return Returns an array containing substrings of subject split along
  *         boundaries matched by pattern.
  */
-declare function preg_split(pattern: string, subject: string, limit?: number, flags?: number): any[];
+function preg_split(pattern: string, subject: string, limit?: number, flags?: number): any[];
 
 //--------------------------------------------------------------------------------
 // pct
@@ -11348,7 +11348,7 @@ module Pct {
     function const(value: any): any;
 
     /**
-     * Handles PHP's declare construct
+     * Handles PHP's construct
      */
     function declare(directive: string, value: any, block?: () => void): bool;
 
@@ -11524,30 +11524,30 @@ var __TRAIT__: string;
 var __METHOD__: string;
 var __NAMESPACE__: string;
 
-declare var GLOBALS: Pct.PhpAssocArray;
-declare var _SERVER: Pct.PhpAssocArray;
-declare var _GET: Pct.PhpAssocArray;
-declare var _POST: Pct.PhpAssocArray;
-declare var _FILES: Pct.PhpAssocArray;
-declare var _REQUEST: Pct.PhpAssocArray;
-declare var _SESSION: Pct.PhpAssocArray;
-declare var _ENV: Pct.PhpAssocArray;
-declare var _COOKIE: Pct.PhpAssocArray;
-declare var php_errormsg: string;
-declare var http_response_header: string[];
-declare var argc: number;
-declare var argv: string[];
+var GLOBALS: Pct.PhpAssocArray;
+var _SERVER: Pct.PhpAssocArray;
+var _GET: Pct.PhpAssocArray;
+var _POST: Pct.PhpAssocArray;
+var _FILES: Pct.PhpAssocArray;
+var _REQUEST: Pct.PhpAssocArray;
+var _SESSION: Pct.PhpAssocArray;
+var _ENV: Pct.PhpAssocArray;
+var _COOKIE: Pct.PhpAssocArray;
+var php_errormsg: string;
+var http_response_header: string[];
+var argc: number;
+var argv: string[];
 
 function include(path: string): any;
 function include_once(path: string): any;
 function require(path: string): any;
 function require_once(path: string): any;
 
-declare interface Traversable {
+interface Traversable {
     forEach?(callbackfn: (value: any, index: any) => void);
 }
 
-declare interface Iterator extends Traversable {
+interface Iterator extends Traversable {
     current(): any;
     key(): any;
     next();
@@ -11555,33 +11555,33 @@ declare interface Iterator extends Traversable {
     valid(): bool;
 }
 
-declare interface IteratorAggregate extends Traversable {
+interface IteratorAggregate extends Traversable {
     getIterator(): Traversable;
 }
 
-declare interface ArrayAccess extends Pct.Indexable {
+interface ArrayAccess extends Pct.Indexable {
     offsetExists(offset: any): bool;
     offsetGet(offset: any): any;
     offsetSet(offset: any, value: any);
     offsetUnset(offset: any);
 }
 
-declare interface Serializable {
+interface Serializable {
     serialize(): string;
     unserialize(serialized: string);
 }
 
-declare class Closure {
+class Closure {
     static bind(closure: Closure, newthis: any, newscope?: any): Closure;
 
     constructor();
     bindTo(newthis: any, newscope?: any): Closure;
 }
 
-declare class stdClass {
+class stdClass {
 }
 
-declare class Exception implements Error {
+class Exception implements Error {
     name: string; //only here for compat
     message: string;
     code: number;
@@ -11598,7 +11598,7 @@ declare class Exception implements Error {
     getTraceAsString(): string;
 }
 
-declare class ErrorException extends Exception {
+class ErrorException extends Exception {
     severity: number;
 
     constructor(message?: string, code?: number, severity?: number, filename?: string, lineno?: number, previous?: Exception);
@@ -11623,7 +11623,7 @@ declare class ErrorException extends Exception {
 /**
  * Reflector is an interface implemented by all exportable Reflection classes.
  */
-declare interface Reflector {
+interface Reflector {
     //static export(): string; http://typescript.codeplex.com/workitem/80
 
 }
@@ -11632,7 +11632,7 @@ declare interface Reflector {
 /**
  * The reflection class.
  */
-declare class Reflection {
+class Reflection {
     //static export(): string; http://typescript.codeplex.com/workitem/80
     
     /**
@@ -11650,7 +11650,7 @@ declare class Reflection {
 /**
  * The ReflectionClass class reports information about a class.
  */
-declare class ReflectionClass implements Reflector {
+class ReflectionClass implements Reflector {
     
     /**
      * Indicates class that is  abstract because it has some abstract methods.
@@ -12099,7 +12099,7 @@ declare class ReflectionClass implements Reflector {
     setStaticPropertyValue(name: string, value: any);
 }
 
-declare class ReflectionZendExtension implements Reflector {
+class ReflectionZendExtension implements Reflector {
     
     /**
      * Name of the extension. Read-only, throws ReflectionException in attempt to
@@ -12145,7 +12145,7 @@ declare class ReflectionZendExtension implements Reflector {
 /**
  * The ReflectionExtension class reports information about an extension.
  */
-declare class ReflectionExtension implements Reflector {
+class ReflectionExtension implements Reflector {
     
     /**
      * Name of the extension, same as calling the ReflectionExtension::getName method.
@@ -12258,7 +12258,7 @@ declare class ReflectionExtension implements Reflector {
 /**
  * A parent class to ReflectionFunction, read its description for details.
  */
-declare class ReflectionFunctionAbstract implements Reflector {
+class ReflectionFunctionAbstract implements Reflector {
     
     /**
      * Name of the function. Read-only, throws ReflectionException in attempt to write.
@@ -12431,7 +12431,7 @@ declare class ReflectionFunctionAbstract implements Reflector {
 /**
  * The ReflectionFunction class reports information about a function.
  */
-declare class ReflectionFunction extends ReflectionFunctionAbstract {
+class ReflectionFunction extends ReflectionFunctionAbstract {
     
     /**
      * Indicates deprecated functions.
@@ -12494,7 +12494,7 @@ declare class ReflectionFunction extends ReflectionFunctionAbstract {
 /**
  * The ReflectionMethod class reports information about a method.
  */
-declare class ReflectionMethod extends ReflectionFunctionAbstract {
+class ReflectionMethod extends ReflectionFunctionAbstract {
     
     /**
      * Indicates that the method is static.
@@ -12696,7 +12696,7 @@ declare class ReflectionMethod extends ReflectionFunctionAbstract {
 /**
  * The ReflectionObject class reports information about an object.
  */
-declare class ReflectionObject extends ReflectionClass {
+class ReflectionObject extends ReflectionClass {
 }
 
 
@@ -12709,7 +12709,7 @@ declare class ReflectionObject extends ReflectionClass {
  * ReflectionFunctionAbstract::getParameters method to retrieve an array of
  * parameters.
  */
-declare class ReflectionParameter implements Reflector {
+class ReflectionParameter implements Reflector {
     
     /**
      * Name of the parameter. Read-only, throws ReflectionException in attempt to
@@ -12829,7 +12829,7 @@ declare class ReflectionParameter implements Reflector {
 /**
  * The ReflectionProperty class reports information about classes properties.
  */
-declare class ReflectionProperty implements Reflector {
+class ReflectionProperty implements Reflector {
     
     /**
      * Indicates static properties.
@@ -12997,7 +12997,7 @@ declare class ReflectionProperty implements Reflector {
 /**
  * The ReflectionException class.
  */
-declare class ReflectionException extends Exception { }
+class ReflectionException extends Exception { }
 
 //--------------------------------------------------------------------------------
 // session
@@ -13035,7 +13035,7 @@ declare class ReflectionException extends Exception { }
  * Please note the callback methods of this class are designed to be called
  * internally by PHP and are not meant to be called from user-space code.
  */
-declare interface SessionHandlerInterface {
+interface SessionHandlerInterface {
     
     /**
      * Close the session
@@ -13164,7 +13164,7 @@ declare interface SessionHandlerInterface {
  * return values are equally processed internally by PHP.  For more information on
  * the session workflow, please refer session_set_save_handler.
  */
-declare class SessionHandler implements SessionHandlerInterface {
+class SessionHandler implements SessionHandlerInterface {
     
     /**
      * Close the session
@@ -13636,7 +13636,7 @@ function simplexml_load_string(data: string, class_name?: string, options?: numb
 /**
  * Classes implementing Countable can be used with the count function.
  */
-declare interface Countable {
+interface Countable {
     
     /**
      * Count elements of an object
@@ -13654,7 +13654,7 @@ declare interface Countable {
 /**
  * The Seekable iterator.
  */
-declare interface SeekableIterator extends Iterator {
+interface SeekableIterator extends Iterator {
     
     /**
      * Seeks to a position
@@ -13671,7 +13671,7 @@ declare interface SeekableIterator extends Iterator {
  * Classes implementing RecursiveIterator can be used to iterate over iterators
  * recursively.
  */
-declare interface RecursiveIterator extends Iterator {
+interface RecursiveIterator extends Iterator {
     
     /**
      * Returns an iterator for the current entry.
@@ -13696,7 +13696,7 @@ declare interface RecursiveIterator extends Iterator {
 /**
  * Classes implementing OuterIterator can be used to iterate over iterators.
  */
-declare interface OuterIterator extends Iterator {
+interface OuterIterator extends Iterator {
     
     /**
      * Returns the inner iterator for the current entry.
@@ -13712,7 +13712,7 @@ declare interface OuterIterator extends Iterator {
  * The SplObserver interface is used alongside SplSubject to implement the Observer
  * Design Pattern.
  */
-declare interface SplObserver {
+interface SplObserver {
     
     /**
      * Receive update from subject
@@ -13730,7 +13730,7 @@ declare interface SplObserver {
  * The SplSubject interface is used alongside SplObserver to implement the Observer
  * Design Pattern.
  */
-declare interface SplSubject {
+interface SplSubject {
     
     /**
      * Attach an SplObserver
@@ -13763,7 +13763,7 @@ declare interface SplSubject {
  * The SplDoublyLinkedList class provides the main functionalities of a doubly
  * linked list.
  */
-declare class SplDoublyLinkedList implements Iterator, ArrayAccess, Countable {
+class SplDoublyLinkedList implements Iterator, ArrayAccess, Countable {
     static IT_MODE_DELETE: number;
     static IT_MODE_FIFO: number;
     static IT_MODE_KEEP: number;
@@ -13945,7 +13945,7 @@ declare class SplDoublyLinkedList implements Iterator, ArrayAccess, Countable {
  * The SplStack class provides the main functionalities of a stack implemented
  * using a doubly linked list.
  */
-declare class SplStack extends SplDoublyLinkedList {
+class SplStack extends SplDoublyLinkedList {
 
 }
 
@@ -13954,7 +13954,7 @@ declare class SplStack extends SplDoublyLinkedList {
  * The SplQueue class provides the main functionalities of a queue implemented
  * using a doubly linked list.
  */
-declare class SplQueue extends SplDoublyLinkedList {
+class SplQueue extends SplDoublyLinkedList {
     
     /**
      * Dequeues a node from the queue
@@ -13982,7 +13982,7 @@ declare class SplQueue extends SplDoublyLinkedList {
 /**
  * The SplHeap class provides the main functionalities of a Heap.
  */
-declare class SplHeap implements Iterator, Countable {
+class SplHeap implements Iterator, Countable {
     
     /**
      * Compare elements in order to place them correctly in the heap while sifting up.
@@ -14088,7 +14088,7 @@ declare class SplHeap implements Iterator, Countable {
  * The SplMaxHeap class provides the main functionalities of a heap, keeping the
  * maximum on the top.
  */
-declare class SplMaxHeap extends SplHeap {
+class SplMaxHeap extends SplHeap {
 }
 
 
@@ -14096,7 +14096,7 @@ declare class SplMaxHeap extends SplHeap {
  * The SplMinHeap class provides the main functionalities of a heap, keeping the
  * minimum on the top.
  */
-declare class SplMinHeap extends SplHeap {
+class SplMinHeap extends SplHeap {
 }
 
 
@@ -14104,7 +14104,7 @@ declare class SplMinHeap extends SplHeap {
  * The SplPriorityQueue class provides the main functionalities of an prioritized
  * queue, implemented using a heap.
  */
-declare class SplPriorityQueue implements Iterator, Countable {
+class SplPriorityQueue implements Iterator, Countable {
     static EXTR_BOTH: number;
     static EXTR_DATA: number;
     static EXTR_PRIORITY: number;
@@ -14226,7 +14226,7 @@ declare class SplPriorityQueue implements Iterator, Countable {
  * SplFixedArray is of fixed length and allows only integers within the range as
  * indexes. The advantage is that it allows a faster array implementation.
  */
-declare class SplFixedArray implements Iterator, ArrayAccess, Countable {
+class SplFixedArray implements Iterator, ArrayAccess, Countable {
     
     /**
      * Import a PHP array in a SplFixedArray instance
@@ -14377,7 +14377,7 @@ declare class SplFixedArray implements Iterator, ArrayAccess, Countable {
  * data, an object set. This dual purpose can be useful in many cases involving the
  * need to uniquely identify objects.
  */
-declare class SplObjectStorage implements Countable, Iterator, Serializable, ArrayAccess {
+class SplObjectStorage implements Countable, Iterator, Serializable, ArrayAccess {
     
     /**
      * Adds all objects from another storage
@@ -14594,7 +14594,7 @@ declare class SplObjectStorage implements Countable, Iterator, Serializable, Arr
  * instantiate ArrayObject and let it create ArrayIterator instances that refer to
  * it either by using  or by calling its getIterator() method manually.
  */
-declare class ArrayIterator implements ArrayAccess, SeekableIterator, Countable, Serializable {
+class ArrayIterator implements ArrayAccess, SeekableIterator, Countable, Serializable {
     
     /**
      * Construct an ArrayIterator
@@ -14811,7 +14811,7 @@ declare class ArrayIterator implements ArrayAccess, SeekableIterator, Countable,
  * Arrays and Objects in the same way as the ArrayIterator. Additionally it is
  * possible to iterate over the current iterator entry.
  */
-declare class RecursiveArrayIterator extends ArrayIterator implements RecursiveIterator {
+class RecursiveArrayIterator extends ArrayIterator implements RecursiveIterator {
     
     /**
      * Returns an iterator for the current entry if it is an array or an object.
@@ -14836,7 +14836,7 @@ declare class RecursiveArrayIterator extends ArrayIterator implements RecursiveI
 /**
  * The EmptyIterator class for an empty iterator.
  */
-declare class EmptyIterator implements Iterator {
+class EmptyIterator implements Iterator {
     
     /**
      * The current() method
@@ -14883,7 +14883,7 @@ declare class EmptyIterator implements Iterator {
  * Iterator feature set. If so, techniques should be provided to prevent misuse,
  * otherwise expect exceptions or fatal errors.
  */
-declare class IteratorIterator implements OuterIterator {
+class IteratorIterator implements OuterIterator {
     
     /**
      * Create an iterator from anything that is traversable
@@ -14946,7 +14946,7 @@ declare class IteratorIterator implements OuterIterator {
 /**
  * An Iterator that iterates over several iterators one after the other.
  */
-declare class AppendIterator extends IteratorIterator {
+class AppendIterator extends IteratorIterator {
     
     /**
      * Constructs an AppendIterator
@@ -14987,7 +14987,7 @@ declare class AppendIterator extends IteratorIterator {
 /**
  * This object supports cached iteration over another iterator.
  */
-declare class CachingIterator extends IteratorIterator implements ArrayAccess, Countable {
+class CachingIterator extends IteratorIterator implements ArrayAccess, Countable {
     
     /**
      * Convert every element to string.
@@ -15097,7 +15097,7 @@ declare class CachingIterator extends IteratorIterator implements ArrayAccess, C
 /**
  * ...
  */
-declare class RecursiveCachingIterator extends CachingIterator implements RecursiveIterator {
+class RecursiveCachingIterator extends CachingIterator implements RecursiveIterator {
     
     /**
      * Return the inner iterator's children as a RecursiveCachingIterator
@@ -15118,7 +15118,7 @@ declare class RecursiveCachingIterator extends CachingIterator implements Recurs
  * extended to implement custom iterator filters. The FilterIterator::accept must
  * be implemented in the subclass.
  */
-declare class FilterIterator extends IteratorIterator {
+class FilterIterator extends IteratorIterator {
     
     /**
      * Construct a filterIterator
@@ -15141,7 +15141,7 @@ declare class FilterIterator extends IteratorIterator {
     accept(): bool;
 }
 
-declare class CallbackFilterIterator extends FilterIterator {
+class CallbackFilterIterator extends FilterIterator {
     
     /**
      * Create a filtered iterator from another iterator
@@ -15155,7 +15155,7 @@ declare class CallbackFilterIterator extends FilterIterator {
     constructor(iterator: Iterator, callback: (current: any, key: any, iterator: Iterator) => bool);
 }
 
-declare class RecursiveCallbackFilterIterator extends CallbackFilterIterator implements RecursiveIterator {
+class RecursiveCallbackFilterIterator extends CallbackFilterIterator implements RecursiveIterator {
     
     /**
      * Create a RecursiveCallbackFilterIterator from a RecursiveIterator
@@ -15196,7 +15196,7 @@ declare class RecursiveCallbackFilterIterator extends CallbackFilterIterator imp
  * class should be extended to implement custom filters. The
  * RecursiveFilterIterator::accept must be implemented in the subclass.
  */
-declare class RecursiveFilterIterator extends FilterIterator implements RecursiveIterator {
+class RecursiveFilterIterator extends FilterIterator implements RecursiveIterator {
     
     /**
      * Create a RecursiveFilterIterator from a RecursiveIterator
@@ -15231,7 +15231,7 @@ declare class RecursiveFilterIterator extends FilterIterator implements Recursiv
  * This extended FilterIterator allows a recursive iteration using
  * RecursiveIteratorIterator that only shows those elements which have children.
  */
-declare class ParentIterator extends RecursiveFilterIterator {
+class ParentIterator extends RecursiveFilterIterator {
     
     /**
      * Return the inner iterator's children contained in a ParentIterator
@@ -15247,7 +15247,7 @@ declare class ParentIterator extends RecursiveFilterIterator {
  * This iterator can be used to filter another iterator based on a regular
  * expression.
  */
-declare class RegexIterator extends FilterIterator {
+class RegexIterator extends FilterIterator {
     
     /**
      * Return all matches for the current entry (see preg_match_all).
@@ -15367,7 +15367,7 @@ declare class RegexIterator extends FilterIterator {
  * This recursive iterator can filter another recursive iterator via a regular
  * expression.
  */
-declare class RecursiveRegexIterator extends RegexIterator implements RecursiveIterator {
+class RecursiveRegexIterator extends RegexIterator implements RecursiveIterator {
     
     /**
      * Creates a new RecursiveRegexIterator.
@@ -15408,7 +15408,7 @@ declare class RecursiveRegexIterator extends RegexIterator implements RecursiveI
  * The InfiniteIterator allows one to infinitely iterate over an iterator without
  * having to manually rewind the iterator upon reaching its end.
  */
-declare class InfiniteIterator extends IteratorIterator {
+class InfiniteIterator extends IteratorIterator {
     
     /**
      * Constructs an InfiniteIterator
@@ -15425,7 +15425,7 @@ declare class InfiniteIterator extends IteratorIterator {
  * The LimitIterator class allows iteration over a limited subset of items in an
  * Iterator.
  */
-declare class LimitIterator extends IteratorIterator {
+class LimitIterator extends IteratorIterator {
     
     /**
      * Construct a LimitIterator
@@ -15463,7 +15463,7 @@ declare class LimitIterator extends IteratorIterator {
 /**
  * This iterator cannot be rewound.
  */
-declare class NoRewindIterator extends IteratorIterator {
+class NoRewindIterator extends IteratorIterator {
     
     /**
      * Construct a NoRewindIterator
@@ -15480,7 +15480,7 @@ declare class NoRewindIterator extends IteratorIterator {
 /**
  * An Iterator that sequentially iterates over all attached iterators
  */
-declare class MultipleIterator implements Iterator {
+class MultipleIterator implements Iterator {
     
     /**
      * Keys are created from sub iterators associated information.
@@ -15614,7 +15614,7 @@ declare class MultipleIterator implements Iterator {
 /**
  * Can be used to iterate through recursive iterators.
  */
-declare class RecursiveIteratorIterator implements OuterIterator {
+class RecursiveIteratorIterator implements OuterIterator {
     static CATCH_GET_CHILD: number;
     static CHILD_FIRST: number;
     static LEAVES_ONLY: number;
@@ -15766,7 +15766,7 @@ declare class RecursiveIteratorIterator implements OuterIterator {
 /**
  * Allows iterating over a RecursiveIterator to generate an ASCII graphic tree.
  */
-declare class RecursiveTreeIterator extends RecursiveIteratorIterator {
+class RecursiveTreeIterator extends RecursiveIteratorIterator {
     static BYPASS_CURRENT: number;
     static BYPASS_KEY: number;
     static PREFIX_END_LAST: number;
@@ -15842,38 +15842,38 @@ declare class RecursiveTreeIterator extends RecursiveIteratorIterator {
     setPrefixPart(part: number, value: string);
 }
 
-declare class LogicException extends Exception { }
+class LogicException extends Exception { }
 
-declare class BadFunctionCallException extends LogicException { }
+class BadFunctionCallException extends LogicException { }
 
-declare class BadMethodCallException extends BadFunctionCallException { }
+class BadMethodCallException extends BadFunctionCallException { }
 
-declare class DomainException extends LogicException { }
+class DomainException extends LogicException { }
 
-declare class InvalidArgumentException extends LogicException { }
+class InvalidArgumentException extends LogicException { }
 
-declare class LengthException extends LogicException { }
+class LengthException extends LogicException { }
 
-declare class OutOfRangeException extends LogicException { }
+class OutOfRangeException extends LogicException { }
 
-declare class RuntimeException extends Exception { }
+class RuntimeException extends Exception { }
 
-declare class OutOfBoundsException extends RuntimeException { }
+class OutOfBoundsException extends RuntimeException { }
 
-declare class OverflowException extends RuntimeException { }
+class OverflowException extends RuntimeException { }
 
-declare class RangeException extends RuntimeException { }
+class RangeException extends RuntimeException { }
 
-declare class UnderflowException extends RuntimeException { }
+class UnderflowException extends RuntimeException { }
 
-declare class UnexpectedValueException extends RuntimeException { }
+class UnexpectedValueException extends RuntimeException { }
 
 
 /**
  * The SplFileInfo class offers a high-level object oriented interface to
  * information for an individual file.
  */
-declare class SplFileInfo {
+class SplFileInfo {
     
     /**
      * Construct a new SplFileInfo object
@@ -16138,7 +16138,7 @@ declare class SplFileInfo {
 /**
  * The SplFileObject class offers an object oriented interface for a file.
  */
-declare class SplFileObject extends SplFileInfo implements RecursiveIterator, SeekableIterator {
+class SplFileObject extends SplFileInfo implements RecursiveIterator, SeekableIterator {
     
     /**
      * Drop newlines at the end of a line.
@@ -16500,7 +16500,7 @@ declare class SplFileObject extends SplFileInfo implements RecursiveIterator, Se
  * The SplTempFileObject class offers an object oriented interface for a temporary
  * file.
  */
-declare class SplTempFileObject extends SplFileObject {
+class SplTempFileObject extends SplFileObject {
     
     /**
      * Construct a new temporary file object
@@ -16523,7 +16523,7 @@ declare class SplTempFileObject extends SplFileObject {
  * The DirectoryIterator class provides a simple interface for viewing the contents
  * of filesystem directories.
  */
-declare class DirectoryIterator extends SplFileInfo implements SeekableIterator {
+class DirectoryIterator extends SplFileInfo implements SeekableIterator {
     
     /**
      * Determine if current DirectoryIterator item is '.' or '..'
@@ -16587,7 +16587,7 @@ declare class DirectoryIterator extends SplFileInfo implements SeekableIterator 
 /**
  * The Filesystem iterator
  */
-declare class FilesystemIterator extends DirectoryIterator {
+class FilesystemIterator extends DirectoryIterator {
     
     /**
      * Makes FilesystemIterator::current return an SplFileInfo instance.
@@ -16664,7 +16664,7 @@ declare class FilesystemIterator extends DirectoryIterator {
 /**
  * Iterates through a file system in a similar fashion to glob.
  */
-declare class GlobIterator extends FilesystemIterator implements Countable {
+class GlobIterator extends FilesystemIterator implements Countable {
     
     /**
      * Get the number of directories and files
@@ -16680,7 +16680,7 @@ declare class GlobIterator extends FilesystemIterator implements Countable {
  * The RecursiveDirectoryIterator provides an interface for iterating recursively
  * over filesystem directories.
  */
-declare class RecursiveDirectoryIterator extends FilesystemIterator implements RecursiveIterator {
+class RecursiveDirectoryIterator extends FilesystemIterator implements RecursiveIterator {
     
     /**
      * Get sub path
@@ -16719,7 +16719,7 @@ declare class RecursiveDirectoryIterator extends FilesystemIterator implements R
 /**
  * This class allows objects to work as arrays.
  */
-declare class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Countable {
+class ArrayObject implements IteratorAggregate, ArrayAccess, Serializable, Countable {
     
     /**
      * Entries can be accessed as properties (read and write).
@@ -16982,7 +16982,7 @@ declare class ArrayObject implements IteratorAggregate, ArrayAccess, Serializabl
  *                 through the __autoload magic method.
  * @return An array on success, or false on error.
  */
-declare function class_implements(class_: any, autoload?: bool): Pct.PhpAssocArray;
+function class_implements(class_: any, autoload?: bool): Pct.PhpAssocArray;
 
 /**
  * Return the parent classes of the given class
@@ -16995,7 +16995,7 @@ declare function class_implements(class_: any, autoload?: bool): Pct.PhpAssocArr
  *                 through the __autoload magic method.
  * @return An array on success, or false on error.
  */
-declare function class_parents(class_: any, autoload?: bool): Pct.PhpAssocArray;
+function class_parents(class_: any, autoload?: bool): Pct.PhpAssocArray;
 
 /**
  * Return the traits used by the given class
@@ -17008,7 +17008,7 @@ declare function class_parents(class_: any, autoload?: bool): Pct.PhpAssocArray;
  *                 through the __autoload magic method.
  * @return An array on success, or false on error.
  */
-declare function class_uses(class_: any, autoload?: bool): Pct.PhpAssocArray;
+function class_uses(class_: any, autoload?: bool): Pct.PhpAssocArray;
 
 /**
  * Call a function for every element in an iterator
@@ -17022,7 +17022,7 @@ declare function class_uses(class_: any, autoload?: bool): Pct.PhpAssocArray;
  * @param args Arguments to pass to the callback function.
  * @return Returns the iteration count.
  */
-declare function iterator_apply(iterator: Traversable, function_: (iterator: Traversable) => any, args?: any[]): number;
+function iterator_apply(iterator: Traversable, function_: (iterator: Traversable) => any, args?: any[]): number;
 
 /**
  * Count the elements in an iterator
@@ -17032,7 +17032,7 @@ declare function iterator_apply(iterator: Traversable, function_: (iterator: Tra
  * @param iterator The iterator being counted.
  * @return The number of elements in iterator.
  */
-declare function iterator_count(iterator: Traversable): number;
+function iterator_count(iterator: Traversable): number;
 
 /**
  * Copy the iterator into an array
@@ -17042,7 +17042,7 @@ declare function iterator_count(iterator: Traversable): number;
  * @param iterator The iterator being copied.
  * @return An array containing the elements of the iterator.
  */
-declare function iterator_to_array(iterator: Traversable): any[];
+function iterator_to_array(iterator: Traversable): any[];
 
 /**
  * Copy the iterator into an array
@@ -17053,7 +17053,7 @@ declare function iterator_to_array(iterator: Traversable): any[];
  * @param use_keys Whether to use the iterator element keys as index.
  * @return An array containing the elements of the iterator.
  */
-declare function iterator_to_array(iterator: Traversable, use_keys: bool): Array;
+function iterator_to_array(iterator: Traversable, use_keys: bool): Array;
 
 /**
  * Default implementation for __autoload()
@@ -17068,7 +17068,7 @@ declare function iterator_to_array(iterator: Traversable, use_keys: bool): Array
  *                        filenames built up by the lowercase class name appended
  *                        by the filename extensions .inc and .php.
  */
-declare function spl_autoload(class_name: string, file_extensions?: string);
+function spl_autoload(class_name: string, file_extensions?: string);
 
 /**
  * Try all registered __autoload() function to load the requested class
@@ -17078,7 +17078,7 @@ declare function spl_autoload(class_name: string, file_extensions?: string);
  *
  * @param class_name The class name being searched.
  */
-declare function spl_autoload_call(class_name: string);
+function spl_autoload_call(class_name: string);
 
 /**
  * Register and return default file extensions for spl_autoload
@@ -17094,7 +17094,7 @@ declare function spl_autoload_call(class_name: string);
  *                        
  * @return A comma delimited list of default file extensions for spl_autoload.
  */
-declare function spl_autoload_extensions(file_extensions?: string): string;
+function spl_autoload_extensions(file_extensions?: string): string;
 
 /**
  * Return all registered __autoload() functions
@@ -17104,7 +17104,7 @@ declare function spl_autoload_extensions(file_extensions?: string): string;
  *         is not activated then the return value is false. If no function is
  *         registered the return value will be an empty array.
  */
-declare function spl_autoload_functions(): any[];
+function spl_autoload_functions(): any[];
 
 /**
  * Register given function as __autoload() implementation
@@ -17131,7 +17131,7 @@ declare function spl_autoload_functions(): any[];
  * @param prepend If true, spl_autoload_register will prepend the autoloader on
  *                the autoload stack instead of appending it.
  */
-declare function spl_autoload_register(autoload_function?: (class_: string) => void, throw_?: bool, prepend?: bool): bool;
+function spl_autoload_register(autoload_function?: (class_: string) => void, throw_?: bool, prepend?: bool): bool;
 
 /**
  * Unregister given function as __autoload() implementation
@@ -17145,7 +17145,7 @@ declare function spl_autoload_register(autoload_function?: (class_: string) => v
  *
  * @param autoload_function The autoload function being unregistered.
  */
-declare function spl_autoload_unregister(autoload_function: (class_: string) => void): bool;
+function spl_autoload_unregister(autoload_function: (class_: string) => void): bool;
 
 /**
  * Return available SPL classes
@@ -17153,7 +17153,7 @@ declare function spl_autoload_unregister(autoload_function: (class_: string) => 
  * This function returns an array with the current available SPL classes.
  * @return Returns an array containing the currently available SPL classes.
  */
-declare function spl_classes(): Pct.PhpAssocArray;
+function spl_classes(): Pct.PhpAssocArray;
 
 /**
  * Return hash id for given object
@@ -17165,7 +17165,7 @@ declare function spl_classes(): Pct.PhpAssocArray;
  * @return A string that is unique for each currently existing object and is
  *         always the same for each object.
  */
-declare function spl_object_hash(obj: any): string;
+function spl_object_hash(obj: any): string;
 
 //--------------------------------------------------------------------------------
 // stream
@@ -17184,77 +17184,77 @@ declare function spl_object_hash(obj: any): string;
  * Information on using streams within the PHP source code can be found in the
  * Streams API for PHP Extension Authors reference.
  */
-declare var PSFS_ERR_FATAL: number;
-declare var PSFS_FEED_ME: number;
-declare var PSFS_FLAG_FLUSH_CLOSE: number;
-declare var PSFS_FLAG_FLUSH_INC: number;
-declare var PSFS_FLAG_NORMAL: number;
-declare var PSFS_PASS_ON: number;
+var PSFS_ERR_FATAL: number;
+var PSFS_FEED_ME: number;
+var PSFS_FLAG_FLUSH_CLOSE: number;
+var PSFS_FLAG_FLUSH_INC: number;
+var PSFS_FLAG_NORMAL: number;
+var PSFS_PASS_ON: number;
 
-declare var STREAM_CAST_AS_STREAM: number;
-declare var STREAM_CAST_FOR_SELECT: number;
+var STREAM_CAST_AS_STREAM: number;
+var STREAM_CAST_FOR_SELECT: number;
 
-declare var STREAM_CLIENT_ASYNC_CONNECT: number;
-declare var STREAM_CLIENT_CONNECT: number;
-declare var STREAM_CLIENT_PERSISTENT: number;
+var STREAM_CLIENT_ASYNC_CONNECT: number;
+var STREAM_CLIENT_CONNECT: number;
+var STREAM_CLIENT_PERSISTENT: number;
 
-declare var STREAM_FILTER_ALL: number;
-declare var STREAM_FILTER_READ: number;
-declare var STREAM_FILTER_WRITE: number;
+var STREAM_FILTER_ALL: number;
+var STREAM_FILTER_READ: number;
+var STREAM_FILTER_WRITE: number;
 
-declare var STREAM_IPPROTO_ICMP: number;
-declare var STREAM_IPPROTO_IP: number;
-declare var STREAM_IPPROTO_RAW: number;
-declare var STREAM_IPPROTO_TCP: number;
-declare var STREAM_IPPROTO_UDP: number;
+var STREAM_IPPROTO_ICMP: number;
+var STREAM_IPPROTO_IP: number;
+var STREAM_IPPROTO_RAW: number;
+var STREAM_IPPROTO_TCP: number;
+var STREAM_IPPROTO_UDP: number;
 
-declare var STREAM_META_ACCESS: number;
-declare var STREAM_META_GROUP: number;
-declare var STREAM_META_GROUP_NAME: number;
-declare var STREAM_META_OWNER: number;
-declare var STREAM_META_OWNER_NAME: number;
-declare var STREAM_META_TOUCH: number;
+var STREAM_META_ACCESS: number;
+var STREAM_META_GROUP: number;
+var STREAM_META_GROUP_NAME: number;
+var STREAM_META_OWNER: number;
+var STREAM_META_OWNER_NAME: number;
+var STREAM_META_TOUCH: number;
 
-declare var STREAM_NOTIFY_AUTH_REQUIRED: number;
-declare var STREAM_NOTIFY_AUTH_RESULT: number;
-declare var STREAM_NOTIFY_COMPLETED: number;
-declare var STREAM_NOTIFY_CONNECT: number;
-declare var STREAM_NOTIFY_FAILURE: number;
-declare var STREAM_NOTIFY_FILE_SIZE_IS: number;
-declare var STREAM_NOTIFY_MIME_TYPE_IS: number;
-declare var STREAM_NOTIFY_PROGRESS: number;
-declare var STREAM_NOTIFY_REDIRECTED: number;
-declare var STREAM_NOTIFY_RESOLVE: number;
-declare var STREAM_NOTIFY_SEVERITY_ERR: number;
-declare var STREAM_NOTIFY_SEVERITY_INFO: number;
-declare var STREAM_NOTIFY_SEVERITY_WARN: number;
+var STREAM_NOTIFY_AUTH_REQUIRED: number;
+var STREAM_NOTIFY_AUTH_RESULT: number;
+var STREAM_NOTIFY_COMPLETED: number;
+var STREAM_NOTIFY_CONNECT: number;
+var STREAM_NOTIFY_FAILURE: number;
+var STREAM_NOTIFY_FILE_SIZE_IS: number;
+var STREAM_NOTIFY_MIME_TYPE_IS: number;
+var STREAM_NOTIFY_PROGRESS: number;
+var STREAM_NOTIFY_REDIRECTED: number;
+var STREAM_NOTIFY_RESOLVE: number;
+var STREAM_NOTIFY_SEVERITY_ERR: number;
+var STREAM_NOTIFY_SEVERITY_INFO: number;
+var STREAM_NOTIFY_SEVERITY_WARN: number;
 
-declare var STREAM_PF_INET6: number;
-declare var STREAM_PF_INET: number;
-declare var STREAM_PF_UNIX: number;
+var STREAM_PF_INET6: number;
+var STREAM_PF_INET: number;
+var STREAM_PF_UNIX: number;
 
-declare var STREAM_REPORT_ERRORS: number;
+var STREAM_REPORT_ERRORS: number;
 
-declare var STREAM_SERVER_BIND: number;
-declare var STREAM_SERVER_LISTEN: number;
+var STREAM_SERVER_BIND: number;
+var STREAM_SERVER_LISTEN: number;
 
-declare var STREAM_SHUT_RD: number;
-declare var STREAM_SHUT_RDWR: number;
-declare var STREAM_SHUT_WR: number;
+var STREAM_SHUT_RD: number;
+var STREAM_SHUT_RDWR: number;
+var STREAM_SHUT_WR: number;
 
-declare var STREAM_SOCK_DGRAM: number;
-declare var STREAM_SOCK_RAW: number;
-declare var STREAM_SOCK_RDM: number;
-declare var STREAM_SOCK_SEQPACKET: number;
-declare var STREAM_SOCK_STREAM: number;
+var STREAM_SOCK_DGRAM: number;
+var STREAM_SOCK_RAW: number;
+var STREAM_SOCK_RDM: number;
+var STREAM_SOCK_SEQPACKET: number;
+var STREAM_SOCK_STREAM: number;
 
-declare var STREAM_USE_PATH: number;
+var STREAM_USE_PATH: number;
 
 
 /**
  * Children of this class are passed to stream_filter_register.
  */
-declare class php_user_filter {
+class php_user_filter {
     
     /**
      * Name of the filter registered by stream_filter_append.
@@ -17276,8 +17276,8 @@ declare class php_user_filter {
  * @param brigade 
  * @param bucket 
  */
-declare function stream_bucket_append(brigade: Pct.PhpResource, bucket: Pct.PhpResource);
-declare function stream_bucket_make_writable(brigade: Pct.PhpResource);
+function stream_bucket_append(brigade: Pct.PhpResource, bucket: Pct.PhpResource);
+function stream_bucket_make_writable(brigade: Pct.PhpResource);
 
 /**
  * Create a new bucket for use on the current stream
@@ -17285,7 +17285,7 @@ declare function stream_bucket_make_writable(brigade: Pct.PhpResource);
  * @param stream 
  * @param buffer 
  */
-declare function stream_bucket_new(stream: Pct.PhpResource, buffer: string): any;
+function stream_bucket_new(stream: Pct.PhpResource, buffer: string): any;
 
 /**
  * Prepend bucket to brigade
@@ -17297,7 +17297,7 @@ declare function stream_bucket_new(stream: Pct.PhpResource, buffer: string): any
  *                contains one or more bucket objects.
  * @param bucket A bucket object.
  */
-declare function stream_bucket_prepend(brigade: Pct.PhpResource, bucket: Pct.PhpResource);
+function stream_bucket_prepend(brigade: Pct.PhpResource, bucket: Pct.PhpResource);
 
 /**
  * Creates a stream context
@@ -17314,7 +17314,7 @@ declare function stream_bucket_prepend(brigade: Pct.PhpResource, bucket: Pct.Php
  *               stream parameters.
  * @return A stream context resource.
  */
-declare function stream_context_create(options?: Pct.PhpAssocArray, params?: Pct.PhpAssocArray): Pct.PhpResource;
+function stream_context_create(options?: Pct.PhpAssocArray, params?: Pct.PhpAssocArray): Pct.PhpResource;
 
 /**
  * Retrieve the default stream context
@@ -17323,7 +17323,7 @@ declare function stream_context_create(options?: Pct.PhpAssocArray, params?: Pct
  *                used to set the default context.
  * @return A stream context resource.
  */
-declare function stream_context_get_default(options?: Pct.PhpAssocArray): Pct.PhpResource;
+function stream_context_get_default(options?: Pct.PhpAssocArray): Pct.PhpResource;
 
 /**
  * Retrieve options for a stream/wrapper/context
@@ -17331,7 +17331,7 @@ declare function stream_context_get_default(options?: Pct.PhpAssocArray): Pct.Ph
  * @param stream_or_context The stream or context to get options from
  * @return Returns an associative array with the options.
  */
-declare function stream_context_get_options(stream_or_context: Pct.PhpResource): Pct.PhpAssocArray;
+function stream_context_get_options(stream_or_context: Pct.PhpResource): Pct.PhpAssocArray;
 
 /**
  * Retrieves parameters from a context
@@ -17342,7 +17342,7 @@ declare function stream_context_get_options(stream_or_context: Pct.PhpResource):
  * @return Returns an associate array containing all context options and
  *         parameters.
  */
-declare function stream_context_get_params(stream_or_context: Pct.PhpResource): Pct.PhpAssocArray;
+function stream_context_get_params(stream_or_context: Pct.PhpResource): Pct.PhpAssocArray;
 
 /**
  * Set the default stream context
@@ -17353,7 +17353,7 @@ declare function stream_context_get_params(stream_or_context: Pct.PhpResource): 
  *                the format $arr['wrapper']['option'] = $value.
  * @return Returns the default stream context.
  */
-declare function stream_context_set_default(options: Pct.PhpAssocArray): Pct.PhpResource;
+function stream_context_set_default(options: Pct.PhpAssocArray): Pct.PhpResource;
 
 /**
  * Sets an option for a stream/wrapper/context
@@ -17364,7 +17364,7 @@ declare function stream_context_set_default(options: Pct.PhpAssocArray): Pct.Php
  * @param option 
  * @param value 
  */
-declare function stream_context_set_option(stream_or_context: Pct.PhpResource, wrapper: string, option: string, value: any): bool;
+function stream_context_set_option(stream_or_context: Pct.PhpResource, wrapper: string, option: string, value: any): bool;
 
 /**
  * Sets an option for a stream/wrapper/context
@@ -17379,7 +17379,7 @@ declare function stream_context_set_option(stream_or_context: Pct.PhpResource, w
  *                Refer to context options and parameters for a listing of stream
  *                options.
  */
-declare function stream_context_set_option(stream_or_context: Pct.PhpResource, options: Pct.PhpAssocArray): bool;
+function stream_context_set_option(stream_or_context: Pct.PhpResource, options: Pct.PhpAssocArray): bool;
 
 /**
  * Set parameters for a stream/wrapper/context
@@ -17392,7 +17392,7 @@ declare function stream_context_set_option(stream_or_context: Pct.PhpResource, o
  *               params should be an associative array of the structure:
  *               $params['paramname'] = "paramvalue";.
  */
-declare function stream_context_set_params(stream_or_context: Pct.PhpResource, params: Pct.PhpAssocArray): bool;
+function stream_context_set_params(stream_or_context: Pct.PhpResource, params: Pct.PhpAssocArray): bool;
 
 /**
  * Copies data from one stream to another
@@ -17407,7 +17407,7 @@ declare function stream_context_set_params(stream_or_context: Pct.PhpResource, p
  * @param offset The offset where to start to copy data
  * @return Returns the total count of bytes copied.
  */
-declare function stream_copy_to_stream(source: Pct.PhpResource, dest: Pct.PhpResource, maxlength?: number, offset?: number): number;
+function stream_copy_to_stream(source: Pct.PhpResource, dest: Pct.PhpResource, maxlength?: number, offset?: number): number;
 
 /**
  * Set character set for stream encoding
@@ -17415,7 +17415,7 @@ declare function stream_copy_to_stream(source: Pct.PhpResource, dest: Pct.PhpRes
  * @param stream 
  * @param encoding 
  */
-declare function stream_encoding(stream: Pct.PhpResource, encoding?: string): bool;
+function stream_encoding(stream: Pct.PhpResource, encoding?: string): bool;
 
 /**
  * Attach a filter to a stream
@@ -17439,7 +17439,7 @@ declare function stream_encoding(stream: Pct.PhpResource, encoding?: string): bo
  * @return Returns a resource which can be used to refer to this filter instance
  *         during a call to stream_filter_remove.
  */
-declare function stream_filter_append(stream: Pct.PhpResource, filtername: string, read_write?: number, params?: Pct.PhpAssocArray): Pct.PhpResource;
+function stream_filter_append(stream: Pct.PhpResource, filtername: string, read_write?: number, params?: Pct.PhpAssocArray): Pct.PhpResource;
 
 /**
  * Attach a filter to a stream
@@ -17464,7 +17464,7 @@ declare function stream_filter_append(stream: Pct.PhpResource, filtername: strin
  * @return Returns a resource which can be used to refer to this filter instance
  *         during a call to stream_filter_remove.
  */
-declare function stream_filter_prepend(stream: Pct.PhpResource, filtername: string, read_write?: number, params?: Pct.PhpAssocArray): Pct.PhpResource;
+function stream_filter_prepend(stream: Pct.PhpResource, filtername: string, read_write?: number, params?: Pct.PhpAssocArray): Pct.PhpResource;
 
 /**
  * Register a user defined stream filter
@@ -17485,7 +17485,7 @@ declare function stream_filter_prepend(stream: Pct.PhpResource, filtername: stri
  * @return stream_filter_register will return false if the filtername is already
  *         defined.
  */
-declare function stream_filter_register(filtername: string, classname: string): bool;
+function stream_filter_register(filtername: string, classname: string): bool;
 
 /**
  * Remove a filter from a stream
@@ -17496,7 +17496,7 @@ declare function stream_filter_register(filtername: string, classname: string): 
  *
  * @param stream_filter The stream filter to be removed.
  */
-declare function stream_filter_remove(stream_filter: Pct.PhpResource): bool;
+function stream_filter_remove(stream_filter: Pct.PhpResource): bool;
 
 /**
  * Reads remainder of a stream into a string
@@ -17513,14 +17513,14 @@ declare function stream_filter_remove(stream_filter: Pct.PhpResource): bool;
  *               current position.
  * @return Returns a string.
  */
-declare function stream_get_contents(handle: Pct.PhpResource, maxlength?: number, offset?: number): string;
+function stream_get_contents(handle: Pct.PhpResource, maxlength?: number, offset?: number): string;
 
 /**
  * Retrieve list of registered filters
  * @return Returns an indexed array containing the name of all stream filters
  *         available.
  */
-declare function stream_get_filters(): string[];
+function stream_get_filters(): string[];
 
 /**
  * Gets line from stream resource up to a given delimiter
@@ -17543,7 +17543,7 @@ declare function stream_get_filters(): string[];
  *         
  *         If an error occurs, returns false.
  */
-declare function stream_get_line(handle: Pct.PhpResource, length: number, ending?: string): string;
+function stream_get_line(handle: Pct.PhpResource, length: number, ending?: string): string;
 
 /**
  * Retrieves header/meta data from streams/file pointers
@@ -17589,13 +17589,13 @@ declare function stream_get_line(handle: Pct.PhpResource, length: number, ending
  *         
  *         uri (string) - the URI/filename associated with this stream.
  */
-declare function stream_get_meta_data(stream: Pct.PhpResource): Pct.PhpAssocArray;
+function stream_get_meta_data(stream: Pct.PhpResource): Pct.PhpAssocArray;
 
 /**
  * Retrieve list of registered socket transports
  * @return Returns an indexed array of socket transports names.
  */
-declare function stream_get_transports(): string[];
+function stream_get_transports(): string[];
 
 /**
  * Retrieve list of registered streams
@@ -17604,7 +17604,7 @@ declare function stream_get_transports(): string[];
  * @return Returns an indexed array containing the name of all stream wrappers
  *         available on the running system.
  */
-declare function stream_get_wrappers(): string[];
+function stream_get_wrappers(): string[];
 
 /**
  * Checks if a stream is a local stream
@@ -17613,7 +17613,7 @@ declare function stream_get_wrappers(): string[];
  *
  * @param url
  */
-declare function stream_is_local(url: string): bool;
+function stream_is_local(url: string): bool;
 
 /**
  * Checks if a stream is a local stream
@@ -17622,7 +17622,7 @@ declare function stream_is_local(url: string): bool;
  *
  * @param stream
  */
-declare function stream_is_local(stream: Pct.PhpResource): bool;
+function stream_is_local(stream: Pct.PhpResource): bool;
 
 /**
  * Resolve filename against the include path
@@ -17633,7 +17633,7 @@ declare function stream_is_local(stream: Pct.PhpResource): bool;
  * @param filename The filename to resolve.
  * @return Returns a string containing the resolved absolute filename, .
  */
-declare function stream_resolve_include_path(filename: string): string;
+function stream_resolve_include_path(filename: string): string;
 
 /**
  * Runs the equivalent of the select() system call on the given arrays of streams
@@ -17688,7 +17688,7 @@ declare function stream_resolve_include_path(filename: string): string;
  *         and a warning raised (this can happen if the system call is interrupted
  *         by an incoming signal).
  */
-declare function stream_select($read: Pct.PhpResource[], $write: Pct.PhpResource[], $except: Pct.PhpResource[], tv_sec: number, tv_usec?: number): number;
+function stream_select($read: Pct.PhpResource[], $write: Pct.PhpResource[], $except: Pct.PhpResource[], tv_sec: number, tv_usec?: number): number;
 
 /**
  * Set blocking/non-blocking mode on a stream
@@ -17706,7 +17706,7 @@ declare function stream_select($read: Pct.PhpResource[], $write: Pct.PhpResource
  *             in blocking mode it will wait for data to become available on the
  *             stream.
  */
-declare function stream_set_blocking(stream: Pct.PhpResource, mode: number): bool;
+function stream_set_blocking(stream: Pct.PhpResource, mode: number): bool;
 
 /**
  * Set the stream chunk size
@@ -17720,7 +17720,7 @@ declare function stream_set_blocking(stream: Pct.PhpResource, mode: number): boo
  *         Will return false if chunk_size is less than 1 or greater than
  *         PHP_INT_MAX.
  */
-declare function stream_set_chunk_size(fp: Pct.PhpResource, chunk_size: number): number;
+function stream_set_chunk_size(fp: Pct.PhpResource, chunk_size: number): number;
 
 /**
  * Set read file buffering on the given stream
@@ -17735,7 +17735,7 @@ declare function stream_set_chunk_size(fp: Pct.PhpResource, chunk_size: number):
  *               from that input stream.
  * @return Returns 0 on success, or EOF if the request cannot be honored.
  */
-declare function stream_set_read_buffer(stream: Pct.PhpResource, buffer: number): number;
+function stream_set_read_buffer(stream: Pct.PhpResource, buffer: number): number;
 
 /**
  * Set timeout period on a stream
@@ -17750,7 +17750,7 @@ declare function stream_set_read_buffer(stream: Pct.PhpResource, buffer: number)
  * @param seconds The seconds part of the timeout to be set.
  * @param microseconds The microseconds part of the timeout to be set.
  */
-declare function stream_set_timeout(stream: Pct.PhpResource, seconds: number, microseconds?: number): bool;
+function stream_set_timeout(stream: Pct.PhpResource, seconds: number, microseconds?: number): bool;
 
 /**
  * Sets write file buffering on the given stream
@@ -17764,7 +17764,7 @@ declare function stream_set_timeout(stream: Pct.PhpResource, seconds: number, mi
  *               to that output stream.
  * @return Returns 0 on success, or EOF if the request cannot be honored.
  */
-declare function stream_set_write_buffer(stream: Pct.PhpResource, buffer: number): number;
+function stream_set_write_buffer(stream: Pct.PhpResource, buffer: number): number;
 
 /**
  * Accept a connection on a socket created by stream_socket_server
@@ -17781,7 +17781,7 @@ declare function stream_set_write_buffer(stream: Pct.PhpResource, buffer: number
  *                  Can also be determined later using stream_socket_get_name.
  * @return Returns a stream to the accepted socket connection.
  */
-declare function stream_socket_accept(server_socket: Pct.PhpResource, timeout?: number, $peername?: string): Pct.PhpResource;
+function stream_socket_accept(server_socket: Pct.PhpResource, timeout?: number, $peername?: string): Pct.PhpResource;
 
 /**
  * Open Internet or Unix domain socket connection
@@ -17820,7 +17820,7 @@ declare function stream_socket_accept(server_socket: Pct.PhpResource, timeout?: 
  *         with the other file functions (such as fgets, fgetss, fwrite, fclose,
  *         and feof), false on failure.
  */
-declare function stream_socket_client(remote_socket: string, $errno?: number, $errstr?: string, timeout?: number, flags?: number, context?: Pct.PhpResource): Pct.PhpResource;
+function stream_socket_client(remote_socket: string, $errno?: number, $errstr?: string, timeout?: number, flags?: number, context?: Pct.PhpResource): Pct.PhpResource;
 
 /**
  * Turns encryption on/off on an already connected socket
@@ -17841,7 +17841,7 @@ declare function stream_socket_client(remote_socket: string, $errno?: number, $e
  *         isn't enough data and you should try again (only for non-blocking
  *         sockets).
  */
-declare function stream_socket_enable_crypto(stream: Pct.PhpResource, enable: bool, crypto_type?: number, session_stream?: Pct.PhpResource): any;
+function stream_socket_enable_crypto(stream: Pct.PhpResource, enable: bool, crypto_type?: number, session_stream?: Pct.PhpResource): any;
 
 /**
  * Retrieve the name of the local or remote sockets
@@ -17853,7 +17853,7 @@ declare function stream_socket_enable_crypto(stream: Pct.PhpResource, enable: bo
  *                  to false the local socket name will be returned.
  * @return The name of the socket.
  */
-declare function stream_socket_get_name(handle: Pct.PhpResource, want_peer: bool): string;
+function stream_socket_get_name(handle: Pct.PhpResource, want_peer: bool): string;
 
 /**
  * Creates a pair of connected, indistinguishable socket streams
@@ -17872,7 +17872,7 @@ declare function stream_socket_get_name(handle: Pct.PhpResource, want_peer: bool
  * @return Returns an array with the two socket resources on success, or false on
  *         failure.
  */
-declare function stream_socket_pair(domain: number, type: number, protocol: number): Pct.PhpResource[];
+function stream_socket_pair(domain: number, type: number, protocol: number): Pct.PhpResource[];
 
 /**
  * Receives data from a socket, connected or not
@@ -17890,7 +17890,7 @@ declare function stream_socket_pair(domain: number, type: number, protocol: numb
  *                 the remote socket.
  * @return Returns the read data, as a string
  */
-declare function stream_socket_recvfrom(socket: Pct.PhpResource, length: number, flags?: number, $address?: string): string;
+function stream_socket_recvfrom(socket: Pct.PhpResource, length: number, flags?: number, $address?: string): string;
 
 /**
  * Sends a message to a socket, whether it is connected or not
@@ -17908,7 +17908,7 @@ declare function stream_socket_recvfrom(socket: Pct.PhpResource, length: number,
  *                If specified, it must be in dotted quad (or [ipv6]) format.
  * @return Returns a result code, as an integer.
  */
-declare function stream_socket_sendto(socket: Pct.PhpResource, data: string, flags?: number, address?: string): number;
+function stream_socket_sendto(socket: Pct.PhpResource, data: string, flags?: number, address?: string): number;
 
 /**
  * Create an Internet or Unix domain server socket
@@ -17949,7 +17949,7 @@ declare function stream_socket_sendto(socket: Pct.PhpResource, data: string, fla
  * @param context 
  * @return Returns the created stream, or false on error.
  */
-declare function stream_socket_server(local_socket: string, $errno?: number, $errstr?: string, flags?: number, context?: Pct.PhpResource): Pct.PhpResource;
+function stream_socket_server(local_socket: string, $errno?: number, $errstr?: string, flags?: number, context?: Pct.PhpResource): Pct.PhpResource;
 
 /**
  * Shutdown a full-duplex connection
@@ -17961,7 +17961,7 @@ declare function stream_socket_server(local_socket: string, $errno?: number, $er
  *            receptions), STREAM_SHUT_WR (disable further transmissions) or
  *            STREAM_SHUT_RDWR (disable further receptions and transmissions).
  */
-declare function stream_socket_shutdown(stream: Pct.PhpResource, how: number): bool;
+function stream_socket_shutdown(stream: Pct.PhpResource, how: number): bool;
 
 /**
  * Tells whether the stream supports locking.
@@ -17970,7 +17970,7 @@ declare function stream_socket_shutdown(stream: Pct.PhpResource, how: number): b
  *
  * @param stream The stream to check.
  */
-declare function stream_supports_lock(stream: Pct.PhpResource): bool;
+function stream_supports_lock(stream: Pct.PhpResource): bool;
 
 /**
  * Register a URL wrapper implemented as a PHP class
@@ -17985,7 +17985,7 @@ declare function stream_supports_lock(stream: Pct.PhpResource): bool;
  * @return stream_wrapper_register will return false if the protocol already has a
  *         handler.
  */
-declare function stream_wrapper_register(protocol: string, classname: string, flags?: number): bool;
+function stream_wrapper_register(protocol: string, classname: string, flags?: number): bool;
 
 /**
  * Restores a previously unregistered built-in wrapper
@@ -17995,7 +17995,7 @@ declare function stream_wrapper_register(protocol: string, classname: string, fl
  *
  * @param protocol 
  */
-declare function stream_wrapper_restore(protocol: string): bool;
+function stream_wrapper_restore(protocol: string): bool;
 
 /**
  * Unregister a URL wrapper
@@ -18006,7 +18006,7 @@ declare function stream_wrapper_restore(protocol: string): bool;
  *
  * @param protocol 
  */
-declare function stream_wrapper_unregister(protocol: string): bool;
+function stream_wrapper_unregister(protocol: string): bool;
 
 //--------------------------------------------------------------------------------
 // strings
@@ -18020,31 +18020,31 @@ declare function stream_wrapper_unregister(protocol: string): bool;
  * quotes, double quotes, and escape sequences, see the Strings entry in the Types
  * section of the manual.
  */
-declare var HTML_ENTITIES: number;
-declare var HTML_SPECIALCHARS: number;
+var HTML_ENTITIES: number;
+var HTML_SPECIALCHARS: number;
 
-declare var ENT_COMPAT: number;
-declare var ENT_QUOTES: number;
-declare var ENT_NOQUOTES: number;
-declare var ENT_IGNORE: number;
-declare var ENT_SUBSTITUTE: number;
-declare var ENT_DISALLOWED: number;
-declare var ENT_HTML401: number;
-declare var ENT_XML1: number;
-declare var ENT_XHTML: number;
-declare var ENT_HTML5: number;
+var ENT_COMPAT: number;
+var ENT_QUOTES: number;
+var ENT_NOQUOTES: number;
+var ENT_IGNORE: number;
+var ENT_SUBSTITUTE: number;
+var ENT_DISALLOWED: number;
+var ENT_HTML401: number;
+var ENT_XML1: number;
+var ENT_XHTML: number;
+var ENT_HTML5: number;
 
-declare var LC_ALL: number;
-declare var LC_COLLATE: number;
-declare var LC_CTYPE: number;
-declare var LC_MONETARY: number;
-declare var LC_NUMERIC: number;
-declare var LC_TIME: number;
-declare var LC_MESSAGES: number;
+var LC_ALL: number;
+var LC_COLLATE: number;
+var LC_CTYPE: number;
+var LC_MONETARY: number;
+var LC_NUMERIC: number;
+var LC_TIME: number;
+var LC_MESSAGES: number;
 
-declare var STR_PAD_RIGHT: number;
-declare var STR_PAD_LEFT: number;
-declare var STR_PAD_BOTH: number;
+var STR_PAD_RIGHT: number;
+var STR_PAD_LEFT: number;
+var STR_PAD_BOTH: number;
 
 
 /**
@@ -18076,7 +18076,7 @@ declare var STR_PAD_BOTH: number;
  *                 sequences.
  * @return Returns the escaped string.
  */
-declare function addcslashes(str: string, charlist: string): string;
+function addcslashes(str: string, charlist: string): string;
 
 /**
  * Quote string with slashes
@@ -18104,7 +18104,7 @@ declare function addcslashes(str: string, charlist: string): string;
  * @param str The string to be escaped.
  * @return Returns the escaped string.
  */
-declare function addslashes(str: string): string;
+function addslashes(str: string): string;
 
 /**
  * Convert binary data into hexadecimal representation
@@ -18115,7 +18115,7 @@ declare function addslashes(str: string): string;
  * @param str A string.
  * @return Returns the hexadecimal representation of the given string.
  */
-declare function bin2hex(str: string): string;
+function bin2hex(str: string): string;
 
 /**
  * Return a specific character
@@ -18127,7 +18127,7 @@ declare function bin2hex(str: string): string;
  * @param ascii The ascii code.
  * @return Returns the specified character.
  */
-declare function chr(ascii: number): string;
+function chr(ascii: number): string;
 
 /**
  * Split a string into smaller chunks
@@ -18141,7 +18141,7 @@ declare function chr(ascii: number): string;
  * @param end The line ending sequence.
  * @return Returns the chunked string.
  */
-declare function chunk_split(body: string, chunklen?: number, end?: string): string;
+function chunk_split(body: string, chunklen?: number, end?: string): string;
 
 /**
  * Convert from one Cyrillic character set to another
@@ -18153,7 +18153,7 @@ declare function chunk_split(body: string, chunklen?: number, end?: string): str
  * @param to The target Cyrillic character set, as a single character.
  * @return Returns the converted string.
  */
-declare function convert_cyr_string(str: string, from: string, to: string): string;
+function convert_cyr_string(str: string, from: string, to: string): string;
 
 /**
  * Decode a uuencoded string
@@ -18163,7 +18163,7 @@ declare function convert_cyr_string(str: string, from: string, to: string): stri
  * @param data The uuencoded data.
  * @return Returns the decoded data as a string.
  */
-declare function convert_uudecode(data: string): string;
+function convert_uudecode(data: string): string;
 
 /**
  * Uuencode a string
@@ -18177,7 +18177,7 @@ declare function convert_uudecode(data: string): string;
  * @param data The data to be encoded.
  * @return Returns the uuencoded data.
  */
-declare function convert_uuencode(data: string): string;
+function convert_uuencode(data: string): string;
 
 /**
  * Return information about characters used in a string
@@ -18195,7 +18195,7 @@ declare function convert_uuencode(data: string): string;
  *         unique characters is returned.     4 - a string containing all not used
  *         characters is returned.
  */
-declare function count_chars(string: string, mode?: number): any;
+function count_chars(string: string, mode?: number): any;
 
 /**
  * Calculates the crc32 polynomial of a string
@@ -18206,7 +18206,7 @@ declare function count_chars(string: string, mode?: number): any;
  * @param str The data.
  * @return Returns the crc32 checksum of str as an integer.
  */
-declare function crc32(str: string): number;
+function crc32(str: string): number;
 
 /**
  * One-way string hashing
@@ -18238,7 +18238,7 @@ declare function crc32(str: string): number;
  * @return Returns the hashed string or a string that is shorter than 13
  *         characters and is guaranteed to differ from the salt on failure.
  */
-declare function crypt(str: string, salt: string): string;
+function crypt(str: string, salt: string): string;
 
 /**
  * Output one or more strings
@@ -18255,7 +18255,7 @@ declare function crypt(str: string, salt: string): string;
  *
  * @param str 
  */
-declare function echo(...str: any[]): string;
+function echo(...str: any[]): string;
 
 /**
  * Split a string by string
@@ -18281,7 +18281,7 @@ declare function echo(...str: any[]): string;
  *         negative limit is used, then an empty array will be returned, otherwise
  *         an array containing string will be returned.
  */
-declare function explode(delimiter: string, string: string, limit?: number): string[];
+function explode(delimiter: string, string: string, limit?: number): string[];
 
 /**
  * Write a formatted string to a stream
@@ -18294,7 +18294,7 @@ declare function explode(delimiter: string, string: string, limit?: number): str
  * @param args 
  * @return Returns the length of the string written.
  */
-declare function fprintf(handle: Pct.PhpResource, format: string, ...args: any[]): number;
+function fprintf(handle: Pct.PhpResource, format: string, ...args: any[]): number;
 
 /**
  * Returns the translation table used by htmlspecialchars and htmlentities
@@ -18323,7 +18323,7 @@ declare function fprintf(handle: Pct.PhpResource, format: string, ...args: any[]
  * @return Returns the translation table as an array, with the original characters
  *         as keys and entities as values.
  */
-declare function get_html_translation_table(table?: number, flags?: number, encoding?: string): Pct.PhpAssocArray;
+function get_html_translation_table(table?: number, flags?: number, encoding?: string): Pct.PhpAssocArray;
 
 /**
  * Convert logical Hebrew text to visual text
@@ -18337,7 +18337,7 @@ declare function get_html_translation_table(table?: number, flags?: number, enco
  *                           characters per line that will be returned.
  * @return Returns the visual string.
  */
-declare function hebrev(hebrew_text: string, max_chars_per_line?: number): string;
+function hebrev(hebrew_text: string, max_chars_per_line?: number): string;
 
 /**
  * Convert logical Hebrew text to visual text with newline conversion
@@ -18352,7 +18352,7 @@ declare function hebrev(hebrew_text: string, max_chars_per_line?: number): strin
  *                           characters per line that will be returned.
  * @return Returns the visual string.
  */
-declare function hebrevc(hebrew_text: string, max_chars_per_line?: number): string;
+function hebrevc(hebrew_text: string, max_chars_per_line?: number): string;
 
 /**
  * Decodes a hexadecimally encoded binary string
@@ -18365,7 +18365,7 @@ declare function hebrevc(hebrew_text: string, max_chars_per_line?: number): stri
  * @param data Hexadecimal representation of data.
  * @return Returns the binary representation of the given data .
  */
-declare function hex2bin(data: string): string;
+function hex2bin(data: string): string;
 
 /**
  * Convert all HTML entities to their applicable characters
@@ -18395,7 +18395,7 @@ declare function hex2bin(data: string): string;
  *                 UTF-8 from PHP 5.4.0 onwards.
  * @return Returns the decoded string.
  */
-declare function html_entity_decode(string: string, flags?: number, encoding?: string): string;
+function html_entity_decode(string: string, flags?: number, encoding?: string): string;
 
 /**
  * Convert all applicable characters to HTML entities
@@ -18442,7 +18442,7 @@ declare function html_entity_decode(string: string, flags?: number, encoding?: s
  *         given encoding an empty string will be returned, unless either the
  *         ENT_IGNORE or ENT_SUBSTITUTE flags are set.
  */
-declare function htmlentities(string: string, flags?: number, encoding?: string, double_encode?: bool): string;
+function htmlentities(string: string, flags?: number, encoding?: string, double_encode?: bool): string;
 
 /**
  * Convert special characters to HTML entities
@@ -18504,7 +18504,7 @@ declare function htmlentities(string: string, flags?: number, encoding?: string,
  *         given encoding an empty string will be returned, unless either the
  *         ENT_IGNORE or ENT_SUBSTITUTE flags are set.
  */
-declare function htmlspecialchars(string: string, flags?: number, encoding?: string, double_encode?: bool): string;
+function htmlspecialchars(string: string, flags?: number, encoding?: string, double_encode?: bool): string;
 
 /**
  * Convert special HTML entities back to characters
@@ -18527,7 +18527,7 @@ declare function htmlspecialchars(string: string, flags?: number, encoding?: str
  *              as XHTML.    ENT_HTML5  Handle code as HTML 5.
  * @return Returns the decoded string.
  */
-declare function htmlspecialchars_decode(string: string, flags?: number): string;
+function htmlspecialchars_decode(string: string, flags?: number): string;
 
 /**
  * Join array elements with a string
@@ -18545,7 +18545,7 @@ declare function htmlspecialchars_decode(string: string, flags?: number): string
  * @return Returns a string containing a string representation of all the array
  *         elements in the same order, with the glue string between each element.
  */
-declare function implode(glue: string, pieces: Array): string;
+function implode(glue: string, pieces: Array): string;
 
 /**
  * Join array elements with a string
@@ -18560,7 +18560,7 @@ declare function implode(glue: string, pieces: Array): string;
  * @return Returns a string containing a string representation of all the array
  *         elements in the same order, with the glue string between each element.
  */
-declare function implode(pieces: Array): string;
+function implode(pieces: Array): string;
 
 /**
  * Make a string's first character lowercase
@@ -18574,7 +18574,7 @@ declare function implode(pieces: Array): string;
  * @param str The input string.
  * @return Returns the resulting string.
  */
-declare function lcfirst(str: string): string;
+function lcfirst(str: string): string;
 
 /**
  * Calculate Levenshtein distance between two strings
@@ -18598,7 +18598,7 @@ declare function lcfirst(str: string): string;
  *         strings or -1, if one of the argument strings is longer than the limit
  *         of 255 characters.
  */
-declare function levenshtein(str1: string, str2: string): number;
+function levenshtein(str1: string, str2: string): number;
 
 /**
  * Calculate Levenshtein distance between two strings
@@ -18625,8 +18625,8 @@ declare function levenshtein(str1: string, str2: string): number;
  *         strings or -1, if one of the argument strings is longer than the limit
  *         of 255 characters.
  */
-declare function levenshtein(str1: string, str2: string, const_ins: number, cost_rep: number, cost_del: number);
-declare function localconv(): Pct.PhpAssocArray;
+function levenshtein(str1: string, str2: string, const_ins: number, cost_rep: number, cost_del: number);
+function localconv(): Pct.PhpAssocArray;
 
 /**
  * Strip whitespace (or other characters) from the beginning of a string
@@ -18645,7 +18645,7 @@ declare function localconv(): Pct.PhpAssocArray;
  *         feed).     "\r" (ASCII 13 (0x0D)), a carriage return.     "\0" (ASCII 0
  *         (0x00)), the NUL-byte.      "\x0B" (ASCII 11 (0x0B)), a vertical tab.
  */
-declare function ltrim(str: string, charlist?: string): string;
+function ltrim(str: string, charlist?: string): string;
 
 /**
  * Calculate the md5 hash of a string
@@ -18659,7 +18659,7 @@ declare function ltrim(str: string, charlist?: string): string;
  *                   of 16.
  * @return Returns the hash as a 32-character hexadecimal number.
  */
-declare function md5(str: string, raw_output?: bool): string;
+function md5(str: string, raw_output?: bool): string;
 
 /**
  * Calculates the md5 hash of a given file
@@ -18673,7 +18673,7 @@ declare function md5(str: string, raw_output?: bool): string;
  *                   length of 16.
  * @return Returns a string on success, false otherwise.
  */
-declare function md5_file(filename: string, raw_output?: bool): string;
+function md5_file(filename: string, raw_output?: bool): string;
 
 /**
  * Calculate the metaphone key of a string
@@ -18694,7 +18694,7 @@ declare function md5_file(filename: string, raw_output?: bool): string;
  *                 restriction.
  * @return Returns the metaphone key as a string, .
  */
-declare function metaphone(str: string, phonemes?: number): string;
+function metaphone(str: string, phonemes?: number): string;
 
 /**
  * Formats a number as a currency string
@@ -18823,7 +18823,7 @@ declare function metaphone(str: string, phonemes?: number): string;
  *         formatting string will be returned unchanged. Non-numeric number causes
  *         returning  and emitting E_WARNING.
  */
-declare function money_format(format: string, number: number): string;
+function money_format(format: string, number: number): string;
 
 /**
  * Query language and locale information
@@ -18882,7 +18882,7 @@ declare function money_format(format: string, number: number): string;
  *             of the character encoding.
  * @return Returns the element as a string, or false if item is not valid.
  */
-declare function nl_langinfo(item: number): string; //TODO enum for last param
+function nl_langinfo(item: number): string; //TODO enum for last param
 
 /**
  * Inserts HTML line breaks before all newlines in a string
@@ -18894,7 +18894,7 @@ declare function nl_langinfo(item: number): string; //TODO enum for last param
  * @param is_xhtml Whether to use XHTML compatible line breaks or not.
  * @return Returns the altered string.
  */
-declare function nl2br(string: string, is_xhtml?: bool): string;
+function nl2br(string: string, is_xhtml?: bool): string;
 
 /**
  * Format a number with grouped thousands
@@ -18917,7 +18917,7 @@ declare function nl2br(string: string, is_xhtml?: bool): string;
  * @param thousands_sep Sets the thousands separator.
  * @return A formatted version of number.
  */
-declare function number_format(number: number, decimals?: number, dec_point?: string, thousands_sep?: string): string;
+function number_format(number: number, decimals?: number, dec_point?: string, thousands_sep?: string): string;
 
 /**
  * Return ASCII value of character
@@ -18929,7 +18929,7 @@ declare function number_format(number: number, decimals?: number, dec_point?: st
  * @param string A character.
  * @return Returns the ASCII value as an integer.
  */
-declare function ord(string: string): number;
+function ord(string: string): number;
 
 /**
  * Parses the string into variables
@@ -18949,7 +18949,7 @@ declare function ord(string: string): number;
  * @param $arr If the second parameter arr is present, variables are stored in
  *             this variable as array elements instead.
  */
-declare function parse_str(str: string, $arr: Pct.PhpAssocArray); //we require an array because we don't have ability to set var in current scope and don't want it
+function parse_str(str: string, $arr: Pct.PhpAssocArray); //we require an array because we don't have ability to set var in current scope and don't want it
 
 /**
  * Output a string
@@ -18962,7 +18962,7 @@ declare function parse_str(str: string, $arr: Pct.PhpAssocArray); //we require a
  * @param arg The input data.
  * @return Returns 1, always.
  */
-declare function print(arg: any): number;
+function print(arg: any): number;
 
 /**
  * Output a formatted string
@@ -18971,7 +18971,7 @@ declare function print(arg: any): number;
  * @param args 
  * @return Returns the length of the outputted string.
  */
-declare function printf(format: string, ...args: any[]): number;
+function printf(format: string, ...args: any[]): number;
 
 /**
  * Convert a quoted-printable string to an 8 bit string
@@ -18986,7 +18986,7 @@ declare function printf(format: string, ...args: any[]): number;
  * @param str The input string.
  * @return Returns the 8-bit binary string.
  */
-declare function quoted_printable_decode(str: string): string;
+function quoted_printable_decode(str: string): string;
 
 /**
  * Convert a 8 bit string to a quoted-printable string
@@ -18999,7 +18999,7 @@ declare function quoted_printable_decode(str: string): string;
  * @param str The input string.
  * @return Returns the encoded string.
  */
-declare function quoted_printable_encode(str: string): string;
+function quoted_printable_encode(str: string): string;
 
 /**
  * Quote meta characters
@@ -19011,7 +19011,7 @@ declare function quoted_printable_encode(str: string): string;
  * @return Returns the string with meta characters quoted, or false if an empty
  *         string is given as str.
  */
-declare function quotemeta(str: string): string;
+function quotemeta(str: string): string;
 
 /**
  * Strip whitespace (or other characters) from the end of a string
@@ -19031,7 +19031,7 @@ declare function quotemeta(str: string): string;
  *                 characters.
  * @return Returns the modified string.
  */
-declare function rtrim(str: string, charlist?: string): string;
+function rtrim(str: string, charlist?: string): string;
 
 /**
  * Set locale information
@@ -19073,7 +19073,7 @@ declare function rtrim(str: string, charlist?: string): string;
  *         running.  It returns exactly what the system setlocale function
  *         returns.
  */
-declare function setlocale(category: number, locale: string, ...settings: string[]): string;
+function setlocale(category: number, locale: string, ...settings: string[]): string;
 
 /**
  * Set locale information
@@ -19113,7 +19113,7 @@ declare function setlocale(category: number, locale: string, ...settings: string
  *         running.  It returns exactly what the system setlocale function
  *         returns.
  */
-declare function setlocale(category: number, locale: Array): string;
+function setlocale(category: number, locale: Array): string;
 
 /**
  * Calculate the sha1 hash of a string
@@ -19125,7 +19125,7 @@ declare function setlocale(category: number, locale: Array): string;
  *                   hexadecimal number.
  * @return Returns the sha1 hash as a string.
  */
-declare function sha1(str: string, raw_output?: bool): string;
+function sha1(str: string, raw_output?: bool): string;
 
 /**
  * Calculate the sha1 hash of a file
@@ -19135,7 +19135,7 @@ declare function sha1(str: string, raw_output?: bool): string;
  *                   length of 20.
  * @return Returns a string on success, false otherwise.
  */
-declare function sha1_file(filename: string, raw_output?: bool): string;
+function sha1_file(filename: string, raw_output?: bool): string;
 
 /**
  * Calculate the similarity between two strings
@@ -19152,7 +19152,7 @@ declare function sha1_file(filename: string, raw_output?: bool): string;
  *                 calculate the similarity in percent for you.
  * @return Returns the number of matching chars in both strings.
  */
-declare function similar_text(first: string, second: string, $percent?: number): number;
+function similar_text(first: string, second: string, $percent?: number): number;
 
 /**
  * Calculate the soundex key of a string
@@ -19171,7 +19171,7 @@ declare function similar_text(first: string, second: string, $percent?: number):
  * @param str The input string.
  * @return Returns the soundex key as a string.
  */
-declare function soundex(str: string): string;
+function soundex(str: string): string;
 
 /**
  * Return a formatted string
@@ -19276,7 +19276,7 @@ declare function soundex(str: string): string;
  * @param args 
  * @return Returns a string produced according to the formatting string format.
  */
-declare function sprintf(format: string, ...args: any[]): string;
+function sprintf(format: string, ...args: any[]): string;
 
 /**
  * Parses input from a string according to a format
@@ -19305,7 +19305,7 @@ declare function sprintf(format: string, ...args: any[]): string;
  *         If there are more substrings expected in the format than there are
  *         available within str, -1 will be returned.
  */
-declare function sscanf(str: string, format: string, ...$vars: any[]): any;
+function sscanf(str: string, format: string, ...$vars: any[]): any;
 
 /**
  * Parse a CSV string into an array
@@ -19320,7 +19320,7 @@ declare function sscanf(str: string, format: string, ...$vars: any[]): any;
  *               backslash (\)
  * @return Returns an indexed array containing the fields read.
  */
-declare function str_getcsv(input: string, delimiter?: string, enclosure?: string, escape?: string): string[];
+function str_getcsv(input: string, delimiter?: string, enclosure?: string, escape?: string): string[];
 
 /**
  * Case-insensitive version of str_replace.
@@ -19344,7 +19344,7 @@ declare function str_getcsv(input: string, delimiter?: string, enclosure?: strin
  *               performed.
  * @return Returns a string or an array of replacements.
  */
-declare function str_ireplace(search: string, replace: string, subject: string, $count?: number): string;
+function str_ireplace(search: string, replace: string, subject: string, $count?: number): string;
 
 /**
  * Case-insensitive version of str_replace.
@@ -19368,7 +19368,7 @@ declare function str_ireplace(search: string, replace: string, subject: string, 
  *               performed.
  * @return Returns a string or an array of replacements.
  */
-declare function str_ireplace(search: any[], replace: string, subject: string, $count?: number): string;
+function str_ireplace(search: any[], replace: string, subject: string, $count?: number): string;
 
 /**
  * Case-insensitive version of str_replace.
@@ -19392,7 +19392,7 @@ declare function str_ireplace(search: any[], replace: string, subject: string, $
  *               performed.
  * @return Returns a string or an array of replacements.
  */
-declare function str_ireplace(search: any[], replace: any[], subject: string, $count?: number): string;
+function str_ireplace(search: any[], replace: any[], subject: string, $count?: number): string;
 
 /**
  * Case-insensitive version of str_replace.
@@ -19416,7 +19416,7 @@ declare function str_ireplace(search: any[], replace: any[], subject: string, $c
  *               performed.
  * @return Returns a string or an array of replacements.
  */
-declare function str_ireplace(search: any[], replace: any[], subject: any[], $count?: number): string[];
+function str_ireplace(search: any[], replace: any[], subject: any[], $count?: number): string[];
 
 /**
  * Case-insensitive version of str_replace.
@@ -19440,7 +19440,7 @@ declare function str_ireplace(search: any[], replace: any[], subject: any[], $co
  *               performed.
  * @return Returns a string or an array of replacements.
  */
-declare function str_ireplace(search: string, replace: any[], subject: string, $count?: number): string;
+function str_ireplace(search: string, replace: any[], subject: string, $count?: number): string;
 
 /**
  * Case-insensitive version of str_replace.
@@ -19464,7 +19464,7 @@ declare function str_ireplace(search: string, replace: any[], subject: string, $
  *               performed.
  * @return Returns a string or an array of replacements.
  */
-declare function str_ireplace(search: string, replace: any[], subject: any[], $count?: number): string;
+function str_ireplace(search: string, replace: any[], subject: any[], $count?: number): string;
 
 /**
  * Case-insensitive version of str_replace.
@@ -19488,7 +19488,7 @@ declare function str_ireplace(search: string, replace: any[], subject: any[], $c
  *               performed.
  * @return Returns a string or an array of replacements.
  */
-declare function str_ireplace(search: string, replace: string, subject: any[], $count?: number): string;
+function str_ireplace(search: string, replace: string, subject: any[], $count?: number): string;
 
 /**
  * Pad a string to a certain length with another string
@@ -19509,7 +19509,7 @@ declare function str_ireplace(search: string, replace: string, subject: any[], $
  *                 be STR_PAD_RIGHT.
  * @return Returns the padded string.
  */
-declare function str_pad(input: string, pad_length: number, pad_string?: string, pad_type?: number): string;
+function str_pad(input: string, pad_length: number, pad_string?: string, pad_type?: number): string;
 
 /**
  * Repeat a string
@@ -19524,7 +19524,7 @@ declare function str_pad(input: string, pad_length: number, pad_string?: string,
  *                   string.
  * @return Returns the repeated string.
  */
-declare function str_repeat(input: string, multiplier: number): string;
+function str_repeat(input: string, multiplier: number): string;
 
 /**
  * Replace all occurrences of the search string with the replacement string
@@ -19549,7 +19549,7 @@ declare function str_repeat(input: string, multiplier: number): string;
  *               performed.
  * @return This function returns a string or an array with the replaced values.
  */
-declare function str_replace(search: string, replace: string, subject: string, $count?: number): string;
+function str_replace(search: string, replace: string, subject: string, $count?: number): string;
 
 /**
  * Replace all occurrences of the search string with the replacement string
@@ -19574,7 +19574,7 @@ declare function str_replace(search: string, replace: string, subject: string, $
  *               performed.
  * @return This function returns a string or an array with the replaced values.
  */
-declare function str_replace(search: any[], replace: string, subject: string, $count?: number): string;
+function str_replace(search: any[], replace: string, subject: string, $count?: number): string;
 
 /**
  * Replace all occurrences of the search string with the replacement string
@@ -19599,7 +19599,7 @@ declare function str_replace(search: any[], replace: string, subject: string, $c
  *               performed.
  * @return This function returns a string or an array with the replaced values.
  */
-declare function str_replace(search: any[], replace: any[], subject: string, $count?: number): string;
+function str_replace(search: any[], replace: any[], subject: string, $count?: number): string;
 
 /**
  * Replace all occurrences of the search string with the replacement string
@@ -19624,7 +19624,7 @@ declare function str_replace(search: any[], replace: any[], subject: string, $co
  *               performed.
  * @return This function returns a string or an array with the replaced values.
  */
-declare function str_replace(search: any[], replace: any[], subject: any[], $count?: number): string[];
+function str_replace(search: any[], replace: any[], subject: any[], $count?: number): string[];
 
 /**
  * Replace all occurrences of the search string with the replacement string
@@ -19649,7 +19649,7 @@ declare function str_replace(search: any[], replace: any[], subject: any[], $cou
  *               performed.
  * @return This function returns a string or an array with the replaced values.
  */
-declare function str_replace(search: string, replace: any[], subject: string, $count?: number): string;
+function str_replace(search: string, replace: any[], subject: string, $count?: number): string;
 
 /**
  * Replace all occurrences of the search string with the replacement string
@@ -19674,7 +19674,7 @@ declare function str_replace(search: string, replace: any[], subject: string, $c
  *               performed.
  * @return This function returns a string or an array with the replaced values.
  */
-declare function str_replace(search: string, replace: any[], subject: any[], $count?: number): string;
+function str_replace(search: string, replace: any[], subject: any[], $count?: number): string;
 
 /**
  * Replace all occurrences of the search string with the replacement string
@@ -19699,7 +19699,7 @@ declare function str_replace(search: string, replace: any[], subject: any[], $co
  *               performed.
  * @return This function returns a string or an array with the replaced values.
  */
-declare function str_replace(search: string, replace: string, subject: any[], $count?: number): string;
+function str_replace(search: string, replace: string, subject: any[], $count?: number): string;
 
 /**
  * Perform the rot13 transform on a string
@@ -19715,7 +19715,7 @@ declare function str_replace(search: string, replace: string, subject: any[], $c
  * @param str The input string.
  * @return Returns the ROT13 version of the given string.
  */
-declare function str_rot13(str: string): string;
+function str_rot13(str: string): string;
 
 /**
  * Randomly shuffles a string
@@ -19723,7 +19723,7 @@ declare function str_rot13(str: string): string;
  * @param str The input string.
  * @return Returns the shuffled string.
  */
-declare function str_shuffle(str: string): string;
+function str_shuffle(str: string): string;
 
 /**
  * Convert a string to an array
@@ -19740,7 +19740,7 @@ declare function str_shuffle(str: string): string;
  *         length exceeds the length of string, the entire string is returned as
  *         the first (and only) array element.
  */
-declare function str_split(str: string, split_length?: number): string[];
+function str_split(str: string, split_length?: number): string[];
 
 /**
  * Return information about words used in a string
@@ -19766,7 +19766,7 @@ declare function str_split(str: string, split_length?: number): string[];
  *                 'word'
  * @return Returns an array or an integer, depending on the format chosen.
  */
-declare function str_word_count(string: string, format?: number, charlist?: string): any; //number or array
+function str_word_count(string: string, format?: number, charlist?: string): any; //number or array
 
 /**
  * Binary safe case-insensitive string comparison
@@ -19778,7 +19778,7 @@ declare function str_word_count(string: string, format?: number, charlist?: stri
  * @return Returns  0 if str1 is less than str2;  0 if str1 is greater than str2,
  *         and 0 if they are equal.
  */
-declare function strcasecmp(str1: string, str2: string): number;
+function strcasecmp(str1: string, str2: string): number;
 
 /**
  * Binary safe string comparison
@@ -19788,7 +19788,7 @@ declare function strcasecmp(str1: string, str2: string): number;
  * @return Returns  0 if str1 is less than str2;  0 if str1 is greater than str2,
  *         and 0 if they are equal.
  */
-declare function strcmp(str1: string, str2: string): number;
+function strcmp(str1: string, str2: string): number;
 
 /**
  * Locale based string comparison
@@ -19804,7 +19804,7 @@ declare function strcmp(str1: string, str2: string): number;
  * @return Returns  0 if str1 is less than str2;  0 if str1 is greater than str2,
  *         and 0 if they are equal.
  */
-declare function strcoll(str1: string, str2: string): number;
+function strcoll(str1: string, str2: string): number;
 
 /**
  * Find length of initial segment not matching mask
@@ -19818,7 +19818,7 @@ declare function strcoll(str1: string, str2: string): number;
  * @param length The length of the string to examine.
  * @return Returns the length of the segment as an integer.
  */
-declare function strcspn(str1: string, str2: string, start?: number, length?: number): number;
+function strcspn(str1: string, str2: string, start?: number, length?: number): number;
 
 /**
  * Strip HTML and PHP tags from a string
@@ -19840,7 +19840,7 @@ declare function strcspn(str1: string, str2: string, start?: number, length?: nu
  *                       "br") returns an empty string.
  * @return Returns the stripped string.
  */
-declare function strip_tags(str: string, allowable_tags?: string): string;
+function strip_tags(str: string, allowable_tags?: string): string;
 
 /**
  * Un-quote string quoted with addcslashes
@@ -19851,7 +19851,7 @@ declare function strip_tags(str: string, allowable_tags?: string): string;
  * @param str The string to be unescaped.
  * @return Returns the unescaped string.
  */
-declare function stripcslashes(str: string): string;
+function stripcslashes(str: string): string;
 
 /**
  * Find the position of the first occurrence of a case-insensitive substring in a
@@ -19876,7 +19876,7 @@ declare function stripcslashes(str: string): string;
  *         
  *         Returns false if the needle was not found.
  */
-declare function stripos(haystack: string, needle: string, offset?: number): number;
+function stripos(haystack: string, needle: string, offset?: number): number;
 
 /**
  * Find the position of the first occurrence of a case-insensitive substring in a
@@ -19901,7 +19901,7 @@ declare function stripos(haystack: string, needle: string, offset?: number): num
  *         
  *         Returns false if the needle was not found.
  */
-declare function stripos(haystack: string, needle: number, offset?: number): number;
+function stripos(haystack: string, needle: number, offset?: number): number;
 
 /**
  * Un-quotes a quoted string
@@ -19920,7 +19920,7 @@ declare function stripos(haystack: string, needle: number, offset?: number): num
  * @return Returns a string with backslashes stripped off. (\' becomes ' and so
  *         on.) Double backslashes (\\) are made into a single backslash (\).
  */
-declare function stripslashes(str: string): string;
+function stripslashes(str: string): string;
 
 /**
  * Case-insensitive strstr
@@ -19935,7 +19935,7 @@ declare function stripslashes(str: string): string;
  *                      the first occurrence of the needle (excluding needle).
  * @return Returns the matched substring. If needle is not found, returns false.
  */
-declare function stristr(haystack: string, needle: string, before_needle?: bool): string;
+function stristr(haystack: string, needle: string, before_needle?: bool): string;
 
 /**
  * Case-insensitive strstr
@@ -19950,7 +19950,7 @@ declare function stristr(haystack: string, needle: string, before_needle?: bool)
  *                      the first occurrence of the needle (excluding needle).
  * @return Returns the matched substring. If needle is not found, returns false.
  */
-declare function stristr(haystack: string, needle: number, before_needle?: bool): string;
+function stristr(haystack: string, needle: number, before_needle?: bool): string;
 
 /**
  * Get string length
@@ -19960,7 +19960,7 @@ declare function stristr(haystack: string, needle: number, before_needle?: bool)
  * @param string The string being measured for length.
  * @return The length of the string on success, and 0 if the string is empty.
  */
-declare function strlen(string: string): number;
+function strlen(string: string): number;
 
 /**
  * Case insensitive string comparisons using a "natural order" algorithm
@@ -19976,7 +19976,7 @@ declare function strlen(string: string): number;
  *         str1 is less than str2 0 if str1 is greater than str2, and 0 if they
  *         are equal.
  */
-declare function strnatcasecmp(str1: string, str2: string): number;
+function strnatcasecmp(str1: string, str2: string): number;
 
 /**
  * String comparisons using a "natural order" algorithm
@@ -19991,7 +19991,7 @@ declare function strnatcasecmp(str1: string, str2: string): number;
  *         str1 is less than str2; 0 if str1 is greater than str2, and 0 if they
  *         are equal.
  */
-declare function strnatcmp(str1: string, str2: string): number;
+function strnatcmp(str1: string, str2: string): number;
 
 /**
  * Binary safe case-insensitive string comparison of the first n characters
@@ -20006,7 +20006,7 @@ declare function strnatcmp(str1: string, str2: string): number;
  * @return Returns  0 if str1 is less than str2;  0 if str1 is greater than str2,
  *         and 0 if they are equal.
  */
-declare function strncasecmp(str1: string, str2: string, len: number): number;
+function strncasecmp(str1: string, str2: string, len: number): number;
 
 /**
  * Binary safe string comparison of the first n characters
@@ -20023,7 +20023,7 @@ declare function strncasecmp(str1: string, str2: string, len: number): number;
  * @return Returns  0 if str1 is less than str2;  0 if str1 is greater than str2,
  *         and 0 if they are equal.
  */
-declare function strncmp(str1: string, str2: string, len: number): number;
+function strncmp(str1: string, str2: string, len: number): number;
 
 /**
  * Search a string for any of a set of characters
@@ -20035,7 +20035,7 @@ declare function strncmp(str1: string, str2: string, len: number): number;
  * @return Returns a string starting from the character found, or false if it is
  *         not found.
  */
-declare function strpbrk(haystack: string, char_list: string): string;
+function strpbrk(haystack: string, char_list: string): string;
 
 /**
  * Find the position of the first occurrence of a substring in a string
@@ -20055,7 +20055,7 @@ declare function strpbrk(haystack: string, char_list: string): string;
  *         
  *         Returns false if the needle was not found.
  */
-declare function strpos(haystack: string, needle: string, offset?: number): number;
+function strpos(haystack: string, needle: string, offset?: number): number;
 
 /**
  * Find the position of the first occurrence of a substring in a string
@@ -20075,7 +20075,7 @@ declare function strpos(haystack: string, needle: string, offset?: number): numb
  *         
  *         Returns false if the needle was not found.
  */
-declare function strpos(haystack: string, needle: number, offset?: number): number;
+function strpos(haystack: string, needle: number, offset?: number): number;
 
 /**
  * Find the last occurrence of a character in a string
@@ -20092,7 +20092,7 @@ declare function strpos(haystack: string, needle: number, offset?: number): numb
  * @return This function returns the portion of string, or false if needle is not
  *         found.
  */
-declare function strrchr(haystack: string, needle: string): string;
+function strrchr(haystack: string, needle: string): string;
 
 /**
  * Find the last occurrence of a character in a string
@@ -20109,7 +20109,7 @@ declare function strrchr(haystack: string, needle: string): string;
  * @return This function returns the portion of string, or false if needle is not
  *         found.
  */
-declare function strrchr(haystack: string, needle: number): string;
+function strrchr(haystack: string, needle: number): string;
 
 /**
  * Reverse a string
@@ -20119,7 +20119,7 @@ declare function strrchr(haystack: string, needle: number): string;
  * @param string The string to be reversed.
  * @return Returns the reversed string.
  */
-declare function strrev(string: string): string;
+function strrev(string: string): string;
 
 /**
  * Find the position of the last occurrence of a case-insensitive substring in a
@@ -20143,7 +20143,7 @@ declare function strrev(string: string): string;
  *         
  *         Returns false if the needle was not found.
  */
-declare function strripos(haystack: string, needle: string, offset?: number): number;
+function strripos(haystack: string, needle: string, offset?: number): number;
 
 /**
  * Find the position of the last occurrence of a case-insensitive substring in a
@@ -20167,7 +20167,7 @@ declare function strripos(haystack: string, needle: string, offset?: number): nu
  *         
  *         Returns false if the needle was not found.
  */
-declare function strripos(haystack: string, needle: number, offset?: number): number;
+function strripos(haystack: string, needle: number, offset?: number): number;
 
 /**
  * Find the position of the last occurrence of a substring in a string
@@ -20188,7 +20188,7 @@ declare function strripos(haystack: string, needle: number, offset?: number): nu
  *         
  *         Returns false if the needle was not found.
  */
-declare function strrpos(haystack: string, needle: string, offset?: number): number;
+function strrpos(haystack: string, needle: string, offset?: number): number;
 
 /**
  * Find the position of the last occurrence of a substring in a string
@@ -20209,7 +20209,7 @@ declare function strrpos(haystack: string, needle: string, offset?: number): num
  *         
  *         Returns false if the needle was not found.
  */
-declare function strrpos(haystack: string, needle: number, offset?: number): number;
+function strrpos(haystack: string, needle: number, offset?: number): number;
 
 /**
  * Finds the length of the initial segment of a string consisting entirely of
@@ -20249,7 +20249,7 @@ declare function strrpos(haystack: string, needle: number, offset?: number): num
  * @return Returns the length of the initial segment of subject which consists
  *         entirely of characters in mask.
  */
-declare function strspn(subject: string, mask: string, start?: number, length?: number): number;
+function strspn(subject: string, mask: string, start?: number, length?: number): number;
 
 /**
  * Find the first occurrence of a string
@@ -20270,7 +20270,7 @@ declare function strspn(subject: string, mask: string, start?: number, length?: 
  *                      
  * @return Returns the portion of string, or false if needle is not found.
  */
-declare function strstr(haystack: string, needle: string, before_needle?: bool): string;
+function strstr(haystack: string, needle: string, before_needle?: bool): string;
 
 /**
  * Find the first occurrence of a string
@@ -20291,7 +20291,7 @@ declare function strstr(haystack: string, needle: string, before_needle?: bool):
  *                      
  * @return Returns the portion of string, or false if needle is not found.
  */
-declare function strstr(haystack: string, needle: number, before_needle?: bool): string;
+function strstr(haystack: string, needle: number, before_needle?: bool): string;
 
 /**
  * Tokenize string
@@ -20312,7 +20312,7 @@ declare function strstr(haystack: string, needle: number, before_needle?: bool):
  * @param token The delimiter used when splitting up str.
  * @return A string token.
  */
-declare function strtok(str: string, token: string): string;
+function strtok(str: string, token: string): string;
 
 /**
  * Tokenize string
@@ -20332,7 +20332,7 @@ declare function strtok(str: string, token: string): string;
  * @param token The delimiter used when splitting up str.
  * @return A string token.
  */
-declare function strtok(token: string): string;
+function strtok(token: string): string;
 
 /**
  * Make a string lowercase
@@ -20346,7 +20346,7 @@ declare function strtok(token: string): string;
  * @param str The input string.
  * @return Returns the lowercased string.
  */
-declare function strtolower(str: string): string;
+function strtolower(str: string): string;
 
 /**
  * Make a string uppercase
@@ -20359,7 +20359,7 @@ declare function strtolower(str: string): string;
  * @param string The input string.
  * @return Returns the uppercased string.
  */
-declare function strtoupper(string: string): string;
+function strtoupper(string: string): string;
 
 /**
  * Translate characters or replace substrings
@@ -20391,7 +20391,7 @@ declare function strtoupper(string: string): string;
  *         If replace_pairs contains a key which is an empty string (""), false
  *         will be returned.
  */
-declare function strtr(str: string, from: string, to: string): string;
+function strtr(str: string, from: string, to: string): string;
 
 /**
  * Translate characters or replace substrings
@@ -20424,7 +20424,7 @@ declare function strtr(str: string, from: string, to: string): string;
  *         If replace_pairs contains a key which is an empty string (""), false
  *         will be returned.
  */
-declare function strtr(str: string, replace_pairs: Pct.PhpAssocArray): string;
+function strtr(str: string, replace_pairs: Pct.PhpAssocArray): string;
 
 /**
  * Return part of a string
@@ -20461,7 +20461,7 @@ declare function strtr(str: string, replace_pairs: Pct.PhpAssocArray): string;
  *               end of the string will be returned.
  * @return Returns the extracted part of string; , or an empty string.
  */
-declare function substr(string: string, start: number, length?: number): string;
+function substr(string: string, start: number, length?: number): string;
 
 /**
  * Binary safe comparison of two strings from an offset, up to length characters
@@ -20482,7 +20482,7 @@ declare function substr(string: string, start: number, length?: number): string;
  *         greater than the length of main_str or length is set and is less than
  *         1, substr_compare prints a warning and returns false.
  */
-declare function substr_compare(main_str: string, str: string, offset: number, length?: number, case_sensitivity?: bool): number;
+function substr_compare(main_str: string, str: string, offset: number, length?: number, case_sensitivity?: bool): number;
 
 /**
  * Count the number of substring occurrences
@@ -20500,7 +20500,7 @@ declare function substr_compare(main_str: string, str: string, offset: number, l
  *               greater than the haystack length.
  * @return This function returns an integer.
  */
-declare function substr_count(haystack: string, needle: string, offset?: number, length?: number): number;
+function substr_count(haystack: string, needle: string, offset?: number, length?: number): number;
 
 /**
  * Replace text within a portion of a string
@@ -20533,7 +20533,7 @@ declare function substr_count(haystack: string, needle: string, offset?: number,
  * @return The result string is returned. If string is an array then array is
  *         returned.
  */
-declare function substr_replace(string: string, replacement: string, start: number, length?: number): string;
+function substr_replace(string: string, replacement: string, start: number, length?: number): string;
 
 /**
  * Replace text within a portion of a string
@@ -20566,7 +20566,7 @@ declare function substr_replace(string: string, replacement: string, start: numb
  * @return The result string is returned. If string is an array then array is
  *         returned.
  */
-declare function substr_replace(string: string[], replacement: string, start: number, length?: number): string[];
+function substr_replace(string: string[], replacement: string, start: number, length?: number): string[];
 
 /**
  * Replace text within a portion of a string
@@ -20599,7 +20599,7 @@ declare function substr_replace(string: string[], replacement: string, start: nu
  * @return The result string is returned. If string is an array then array is
  *         returned.
  */
-declare function substr_replace(string: string[], replacement: string[], start: number, length?: number): string[];
+function substr_replace(string: string[], replacement: string[], start: number, length?: number): string[];
 
 /**
  * Replace text within a portion of a string
@@ -20632,7 +20632,7 @@ declare function substr_replace(string: string[], replacement: string[], start: 
  * @return The result string is returned. If string is an array then array is
  *         returned.
  */
-declare function substr_replace(string: string[], replacement: string, start: number[], length?: number): string[];
+function substr_replace(string: string[], replacement: string, start: number[], length?: number): string[];
 
 /**
  * Replace text within a portion of a string
@@ -20665,7 +20665,7 @@ declare function substr_replace(string: string[], replacement: string, start: nu
  * @return The result string is returned. If string is an array then array is
  *         returned.
  */
-declare function substr_replace(string: string[], replacement: string[], start: number[], length?: number): string[];
+function substr_replace(string: string[], replacement: string[], start: number[], length?: number): string[];
 
 /**
  * Replace text within a portion of a string
@@ -20698,7 +20698,7 @@ declare function substr_replace(string: string[], replacement: string[], start: 
  * @return The result string is returned. If string is an array then array is
  *         returned.
  */
-declare function substr_replace(string: string[], replacement: string, start: number, length?: number[]): string[];
+function substr_replace(string: string[], replacement: string, start: number, length?: number[]): string[];
 
 /**
  * Replace text within a portion of a string
@@ -20731,7 +20731,7 @@ declare function substr_replace(string: string[], replacement: string, start: nu
  * @return The result string is returned. If string is an array then array is
  *         returned.
  */
-declare function substr_replace(string: string[], replacement: string[], start: number, length?: number[]): string[];
+function substr_replace(string: string[], replacement: string[], start: number, length?: number[]): string[];
 
 /**
  * Replace text within a portion of a string
@@ -20764,7 +20764,7 @@ declare function substr_replace(string: string[], replacement: string[], start: 
  * @return The result string is returned. If string is an array then array is
  *         returned.
  */
-declare function substr_replace(string: string[], replacement: string, start: number[], length?: number[]): string[];
+function substr_replace(string: string[], replacement: string, start: number[], length?: number[]): string[];
 
 /**
  * Replace text within a portion of a string
@@ -20797,7 +20797,7 @@ declare function substr_replace(string: string[], replacement: string, start: nu
  * @return The result string is returned. If string is an array then array is
  *         returned.
  */
-declare function substr_replace(string: string[], replacement: string[], start: number[], length?: number[]): string[];
+function substr_replace(string: string[], replacement: string[], start: number[], length?: number[]): string[];
 
 /**
  * Strip whitespace (or other characters) from the beginning and end of a string
@@ -20816,7 +20816,7 @@ declare function substr_replace(string: string[], replacement: string[], start: 
  *                 characters.
  * @return The trimmed string.
  */
-declare function trim(str: string, charlist?: string): string;
+function trim(str: string, charlist?: string): string;
 
 /**
  * Make a string's first character uppercase
@@ -20830,7 +20830,7 @@ declare function trim(str: string, charlist?: string): string;
  * @param str The input string.
  * @return Returns the resulting string.
  */
-declare function ucfirst(str: string): string;
+function ucfirst(str: string): string;
 
 /**
  * Uppercase the first character of each word in a string
@@ -20845,7 +20845,7 @@ declare function ucfirst(str: string): string;
  * @param str The input string.
  * @return Returns the modified string.
  */
-declare function ucwords(str: string): string;
+function ucwords(str: string): string;
 
 /**
  * Write a formatted string to a stream
@@ -20861,7 +20861,7 @@ declare function ucwords(str: string): string;
  * @param args 
  * @return Returns the length of the outputted string.
  */
-declare function vfprintf(handle: Pct.PhpResource, format: string, args: Array): number;
+function vfprintf(handle: Pct.PhpResource, format: string, args: Array): number;
 
 /**
  * Output a formatted string
@@ -20876,7 +20876,7 @@ declare function vfprintf(handle: Pct.PhpResource, format: string, args: Array):
  * @param args 
  * @return Returns the length of the outputted string.
  */
-declare function vprintf(format: string, args: Array): number;
+function vprintf(format: string, args: Array): number;
 
 /**
  * Return a formatted string
@@ -20889,7 +20889,7 @@ declare function vprintf(format: string, args: Array): number;
  * @return Return array values as a formatted string according to format (which is
  *         described in the documentation for sprintf).
  */
-declare function vsprintf(format: string, args: Array): string;
+function vsprintf(format: string, args: Array): string;
 
 /**
  * Wraps a string to a given number of characters
@@ -20904,7 +20904,7 @@ declare function vsprintf(format: string, args: Array): string;
  *            given width, it is broken apart. (See second example).
  * @return Returns the given string wrapped at the specified length.
  */
-declare function wordwrap(str: string, width?: number, break_?: string, cut?: bool): string;
+function wordwrap(str: string, width?: number, break_?: string, cut?: bool): string;
 
 //--------------------------------------------------------------------------------
 // tokenizer
@@ -20918,136 +20918,136 @@ declare function wordwrap(str: string, width?: number, break_?: string, cut?: bo
  * 
  * See also the appendix about tokens.
  */
-declare var T_ABSTRACT: number;
-declare var T_AND_EQUAL: number;
-declare var T_ARRAY: number;
-declare var T_ARRAY_CAST: number;
-declare var T_AS: number;
-declare var T_BAD_CHARACTER: number;
-declare var T_BOOLEAN_AND: number;
-declare var T_BOOLEAN_OR: number;
-declare var T_BOOL_CAST: number;
-declare var T_BREAK: number;
-declare var T_CALLABLE: number;
-declare var T_CASE: number;
-declare var T_CATCH: number;
-declare var T_CHARACTER: number;
-declare var T_CLASS: number;
-declare var T_CLASS_C: number;
-declare var T_CLONE: number;
-declare var T_CLOSE_TAG: number;
-declare var T_COMMENT: number;
-declare var T_CONCAT_EQUAL: number;
-declare var T_CONST: number;
-declare var T_CONSTANT_ENCAPSED_STRING: number;
-declare var T_CONTINUE: number;
-declare var T_CURLY_OPEN: number;
-declare var T_DEC: number;
-declare var T_DECLARE: number;
-declare var T_DEFAULT: number;
-declare var T_DIR: number;
-declare var T_DIV_EQUAL: number;
-declare var T_DNUMBER: number;
-declare var T_DOC_COMMENT: number;
-declare var T_DO: number;
-declare var T_DOLLAR_OPEN_CURLY_BRACES: number;
-declare var T_DOUBLE_ARROW: number;
-declare var T_DOUBLE_CAST: number;
-declare var T_DOUBLE_COLON: number;
-declare var T_ECHO: number;
-declare var T_ELSE: number;
-declare var T_ELSEIF: number;
-declare var T_EMPTY: number;
-declare var T_ENCAPSED_AND_WHITESPACE: number;
-declare var T_ENDDECLARE: number;
-declare var T_ENDFOR: number;
-declare var T_ENDFOREACH: number;
-declare var T_ENDIF: number;
-declare var T_ENDSWITCH: number;
-declare var T_ENDWHILE: number;
-declare var T_END_HEREDOC: number;
-declare var T_EVAL: number;
-declare var T_EXIT: number;
-declare var T_EXTENDS: number;
-declare var T_FILE: number;
-declare var T_FINAL: number;
-declare var T_FOR: number;
-declare var T_FOREACH: number;
-declare var T_FUNCTION: number;
-declare var T_FUNC_C: number;
-declare var T_GLOBAL: number;
-declare var T_GOTO: number;
-declare var T_HALT_COMPILER: number;
-declare var T_IF: number;
-declare var T_IMPLEMENTS: number;
-declare var T_INC: number;
-declare var T_INCLUDE: number;
-declare var T_INCLUDE_ONCE: number;
-declare var T_INLINE_HTML: number;
-declare var T_INSTANCEOF: number;
-declare var T_INSTEADOF: number;
-declare var T_INT_CAST: number;
-declare var T_INTERFACE: number;
-declare var T_ISSET: number;
-declare var T_IS_EQUAL: number;
-declare var T_IS_GREATER_OR_EQUAL: number;
-declare var T_IS_IDENTICAL: number;
-declare var T_IS_NOT_EQUAL: number;
-declare var T_IS_NOT_IDENTICAL: number;
-declare var T_IS_SMALLER_OR_EQUAL: number;
-declare var T_LINE: number;
-declare var T_LIST: number;
-declare var T_LNUMBER: number;
-declare var T_LOGICAL_AND: number;
-declare var T_LOGICAL_OR: number;
-declare var T_LOGICAL_XOR: number;
-declare var T_METHOD_C: number;
-declare var T_MINUS_EQUAL: number;
-declare var T_ML_COMMENT: number;
-declare var T_MOD_EQUAL: number;
-declare var T_MUL_EQUAL: number;
-declare var T_NAMESPACE: number;
-declare var T_NS_C: number;
-declare var T_NS_SEPARATOR: number;
-declare var T_NEW: number;
-declare var T_NUM_STRING: number;
-declare var T_OBJECT_CAST: number;
-declare var T_OBJECT_OPERATOR: number;
-declare var T_OLD_FUNCTION: number;
-declare var T_OPEN_TAG: number;
-declare var T_OPEN_TAG_WITH_ECHO: number;
-declare var T_OR_EQUAL: number;
-declare var T_PAAMAYIM_NEKUDOTAYIM: number;
-declare var T_PLUS_EQUAL: number;
-declare var T_PRINT: number;
-declare var T_PRIVATE: number;
-declare var T_PUBLIC: number;
-declare var T_PROTECTED: number;
-declare var T_REQUIRE: number;
-declare var T_REQUIRE_ONCE: number;
-declare var T_RETURN: number;
-declare var T_SL: number;
-declare var T_SL_EQUAL: number;
-declare var T_SR: number;
-declare var T_SR_EQUAL: number;
-declare var T_START_HEREDOC: number;
-declare var T_STATIC: number;
-declare var T_STRING: number;
-declare var T_STRING_CAST: number;
-declare var T_STRING_VARNAME: number;
-declare var T_SWITCH: number;
-declare var T_THROW: number;
-declare var T_TRAIT: number;
-declare var T_TRAIT_C: number;
-declare var T_TRY: number;
-declare var T_UNSET: number;
-declare var T_UNSET_CAST: number;
-declare var T_USE: number;
-declare var T_VAR: number;
-declare var T_VARIABLE: number;
-declare var T_WHILE: number;
-declare var T_WHITESPACE: number;
-declare var T_XOR_EQUAL: number;
+var T_ABSTRACT: number;
+var T_AND_EQUAL: number;
+var T_ARRAY: number;
+var T_ARRAY_CAST: number;
+var T_AS: number;
+var T_BAD_CHARACTER: number;
+var T_BOOLEAN_AND: number;
+var T_BOOLEAN_OR: number;
+var T_BOOL_CAST: number;
+var T_BREAK: number;
+var T_CALLABLE: number;
+var T_CASE: number;
+var T_CATCH: number;
+var T_CHARACTER: number;
+var T_CLASS: number;
+var T_CLASS_C: number;
+var T_CLONE: number;
+var T_CLOSE_TAG: number;
+var T_COMMENT: number;
+var T_CONCAT_EQUAL: number;
+var T_CONST: number;
+var T_CONSTANT_ENCAPSED_STRING: number;
+var T_CONTINUE: number;
+var T_CURLY_OPEN: number;
+var T_DEC: number;
+var T_DECLARE: number;
+var T_DEFAULT: number;
+var T_DIR: number;
+var T_DIV_EQUAL: number;
+var T_DNUMBER: number;
+var T_DOC_COMMENT: number;
+var T_DO: number;
+var T_DOLLAR_OPEN_CURLY_BRACES: number;
+var T_DOUBLE_ARROW: number;
+var T_DOUBLE_CAST: number;
+var T_DOUBLE_COLON: number;
+var T_ECHO: number;
+var T_ELSE: number;
+var T_ELSEIF: number;
+var T_EMPTY: number;
+var T_ENCAPSED_AND_WHITESPACE: number;
+var T_ENDDECLARE: number;
+var T_ENDFOR: number;
+var T_ENDFOREACH: number;
+var T_ENDIF: number;
+var T_ENDSWITCH: number;
+var T_ENDWHILE: number;
+var T_END_HEREDOC: number;
+var T_EVAL: number;
+var T_EXIT: number;
+var T_EXTENDS: number;
+var T_FILE: number;
+var T_FINAL: number;
+var T_FOR: number;
+var T_FOREACH: number;
+var T_FUNCTION: number;
+var T_FUNC_C: number;
+var T_GLOBAL: number;
+var T_GOTO: number;
+var T_HALT_COMPILER: number;
+var T_IF: number;
+var T_IMPLEMENTS: number;
+var T_INC: number;
+var T_INCLUDE: number;
+var T_INCLUDE_ONCE: number;
+var T_INLINE_HTML: number;
+var T_INSTANCEOF: number;
+var T_INSTEADOF: number;
+var T_INT_CAST: number;
+var T_INTERFACE: number;
+var T_ISSET: number;
+var T_IS_EQUAL: number;
+var T_IS_GREATER_OR_EQUAL: number;
+var T_IS_IDENTICAL: number;
+var T_IS_NOT_EQUAL: number;
+var T_IS_NOT_IDENTICAL: number;
+var T_IS_SMALLER_OR_EQUAL: number;
+var T_LINE: number;
+var T_LIST: number;
+var T_LNUMBER: number;
+var T_LOGICAL_AND: number;
+var T_LOGICAL_OR: number;
+var T_LOGICAL_XOR: number;
+var T_METHOD_C: number;
+var T_MINUS_EQUAL: number;
+var T_ML_COMMENT: number;
+var T_MOD_EQUAL: number;
+var T_MUL_EQUAL: number;
+var T_NAMESPACE: number;
+var T_NS_C: number;
+var T_NS_SEPARATOR: number;
+var T_NEW: number;
+var T_NUM_STRING: number;
+var T_OBJECT_CAST: number;
+var T_OBJECT_OPERATOR: number;
+var T_OLD_FUNCTION: number;
+var T_OPEN_TAG: number;
+var T_OPEN_TAG_WITH_ECHO: number;
+var T_OR_EQUAL: number;
+var T_PAAMAYIM_NEKUDOTAYIM: number;
+var T_PLUS_EQUAL: number;
+var T_PRINT: number;
+var T_PRIVATE: number;
+var T_PUBLIC: number;
+var T_PROTECTED: number;
+var T_REQUIRE: number;
+var T_REQUIRE_ONCE: number;
+var T_RETURN: number;
+var T_SL: number;
+var T_SL_EQUAL: number;
+var T_SR: number;
+var T_SR_EQUAL: number;
+var T_START_HEREDOC: number;
+var T_STATIC: number;
+var T_STRING: number;
+var T_STRING_CAST: number;
+var T_STRING_VARNAME: number;
+var T_SWITCH: number;
+var T_THROW: number;
+var T_TRAIT: number;
+var T_TRAIT_C: number;
+var T_TRY: number;
+var T_UNSET: number;
+var T_UNSET_CAST: number;
+var T_USE: number;
+var T_VAR: number;
+var T_VARIABLE: number;
+var T_WHILE: number;
+var T_WHITESPACE: number;
+var T_XOR_EQUAL: number;
 
 
 /**
@@ -21065,7 +21065,7 @@ declare var T_XOR_EQUAL: number;
  *         array containing the token index in element 0, the string content of
  *         the original token in element 1 and the line number in element 2.
  */
-declare function token_get_all(source: string): Array;
+function token_get_all(source: string): Array;
 
 /**
  * Get the symbolic name of a given PHP token
@@ -21075,7 +21075,7 @@ declare function token_get_all(source: string): Array;
  * @param token The token value.
  * @return The symbolic name of the given token.
  */
-declare function token_name(token: number): string;
+function token_name(token: number): string;
 
 //--------------------------------------------------------------------------------
 // url
@@ -21084,17 +21084,17 @@ declare function token_name(token: number): string;
 /*
  * Dealing with URL strings: encoding, decoding and parsing.
  */
-declare var PHP_QUERY_RFC1738: number;
-declare var PHP_QUERY_RFC3986: number;
+var PHP_QUERY_RFC1738: number;
+var PHP_QUERY_RFC3986: number;
 
-declare var PHP_URL_FRAGMENT: number;
-declare var PHP_URL_HOST: number;
-declare var PHP_URL_PASS: number;
-declare var PHP_URL_PATH: number;
-declare var PHP_URL_PORT: number;
-declare var PHP_URL_QUERY: number;
-declare var PHP_URL_SCHEME: number;
-declare var PHP_URL_USER: number;
+var PHP_URL_FRAGMENT: number;
+var PHP_URL_HOST: number;
+var PHP_URL_PASS: number;
+var PHP_URL_PATH: number;
+var PHP_URL_PORT: number;
+var PHP_URL_QUERY: number;
+var PHP_URL_SCHEME: number;
+var PHP_URL_USER: number;
 
 
 /**
@@ -21107,7 +21107,7 @@ declare var PHP_URL_USER: number;
  *               alphabet.
  * @return Returns the original data. The returned data may be binary.
  */
-declare function base64_decode(data: string, strict?: bool): string;
+function base64_decode(data: string, strict?: bool): string;
 
 /**
  * Encodes data with MIME base64
@@ -21122,7 +21122,7 @@ declare function base64_decode(data: string, strict?: bool): string;
  * @param data The data to encode.
  * @return The encoded data, as a string.
  */
-declare function base64_encode(data: string): string;
+function base64_encode(data: string): string;
 
 /**
  * Fetches all the headers sent by the server in response to a HTTP request
@@ -21136,7 +21136,7 @@ declare function base64_encode(data: string): string;
  * @return Returns an indexed or associative array with the headers, or false on
  *         failure.
  */
-declare function get_headers(url: string, format?: number): Array;
+function get_headers(url: string, format?: number): Array;
 
 /**
  * Extracts all meta tag content attributes from a file and returns an array
@@ -21163,7 +21163,7 @@ declare function get_headers(url: string, format?: number): Array;
  *         substituted with '_', the rest is converted to lower case.  If two meta
  *         tags have the same name, only the last one is returned.
  */
-declare function get_meta_tags(filename: string, use_include_path?: bool): Pct.PhpAssocArray;
+function get_meta_tags(filename: string, use_include_path?: bool): Pct.PhpAssocArray;
 
 /**
  * Generate URL-encoded query string
@@ -21199,7 +21199,7 @@ declare function get_meta_tags(filename: string, use_include_path?: bool): Pct.P
  *                 (%20).
  * @return Returns a URL-encoded string.
  */
-declare function http_build_query(query_data: any, numeric_prefix?: string, arg_separator?: string, enc_type?: number): string;
+function http_build_query(query_data: any, numeric_prefix?: string, arg_separator?: string, enc_type?: number): string;
 
 /**
  * Parse a URL and return its components
@@ -21225,7 +21225,7 @@ declare function http_build_query(query_data: any, numeric_prefix?: string, arg_
  *         requested component doesn't exist within the given URL,  will be
  *         returned.
  */
-declare function parse_url(url: string): Pct.PhpAssocArray;
+function parse_url(url: string): Pct.PhpAssocArray;
 
 /**
  * Parse a URL and return its components
@@ -21256,7 +21256,7 @@ declare function parse_url(url: string): Pct.PhpAssocArray;
  *         requested component doesn't exist within the given URL,  will be
  *         returned.
  */
-declare function parse_url(url: string, component: number): any;
+function parse_url(url: string, component: number): any;
 
 /**
  * Decode URL-encoded strings
@@ -21267,7 +21267,7 @@ declare function parse_url(url: string, component: number): any;
  * @param str The URL to be decoded.
  * @return Returns the decoded URL, as a string.
  */
-declare function rawurldecode(str: string): string;
+function rawurldecode(str: string): string;
 
 /**
  * URL-encode according to RFC 3986
@@ -21285,7 +21285,7 @@ declare function rawurldecode(str: string): string;
  *         
  *         Prior to PHP 5.3.0, rawurlencode encoded tildes (~) as per RFC 1738.
  */
-declare function rawurlencode(str: string): string;
+function rawurlencode(str: string): string;
 
 /**
  * Decodes URL-encoded string
@@ -21296,7 +21296,7 @@ declare function rawurlencode(str: string): string;
  * @param str The string to be decoded.
  * @return Returns the decoded string.
  */
-declare function urldecode(str: string): string;
+function urldecode(str: string): string;
 
 /**
  * URL-encodes string
@@ -21313,7 +21313,7 @@ declare function urldecode(str: string): string;
  *         3986 encoding (see rawurlencode) in that for historical reasons, spaces
  *         are encoded as plus (+) signs.
  */
-declare function urlencode(str: string): string;
+function urlencode(str: string): string;
 
 //--------------------------------------------------------------------------------
 // var
@@ -21332,7 +21332,7 @@ declare function urlencode(str: string): string;
  * @param var_ The scalar value being converted to a boolean.
  * @return The boolean value of var.
  */
-declare function boolval(var_: any): bool;
+function boolval(var_: any): bool;
 
 /**
  * Dumps a string representation of an internal zend value to output
@@ -21341,7 +21341,7 @@ declare function boolval(var_: any): bool;
  *
  * @param variable The variable being evaluated.
  */
-declare function debug_zval_dump(variable: any);
+function debug_zval_dump(variable: any);
 
 /**
  * Determine whether a variable is empty
@@ -21367,7 +21367,7 @@ declare function debug_zval_dump(variable: any);
  *         array() (an empty array) $var; (a variable declared, but without a
  *         value)
  */
-declare function empty(var_: any): bool;
+function empty(var_: any): bool;
 
 /**
  * Get float value of a variable
@@ -21382,7 +21382,7 @@ declare function empty(var_: any): bool;
  *         Strings will most likely return 0 although this depends on the leftmost
  *         characters of the string. The common rules of float casting apply.
  */
-declare function floatval(var_: any): number;
+function floatval(var_: any): number;
 
 /**
  * Returns an array of all defined variables
@@ -21392,7 +21392,7 @@ declare function floatval(var_: any): number;
  * scope that get_defined_vars is called.
  * @return A multidimensional array with all the variables.
  */
-declare function get_defined_vars(): Pct.PhpAssocArray;
+function get_defined_vars(): Pct.PhpAssocArray;
 
 /**
  * Returns the resource type
@@ -21407,7 +21407,7 @@ declare function get_defined_vars(): Pct.PhpAssocArray;
  *         This function will return false and generate an error if handle is not
  *         a resource.
  */
-declare function get_resource_type(handle: Pct.PhpResource): string;
+function get_resource_type(handle: Pct.PhpResource): string;
 
 /**
  * Get the type of a variable
@@ -21420,8 +21420,8 @@ declare function get_resource_type(handle: Pct.PhpResource): string;
  *         case of a float, and not simply "float")     "string"     "array"    
  *         "object"     "resource"     "NULL"     "unknown type"
  */
-declare function gettype(var_: any): string;
-//declare function import_request_variables(); nope
+function gettype(var_: any): string;
+//function import_request_variables(); nope
 
 /**
  * Get the integer value of a variable
@@ -21444,7 +21444,7 @@ declare function gettype(var_: any): string;
  *         Strings will most likely return 0 although this depends on the leftmost
  *         characters of the string. The common rules of integer casting apply.
  */
-declare function intval(var_: any, base?: number): number;
+function intval(var_: any, base?: number): number;
 
 /**
  * Finds whether a variable is an array
@@ -21454,7 +21454,7 @@ declare function intval(var_: any, base?: number): number;
  * @param var_ The variable being evaluated.
  * @return Returns true if var is an array, false otherwise.
  */
-declare function is_array(var_: any): bool;
+function is_array(var_: any): bool;
 
 /**
  * Finds out whether a variable is a boolean
@@ -21464,7 +21464,7 @@ declare function is_array(var_: any): bool;
  * @param var_ The variable being evaluated.
  * @return Returns true if var is a boolean, false otherwise.
  */
-declare function is_bool(var_: any): bool;
+function is_bool(var_: any): bool;
 
 /**
  * Verify that the contents of a variable can be called as a function
@@ -21486,7 +21486,7 @@ declare function is_bool(var_: any): bool;
  *                       static method, this is not the case.
  * @return Returns true if name is callable, false otherwise.
  */
-declare function is_callable(name: any, syntax_only?: bool, $callable_name?: string): bool;
+function is_callable(name: any, syntax_only?: bool, $callable_name?: string): bool;
 
 /**
  * Finds whether the type of a variable is float
@@ -21499,7 +21499,7 @@ declare function is_callable(name: any, syntax_only?: bool, $callable_name?: str
  * @param var_ The variable being evaluated.
  * @return Returns true if var is a float, false otherwise.
  */
-declare function is_float(var_: any): bool;
+function is_float(var_: any): bool;
 
 /**
  * Find whether the type of a variable is integer
@@ -21512,7 +21512,7 @@ declare function is_float(var_: any): bool;
  * @param var_ The variable being evaluated.
  * @return Returns true if var is an integer, false otherwise.
  */
-declare function is_int(var_: any): bool;
+function is_int(var_: any): bool;
 
 /**
  * Finds whether a variable is
@@ -21522,7 +21522,7 @@ declare function is_int(var_: any): bool;
  * @param var_ The variable being evaluated.
  * @return Returns true if var is null, false otherwise.
  */
-declare function is_null(var_: any): bool;
+function is_null(var_: any): bool;
 
 /**
  * Finds whether a variable is a number or a numeric string
@@ -21535,7 +21535,7 @@ declare function is_null(var_: any): bool;
  * @param var_ The variable being evaluated.
  * @return Returns true if var is a number or a numeric string, false otherwise.
  */
-declare function is_numeric(var_: any): bool;
+function is_numeric(var_: any): bool;
 
 /**
  * Finds whether a variable is an object
@@ -21545,7 +21545,7 @@ declare function is_numeric(var_: any): bool;
  * @param var_ The variable being evaluated.
  * @return Returns true if var is an object, false otherwise.
  */
-declare function is_object(var_: any): bool;
+function is_object(var_: any): bool;
 
 /**
  * Finds whether a variable is a resource
@@ -21555,7 +21555,7 @@ declare function is_object(var_: any): bool;
  * @param var_ The variable being evaluated.
  * @return Returns true if var is a resource, false otherwise.
  */
-declare function is_resource(var_: any): bool;
+function is_resource(var_: any): bool;
 
 /**
  * Finds whether a variable is a scalar
@@ -21574,7 +21574,7 @@ declare function is_resource(var_: any): bool;
  * @param var_ The variable being evaluated.
  * @return Returns true if var is a scalar false otherwise.
  */
-declare function is_scalar(var_: any): bool;
+function is_scalar(var_: any): bool;
 
 /**
  * Find whether the type of a variable is string
@@ -21584,7 +21584,7 @@ declare function is_scalar(var_: any): bool;
  * @param var_ The variable being evaluated.
  * @return Returns true if var is of type string, false otherwise.
  */
-declare function is_string(var_: any): bool;
+function is_string(var_: any): bool;
 
 /**
  * Determine if a variable is set and is not
@@ -21602,7 +21602,7 @@ declare function is_string(var_: any): bool;
  * @param var_ The variable to be checked.
  * @return Returns true if var exists and has value other than , false otherwise.
  */
-declare function isset(...var_: any[]): bool;
+function isset(...var_: any[]): bool;
 
 /**
  * Prints human-readable information about a variable
@@ -21621,7 +21621,7 @@ declare function isset(...var_: any[]): bool;
  *         When the return parameter is true, this function will return a string.
  *         Otherwise, the return value is true.
  */
-declare function print_r(expression: any);
+function print_r(expression: any);
 
 /**
  * Prints human-readable information about a variable
@@ -21643,7 +21643,7 @@ declare function print_r(expression: any);
  *         When the return parameter is true, this function will return a string.
  *         Otherwise, the return value is true.
  */
-declare function print_r(expression: any, return_: bool): string;
+function print_r(expression: any, return_: bool): string;
 
 /**
  * Generates a storable representation of a value
@@ -21678,7 +21678,7 @@ declare function print_r(expression: any, return_: bool): string;
  *         should generally be stored in a BLOB field in a database, rather than a
  *         CHAR or TEXT field.
  */
-declare function serialize(value: any): string;
+function serialize(value: any): string;
 
 /**
  * Set the type of a variable
@@ -21692,7 +21692,7 @@ declare function serialize(value: any): string;
  *             deprecated variant "double")     "string"     "array"     "object" 
  *             "null" (since PHP 4.2.0)
  */
-declare function settype($var_: any, type: string): bool;
+function settype($var_: any, type: string): bool;
 
 /**
  * Get string value of a variable
@@ -21704,7 +21704,7 @@ declare function settype($var_: any, type: string): bool;
  *             that do not implement the __toString() method.
  * @return The string value of var.
  */
-declare function strval(var_: any): string;
+function strval(var_: any): string;
 
 /**
  * Creates a PHP value from a stored representation
@@ -21735,7 +21735,7 @@ declare function strval(var_: any): string;
  *         In case the passed string is not unserializeable, false is returned and
  *         E_NOTICE is issued.
  */
-declare function unserialize(str: string): any;
+function unserialize(str: string): any;
 
 /**
  * Unset a given variable
@@ -21762,14 +21762,14 @@ declare function unserialize(str: string): any;
  *
  * @param var_ The variable to be unset.
  */
-declare function unset(...var_: any[]);
+function unset(...var_: any[]);
 
 /**
  * Dumps information about a variable
  *
  * @param var_ 
  */
-declare function var_dump(...var_: any[]);
+function var_dump(...var_: any[]);
 
 /**
  * Outputs or returns a parsable string representation of a variable
@@ -21778,7 +21778,7 @@ declare function var_dump(...var_: any[]);
  * @return Returns the variable representation when the return parameter is used
  *         and evaluates to true. Otherwise, this function will return .
  */
-declare function var_export(expression: any);
+function var_export(expression: any);
 
 /**
  * Outputs or returns a parsable string representation of a variable
@@ -21789,4 +21789,4 @@ declare function var_export(expression: any);
  * @return Returns the variable representation when the return parameter is used
  *         and evaluates to true. Otherwise, this function will return .
  */
-declare function var_export(expression: any, return_: bool): string;
+function var_export(expression: any, return_: bool): string;

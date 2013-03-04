@@ -2,6 +2,16 @@
 -----
 var a = (value: string) => { return value + '.'; }
 var b = function (value: string) { return value + '.'; }
+//ref issue 2
+var test = () => {
+    var_dump(a);
+    var_dump(a);
+};
 -----
 $a = function ($value) { return $value . '.'; };
 $b = function ($value) { return $value . '.'; };
+//ref issue 2
+$test = function () use ($a) {
+    var_dump($a);
+    var_dump($a);
+};

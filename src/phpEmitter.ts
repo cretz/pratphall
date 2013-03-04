@@ -905,7 +905,11 @@ module Pratphall {
                 if (newlines) this.increaseIndent();
                 //any globals?
                 var globCount = 0;
+                var alreadyHandledFreeVariables = { };
                 ast.freeVariables.forEach((value: TypeScript.Symbol, index: number) => {
+                    //don't double-handle
+                    if (value.name in alreadyHandledFreeVariables) return;
+                    alreadyHandledFreeVariables[value.name] = true;
                     //is global but not super global? (can't be all caps, or that's a const)
                     var isNestedFunc = value.declAST != null && value.declAST instanceof TypeScript.FuncDecl &&
                         (<TypeScript.FuncDecl>value.declAST).enclosingFnc != null;

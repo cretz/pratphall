@@ -1450,7 +1450,12 @@ module Pratphall {
                 ast.nodeType == TypeScript.NodeType.QString ||
                 ast.nodeType == TypeScript.NodeType.True ||
                 ast.nodeType == TypeScript.NodeType.False) return true;
-            if (ast.nodeType != TypeScript.NodeType.ArrayLit) return false;
+            //we can also have "new string[]"
+            var isArray = ast.nodeType == TypeScript.NodeType.ArrayLit ||
+                (ast.nodeType == TypeScript.NodeType.New && ast instanceof TypeScript.CallExpression &&
+                (<TypeScript.CallExpression>ast).target instanceof TypeScript.TypeReference &&
+                (<TypeScript.TypeReference>(<TypeScript.CallExpression>ast).target).arrayCount > 0);
+            if (!isArray) return false;
             var expr = <TypeScript.UnaryExpression>ast;
             return expr.operand == null ||
                 (<TypeScript.ASTList>expr.operand).members.every(this.isScalar, this);

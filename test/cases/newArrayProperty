@@ -1,0 +1,14 @@
+﻿New array property
+Ref issue #3
+-----
+class Test {
+    arrayWithNewSyntax = new string[];
+    arrayWithoutNewSyntax: string[] = [];
+}
+-----
+class Test {
+    public $arrayWithNewSyntax = [];
+    
+    public $arrayWithoutNewSyntax = [];
+    
+}

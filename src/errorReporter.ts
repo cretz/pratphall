@@ -47,6 +47,35 @@ module Pratphall {
             if (msg.indexOf('is not visible at this point') != -1) {
                 swallowed = true;
             }
+            //https://github.com/cretz/pratphall/issues/5
+            //Compile time classes w/ properties cause issues for extended classes
+            if (msg.indexOf('If a derived class contains initialized properties or constructor') == 0) {
+                //recursive compile-time base checker (TODO: move to a util area)
+                var hasCompileTimeBase = (decl: TypeScript.TypeDeclaration) => {
+                    if (decl.implementsList != null) {
+                        if (decl.implementsList.members.some((value: TypeScript.AST) => {
+                            return isDottedBinEx(value, 'Pct', 'CompileTimeOnly') ||
+                                hasCompileTimeBase(<TypeScript.TypeDeclaration>value.type.symbol.declAST);
+                        })) {
+                            return true;
+                        }
+                    }
+                    if (decl.extendsList != null) {
+                        if (decl.extendsList.members.some((value: TypeScript.AST) => {
+                            return isDottedBinEx(value, 'Pct', 'CompileTimeOnly') ||
+                                hasCompileTimeBase(<TypeScript.TypeDeclaration>value.type.symbol.declAST);
+                        })) {
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+                //if this has any compile time base, it's ok, skip...
+                if (hasCompileTimeBase(<TypeScript.TypeDeclaration>(<TypeScript.FuncDecl>ast).classDecl)) {
+                    swallowed = true;
+                }
+            }
+
             if (!swallowed) oldSimpleError.call(compiler.errorReporter, ast, msg);
         }
 

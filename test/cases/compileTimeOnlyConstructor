@@ -1,0 +1,19 @@
+﻿Compile-time only constructor test
+ref: issue 5
+-----
+class CtTest implements Pct.CompileTimeOnly {
+    someProperty = new string[];
+}
+class Regular extends CtTest {
+    constructor(public val: string) {
+    }
+}
+-----
+class Regular {
+    public $val;
+    
+    public function __construct($val) {
+        $this->val = $val;
+    }
+    
+}

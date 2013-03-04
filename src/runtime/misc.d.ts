@@ -32,4 +32,4 @@ declare function time_nanosleep(seconds: number, nanoseconds: number): any;
 declare function time_sleep_until(timestamp: number): bool;
 declare function uniqid(prefix?: string, more_entropy?: bool): string;
 declare function unpack(format: string, data: string): Pct.PhpAssocArray;
-declare function unsleep(micro_seconds: number);
+declare function usleep(micro_seconds: number);

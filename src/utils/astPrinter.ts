@@ -1,5 +1,6 @@
 ///<reference path='../typescript/src/compiler/typescript.ts' />
 ///<reference path='../sys.ts' />
+///<reference path='../node-impl/sys.ts' />
 
 class ConsoleWriter implements ITextWriter {
     Write(s: string) { console.log(s);  }
@@ -17,7 +18,8 @@ class ConsoleLogger implements TS.ILogger {
 }
 
 var contents = [
-    'var a = undefined;'
+    'module SomeMod { declare class SomeClass { static someFunc(); } }',
+    'var a = SomeMod.SomeClass.someFunc();'
 ].join('\n');
 //compile TS
 var settings = new TS.CompilationSettings();

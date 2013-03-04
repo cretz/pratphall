@@ -5,6 +5,7 @@
 ///<reference path='datetime.d.ts' />
 ///<reference path='dir.d.ts' />
 ///<reference path='dom.d.ts' />
+///<reference path='errorfunc.d.ts' />
 ///<reference path='exec.d.ts' />
 ///<reference path='fileinfo.d.ts' />
 ///<reference path='filesystem.d.ts' />

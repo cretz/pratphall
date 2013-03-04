@@ -3,5 +3,5 @@
 
 var harness = new Pratphall.TestHarness();
 harness.run();
-//harness.runTest('switchVariable');
-//harness.runTest('classProperty');
+//harness.runTest('advancedFunctionReference');
+//harness.runTest('functionAndClosure');

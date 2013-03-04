@@ -5052,6 +5052,286 @@ class DOMXPath {
 function dom_import_simplexml(node: SimpleXMLElement): DOMElement;
 
 //--------------------------------------------------------------------------------
+// errorfunc
+//--------------------------------------------------------------------------------
+
+/*
+ * These are functions dealing with error handling and logging. They allow you to
+ * define your own error handling rules, as well as modify the way the errors can
+ * be logged. This allows you to change and enhance error reporting to suit your
+ * needs.
+ * 
+ * With the logging functions, you can send messages directly to other machines, to
+ * an email (or email to pager gateway!), to system logs, etc., so you can
+ * selectively log and monitor the most important parts of your applications and
+ * websites.
+ * 
+ * The error reporting functions allow you to customize what level and kind of
+ * error feedback is given, ranging from simple notices to customized functions
+ * returned during errors.
+ */
+var E_ERROR: number;
+var E_WARNING: number;
+var E_PARSE: number;
+var E_NOTICE: number;
+var E_CORE_ERROR: number;
+var E_CORE_WARNING: number;
+var E_COMPILE_ERROR: number;
+var E_COMPILE_WARNING: number;
+var E_USER_ERROR: number;
+var E_USER_WARNING: number;
+var E_USER_NOTICE: number;
+var E_STRICT: number;
+var E_RECOVERABLE_ERROR: number;
+var E_DEPRECATED: number;
+var E_USER_DEPRECATED: number;
+var E_ALL: number;
+var DEBUG_BACKTRACE_PROVIDE_OBJECT: number;
+var DEBUG_BACKTRACE_IGNORE_ARGS: number;
+
+
+/**
+ * Generates a backtrace
+ * 
+ * debug_backtrace generates a PHP backtrace.
+ *
+ * @param options As of 5.3.6, this parameter is a bitmask for the following
+ *                options:  debug_backtrace options   
+ *                DEBUG_BACKTRACE_PROVIDE_OBJECT  Whether or not to populate the
+ *                "object" index.    DEBUG_BACKTRACE_IGNORE_ARGS  Whether or not
+ *                to omit the "args" index, and thus all the function/method
+ *                arguments, to save memory.      Before 5.3.6, the only values
+ *                recognized are true or false, which are the same as setting or
+ *                not setting the DEBUG_BACKTRACE_PROVIDE_OBJECT option
+ *                respectively.
+ * @param limit As of 5.4.0, this parameter can be used to limit the number of
+ *              stack frames returned. By default (limit=0) it returns all stack
+ *              frames.
+ * @return Returns an array of associative arrays. The possible returned elements
+ *         are as follows:
+ *         
+ *         Possible returned elements from debug_backtrace           function
+ *         string  The current function name.  See also __FUNCTION__.    line
+ *         integer  The current line number.  See also __LINE__.    file string 
+ *         The current file name.  See also __FILE__.    class string  The current
+ *         class name.  See also __CLASS__    object object  The current object.  
+ *         type string  The current call type. If a method call, "-&gt;" is
+ *         returned. If a static method call, "::" is returned. If a function
+ *         call, nothing is returned.    args array  If inside a function, this
+ *         lists the functions arguments.  If inside an included file, this lists
+ *         the included file name(s).
+ */
+function debug_backtrace(options?: number, limit?: number): Pct.PhpAssocArray;
+
+/**
+ * Prints a backtrace
+ * 
+ * debug_print_backtrace prints a PHP backtrace. It prints the function calls,
+ * included/required files and evaled stuff.
+ *
+ * @param options As of 5.3.6, this parameter is a bitmask for the following
+ *                options:  debug_print_backtrace options   
+ *                DEBUG_BACKTRACE_IGNORE_ARGS  Whether or not to omit the "args"
+ *                index, and thus all the function/method arguments, to save
+ *                memory.
+ * @param limit As of 5.4.0, this parameter can be used to limit the number of
+ *              stack frames printed. By default (limit=0) it prints all stack
+ *              frames.
+ */
+function debug_print_backtrace(options?: number, limit?: number);
+
+/**
+ * Get the last occurred error
+ * 
+ * Gets information about the last error that occurred.
+ * @return Returns an associative array describing the last error with keys
+ *         "type", "message", "file" and "line". If the error has been caused by a
+ *         PHP internal function then the "message" begins with its name. Returns 
+ *         if there hasn't been an error yet.
+ */
+function error_get_last(): Pct.PhpAssocArray;
+
+/**
+ * Send an error message somewhere
+ * 
+ * Sends an error message to the web server's error log or to a file.
+ *
+ * @param message The error message that should be logged.
+ * @param message_type Says where the error should go. The possible message types
+ *                     are as follows:
+ *                     
+ *                     error_log log types    0  message is sent to PHP's system
+ *                     logger, using the Operating System's system logging
+ *                     mechanism or a file, depending on what the error_log
+ *                     configuration directive is set to.  This is the default
+ *                     option.    1  message is sent by email to the address in
+ *                     the destination parameter.  This is the only message type
+ *                     where the fourth parameter, extra_headers is used.    2  No
+ *                     longer an option.    3  message is appended to the file
+ *                     destination. A newline is not automatically added to the
+ *                     end of the message string.    4  message is sent directly
+ *                     to the SAPI logging handler.
+ * @param destination The destination. Its meaning depends on the message_type
+ *                    parameter as described above.
+ * @param extra_headers The extra headers. It's used when the message_type
+ *                      parameter is set to 1. This message type uses the same
+ *                      internal function as mail does.
+ */
+function error_log(message: string, message_type?: number, destination?: string, extra_headers?: string): bool;
+
+/**
+ * Sets which PHP errors are reported
+ * 
+ * The error_reporting function sets the error_reporting directive at runtime.  PHP
+ * has many levels of errors, using this function sets that level for the duration
+ * (runtime) of your script. If the optional level is not set, error_reporting will
+ * just return the current error reporting level.
+ *
+ * @param level The new error_reporting level. It takes on either a bitmask, or
+ *              named constants. Using named constants is strongly encouraged to
+ *              ensure compatibility for future versions. As error levels are
+ *              added, the range of integers increases, so older integer-based
+ *              error levels will not always behave as expected.
+ *              
+ *              The available error level constants and the actual meanings of
+ *              these error levels are described in the predefined constants.
+ * @return Returns the old error_reporting level or the current level if no level
+ *         parameter is given.
+ */
+function error_reporting(level?: number): number;
+
+/**
+ * Restores the previous error handler function
+ * 
+ * Used after changing the error handler function using set_error_handler, to
+ * revert to the previous error handler (which could be the built-in or a user
+ * defined function).
+ * @return This function always returns true.
+ */
+function restore_error_handler(): bool;
+
+/**
+ * Restores the previously defined exception handler function
+ * 
+ * Used after changing the exception handler function using set_exception_handler,
+ * to revert to the previous exception handler (which could be the built-in or a
+ * user defined function).
+ * @return This function always returns true.
+ */
+function restore_exception_handler(): bool;
+
+/**
+ * Sets a user-defined error handler function
+ * 
+ * Sets a user function (error_handler) to handle errors in a script.
+ * 
+ * This function can be used for defining your own way of handling errors during
+ * runtime, for example in applications in which you need to do cleanup of
+ * data/files when a critical error happens, or when you need to trigger an error
+ * under certain conditions (using trigger_error).
+ * 
+ * It is important to remember that the standard PHP error handler is completely
+ * bypassed for the error types specified by error_types unless the callback
+ * function returns false. error_reporting settings will have no effect and your
+ * error handler will be called regardless - however you are still able to read the
+ * current value of error_reporting and act appropriately. Of particular note is
+ * that this value will be 0 if the statement that caused the error was prepended
+ * by the @ error-control operator.
+ * 
+ * Also note that it is your responsibility to die if necessary. If the
+ * error-handler function returns, script execution will continue with the next
+ * statement after the one that caused an error.
+ * 
+ * The following error types cannot be handled with a user defined function:
+ * E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR,
+ * E_COMPILE_WARNING, and most of E_STRICT raised in the file where
+ * set_error_handler is called.
+ * 
+ * If errors occur before the script is executed (e.g. on file uploads) the custom
+ * error handler cannot be called since it is not registered at that time.
+ *
+ * @param error_handler The user function needs to accept two parameters: the
+ *                      error code, and a string describing the error. Then there
+ *                      are three optional parameters that may be supplied: the
+ *                      filename in which the error occurred, the line number in
+ *                      which the error occurred, and the context in which the
+ *                      error occurred (an array that points to the active symbol
+ *                      table at the point the error occurred).  The function can
+ *                      be shown as:
+ *                      
+ *                      handler interrno stringerrstr stringerrfile interrline
+ *                      arrayerrcontext    errno   The first parameter, errno,
+ *                      contains the level of the error raised, as an integer.    
+ *                      errstr   The second parameter, errstr, contains the error
+ *                      message, as a string.     errfile   The third parameter is
+ *                      optional, errfile, which contains the filename that the
+ *                      error was raised in, as a string.     errline   The fourth
+ *                      parameter is optional, errline, which contains the line
+ *                      number the error was raised at, as an integer.    
+ *                      errcontext   The fifth parameter is optional, errcontext,
+ *                      which is an array that points to the active symbol table
+ *                      at the point the error occurred.  In other words,
+ *                      errcontext will contain an array of every variable that
+ *                      existed in the scope the error was triggered in. User
+ *                      error handler must not modify error context.
+ *                      
+ *                      If the function returns false then the normal error
+ *                      handler continues.
+ * @param error_types Can be used to mask the triggering of the error_handler
+ *                    function just like the error_reporting ini setting controls
+ *                    which errors are shown. Without this mask set the
+ *                    error_handler will be called for every error regardless to
+ *                    the setting of the error_reporting setting.
+ * @return Returns a string containing the previously defined error handler (if
+ *         any). If the built-in error handler is used  is returned.  is also
+ *         returned in case of an error such as an invalid callback. If the
+ *         previous error handler was a class method, this function will return an
+ *         indexed array with the class and the method name.
+ */
+function set_error_handler(error_handler: (errno: number, errstr: string, errfile?: string, errline?: number, errcontext?: Array) => bool, error_types?: number): any;
+
+/**
+ * Sets a user-defined exception handler function
+ * 
+ * Sets the default exception handler if an exception is not caught within a
+ * try/catch block. Execution will stop after the exception_handler is called.
+ *
+ * @param exception_handler Name of the function to be called when an uncaught
+ *                          exception occurs. This function must be defined before
+ *                          calling set_exception_handler. This handler function
+ *                          needs to accept one parameter, which will be the
+ *                          exception object that was thrown.
+ *                          
+ *                          may be passed instead, to reset this handler to its
+ *                          default state.
+ * @return Returns the name of the previously defined exception handler, or  on
+ *         error. If no previous handler was defined,  is also returned. If  is
+ *         passed, resetting the handler to its default state, true is returned.
+ */
+function set_exception_handler(exception_handler: (exception: Exception) => void): any;
+
+/**
+ * Generates a user-level error/warning/notice message
+ * 
+ * Used to trigger a user error condition, it can be used by in conjunction with
+ * the built-in error handler, or with a user defined function that has been set as
+ * the new error handler (set_error_handler).
+ * 
+ * This function is useful when you need to generate a particular response to an
+ * exception at runtime.
+ *
+ * @param error_msg The designated error message for this error. It's limited to
+ *                  1024 characters in length. Any additional characters beyond
+ *                  1024 will be truncated.
+ * @param error_type The designated error type for this error. It only works with
+ *                   the E_USER family of constants, and will default to
+ *                   E_USER_NOTICE.
+ * @return This function returns false if wrong error_type is specified, true
+ *         otherwise.
+ */
+function trigger_error(error_msg: string, error_type?: number): bool;
+
+//--------------------------------------------------------------------------------
 // exec
 //--------------------------------------------------------------------------------
 
@@ -9973,7 +10253,16 @@ declare function uniqid(prefix?: string, more_entropy?: bool): string;
  *         string.
  */
 declare function unpack(format: string, data: string): Pct.PhpAssocArray;
-declare function unsleep(micro_seconds: number);
+
+/**
+ * Delay execution in microseconds
+ * 
+ * Delays program execution for the given number of micro seconds.
+ *
+ * @param micro_seconds Halt time in micro seconds. A micro second is one
+ *                      millionth of a second.
+ */
+declare function usleep(micro_seconds: number);
 
 //--------------------------------------------------------------------------------
 // pcre

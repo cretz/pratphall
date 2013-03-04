@@ -1,0 +1,30 @@
+///<reference path='all.d.ts' />
+var E_ERROR: number;
+var E_WARNING: number;
+var E_PARSE: number;
+var E_NOTICE: number;
+var E_CORE_ERROR: number;
+var E_CORE_WARNING: number;
+var E_COMPILE_ERROR: number;
+var E_COMPILE_WARNING: number;
+var E_USER_ERROR: number;
+var E_USER_WARNING: number;
+var E_USER_NOTICE: number;
+var E_STRICT: number;
+var E_RECOVERABLE_ERROR: number;
+var E_DEPRECATED: number;
+var E_USER_DEPRECATED: number;
+var E_ALL: number;
+var DEBUG_BACKTRACE_PROVIDE_OBJECT: number;
+var DEBUG_BACKTRACE_IGNORE_ARGS: number;
+
+function debug_backtrace(options?: number, limit?: number): Pct.PhpAssocArray;
+function debug_print_backtrace(options?: number, limit?: number);
+function error_get_last(): Pct.PhpAssocArray;
+function error_log(message: string, message_type?: number, destination?: string, extra_headers?: string): bool;
+function error_reporting(level?: number): number;
+function restore_error_handler(): bool;
+function restore_exception_handler(): bool;
+function set_error_handler(error_handler: (errno: number, errstr: string, errfile?: string, errline?: number, errcontext?: Array) => bool, error_types?: number): any;
+function set_exception_handler(exception_handler: (exception: Exception) => void): any;
+function trigger_error(error_msg: string, error_type?: number): bool;

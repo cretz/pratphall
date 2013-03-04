@@ -345,10 +345,12 @@ module Pratphall {
 
         emitCommaSeparated(ast: TypeScript.ASTList) {
             if (ast != null) {
+                this.stack.push(ast);
                 ast.members.forEach((member: TypeScript.AST, index: number) => {
                     if (index > 0) this.write(', ');
                     this.emit(member);
                 });
+                this.stack.pop();
             }
             return this;
         }
@@ -431,13 +433,21 @@ module Pratphall {
                                 this.emit(ast.operand1);
                                 return;
                             } else if ((<TypeScript.FuncDecl>ast.type.symbol.declAST).isMethod()) {
-                                //can't have call parent
-                                if (!this.stack.some((value: TypeScript.AST) => {
-                                    return value instanceof TypeScript.CallExpression;
+                                //can't be a call...we only know if it's a call if we have a call above us but we're not in the param list
+                                if (!this.stack.some((value: TypeScript.AST, index: number) => {
+                                    return value instanceof TypeScript.CallExpression &&
+                                        !(this.stack[index + 1] instanceof TypeScript.ASTList);
                                 })) {
-                                    this.write('(new \\ReflectionMethod(').emit(ast.operand1).write(", '" +
-                                        this.getIdentifierText(<TypeScript.Identifier>ast.operand2) +
-                                        "'))->getClosure(").emit(ast.operand1).write(')');
+                                    this.write("(new \\ReflectionMethod('" + this.getQualifiedTypeName(ast.operand1) + "', '" +
+                                            this.getIdentifierText(<TypeScript.Identifier>ast.operand2) +
+                                            "'))->getClosure(");
+                                    //static is null
+                                    if ((<TypeScript.FuncDecl>ast.type.symbol.declAST).isStatic()) {
+                                        this.write('null)');
+                                    } else {
+                                        //otherwise, it's the first operand
+                                        this.emit(ast.operand1).write(')');
+                                    }
                                     return;
                                 }
                             }
@@ -449,9 +459,16 @@ module Pratphall {
                             curr = (<TypeScript.BinaryExpression>curr).operand1;
                         }
                         //is it possibly a slashable decl?
-                        if (curr instanceof TypeScript.Identifier && (!(ast.operand2 instanceof
-                                TypeScript.Identifier) || (<TypeScript.Identifier>ast.operand2).sym == null ||
-                                !(<TypeScript.Identifier>ast.operand2).sym.isVariable()) &&
+                        var isPropertyOrMethod = ast.operand2 instanceof TypeScript.Identifier && (<TypeScript.Identifier>ast.operand2).sym != null;
+                        if (isPropertyOrMethod && (<TypeScript.Identifier>ast.operand2).sym.declAST instanceof TypeScript.FuncDecl &&
+                            !(<TypeScript.FuncDecl>(<TypeScript.Identifier>ast.operand2).sym.declAST).isConstructor) {
+                            isPropertyOrMethod = true;
+                        } else if (isPropertyOrMethod && (<TypeScript.Identifier>ast.operand2).sym.declAST instanceof TypeScript.VarDecl) {
+                            isPropertyOrMethod = true;
+                        } else {
+                            isPropertyOrMethod = false;
+                        }
+                        if (curr instanceof TypeScript.Identifier && !isPropertyOrMethod &&
                                 (<TypeScript.Identifier>curr).sym != null &&
                                 (<TypeScript.Identifier>curr).sym.isType() &&
                                 ((<TypeScript.Identifier>curr).sym.declAST instanceof TypeScript.ModuleDeclaration ||

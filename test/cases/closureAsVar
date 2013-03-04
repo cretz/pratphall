@@ -50,7 +50,7 @@ function a($param) { return false; }
 $b = (new \ReflectionFunction('a'))->getClosure();
 a('hey');
 $c = new Foo();
-$d = (new \ReflectionMethod($c, 'bar'))->getClosure($c);
+$d = (new \ReflectionMethod('\Foo', 'bar'))->getClosure($c);
 $e = new Foo2();
 //func that can accept
 function doSomething(callable $closure) {

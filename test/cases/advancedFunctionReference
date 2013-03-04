@@ -1,0 +1,29 @@
+Reference a function
+-----
+module Mod {
+    export declare class Clas {
+        static func(): Clas2;
+    }
+
+    export declare class Clas2 {
+        funcTwo();
+    }
+}
+
+var f = Mod.Clas.func;
+Mod.Clas.func();
+Mod.Clas.func().funcTwo();
+var g = Mod.Clas.func().funcTwo;
+declare function some_function(val: any);
+some_function(Mod.Clas.func);
+some_function(Mod.Clas.func().funcTwo);
+-----
+namespace  {
+
+    $f = (new \ReflectionMethod('\Mod\Clas', 'func'))->getClosure(null);
+    \Mod\Clas::func();
+    \Mod\Clas::func()->funcTwo();
+    $g = (new \ReflectionMethod('\Mod\Clas2', 'funcTwo'))->getClosure(\Mod\Clas::func());
+    some_function((new \ReflectionMethod('\Mod\Clas', 'func'))->getClosure(null));
+    some_function((new \ReflectionMethod('\Mod\Clas2', 'funcTwo'))->getClosure(\Mod\Clas::func()));
+}

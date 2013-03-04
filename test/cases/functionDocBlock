@@ -1,0 +1,46 @@
+﻿Function doc block
+Ref issue 1
+-----
+/**
+ * Test class
+ */
+class Test {
+    /**
+     * Test func
+     */
+    test() {
+    }
+}
+
+/**
+ * Test interface
+ */
+interface ITest {
+    /**
+     * ITest func
+     */
+    test();
+}
+-----
+/**
+ * Test class
+ */
+class Test {
+    /**
+     * Test func
+     */
+    public function test() {
+    }
+    
+}
+
+/**
+ * Test interface
+ */
+interface ITest {
+    /**
+     * ITest func
+     */
+    public function test();
+    
+}

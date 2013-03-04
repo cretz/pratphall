@@ -717,6 +717,7 @@ module Pratphall {
                 //now the actual members
                 var hasConstructor = false;
                 ast.members.members.forEach((member: TypeScript.AST) => {
+                    this.emitCommentSet(member.preComments, true, false);
                     this.newline().emit(member).newline();
                     if (member instanceof TypeScript.FuncDecl && (<TypeScript.FuncDecl>member).isConstructor) {
                         hasConstructor = true;
@@ -1181,6 +1182,7 @@ module Pratphall {
                     if (member instanceof TypeScript.FuncDecl && member.type != null &&
                             member.type.symbol != null && !TypeScript.hasFlag(
                             member.type.symbol.flags, TypeScript.SymbolFlags.Optional)) {
+                        this.emitCommentSet(member.preComments, true, false);
                         this.newline().emit(member).newline();
                     }
                 });

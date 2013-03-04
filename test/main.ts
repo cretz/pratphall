@@ -3,5 +3,3 @@
 
 var harness = new Pratphall.TestHarness();
 harness.run();
-//harness.runTest('advancedFunctionReference');
-//harness.runTest('functionAndClosure');
